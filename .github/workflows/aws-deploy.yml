@@ -9,10 +9,10 @@ env:
   AWS_REGION: eu-central-1
   AWS_ACCOUNT_ID: 961341543644
   ECR_REPOSITORY: production-eurobas-repository
-  ECS_SERVICE: eurobas-ecs-service
+  ECS_SERVICE: eurobas
   ECS_CLUSTER: production-cluster
   ECS_TASK_DEFINITION: deployment/ecs-task-definition.json
-  CONTAINER_NAME: eurobas-application
+  CONTAINER_NAME: eurobas
 
 permissions:
   id-token: write

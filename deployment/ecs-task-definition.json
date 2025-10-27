@@ -9,11 +9,11 @@
   ],
   "containerDefinitions": [
     {
-      "name": "eurobas-application",
+      "name": "eurobas",
       "image": "961341543644.dkr.ecr.eu-central-1.amazonaws.com/production-eurobas-repository:latest",
       "essential": true,
-      "cpu": 100,
-      "memory": 256,
+      "cpu": 1024,
+      "memory": 2048,
       "portMappings": [
         {
           "containerPort": 3000,
