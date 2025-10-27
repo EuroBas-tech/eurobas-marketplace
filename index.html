@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Dot Loader</title>
+    <style>
+      
+
+
+
+
+
+
+
+      /* Loader container */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6em;   /* 3 blocks + 2 margins */
+  height: 6em;
+  transform: translate(-50%, -50%);
+}
+
+/* Loader blocks */
+.loader-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  opacity: 0;
+  width: 2em;
+  height: 2em;
+  background: #fdfdfd;
+  animation: show 0.88s step-end infinite alternate,
+             pulse 0.88s linear infinite alternate;
+}
+
+/* Position each block + animation delays */
+.loader-block:nth-child(1) {
+  transform: translate(0, 0);
+  animation-delay: 0.065s;
+}
+
+.loader-block:nth-child(2) {
+  transform: translate(2.67em, 0);
+  animation-delay: 0.13s;
+}
+
+.loader-block:nth-child(3) {
+  transform: translate(5.34em, 0);
+  animation-delay: 0.195s;
+}
+
+.loader-block:nth-child(4) {
+  transform: translate(0, 2.67em);
+  animation-delay: 0.325s;
+}
+
+.loader-block:nth-child(5) {
+  transform: translate(2.67em, 2.67em);
+  animation-delay: 0.13s;
+}
+
+.loader-block:nth-child(6) {
+  transform: translate(5.34em, 2.67em);
+  animation-delay: 0.455s;
+}
+
+.loader-block:nth-child(7) {
+  transform: translate(0, 5.34em);
+  animation-delay: 0.39s;
+}
+
+.loader-block:nth-child(8) {
+  transform: translate(2.67em, 5.34em);
+  animation-delay: 0.26s;
+}
+
+.loader-block:nth-child(9) {
+  transform: translate(5.34em, 5.34em);
+  animation-delay: 0s;
+}
+
+/* Animations */
+@keyframes pulse {
+  from, 40% { background: #fdfdfd; }
+  to { background: #dadada; }
+}
+
+@keyframes show {
+  from, 40% { opacity: 0; }
+  41%, to { opacity: 1; }
+}
+
+/* Page background */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(circle farthest-side, #333, #111);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="loader">
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+      <span class="loader-block"></span>
+  </div>
+
+</body>
+</html>
