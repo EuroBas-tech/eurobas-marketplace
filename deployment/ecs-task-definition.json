@@ -1,0 +1,57 @@
+{
+  "family": "production-eurobas-ecs-task-definition",
+  "taskRoleArn": "arn:aws:iam::961341543644:role/production-eurobas-ecs-task-iam-role",
+  "executionRoleArn": "arn:aws:iam::961341543644:role/production-eurobas-ecs-task-execution-role",
+  "networkMode": "bridge",
+  "compatibilities": [
+    "EC2",
+    "EXTERNAL"
+  ],
+  "containerDefinitions": [
+    {
+      "name": "eurobas-application",
+      "image": "961341543644.dkr.ecr.eu-central-1.amazonaws.com/production-eurobas-repository:latest",
+      "essential": true,
+      "cpu": 100,
+      "memory": 256,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/aws/ecs/production-eurobas",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "volumesFrom": [],
+      "systemControls": []
+    }
+  ],
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    }
+  ]
+}
