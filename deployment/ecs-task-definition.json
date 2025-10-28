@@ -7,7 +7,6 @@
     "EC2",
     "EXTERNAL"
   ],
-  "enableExecuteCommand": true,
   "containerDefinitions": [
     {
       "name": "eurobas",
@@ -53,9 +52,6 @@
     },
     {
       "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "name": "ecs.capability.execute-command"
     }
   ]
 }
