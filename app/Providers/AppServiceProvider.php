@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\URL;
 
 ini_set('memory_limit',-1);
 ini_set('upload_max_filesize','180M');
@@ -59,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        URL::forceScheme('https');
 
         Config::set('addon_admin_routes',$this->get_addon_admin_routes());
         Config::set('get_payment_publish_status',$this->get_payment_publish_status());
@@ -183,8 +185,8 @@ class AppServiceProvider extends ServiceProvider
                 ]
             );
         });
-        
- 
+
+
     if (!session()->has('country_shipping')) {
             session(['country_shipping' => 'All']);
         }
