@@ -32,8 +32,8 @@
       },
       "mountPoints": [
         {
-          "sourceVolume": "ebs-data",
-          "containerPath": "/data"
+          "sourceVolume": "root-volume",
+          "containerPath": "/mnt/data"
         }
       ],
       "volumesFrom": [],
@@ -42,9 +42,9 @@
   ],
   "volumes": [
     {
-      "name": "ebs-data",
+      "name": "root-volume",
       "host": {
-        "sourcePath": "/mnt/data"
+        "sourcePath": "/"
       }
     }
   ],
