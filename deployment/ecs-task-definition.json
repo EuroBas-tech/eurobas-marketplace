@@ -30,12 +30,24 @@
           "awslogs-stream-prefix": "ecs"
         }
       },
-      "mountPoints": [],
+      "mountPoints": [
+        {
+          "sourceVolume": "ebs-data",
+          "containerPath": "/data"
+        }
+      ],
       "volumesFrom": [],
       "systemControls": []
     }
   ],
-  "volumes": [],
+  "volumes": [
+    {
+      "name": "ebs-data",
+      "host": {
+        "sourcePath": "/mnt/data"
+      }
+    }
+  ],
   "placementConstraints": [],
   "requiresAttributes": [
     {
