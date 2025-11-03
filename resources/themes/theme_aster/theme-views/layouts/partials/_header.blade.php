@@ -617,7 +617,7 @@
         <div class="container">
             <div class="d-flex align-items-center w-100 justify-content-between gap-2">
                 <a class="logo" href="{{route('home')}}">
-                    <img src="{{asset("storage/app/public/company")."/".$web_config['web_logo']->value}}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
+                    <img src="{{cloudfront("company")."/".$web_config['web_logo']->value}}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
                 </a>
 
                 <div class="desktop-search-container">
@@ -859,7 +859,7 @@
                     <div class="nav-wrapper">
                         <div class="d-xl-none">
                             <a class="logo" href="{{route('home')}}">
-                                <img width="" src="{{asset("storage/app/public/company/dark-logo.png")}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
+                                <img width="" src="{{cloudfront("company/dark-logo.png")}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
                             </a>
                         </div>
 

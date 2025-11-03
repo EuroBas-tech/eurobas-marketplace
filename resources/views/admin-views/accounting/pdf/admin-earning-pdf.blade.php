@@ -255,7 +255,7 @@
                             {{translate('admin_earning_pdf')}}
                         </th>
                         <th class="p-0 text-right">
-                            <img class="logo" src="{{asset("storage/app/public/company/dark-logo.png")}}" alt="">
+                            <img class="logo" src="{{cloudfront("company/dark-logo.png")}}" alt="">
                         </th>
                     </tr>
                 </table>
@@ -273,7 +273,7 @@
             </td>
         </tr>
     </table>
-    
+
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -300,18 +300,18 @@
         @endforeach
       </tbody>
     </table>
-        
-                                
 
-                        
 
-                        
 
-                        
 
-                        
 
-        
+
+
+
+
+
+
+
     <br><br><br><br><br><br><br><br>
     <table class="">
         <tr>

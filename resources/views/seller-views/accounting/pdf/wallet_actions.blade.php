@@ -255,7 +255,7 @@
                             {{translate('seller_wallet_actions')}}
                         </th>
                         <th class="p-0 text-right">
-                            <img class="logo" src="{{asset("storage/app/public/company/dark-logo.png")}}" alt="">
+                            <img class="logo" src="{{cloudfront("company/dark-logo.png")}}" alt="">
                         </th>
                     </tr>
                 </table>
@@ -375,7 +375,7 @@
                                                 {{ $action['date'] }}
                                             </td>
                                         </tr>
-                                    @endforeach                                
+                                    @endforeach
                                 </table>
                             </td>
                         </tr>
@@ -412,7 +412,7 @@
                                                 {{ $action['date'] }}
                                             </td>
                                         </tr>
-                                    @endforeach                                
+                                    @endforeach
                                 </table>
                             </td>
                         </tr>

@@ -255,7 +255,7 @@
                             {{translate('order_Transaction_Statement')}}
                         </th>
                         <th class="p-0 text-right">
-                            <img class="logo" src="{{asset("storage/app/public/company/dark-logo.png")}}" alt="">
+                            <img class="logo" src="{{cloudfront("company/dark-logo.png")}}" alt="">
                         </th>
                     </tr>
                 </table>

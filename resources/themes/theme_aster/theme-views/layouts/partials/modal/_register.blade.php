@@ -18,7 +18,7 @@
                 <div class="mb-4 text-center">
                     <img
                         width="200"
-                        src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}"
+                        src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}"
                         onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'"
                         alt=""
                         class="dark-support"

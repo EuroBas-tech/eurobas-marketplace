@@ -255,7 +255,7 @@
                             {{translate('admin_wallet')}}
                         </th>
                         <th class="p-0 text-right">
-                            <img class="logo" src="{{asset("storage/app/public/company/dark-logo.png")}}" alt="">
+                            <img class="logo" src="{{cloudfront("company/dark-logo.png")}}" alt="">
                         </th>
                     </tr>
                 </table>
@@ -291,7 +291,7 @@
                                         {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($data['commission_earned'])) }}
                                     </td>
                                 </tr>
-                            
+
                                 <tr>
                                     <th class="bold black p-0 text-left">{{translate('collected_cash')}} </th>
                                     <td class="p-0" style="padding: 3px 0;">:
