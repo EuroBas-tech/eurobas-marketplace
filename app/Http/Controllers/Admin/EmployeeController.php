@@ -151,8 +151,8 @@ class EmployeeController extends Controller
         if (!empty($request->file('identity_image'))) {
             if($e['identity_image']){
                 foreach (json_decode($e['identity_image'], true) as $img) {
-                    if (Storage::disk('public')->exists('admin/' . $img)) {
-                        Storage::disk('public')->delete('admin/' . $img);
+                    if (Storage::disk()->exists('admin/' . $img)) {
+                        Storage::disk()->delete('admin/' . $img);
                     }
                 }
             }

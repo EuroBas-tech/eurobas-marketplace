@@ -42,7 +42,7 @@ class FileManagerController extends Controller
 
             foreach ($images as $image) {
                 $name = $image->getClientOriginalName();
-                Storage::disk('local')->put($request->path . '/' . $name, file_get_contents($image));
+                Storage::disk()->put($request->path . '/' . $name, file_get_contents($image));
             }
         }
         if ($request->hasfile('file')) {
@@ -88,7 +88,7 @@ class FileManagerController extends Controller
 
     public function destroy($file_path)
     {
-        Storage::disk('local')->delete(base64_decode($file_path));
+        Storage::disk()->delete(base64_decode($file_path));
         Toastr::success(trans('messages.image_deleted_successfully'));
         return back()->with('success', trans('messages.image_deleted_successfully'));
     }

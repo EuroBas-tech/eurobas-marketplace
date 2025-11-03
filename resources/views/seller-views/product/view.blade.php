@@ -34,7 +34,7 @@
                 <div class="d-flex flex-wrap flex-lg-nowrap gap-3 justify-content-between">
                     <div class="media flex-wrap flex-sm-nowrap gap-3">
                         <a class="aspect-1 float-left overflow-hidden"
-                            @if(Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
+                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
                                 href="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}"
                             @else
                                 href="{{asset("public/assets/front-end/img/image-place-holder.png")}}"

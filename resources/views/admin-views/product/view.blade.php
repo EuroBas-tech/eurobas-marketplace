@@ -35,7 +35,7 @@
                     <div class="media flex-wrap flex-sm-nowrap gap-3">
                         <a class="aspect-1 float-left overflow-hidden"
 
-                            @if(Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
+                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
                                 href="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}"
                             @else
                                 href="{{asset("public/assets/front-end/img/image-place-holder.png")}}"
@@ -51,7 +51,7 @@
                                 @if ($product->product_type == 'physical' && $product->color_image)
                                     @foreach (json_decode($product->color_image) as $key => $photo)
                                         <a class="aspect-1 float-left overflow-hidden"
-                                            @if(Storage::disk()->exists("product/".$photo->image_name))
+                                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("product/".$photo->image_name))
                                                 href="{{cloudfront("product/$photo->image_name")}}"
                                             @else
                                                 href="{{cloudfront("public/assets/front-end/img/image-place-holder.png")}}"
@@ -185,7 +185,7 @@
                                         {{ translate('view_live') }}
                                     </a>
                                 @endif
-                                @if($product->digital_file_ready && Storage::disk()->exists('product/digital-product/'.$product->digital_file_ready))
+                                @if($product->digital_file_ready && \Illuminate\Support\Facades\Storage::disk()->exists('product/digital-product/'.$product->digital_file_ready))
                                 <a href="{{ cloudfront('product/digital-product/'.$product->digital_file_ready) }}" class="btn btn-outline--primary mr-1" title="Download" download>
                                     <i class="tio-download"></i>
                                     {{ translate('download') }}

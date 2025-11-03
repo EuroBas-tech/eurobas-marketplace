@@ -100,7 +100,7 @@
                                     <div>
                                         <center class="mx-auto">
                                             <div class="uploadDnD">
-                                                <div class="form-group inputDnD input_image input_image_edit" style="background-image: url('{{cloudfront('banner')}}/{{$banner['photo']}}')" data-title="{{ Storage::disk()->exists('banner/'.$banner['photo']) ? '': 'Drag and drop file or Browse file'}}">
+                                                <div class="form-group inputDnD input_image input_image_edit" style="background-image: url('{{cloudfront('banner')}}/{{$banner['photo']}}')" data-title="{{ \Illuminate\Support\Facades\Storage::disk()->exists('banner/'.$banner['photo']) ? '': 'Drag and drop file or Browse file'}}">
                                                     <input type="file" name="image" class="form-control-file text--primary font-weight-bold" onchange="readUrl(this)"  accept=".jpg, .png, .jpeg, .gif, .bmp, .webp |image/*">
                                                 </div>
                                             </div>

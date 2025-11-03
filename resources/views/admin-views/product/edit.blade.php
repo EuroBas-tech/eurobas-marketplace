@@ -574,7 +574,7 @@
                                             onchange="uploadColorImage(this)">
 
                                         <span class="delete_file_input btn btn-outline-danger btn-sm square-btn"
-                                        style="display: @if (Storage::disk()->exists('product/thumbnail/'. $product->thumbnail)) flex @else none @endif">
+                                        style="display: @if (\Illuminate\Support\Facades\Storage::disk()->exists('product/thumbnail/'. $product->thumbnail)) flex @else none @endif">
                                             <i class="tio-delete"></i>
                                         </span>
 
@@ -827,7 +827,7 @@
                                                 accept=".jpg, .webp, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" onchange="uploadColorImage(this)">
 
                                             <span class="delete_file_input btn btn-outline-danger btn-sm square-btn"
-                                            style="display: @if (Storage::disk()->exists('product/meta/'. $product['meta_image'])) flex @else none @endif">
+                                            style="display: @if (\Illuminate\Support\Facades\Storage::disk()->exists('product/meta/'. $product['meta_image'])) flex @else none @endif">
                                                 <i class="tio-delete"></i>
                                             </span>
 
