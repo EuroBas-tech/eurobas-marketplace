@@ -93,7 +93,7 @@
                                                         <select class="form-control" name="brand_id" id="brand">
                                                             <option value=""> -- {{ translate('choose_brand') }} -- </option>
                                                             @foreach($brands as $brand)
-                                                                <option {{ $brand['id'] == $ad['brand_id'] ? 'selected' : ''}} 
+                                                                <option {{ $brand['id'] == $ad['brand_id'] ? 'selected' : ''}}
                                                                 value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                             @endforeach
                                                             <option value="other" >{{ translate('other_brand') }}</option>
@@ -106,7 +106,7 @@
                                                         <select class="form-control" name="model_id" id="model">
                                                             <option value=""> -- {{ translate('choose_model') }} -- </option>
                                                             @foreach($models as $model)
-                                                                <option 
+                                                                <option
                                                                 data-brand-id="{{ $model->brand_id }}"
                                                                 data-category-id="{{ $model->category_id }}"
                                                                 {{ $model['id'] == $ad['model_id'] ? 'selected' : ''}}
@@ -131,7 +131,7 @@
                                                 <div class="col-xl-4 @if($ad->category->is_vehicle == 0) d-none @endif">
                                                     <div class="form-group">
                                                         <label for="year">{{translate('year')}}</label>
-                                                        <input type="number" min="1950" max="2025"  id="year" class="form-control" value="{{$ad->year}}" 
+                                                        <input type="number" min="1950" max="2025"  id="year" class="form-control" value="{{$ad->year}}"
                                                         name="year" placeholder="{{translate('year')}}">
                                                     </div>
                                                 </div>
@@ -198,7 +198,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div id="cylinders-box" class="col-xl-4 mb-3 @if($ad->category->is_vehicle == 0) d-none @endif">
                                                     <div class="form-group">
                                                         <label for="engine-cylinders">{{translate('cylinders')}}</label>
@@ -227,7 +227,7 @@
                                                             <option {{ $ad['transmission_type'] == 'manually' ? 'selected' : ''}} value="manually">{{translate('manually')}}</option>
                                                         </select>
                                                     </div>
-                                                </div>                                               
+                                                </div>
                                                 <div  id="power-box" class="col-xl-4 mb-3 @if($ad->category->is_vehicle == 0) d-none @endif">
                                                     <div class="form-group">
                                                         <label for="engine-power">{{translate('power')}}</label>
@@ -272,13 +272,13 @@
 
                                                         <div class="d-flex flex-column gap-3">
                                                             <div class="upload-file" style="width: min-content;">
-                                                                <input 
-                                                                    type="file" 
-                                                                    class="upload-file__input thumbnail"  
-                                                                    name="image" 
+                                                                <input
+                                                                    type="file"
+                                                                    class="upload-file__input thumbnail"
+                                                                    name="image"
                                                                     accept="image/*"
                                                                     aria-required="true"
-                                                                    data-old="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}" {{-- this is key for JS to read the old image --}}
+                                                                    data-old="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" {{-- this is key for JS to read the old image --}}
                                                                 >
 
                                                                 <div class="upload-file__img">
@@ -288,10 +288,10 @@
                                                                             <div class="fs-12 text-muted">{{ translate('ad_image') }}</div>
                                                                         </div>
                                                                     </div>
-                                                                    <img 
-                                                                        src="#" 
-                                                                        class="dark-support img-fit-contain border" 
-                                                                        alt="ad Image" 
+                                                                    <img
+                                                                        src="#"
+                                                                        class="dark-support img-fit-contain border"
+                                                                        alt="ad Image"
                                                                         hidden
                                                                     >
                                                                 </div>
@@ -306,9 +306,9 @@
                                                             @foreach(json_decode($ad->images) as $image)
                                                                 <div class="upload-file">
                                                                     <input type="hidden" name="old_images[]" value="{{$image}}">
-                                                                    <input 
-                                                                        type="file" 
-                                                                        class="upload-file__input ad-images"  
+                                                                    <input
+                                                                        type="file"
+                                                                        class="upload-file__input ad-images"
                                                                         name="images[]"
                                                                         multiple
                                                                         data-old="{{ env_asset('storage/ad/'.$image)}}"
@@ -331,12 +331,12 @@
                                                                 </div>
                                                             @endforeach
                                                             <div class="upload-file" style="width: min-content;">
-                                                                <input 
-                                                                    type="file" 
-                                                                    class="upload-file__input"  
+                                                                <input
+                                                                    type="file"
+                                                                    class="upload-file__input"
                                                                     onchange="addMoreImage(this, '#additional_Image_Section')"
-                                                                    name="images[]" 
-                                                                    aria-required="true" 
+                                                                    name="images[]"
+                                                                    aria-required="true"
                                                                     accept="image/*">
 
                                                                 <div class="upload-file__img">
@@ -386,8 +386,8 @@
                                                 </div>
                                                 <div id="starting-price-box" class="col-sm-12 @if($ad->price_type != 'auction') d-none @endif">
                                                     <div class="form-group mb-2">
-                                                        <input type="number" id="starting-price" class="form-control" 
-                                                        value="{{$ad['starting_price']}}" step="0.01" min="0" name="starting_price" 
+                                                        <input type="number" id="starting-price" class="form-control"
+                                                        value="{{$ad['starting_price']}}" step="0.01" min="0" name="starting_price"
                                                         placeholder="{{translate('starting_price')}}">
                                                     </div>
                                                 </div>
@@ -404,7 +404,7 @@
                                                     name="allow_offers" type="checkbox" role="switch" id="allow-offers">
                                                 </div>
                                                 <div class="form-group @if($ad['allow_offers'] == 0) d-none @endif" id="first-price">
-                                                    <input type="number" step="0.01" min="0" id="first-price-input" class="form-control" value="{{$ad['first_price']}}" 
+                                                    <input type="number" step="0.01" min="0" id="first-price-input" class="form-control" value="{{$ad['first_price']}}"
                                                     name="first_price" placeholder="{{translate('first_price')}}">
                                                 </div>
                                             </div>
@@ -417,7 +417,7 @@
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="form-group">
                                                         <label for="name">{{translate('name_on_ad')}}</label>
-                                                        <input disabled type="text" id="name" class="form-control" 
+                                                        <input disabled type="text" id="name" class="form-control"
                                                         value="{{ auth('customer')->user()->f_name.' '.auth('customer')->user()->l_name }}" name="name" placeholder="{{translate('name')}}">
                                                     </div>
                                                 </div>
@@ -430,7 +430,7 @@
                                                 </div>
                                                 <div id="email-address" class="col-sm-12 mb-3 @if($ad['show_email_address'] == 0) d-none @endif">
                                                     <div class="form-group">
-                                                        <input disabled type="text" id="email_address" class="form-control" 
+                                                        <input disabled type="text" id="email_address" class="form-control"
                                                         value="{{ auth('customer')->user()->email }}" name="email_address" placeholder="{{translate('email_address')}}">
                                                     </div>
                                                 </div>
@@ -446,10 +446,10 @@
                                                         <div class="d-flex align-items-center gap-2 mb-2" >
                                                             <img width="28px" src="https://static.vecteezy.com/system/resources/previews/016/716/480/non_2x/whatsapp-icon-free-png.png" alt="">
                                                             <label class="m-0 fs-13" for="whatsapp_availability">{{translate('whatsApp_available')}} ?</label>
-                                                            <input class="form-check-input m-0" name="whatsapp_availability" 
+                                                            <input class="form-check-input m-0" name="whatsapp_availability"
                                                             {{ $ad['whatsapp_availability'] == 1 ? 'checked' : '' }} type="checkbox" id="whatsapp_availability">
                                                         </div>
-                                                        
+
                                                         <div class="form-group" id="phone_number">
                                                             <div class="input-group">
 
@@ -535,16 +535,16 @@
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="form-group">
                                                         <label for="city">{{translate("city")}}</label>
-                                                        <input type="text" id="city" class="form-control" 
-                                                        value="{{$ad['city']}}" name="city" 
+                                                        <input type="text" id="city" class="form-control"
+                                                        value="{{$ad['city']}}" name="city"
                                                         placeholder="{{translate('city')}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="form-group">
                                                         <label for="postal_code">{{translate("postal_code")}} ({{ translate('Optional') }})</label>
-                                                        <input type="text" id="postal_code" class="form-control" 
-                                                        value="{{$ad['postal_code']}}" name="postal_code" 
+                                                        <input type="text" id="postal_code" class="form-control"
+                                                        value="{{$ad['postal_code']}}" name="postal_code"
                                                         placeholder="{{translate('postal_code')}}">
                                                     </div>
                                                 </div>
@@ -555,7 +555,7 @@
                                             <div class="mb-2" >
                                                 <h2>{{ translate('location_informations') }}</h2>
                                             </div>
-                                            
+
                                             <div class="row">
                                                 <div class="col-xl-4">
                                                     <div class="form-group mb-3">
@@ -571,16 +571,16 @@
                                                 <div class="col-xl-4">
                                                     <div class="form-group">
                                                         <label for="address-city">{{translate("city")}}</label>
-                                                        <input type="text" id="address-city" class="form-control" 
-                                                        value="{{$ad['city']}}" name="city" 
+                                                        <input type="text" id="address-city" class="form-control"
+                                                        value="{{$ad['city']}}" name="city"
                                                         placeholder="{{translate('city')}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-4">
                                                     <div class="form-group">
                                                         <label for="postal-code">{{translate("postal_code")}} ({{ translate('Optional') }})</label>
-                                                        <input type="text" id="postal-code" class="form-control" 
-                                                        value="{{$ad['postal_code']}}" name="postal_code" 
+                                                        <input type="text" id="postal-code" class="form-control"
+                                                        value="{{$ad['postal_code']}}" name="postal_code"
                                                         placeholder="{{translate('postal_code')}}">
                                                     </div>
                                                 </div>
@@ -716,9 +716,9 @@
                                                     <div class="col-sm-3 mb-3">
                                                         <div class="form-group d-flex gap-1 align-items-center">
                                                             <input type="hidden" name="options[{{ $option }}]" value="false">
-                                                            <input 
-                                                            type="checkbox" 
-                                                            id="{{ $option }}" 
+                                                            <input
+                                                            type="checkbox"
+                                                            id="{{ $option }}"
                                                             {{ filter_var($old_options[$option] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'checked' : '' }}
                                                             name="options[{{ $option }}]" value="true">
                                                             <label class="m-0" value="false" for="{{$option}}">{{translate($option)}}</label>
@@ -802,23 +802,23 @@
 
             const allowOffers = document.getElementById('allow-offers');
             const firstPrice = document.getElementById('first-price');
-            
+
             const categorySelect = document.getElementById('category');
             const categoryName = document.getElementById('dynamic-cat-name');
 
             const emailAddressDiv = document.getElementById('email-address');
             const phoneNumberDiv = document.getElementById('phone-number');
-            
+
             // Set initial state of phone number input fields
             const phoneInput = document.querySelector('input[name="contact_phone_number"]');
             const phoneCodeSelect = document.querySelector('select[name="phone_code"]');
-            
+
             // Initially disable the phone fields if checkbox is not checked
             if (!showPhoneCheckbox.checked) {
                 phoneInput.disabled = true;
                 phoneCodeSelect.disabled = true;
             }
-            
+
             // Add event listener to the checkbox
             showPhoneCheckbox.addEventListener('change', function() {
                 if (this.checked) {
@@ -848,9 +848,9 @@
 
             // Add event listener to the checkbox
             allowOffers.addEventListener('change', function() {
-                
+
                 document.getElementById('first-price-input').value = '';
-                
+
                 if (this.checked) {
                     // If checkbox is checked, remove d-none class
                     firstPrice.classList.remove('d-none');
@@ -860,7 +860,7 @@
                     firstPrice.classList.add('d-none');
                 }
             });
-            
+
             // Add event listener to the checkbox
             categorySelect.addEventListener('change', function() {
                 categoryName.innerHTML = this.options[this.selectedIndex].text;
@@ -873,7 +873,7 @@
             const priceBox = document.getElementById('price-box');
             const startingPriceBox = document.getElementById('starting-price-box');
             const offersBox = document.getElementById('offers-box');
-            
+
             function togglePriceFields() {
                 const selectedValue = purchaseTypeSelect.value;
 
@@ -889,7 +889,7 @@
 
                     if (selectedValue === 'asking_price') {
                         offersBox.classList.remove('d-none');
-                    } 
+                    }
                 } else if (selectedValue === 'auction') {
                     startingPriceBox.classList.remove('d-none');
                     priceBox.classList.add('d-none');
@@ -926,17 +926,17 @@
                 const reader = new FileReader();
                 const previewImg = input.closest('.upload-file').querySelector('img');
                 const tempBox = input.closest('.upload-file').querySelector('.temp-img-box');
-            
+
                 reader.onload = function (e) {
                     previewImg.src = e.target.result;
                     previewImg.hidden = false;
                     if (tempBox) tempBox.style.display = 'none';
                 };
-            
+
                 console.log(images_box.children.length);
-            
+
                 reader.readAsDataURL(files[0]);
-            
+
                 // Check if this is the last .upload-file inside the target section
                 const $fileInputs = document.querySelectorAll(`${targetSection} input[type='file']`);
                 const isLastInput = input === $fileInputs[$fileInputs.length - 1];
@@ -953,13 +953,13 @@
 
                     const newInputHTML = `
                         <div class="upload-file position-relative">
-                            <input 
-                                type="file" 
-                                class="upload-file__input"  
+                            <input
+                                type="file"
+                                class="upload-file__input"
                                 onchange="addMoreImage(this, '${targetSection}')"
-                                name="images[]" 
-                                multiple 
-                                aria-required="true" 
+                                name="images[]"
+                                multiple
+                                aria-required="true"
                                 accept="image/*">
 
                             <div class="upload-file__img">
@@ -976,7 +976,7 @@
 
                     // Append remove button to second-to-last .upload-file
                     const fileWrappers = document.querySelectorAll(`${targetSection} .upload-file`);
-                    
+
                     if (fileWrappers.length > 0) {
                         const secondLastWrapper = fileWrappers[fileWrappers.length - 1];
                         secondLastWrapper.insertAdjacentHTML('beforeend', removeBtn);
@@ -986,7 +986,7 @@
                     const container = document.querySelector(targetSection);
                     container.insertAdjacentHTML('beforeend', newInputHTML);
                 }
-                
+
             } else {
                 toastr.error("{{translate('maximum_10_images_allowed')}}");
                 // Reset the input value to clear the selected file
@@ -1043,7 +1043,7 @@
 
                 // 1. Get the form element
                 let form = $('#ads-update-form')[0];
-                
+
                 // 2. Create FormData object
                 let formData = new FormData(form);
 
@@ -1063,7 +1063,7 @@
 
                         if (response.success) {
                             toastr.success(response.message);
-                            
+
                             // Optional: Redirect after success
                             if (response.redirect_url) {
                                 setTimeout(function() {
@@ -1074,7 +1074,7 @@
                             // Handle unexpected success=false responses
                             toastr.warning(response.message || 'Operation completed with warnings');
                         }
-                    },                    
+                    },
                     error: function(xhr) {
 
                         // Restore button
@@ -1105,7 +1105,7 @@
 
                 });
             }
-            
+
             // You need to call it, for example on a button click:
             $('#add-button').on('click', function() {
                 storeAd();
@@ -1135,7 +1135,7 @@
 
             // Store all model options
             const allModelOptions = $('#model option').clone();
-            
+
             // Create the "Other" options once with value="other"
             const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
             const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
@@ -1147,7 +1147,7 @@
                 if ($brandSelect.find('option[value="other"]').length === 0) {
                     $brandSelect.append(otherBrandOption);
                 }
-                
+
                 // Add "Other Model" if it doesn't exist
                 if ($modelSelect.find('option[value="other"]').length === 0) {
                     $modelSelect.append(otherModelOption);
@@ -1160,7 +1160,7 @@
 
                 // Clear models but keep the "Other Model" and default option
                 $modelSelect.find('option').not('[value="other"], [value=""]').remove();
-                
+
                 // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
@@ -1178,9 +1178,9 @@
                 if ($modelSelect.find('option[value="other"]').length > 1) {
                     $modelSelect.find('option[value="other"]').not(':last').remove();
                 }
-                
+
                 $modelSelect.val(null).trigger('change');
-                
+
                 // Ensure "Other Brand" exists
                 addPersistentOptions();
             }
@@ -1315,7 +1315,7 @@
                     }, 0);
                 });
             });
-                
+
         });
 
     </script>
@@ -1324,7 +1324,7 @@
         function initAutocomplete() {
             // Europe center coordinates (initial fallback)
             let myLatLng = { lat: 50.1109, lng: 8.6821 };
-            
+
             // Initialize the map focused on Europe initially
             const map = new google.maps.Map(document.getElementById("location_map_canvas"), {
                 center: myLatLng,
@@ -1364,7 +1364,7 @@
                         map: map,
                         draggable: true
                     });
-                    
+
                     // Add drag event listener when marker is created
                     google.maps.event.addListener(marker, 'dragend', function(event) {
                         updateFormFields(event.latLng.lat(), event.latLng.lng());
@@ -1377,9 +1377,9 @@
                 const country = document.getElementById('country').value;
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
-                
+
                 let searchQuery = '';
-                
+
                 // Build search query based on available data (prioritize more specific)
                 if (city && postalCode) {
                     searchQuery = `${postalCode}, ${city}, ${country}`;
@@ -1388,7 +1388,7 @@
                 } else if (country) {
                     searchQuery = country;
                 }
-                
+
                 if (searchQuery) {
                     geocodeAddress(searchQuery);
                 }
@@ -1401,11 +1401,11 @@
                         const location = results[0].geometry.location;
                         map.setCenter(location);
                         createOrUpdateMarker(location);
-                        
+
                         // Adjust zoom based on how specific the address is
                         const city = document.getElementById('address-city').value;
                         const postalCode = document.getElementById('postal-code').value;
-                        
+
                         if (city && postalCode) {
                             map.setZoom(14); // Postal code level
                         } else if (city) {
@@ -1426,28 +1426,28 @@
             // Function to update form fields based on coordinates
             function updateFormFields(lat, lng) {
                 const latlng = new google.maps.LatLng(lat, lng);
-                
+
                 geocoder.geocode({ 'location': latlng }, function(results, status) {
                     if (status === 'OK' && results[0]) {
                         const addressComponents = results[0].address_components;
-                        
+
                         // Extract country, city, and postal code
                         let country = '';
                         let city = '';
                         let postalCode = '';
-                        
+
                         // Parse address components
                         for (let component of addressComponents) {
                             const types = component.types;
-                            
+
                             if (types.includes('country')) {
                                 country = component.long_name;
                             }
-                            
+
                             if (types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
-                            
+
                             if (types.includes('locality')) {
                                 city = component.long_name;
                             } else if (types.includes('sublocality_level_1') && !city) {
@@ -1458,12 +1458,12 @@
                                 city = component.long_name;
                             }
                         }
-                        
+
                         // Clean city name
                         if (city) {
                             city = city.replace(/^(Greater|Metropolitan|City of|Municipality of|Borough of)\s+/i, '');
                         }
-                        
+
                         // Update country dropdown
                         const countrySelect = document.getElementById('country');
                         for (let option of countrySelect.options) {
@@ -1472,12 +1472,12 @@
                                 break;
                             }
                         }
-                        
+
                         // Update city field
                         if (city) {
                             document.getElementById('address-city').value = city;
                         }
-                        
+
                         // Update postal code field
                         if (postalCode) {
                             document.getElementById('postal-code').value = postalCode;
@@ -1489,36 +1489,36 @@
             // NEW FEATURE: GPS Location Detection Function
             function findUserLocation() {
                 const findLocationBtn = document.getElementById('find_location');
-                
+
                 // Check if geolocation is supported
                 if (!navigator.geolocation) {
                     alert('Geolocation is not supported by this browser.');
                     return;
                 }
-                
+
                 // Disable button and show loading state
                 if (findLocationBtn) {
                     findLocationBtn.disabled = true;
                     findLocationBtn.innerHTML = 'Finding Location...';
                 }
-                
+
                 // Get current position
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         const userLocation = new google.maps.LatLng(lat, lng);
-                        
+
                         // Center map on user location
                         map.setCenter(userLocation);
                         map.setZoom(14); // Set appropriate zoom level for user location
-                        
+
                         // Create or update marker at user location
                         createOrUpdateMarker(userLocation);
-                        
+
                         // Update form fields with user location data
                         updateFormFields(lat, lng);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -1527,7 +1527,7 @@
                     },
                     function(error) {
                         let errorMessage = 'Unable to retrieve your location. ';
-                        
+
                         switch(error.code) {
                             case error.PERMISSION_DENIED:
                                 errorMessage += 'Location access denied by user.';
@@ -1542,9 +1542,9 @@
                                 errorMessage += 'An unknown error occurred.';
                                 break;
                         }
-                        
+
                         alert(errorMessage);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -1572,31 +1572,31 @@
             if (input) {
                 const searchBox = new google.maps.places.SearchBox(input);
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-                
+
                 map.addListener("bounds_changed", () => {
                     searchBox.setBounds(map.getBounds());
                 });
-                
+
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
-                    
+
                     if (places.length == 0) return;
-                    
+
                     const bounds = new google.maps.LatLngBounds();
                     places.forEach((place) => {
                         if (!place.geometry) return;
-                        
+
                         createOrUpdateMarker(place.geometry.location);
                         map.setCenter(place.geometry.location);
                         updateFormFields(place.geometry.location.lat(), place.geometry.location.lng());
-                        
+
                         if (place.geometry.viewport) {
                             bounds.union(place.geometry.viewport);
                         } else {
                             bounds.extend(place.geometry.location);
                         }
                     });
-                    
+
                     map.fitBounds(bounds);
                 });
             }
@@ -1606,7 +1606,7 @@
                 const country = document.getElementById('country').value;
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
-                
+
                 // Check if we have existing data to focus on
                 if (country || city || postalCode) {
                     focusOnLocation();
@@ -1615,7 +1615,7 @@
 
             // Define event handlers with debouncing
             const debouncedFocus = debounce(focusOnLocation, 500);
-            
+
             // Country change handler
             document.getElementById('country').addEventListener('change', function() {
                 if (this.value) {
@@ -1660,7 +1660,7 @@
         });
     </script>
 
-    <script defer async src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" ></script>    
+    <script defer async src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" ></script>
 @endpush
 
 

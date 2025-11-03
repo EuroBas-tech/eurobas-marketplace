@@ -123,7 +123,7 @@
                                                                             <div>
                                                                                 <a href="{{route('ads-show',$ad->slug)}}">
                                                                                     <img class="rounded chat-img"
-                                                                                    src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                                                                                    src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                                                                                     onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'"
                                                                                     alt="ad_thumbnail">
                                                                                 </a>
@@ -153,7 +153,7 @@
                                                                             <div>
                                                                                 <a href="{{route('ads-show',$ad->slug)}}">
                                                                                     <img class="rounded chat-img"
-                                                                                    src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                                                                                    src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                                                                                     onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'"
                                                                                     alt="ad_thumbnail">
                                                                                 </a>

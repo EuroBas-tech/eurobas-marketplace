@@ -9,7 +9,7 @@
                             <div class="avatar border rounded" style="--size: 5rem">
                                 <a href="{{route('ads-show', $ad->slug)}}">
                                     <img
-                                    src="{{ env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                                    src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                     class="img-fit dark-support rounded aspect-1" alt="">
                                 </a>
@@ -82,7 +82,7 @@
                 <div class="avatar border rounded" style="--size: 5.75rem">
                     <a href="{{route('ads-show', $ad->slug)}}">
                         <img style="block-size: 5rem;"
-                            src="{{ env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                            src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                             class="dark-support rounded" alt="ad-image">
                     </a>

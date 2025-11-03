@@ -31,7 +31,7 @@
                         </h4>
                     </div>
                     <div class="d-flex align-items-center gap-2 mb-3" >
-                        <h2 class="" >{{translate('reported_ad')}} : </h4> 
+                        <h2 class="" >{{translate('reported_ad')}} : </h4>
                         <h4 class="fw-lighter" >
                             <a href="{{route('ads-show', $report->ad->slug)}}">{{$report->ad->title}}</a>
                         </h4>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 text-end">
-                    <img class="rounded img-fit" width="200px" height="200px" src="{{env_asset('storage/ad/thumbnail/'.$report->ad->thumbnail)}}" alt="ad_thumbnail">
+                    <img class="rounded img-fit" width="200px" height="200px" src="{{cloudfront('ad/thumbnail/'.$report->ad->thumbnail)}}" alt="ad_thumbnail">
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
                     {{translate('delete')}}
                 </a>
                 <form action="{{route('admin.report.delete')}}" method="POST" id="report-{{$report['id']}}">
-                    @csrf   
+                    @csrf
                     @method('delete')
                     <input type="hidden" name="id" value="{{$report['id']}}" >
                 </form>

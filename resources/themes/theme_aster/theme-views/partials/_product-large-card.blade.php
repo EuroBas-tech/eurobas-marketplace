@@ -21,25 +21,25 @@
         background-color: #ff0018;
         animation: urgentDance 5s infinite;
         clip-path: polygon(
-            0% 0%, 
-            95% 0%, 
-            100% 15%, 
-            98% 25%, 
-            100% 35%, 
-            97% 45%, 
-            100% 55%, 
-            96% 65%, 
-            100% 75%, 
-            95% 85%, 
-            100% 100%, 
-            5% 100%, 
-            0% 85%, 
-            2% 75%, 
-            0% 65%, 
-            3% 55%, 
-            0% 45%, 
-            4% 35%, 
-            0% 25%, 
+            0% 0%,
+            95% 0%,
+            100% 15%,
+            98% 25%,
+            100% 35%,
+            97% 45%,
+            100% 55%,
+            96% 65%,
+            100% 75%,
+            95% 85%,
+            100% 100%,
+            5% 100%,
+            0% 85%,
+            2% 75%,
+            0% 65%,
+            3% 55%,
+            0% 45%,
+            4% 35%,
+            0% 25%,
             2% 15%
         );
     }
@@ -113,13 +113,13 @@
             </a>
         </div>
         <div class="product__thumbnail position-relative">
-            <img src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+            <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
             class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2" alt="">
             @if($ad->has_urgent_sale_sticker == 1)
-                <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"                 
-                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">                 
-                    {{translate('urgent_sale')}}                  
+                <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
+                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">
+                    {{translate('urgent_sale')}}
                 </span>
             @endif
         </div>
@@ -199,25 +199,25 @@
         background-color: #ff0018;
         animation: urgentDance 5s infinite;
         clip-path: polygon(
-            0% 0%, 
-            95% 0%, 
-            100% 15%, 
-            98% 25%, 
-            100% 35%, 
-            97% 45%, 
-            100% 55%, 
-            96% 65%, 
-            100% 75%, 
-            95% 85%, 
-            100% 100%, 
-            5% 100%, 
-            0% 85%, 
-            2% 75%, 
-            0% 65%, 
-            3% 55%, 
-            0% 45%, 
-            4% 35%, 
-            0% 25%, 
+            0% 0%,
+            95% 0%,
+            100% 15%,
+            98% 25%,
+            100% 35%,
+            97% 45%,
+            100% 55%,
+            96% 65%,
+            100% 75%,
+            95% 85%,
+            100% 100%,
+            5% 100%,
+            0% 85%,
+            2% 75%,
+            0% 65%,
+            3% 55%,
+            0% 45%,
+            4% 35%,
+            0% 25%,
             2% 15%
         );
     }
@@ -340,18 +340,18 @@
                 <!-- Skeleton placeholder -->
                 <div class="product-image-skeleton-placeholder custom-bottom-border-radius">
                 </div>
-                
+
                 <!-- Actual image -->
-                <img src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
-                class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2 product-image-skeleton-loaded" 
+                class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2 product-image-skeleton-loaded"
                 alt=""
                 onload="this.classList.add('product-skeleton-show'); document.getElementById('skeleton-wrapper-{{$ad->id}}').classList.add('product-skeleton-loaded-state');">
             </div>
             @if($ad->has_urgent_sale_sticker == 1)
-                <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"                 
-                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">                 
-                    {{translate('urgent_sale')}}                  
+                <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
+                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">
+                    {{translate('urgent_sale')}}
                 </span>
             @endif
         </div>

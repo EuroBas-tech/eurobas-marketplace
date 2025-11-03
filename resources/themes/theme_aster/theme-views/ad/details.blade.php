@@ -10,13 +10,13 @@
     <!-- Viewport-->
 
     @if($ad['meta_image'])
-        <meta property="og:image" content="{{env_asset("storage/ad/meta")}}/{{$ad->meta_image}}"/>
+        <meta property="og:image" content="{{cloudfront("ad/meta")}}/{{$ad->meta_image}}"/>
         <meta property="twitter:card"
-              content="{{env_asset("storage/ad/meta")}}/{{$ad->meta_image}}"/>
+              content="{{cloudfront("ad/meta")}}/{{$ad->meta_image}}"/>
     @else
-        <meta property="og:image" content="{{env_asset("storage/ad/thumbnail")}}/{{$ad->thumbnail}}"/>
+        <meta property="og:image" content="{{cloudfront("ad/thumbnail")}}/{{$ad->thumbnail}}"/>
         <meta property="twitter:card"
-              content="{{env_asset("storage/ad/thumbnail/")}}/{{$ad->thumbnail}}"/>
+              content="{{cloudfront("ad/thumbnail/")}}/{{$ad->thumbnail}}"/>
     @endif
 
     @if($ad['meta_title'])
@@ -320,16 +320,16 @@
                                                         @endif
                                                         <div class="swiper-slide image-slide position-relative w-100">
                                                             <div class="easyzoom easyzoom--overlay h-100 width-100-sm">
-                                                                <a class="w-100" href="{{env_asset("storage/ad/thumbnail/".$ad['thumbnail'])}}">
-                                                                    <img src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
+                                                                <a class="w-100" href="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}">
+                                                                    <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                 </a>
                                                             </div>
                                                         </div>
                                                         @foreach (json_decode($ad->images) as $key => $photo)
                                                             <div class="swiper-slide image-slide position-relative w-100">
                                                                 <div class="easyzoom easyzoom--overlay h-100 width-100-sm">
-                                                                    <a class="w-100" href="{{env_asset("storage/ad/".$photo)}}">
-                                                                        <img src="{{env_asset('storage/ad/'.$photo)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
+                                                                    <a class="w-100" href="{{cloudfront("ad/".$photo)}}">
+                                                                        <img src="{{cloudfront('ad/'.$photo)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -351,11 +351,11 @@
                                                                 </div>
                                                             @endif
                                                             <div class="swiper-slide position-relative aspect-1">
-                                                                <img src="{{env_asset("storage/ad/thumbnail/".$ad['thumbnail'])}}" class="dark-support rounded" alt="">
+                                                                <img src="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}" class="dark-support rounded" alt="">
                                                             </div>
                                                             @foreach (json_decode($ad->images) as $key => $photo)
                                                                 <div class="swiper-slide position-relative aspect-1">
-                                                                    <img src="{{env_asset("storage/ad/".$photo)}}" class="dark-support rounded" alt="">
+                                                                    <img src="{{cloudfront("ad/".$photo)}}" class="dark-support rounded" alt="">
                                                                 </div>
                                                             @endforeach
                                                         </div>
@@ -1911,7 +1911,7 @@
                                                         class="media align-items-centr gap-3 p-2">
                                                             <div class="avatar" style="--size: 5.375rem">
                                                                 <img
-                                                                    src="{{env_asset('storage/ad/thumbnail/'.$item->thumbnail)}}"
+                                                                    src="{{cloudfront('ad/thumbnail/'.$item->thumbnail)}}"
                                                                     alt=""
                                                                     class="img-fit dark-support rounded img-fluid overflow-hidden"
                                                                     onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'">

@@ -9,13 +9,13 @@
 
                 <div class="d-flex flex-column gap-3">
                     <div class="upload-file" style="width: min-content;">
-                        <input 
-                            type="file" 
-                            class="upload-file__input thumbnail"  
-                            name="image" 
+                        <input
+                            type="file"
+                            class="upload-file__input thumbnail"
+                            name="image"
                             accept="image/*"
                             aria-required="true"
-                            data-old="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}" {{-- this is key for JS to read the old image --}}
+                            data-old="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" {{-- this is key for JS to read the old image --}}
                         >
 
                         <div class="upload-file__img">
@@ -25,10 +25,10 @@
                                     <div class="fs-12 text-muted">{{ translate('ad_image') }}</div>
                                 </div>
                             </div>
-                            <img 
-                                src="#" 
-                                class="dark-support img-fit-contain border" 
-                                alt="ad Image" 
+                            <img
+                                src="#"
+                                class="dark-support img-fit-contain border"
+                                alt="ad Image"
                                 hidden
                             >
                         </div>
@@ -43,9 +43,9 @@
                     @foreach(json_decode($ad->images) as $image)
                         <div class="upload-file position-relative">
                             <input type="hidden" name="old_images[]" value="{{$image}}">
-                            <input 
-                                type="file" 
-                                class="upload-file__input ad-images"  
+                            <input
+                                type="file"
+                                class="upload-file__input ad-images"
                                 name="images[]"
                                 multiple
                                 data-old="{{ env_asset('storage/ad/'.$image)}}"
@@ -67,11 +67,11 @@
                         </div>
                     @endforeach
                     <div class="upload-file position-relative" style="width: min-content;">
-                        <input 
-                            type="file" 
-                            class="upload-file__input"  
+                        <input
+                            type="file"
+                            class="upload-file__input"
                             onchange="addMoreImage(this, '#additional_Image_Section')"
-                            name="images[]" 
+                            name="images[]"
                             aria-required="true"
                             multiple
                             accept="image/*">

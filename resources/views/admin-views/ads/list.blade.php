@@ -91,7 +91,7 @@
                                 <td class="mx-5" >
                                     <a href="{{route('admin.ad.view',[$ad['id']])}}"
                                         class="title-color hover-c1 d-flex align-items-center gap-10">
-                                        <img src="{{env_asset("storage/ad/thumbnail/".$ad['thumbnail'])}}"
+                                        <img src="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}"
                                         class="avatar rounded" alt="" width="40">
                                         {{$ad['title']}}
                                     </a>
@@ -130,7 +130,7 @@
                                         @endif
                                     </div>
                                     <form action="{{route('admin.ad.delete',[$ad['id']])}}" method="post" id="ad-{{$ad['id']}}">
-                                        @csrf   
+                                        @csrf
                                         @method('delete')
                                     </form>
                                 </td>

@@ -15,7 +15,7 @@
         </div>
 
         <div class="product__thumbnail">
-            <img src="{{ asset("storage/app/public/ad/thumbnail")}}/{{$ad->thumbnail }}"
+            <img src="{{ cloudfront("ad/thumbnail")}}/{{$ad->thumbnail }}"
                  onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
                  class="img-fit dark-support rounded" alt="">
         </div>

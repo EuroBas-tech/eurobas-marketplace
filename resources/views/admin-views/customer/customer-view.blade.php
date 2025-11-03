@@ -99,7 +99,7 @@
                                             <a href="{{route('ads-show', $ad->slug)}}" class="title-color hover-c1">{{$ad['title']}}</a>
                                         </td>
                                         <td>
-                                            <img width="80px" height="80px" class="object-fit-cover rounded" src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}" alt="ad_image">
+                                            <img width="80px" height="80px" class="object-fit-cover rounded" src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" alt="ad_image">
                                         </td>
                                         <td class="text-center" >
                                             @if($ad->sponsor->count() > 0)

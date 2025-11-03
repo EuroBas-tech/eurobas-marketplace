@@ -5,25 +5,25 @@
         background-color: #ff0018;
         animation: urgentDance 5s infinite;
         clip-path: polygon(
-            0% 0%, 
-            95% 0%, 
-            100% 15%, 
-            98% 25%, 
-            100% 35%, 
-            97% 45%, 
-            100% 55%, 
-            96% 65%, 
-            100% 75%, 
-            95% 85%, 
-            100% 100%, 
-            5% 100%, 
-            0% 85%, 
-            2% 75%, 
-            0% 65%, 
-            3% 55%, 
-            0% 45%, 
-            4% 35%, 
-            0% 25%, 
+            0% 0%,
+            95% 0%,
+            100% 15%,
+            98% 25%,
+            100% 35%,
+            97% 45%,
+            100% 55%,
+            96% 65%,
+            100% 75%,
+            95% 85%,
+            100% 100%,
+            5% 100%,
+            0% 85%,
+            2% 75%,
+            0% 65%,
+            3% 55%,
+            0% 45%,
+            4% 35%,
+            0% 25%,
             2% 15%
         );
     }
@@ -121,15 +121,15 @@
                 <a href="{{route('ads-show',$ad->slug)}}">
                     <div class="product__top h-100" style="--width: 100%;z-index: 0;">
                         <div class="product__thumbnail h-100 ov-hidden">
-                            <img src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                            <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
                             class="img-fit card-product-image h-100 dark-support custom-bottom-border-radius rounded prod-imag2-list" alt="">
                         </div>
                     </div>
                 </a>
             </div>
-        
-            <div class="product__summary d-flex flex-column justify-content-between">   
+
+            <div class="product__summary d-flex flex-column justify-content-between">
                 <div class="w-100" >
                     <div class="d-flex align-items-start justify-content-between mb-3" >
                         <div>
@@ -154,7 +154,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3" >
                         <h6 class="bg-primary p-0 px-2 rounded fs-14 d-inline text-white" >
                             <i class="bi bi-tags-fill fs-13"></i><span class="mx-1" >{{$ad->category->name ?? '/'}}</span>
@@ -185,7 +185,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->mileage)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24">
                                                     <path data-v-35b30767="" fill="currentColor" opacity="1.00" d="M12 14c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1Zm0-6c-.6 0-1 .4-1 1v2c0 .6.4 1 1 1s1-.4 1-1V9c0-.6-.4-1-1-1ZM5.2 2c-.6-.1-1.1.3-1.2.8l-3 18c-.1.5.3 1.1.8 1.2H2c.5 0 .9-.3 1-.8l3-18c.1-.6-.3-1.1-.8-1.2ZM12 3c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1s1-.4 1-1V4c0-.6-.4-1-1-1Zm8-.2c-.1-.5-.6-.9-1.2-.8-.5.1-.9.6-.8 1.2l3 18c.1.5.5.8 1 .8h.2c.5-.1.9-.6.8-1.2l-3-18Z"></path>
                                                 </svg>
@@ -223,7 +223,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->furniture_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 160C64 89.3 121.3 32 192 32l256 0c70.7 0 128 57.3 128 128l0 33.6c-36.5 7.4-64 39.7-64 78.4l0 48-384 0 0-48c0-38.7-27.5-71-64-78.4L64 160zM544 272c0-20.9 13.4-38.7 32-45.3c5-1.8 10.4-2.7 16-2.7c26.5 0 48 21.5 48 48l0 176c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L96 448c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L0 272c0-26.5 21.5-48 48-48c5.6 0 11 1 16 2.7c18.6 6.6 32 24.4 32 45.3l0 48 0 32 32 0 384 0 32 0 0-32 0-48z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->furniture_type) }}</span>
@@ -242,14 +242,14 @@
                                     @if(isset($ad->brand->name))
                                         <span class="d-flex align-items-center gap-1" >
                                             <span>
-                                                
+
                                             </span>
                                             <span>{{ $ad->brand->name ?? '/' }}</span>
                                         </span>
                                     @endif
                                     @if($ad->bicycle_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <i class="bi bi-bicycle"></i>
                                             </span>
                                             <span>{{ translate($ad->bicycle_type) }}</span>
@@ -279,7 +279,7 @@
                                     @endif
                                     @if($ad->year)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <span><span><i class="bi bi-calendar-event"></i></span></span>
                                             </span>
                                             <span>{{ $ad->year }}</span>
@@ -287,7 +287,7 @@
                                     @endif
                                     @if($ad->power_source)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="15" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->power_source) }}</span>
@@ -295,7 +295,7 @@
                                     @endif
                                     @if($ad->power_capacity)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="15" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
                                             </span>
                                             <span>{{ $ad->power_capacity }}</span>
@@ -307,7 +307,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->listing_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c.2 35.5-28.5 64.3-64 64.3l-320.4 0c-35.3 0-64-28.7-64-64l0-160.4-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L416 100.7 416 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 121 52.8 46.4c8 7 12 15 11 24zM248 192c-13.3 0-24 10.7-24 24l0 80c0 13.3 10.7 24 24 24l80 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24l-80 0z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->listing_type) }}</span>
@@ -327,7 +327,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->shipbuilding_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17px" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 16c0-7 4.5-13.2 11.2-15.3s13.9 .4 17.9 6.1l224 320c3.4 4.9 3.8 11.3 1.1 16.6s-8.2 8.6-14.2 8.6l-224 0c-8.8 0-16-7.2-16-16l0-320zM212.1 96.5c7 1.9 11.9 8.2 11.9 15.5l0 224c0 8.8-7.2 16-16 16L80 352c-5.7 0-11-3-13.8-8s-2.9-11-.1-16l128-224c3.6-6.3 11-9.4 18-7.5zM5.7 404.3C2.8 394.1 10.5 384 21.1 384l533.8 0c10.6 0 18.3 10.1 15.4 20.3l-4 14.3C550.7 473.9 500.4 512 443 512L133 512C75.6 512 25.3 473.9 9.7 418.7l-4-14.3z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->shipbuilding_type) }}</span>
@@ -366,7 +366,7 @@
                                     @endif
                                     @if($ad->home_appliance_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <img width="25px" src="{{ theme_asset('assets/img/svg/home-appliance-type.svg') }}" alt="">
                                             </span>
                                             <span>{{ translate($ad->home_appliance_type) }}</span>
@@ -387,7 +387,7 @@
                                     @endif
                                     @if($ad->material)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <img width="17px" src="{{ theme_asset('assets/img/svg/material-gray.svg') }}" alt="">
                                             </span>
                                             <span>{{ translate($ad->material) }}</span>
@@ -406,7 +406,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->electronic_type)
                                     <span class="d-flex align-items-center gap-1" >
-                                        <span>                                            
+                                        <span>
                                             <svg width="17px" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40c-35.3 0-64 28.7-64 64l-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0c0 35.3 28.7 64 64 64l0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40c35.3 0 64-28.7 64-64l40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0c0-35.3-28.7-64-64-64l0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40zM160 128l192 0c17.7 0 32 14.3 32 32l0 192c0 17.7-14.3 32-32 32l-192 0c-17.7 0-32-14.3-32-32l0-192c0-17.7 14.3-32 32-32zm192 32l-192 0 0 192 192 0 0-192z"/></svg>
                                         </span>
                                         <span>{{ translate($ad->electronic_type) }}</span>
@@ -442,8 +442,8 @@
                     <div class="d-flex align-items-end gap-2" >
                         @if($ad->sponsor()->where('type', 'urgent_sale_sticker')->where('expiration_date', '>', now())->exists())
                             <div>
-                                <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">                 
-                                    {{translate('urgent_sale')}}                  
+                                <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">
+                                    {{translate('urgent_sale')}}
                                 </span>
                             </div>
                         @endif
@@ -475,15 +475,15 @@
                 <a href="{{route('ads-show',$ad->slug)}}">
                     <div class="h-100" style="--width: 100%;z-index: 0;">
                         <div class="product__thumbnail h-100 ov-hidden">
-                            <img src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                            <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
                             class="img-fit card-product-image h-100 dark-support custom-bottom-border-radius rounded prod-imag2-list" alt="">
                         </div>
                     </div>
                 </a>
             </div>
-        
-            <div class="d-flex flex-column justify-content-between">   
+
+            <div class="d-flex flex-column justify-content-between">
                 <div class="w-100" >
                     <div class="d-flex align-items-start justify-content-between mb-3" >
                         <div>
@@ -510,7 +510,7 @@
                         </div>
                         --}}
                     </div>
-                    
+
                     <div class="mb-3 text-start" >
                         <h6 class="bg-primary p-0 px-2 rounded fs-12 d-inline text-white" >
                             <i class="bi bi-tags-fill fs-12"></i><span class="mx-1" >{{$ad->category->name ?? '/'}}</span>
@@ -541,7 +541,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->mileage)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24">
                                                     <path data-v-35b30767="" fill="currentColor" opacity="1.00" d="M12 14c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1Zm0-6c-.6 0-1 .4-1 1v2c0 .6.4 1 1 1s1-.4 1-1V9c0-.6-.4-1-1-1ZM5.2 2c-.6-.1-1.1.3-1.2.8l-3 18c-.1.5.3 1.1.8 1.2H2c.5 0 .9-.3 1-.8l3-18c.1-.6-.3-1.1-.8-1.2ZM12 3c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1s1-.4 1-1V4c0-.6-.4-1-1-1Zm8-.2c-.1-.5-.6-.9-1.2-.8-.5.1-.9.6-.8 1.2l3 18c.1.5.5.8 1 .8h.2c.5-.1.9-.6.8-1.2l-3-18Z"></path>
                                                 </svg>
@@ -579,7 +579,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->furniture_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 160C64 89.3 121.3 32 192 32l256 0c70.7 0 128 57.3 128 128l0 33.6c-36.5 7.4-64 39.7-64 78.4l0 48-384 0 0-48c0-38.7-27.5-71-64-78.4L64 160zM544 272c0-20.9 13.4-38.7 32-45.3c5-1.8 10.4-2.7 16-2.7c26.5 0 48 21.5 48 48l0 176c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L96 448c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L0 272c0-26.5 21.5-48 48-48c5.6 0 11 1 16 2.7c18.6 6.6 32 24.4 32 45.3l0 48 0 32 32 0 384 0 32 0 0-32 0-48z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->furniture_type) }}</span>
@@ -598,14 +598,14 @@
                                     @if(isset($ad->brand->name))
                                         <span class="d-flex align-items-center gap-1" >
                                             <span>
-                                                
+
                                             </span>
                                             <span>{{ $ad->brand->name ?? '/' }}</span>
                                         </span>
                                     @endif
                                     @if($ad->bicycle_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <i class="bi bi-bicycle"></i>
                                             </span>
                                             <span>{{ translate($ad->bicycle_type) }}</span>
@@ -635,7 +635,7 @@
                                     @endif
                                     @if($ad->year)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <span><span><i class="bi bi-calendar-event"></i></span></span>
                                             </span>
                                             <span>{{ $ad->year }}</span>
@@ -643,7 +643,7 @@
                                     @endif
                                     @if($ad->power_source)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="15" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->power_source) }}</span>
@@ -651,7 +651,7 @@
                                     @endif
                                     @if($ad->power_capacity)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="15" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
                                             </span>
                                             <span>{{ $ad->power_capacity }}</span>
@@ -663,7 +663,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->listing_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c.2 35.5-28.5 64.3-64 64.3l-320.4 0c-35.3 0-64-28.7-64-64l0-160.4-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L416 100.7 416 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 121 52.8 46.4c8 7 12 15 11 24zM248 192c-13.3 0-24 10.7-24 24l0 80c0 13.3 10.7 24 24 24l80 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24l-80 0z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->listing_type) }}</span>
@@ -683,7 +683,7 @@
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->shipbuilding_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <svg width="17px" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 16c0-7 4.5-13.2 11.2-15.3s13.9 .4 17.9 6.1l224 320c3.4 4.9 3.8 11.3 1.1 16.6s-8.2 8.6-14.2 8.6l-224 0c-8.8 0-16-7.2-16-16l0-320zM212.1 96.5c7 1.9 11.9 8.2 11.9 15.5l0 224c0 8.8-7.2 16-16 16L80 352c-5.7 0-11-3-13.8-8s-2.9-11-.1-16l128-224c3.6-6.3 11-9.4 18-7.5zM5.7 404.3C2.8 394.1 10.5 384 21.1 384l533.8 0c10.6 0 18.3 10.1 15.4 20.3l-4 14.3C550.7 473.9 500.4 512 443 512L133 512C75.6 512 25.3 473.9 9.7 418.7l-4-14.3z"/></svg>
                                             </span>
                                             <span>{{ translate($ad->shipbuilding_type) }}</span>
@@ -709,20 +709,20 @@
                                     @endif
                                 </div>
                             @endif
-    
+
                             @if($ad->category->category_type == 'home appliances')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if(isset($ad->custom_brand))
                                         <span class="d-flex align-items-center gap-1" >
                                             <span>
-    
+
                                             </span>
                                             <span>{{ $ad->custom_brand ?? '/' }}</span>
                                         </span>
                                     @endif
                                     @if($ad->home_appliance_type)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <img width="25px" src="{{ theme_asset('assets/img/svg/home-appliance-type.svg') }}" alt="">
                                             </span>
                                             <span>{{ translate($ad->home_appliance_type) }}</span>
@@ -730,7 +730,7 @@
                                     @endif
                                 </div>
                             @endif
-    
+
                             @if($ad->category->category_type == 'home garden')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if(isset($ad->custom_brand))
@@ -743,7 +743,7 @@
                                     @endif
                                     @if($ad->material)
                                         <span class="d-flex align-items-center gap-1" >
-                                            <span>                                            
+                                            <span>
                                                 <img width="17px" src="{{ theme_asset('assets/img/svg/material-gray.svg') }}" alt="">
                                             </span>
                                             <span>{{ translate($ad->material) }}</span>
@@ -757,12 +757,12 @@
                                     @endif
                                 </div>
                             @endif
-    
+
                             @if($ad->category->category_type == 'electronics')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->electronic_type)
                                     <span class="d-flex align-items-center gap-1" >
-                                        <span>                                            
+                                        <span>
                                             <svg width="17px" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40c-35.3 0-64 28.7-64 64l-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0c0 35.3 28.7 64 64 64l0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40c35.3 0 64-28.7 64-64l40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0c0-35.3-28.7-64-64-64l0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40zM160 128l192 0c17.7 0 32 14.3 32 32l0 192c0 17.7-14.3 32-32 32l-192 0c-17.7 0-32-14.3-32-32l0-192c0-17.7 14.3-32 32-32zm192 32l-192 0 0 192 192 0 0-192z"/></svg>
                                         </span>
                                         <span>{{ translate($ad->electronic_type) }}</span>
@@ -801,8 +801,8 @@
                     <div class="d-flex align-items-end gap-1" >
                         @if($ad->sponsor()->where('type', 'urgent_sale_sticker')->where('expiration_date', '>', now())->exists())
                             <div>
-                                <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">                 
-                                    {{translate('urgent_sale')}}                  
+                                <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">
+                                    {{translate('urgent_sale')}}
                                 </span>
                             </div>
                         @endif

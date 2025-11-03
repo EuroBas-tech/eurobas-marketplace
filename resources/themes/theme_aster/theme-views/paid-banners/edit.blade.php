@@ -74,7 +74,7 @@
                                                         data-id="{{ $user_ad->id }}"
                                                         data-slug="{{ $user_ad->slug }}">
                                                             <div>
-                                                                <img class="rounded unset-max-inline-size" width="80px" height="80px" src="{{ env_asset('storage/ad/thumbnail/'.$user_ad->thumbnail) }}" alt="ad_image">
+                                                                <img class="rounded unset-max-inline-size" width="80px" height="80px" src="{{ cloudfront('ad/thumbnail/'.$user_ad->thumbnail) }}" alt="ad_image">
                                                             </div>
                                                             <div class="d-flex align-items-center justify-content-between w-100">
                                                                 <div class="d-flex gap-1 flex-column">
