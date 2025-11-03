@@ -132,7 +132,7 @@
                                                                 @php( $payment_method_title = !empty($gateway->additional_data) ? (json_decode($gateway->additional_data)->gateway_title ?? ucwords(str_replace('_',' ', $gateway->key_name))) : ucwords(str_replace('_',' ', $gateway->key_name)) )
                                                                 @php( $payment_method_img = !empty($gateway->additional_data) ? json_decode($gateway->additional_data)->gateway_image : '' )
                                                                 <div class="form-check-label d-flex align-items-center">
-                                                                    <img width="60" src="{{ asset('storage/app/public/payment_modules/gateway_image/'.$payment_method_img) }}"
+                                                                    <img width="60" src="{{ cloudfront('payment_modules/gateway_image/'.$payment_method_img) }}"
                                                                     onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
                                                                     alt="img" >
                                                                     <span class="ml-3">{{ $payment_method_title }}</span>

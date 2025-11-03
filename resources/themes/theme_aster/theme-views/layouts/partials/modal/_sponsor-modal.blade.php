@@ -13,7 +13,7 @@
                             <a href="{{route('create.sponsor')}}?type=appearance-in-first-results" class="d-block rounded border border-cool-primary p-3 sponsor-card" role="button" >
                                 <h5 class="text-center text-primary" >{{ translate('first_results_appearance') }}</h5>
                                 <div>
-                                    <img class="80px" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                    <img class="80px" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                 </div>
                             </a>
                         </div>
@@ -24,7 +24,7 @@
                             <a href="{{route('create.sponsor')}}?type=urgent-sale-sticker" class="d-block rounded border border-cool-primary p-3 sponsor-card" role="button" >
                                 <h5 class="text-center text-primary" >{{ translate('urgent_sale_sticker') }}</h5>
                                 <div>
-                                    <img class="80px" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                    <img class="80px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                 </div>
                             </a>
                         </div>
@@ -35,7 +35,7 @@
                             <a href="{{route('create.sponsor')}}?type=promotional-video" class="d-block rounded border border-cool-primary p-3 sponsor-card" role="button" >
                                 <h5 class="text-center text-primary" >{{ translate('promotional_video') }}</h5>
                                 <div>
-                                    <img class="80px" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                    <img class="80px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                 </div>
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                             <a href="{{route('create.paid-banners')}}" class="d-block rounded border border-cool-primary p-3 sponsor-card" role="button" >
                                 <h5 class="text-center text-primary" >{{ translate('promotional_banner') }}</h5>
                                 <div>
-                                    <img class="80px" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                    <img class="80px" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                 </div>
                             </a>
                         </div>
@@ -60,6 +60,6 @@
 
 @push('script')
     <script>
-        
+
     </script>
 @endpush

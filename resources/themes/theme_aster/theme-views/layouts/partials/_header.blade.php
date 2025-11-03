@@ -748,28 +748,28 @@
 
                                             @if(isset($sponsorTypes['appearance_in_first_results']) && $sponsorTypes['appearance_in_first_results'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=appearance-in-first-results">
-                                                    <img width="40px" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('first_results_appearance') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['urgent_sale_sticker']) && $sponsorTypes['urgent_sale_sticker'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=urgent-sale-sticker">
-                                                    <img width="40px" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('urgent_sale_sticker') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_video']) && $sponsorTypes['promotional_video'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=promotional-video">
-                                                    <img width="40px" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_video') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_banner']) && $sponsorTypes['promotional_banner'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.paid-banners')}}">
-                                                    <img width="40px" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_banner') }}</span>
                                                 </a>
                                             @endif
@@ -941,7 +941,7 @@
                                                 <a href="{{route('create.sponsor')}}?type=appearance-in-first-results" class="d-block rounded " role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('first_results_appearance') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -952,7 +952,7 @@
                                                 <a href="{{route('create.sponsor')}}?type=urgent-sale-sticker" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('urgent_sale_sticker') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -963,7 +963,7 @@
                                                 <a href="{{route('create.sponsor')}}?type=promotional-video" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_video') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -974,7 +974,7 @@
                                                 <a href="{{route('create.paid-banners')}}" class="d-block rounded" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_banner') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>

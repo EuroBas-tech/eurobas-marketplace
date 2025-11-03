@@ -63,7 +63,7 @@
                             <div class="col-md-3">
                                 <div class="card custom-promotional-card text-center p-3" >
                                     <h5>{{translate('appear_on_first_results')}}</h5>
-                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                     <div class="d-flex align-items-center gap-1 justify-content-center mb-2" >
                                         <span>{{translate('current_status')}}</span>
                                         <span>:</span>
@@ -88,7 +88,7 @@
                             <div class="col-md-3">
                                 <div class="card custom-promotional-card text-center p-3">
                                     <h5>{{translate('urgent_sale_sticker')}}</h5>
-                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                     <div class="d-flex align-items-center gap-1 justify-content-center mb-2" >
                                         <span>{{translate('current_status')}}</span>
                                         <span>:</span>
@@ -96,7 +96,7 @@
                                             <span class="text-success" >enabled</span>
                                         @else
                                             <span class="text-danger" >disabled</span>
-                                        @endif                                    
+                                        @endif
                                     </div>
                                     <div class="d-flex align-items-center gap-1 justify-content-center " >
                                         <span>{{translate('last_update')}}</span>
@@ -113,7 +113,7 @@
                             <div class="col-md-3">
                                 <div class="card custom-promotional-card text-center p-3">
                                     <h5>{{translate('promotional_video')}}</h5>
-                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                     <div class="d-flex align-items-center gap-1 justify-content-center mb-2" >
                                         <span>{{translate('current_status')}}</span>
                                         <span>:</span>
@@ -138,7 +138,7 @@
                             <div class="col-md-3">
                                 <div class="card custom-promotional-card text-center p-3">
                                     <h5>{{translate('promotional_banner')}}</h5>
-                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                    <img class="d-block mx-auto mb-2" width="140px" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                     <div class="d-flex align-items-center gap-1 justify-content-center mb-2" >
                                         <span>{{translate('current_status')}}</span>
                                         <span>:</span>
@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -200,7 +200,7 @@
 
 @push('script')
     <script src="{{asset('public/assets/back-end')}}/js/select2.min.js"></script>
-    
+
     <script>
         $(document).ready(function () {
             $('#dataTable').DataTable();
@@ -323,7 +323,7 @@
                             type: type,
                             status: newStatus
                         },
-                        dataType: 'json',       
+                        dataType: 'json',
                         success: function (res) {
                             // update status span and button text/classes
                             let $statusSpan = $statusContainer.find('span').last(); // the status word span

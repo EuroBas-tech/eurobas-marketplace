@@ -157,9 +157,9 @@
 
                                 <?php
                                     if ($additional_data != null){
-                                        $img_path = asset('storage/app/public/payment_modules/gateway_image/'. $additional_data['gateway_image'] ?? '');
+                                        $img_path = cloudfront('payment_modules/gateway_image/'. $additional_data['gateway_image'] ?? '');
                                     }else{
-                                        $img_path = asset('/public/assets/back-end/img/modal/payment-methods/'.$payment->key_name.'.png');
+                                        $img_path = cloudfront('/public/assets/back-end/img/modal/payment-methods/'.$payment->key_name.'.png');
                                     }
                                 ?>
 
