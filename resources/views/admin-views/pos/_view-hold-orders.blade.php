@@ -112,7 +112,7 @@
                                         ?>
                                         <div class="p-3 border-bottom rounded d-flex justify-content-between gap-2">
                                             <div class="media gap-2">
-                                                <img width="40" src="{{asset('storage/app/public/product/thumbnail')}}/{{$cartItem['image']}}" onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'">
+                                                <img width="40" src="{{cloudfront('product/thumbnail')}}/{{$cartItem['image']}}" onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'">
                                                 <div class="media-body">
                                                     <h6 class="text-truncate"> {{ Str::limit($cartItem['name'], 12 )}}</h6>
                                                     <div class="text-muted">{{ translate('qty') }}: {{ $cartItem['quantity'] }}</div>

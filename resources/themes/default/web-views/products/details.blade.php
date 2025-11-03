@@ -13,13 +13,13 @@
     <!-- Viewport-->
 
     @if($product['meta_image']!=null)
-        <meta property="og:image" content="{{asset("storage/app/public/product/meta")}}/{{$product->meta_image}}"/>
+        <meta property="og:image" content="{{cloudfront("product/meta")}}/{{$product->meta_image}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/product/meta")}}/{{$product->meta_image}}"/>
+              content="{{cloudfront("product/meta")}}/{{$product->meta_image}}"/>
     @else
-        <meta property="og:image" content="{{asset("storage/app/public/product/thumbnail")}}/{{$product->thumbnail}}"/>
+        <meta property="og:image" content="{{cloudfront("product/thumbnail")}}/{{$product->thumbnail}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/product/thumbnail/")}}/{{$product->thumbnail}}"/>
+              content="{{cloudfront("product/thumbnail/")}}/{{$product->thumbnail}}"/>
     @endif
 
     @if($product['meta_title']!=null)
@@ -145,8 +145,8 @@
                                                          id="image{{$photo->color}}">
                                                         <img class="cz-image-zoom img-responsive w-100 __max-h-323px"
                                                              onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                             src="{{asset("storage/app/public/product/$photo->image_name")}}"
-                                                             data-zoom="{{asset("storage/app/public/product/$photo->image_name")}}"
+                                                             src="{{cloudfront("product/$photo->image_name")}}"
+                                                             data-zoom="{{cloudfront("product/$photo->image_name")}}"
                                                              alt="Product image" width="">
                                                         <div class="cz-image-zoom-pane"></div>
                                                     </div>
@@ -155,8 +155,8 @@
                                                          id="image{{$key}}">
                                                         <img class="cz-image-zoom img-responsive w-100 __max-h-323px"
                                                              onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                             src="{{asset("storage/app/public/product/$photo->image_name")}}"
-                                                             data-zoom="{{asset("storage/app/public/product/$photo->image_name")}}"
+                                                             src="{{cloudfront("product/$photo->image_name")}}"
+                                                             data-zoom="{{cloudfront("product/$photo->image_name")}}"
                                                              alt="Product image" width="">
                                                         <div class="cz-image-zoom-pane"></div>
                                                     </div>
@@ -168,8 +168,8 @@
                                                      id="image{{$key}}">
                                                     <img class="cz-image-zoom img-responsive w-100 __max-h-323px"
                                                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                         src="{{asset("storage/app/public/product/$photo")}}"
-                                                         data-zoom="{{asset("storage/app/public/product/$photo")}}"
+                                                         src="{{cloudfront("product/$photo")}}"
+                                                         data-zoom="{{cloudfront("product/$photo")}}"
                                                          alt="Product image" width="">
                                                     <div class="cz-image-zoom-pane"></div>
                                                 </div>
@@ -202,7 +202,7 @@
                                                                    id="preview-img{{$photo->color}}" href="#image{{$photo->color}}">
                                                                     <img
                                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                        src="{{asset("storage/app/public/product/$photo->image_name")}}"
+                                                                        src="{{cloudfront("product/$photo->image_name")}}"
                                                                         alt="Product thumb">
                                                                 </a>
                                                             </div>
@@ -212,7 +212,7 @@
                                                                    id="preview-img{{$key}}" href="#image{{$key}}">
                                                                     <img
                                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                        src="{{asset("storage/app/public/product/$photo->image_name")}}"
+                                                                        src="{{cloudfront("product/$photo->image_name")}}"
                                                                         alt="Product thumb">
                                                                 </a>
                                                             </div>
@@ -225,7 +225,7 @@
                                                                id="preview-img{{$key}}" href="#image{{$key}}">
                                                                 <img
                                                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                    src="{{asset("storage/app/public/product/$photo")}}"
+                                                                    src="{{cloudfront("product/$photo")}}"
                                                                     alt="Product thumb">
                                                             </a>
                                                         </div>

@@ -398,11 +398,11 @@
                                             <span class="switcher_control"></span>
                                         </label>
                                     </div>
-                                    
+
                                     <div class="w-100" >
                                         <span class="text-secondary" style="font-size: 13px;" >{{ translate('note') }} : {{translate('if_enabled,_the_shipping_charge_will_increase_with_the_product_quantity')}}</span>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -532,7 +532,7 @@
                                             onchange="uploadColorImage(this)">
 
                                         <span class="delete_file_input btn btn-outline-danger btn-sm square-btn"
-                                        style="display: @if (File::exists(base_path('storage/app/public/product/thumbnail/'. $product->thumbnail))) flex @else none @endif">
+                                        style="display: @if (Storage::disk()->exists('product/thumbnail/'. $product->thumbnail)) flex @else none @endif">
                                             <i class="tio-delete"></i>
                                         </span>
 
@@ -603,7 +603,7 @@
                                                     </a>
 
                                                     <div class="img_area_with_preview position-absolute z-index-2 border-0">
-                                                        <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{asset("storage/app/public/product/$photo")}}" onerror="this.classList.add('d-none')">
+                                                        <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{cloudfront("product/$photo")}}" onerror="this.classList.add('d-none')">
                                                     </div>
 
                                                     <div class="position-absolute h-100 top-0 w-100 d-flex align-content-center justify-content-center">
@@ -627,7 +627,7 @@
                                                             </a>
 
                                                             <div class="img_area_with_preview position-absolute z-index-2 border-0">
-                                                                <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{asset("storage/app/public/product/".$photo->image_name)}}" onerror="this.classList.add('d-none')">
+                                                                <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{cloudfront("product/".$photo->image_name)}}" onerror="this.classList.add('d-none')">
                                                             </div>
                                                             <div class="position-absolute h-100 top-0 w-100 d-flex align-content-center justify-content-center">
                                                                 <div class="d-flex flex-column justify-content-center align-items-center">
@@ -650,7 +650,7 @@
                                                         </a>
 
                                                         <div class="img_area_with_preview position-absolute z-index-2 border-0">
-                                                            <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{asset("storage/app/public/product/".$photo)}}" onerror="this.classList.add('d-none')">
+                                                            <img id="additional_Image_{{ $unique_id }}" class="h-auto aspect-1 bg-white" src="{{cloudfront("product/".$photo)}}" onerror="this.classList.add('d-none')">
                                                         </div>
                                                         <div class="position-absolute h-100 top-0 w-100 d-flex align-content-center justify-content-center">
                                                             <div class="d-flex flex-column justify-content-center align-items-center">
@@ -775,12 +775,12 @@
                                                 accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" onchange="uploadColorImage(this)">
 
                                             <span class="delete_file_input btn btn-outline-danger btn-sm square-btn"
-                                            style="display: @if (File::exists(base_path('storage/app/public/product/meta/'. $product['meta_image']))) flex @else none @endif">
+                                            style="display: @if (Storage::disk()->exists('product/meta/'. $product['meta_image'])) flex @else none @endif">
                                                 <i class="tio-delete"></i>
                                             </span>
 
                                             <div class="img_area_with_preview position-absolute z-index-2">
-                                                <img id="pre_meta_image_viewer" class="h-auto aspect-1 bg-white" src="{{ asset("storage/app/public/product/meta/". $product['meta_image'])}}" onerror="this.classList.add('d-none')">
+                                                <img id="pre_meta_image_viewer" class="h-auto aspect-1 bg-white" src="{{ cloudfront("product/meta/". $product['meta_image'])}}" onerror="this.classList.add('d-none')">
                                             </div>
                                             <div class="position-absolute h-100 top-0 w-100 d-flex align-content-center justify-content-center">
                                                 <div class="d-flex flex-column justify-content-center align-items-center">
@@ -1067,7 +1067,7 @@
                                     </div>
                                     <img class="w-100" height="auto"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/product/`+image_name+`')}}"
+                                        src="{{cloudfront('product/`+image_name+`')}}"
                                         alt="Product image">
                                 </div>
                             </div>`;

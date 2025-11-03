@@ -18,7 +18,7 @@
                         @if(isset($product))
                             <div class="cursor-pointer grid-card basic-box-shadow" onclick="location.href='{{route('seller.product.view',[$item['product_id']])}}'">
                                 <div class="">
-                                    <img class="avatar avatar-bordered border-gold avatar-60 rounded" src="{{asset('storage/app/public/product/thumbnail')}}/{{$product['thumbnail']}}"
+                                    <img class="avatar avatar-bordered border-gold avatar-60 rounded" src="{{cloudfront('product/thumbnail')}}/{{$product['thumbnail']}}"
                                          onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
                                          alt="{{$product->name}} image">
                                 </div>

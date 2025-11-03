@@ -248,8 +248,8 @@ class ProductManager
             }
         ])
         ->select(
-            'id', 'title','slug', 'price_type', 'starting_price', 'price', 
-            'currency', 'thumbnail', 'brand_id', 'category_id', 
+            'id', 'title','slug', 'price_type', 'starting_price', 'price',
+            'currency', 'thumbnail', 'brand_id', 'category_id',
             'model_id', 'status', 'country', 'city', 'created_at'
         )
         ->where(function ($q) use ($title) {
@@ -346,9 +346,9 @@ class ProductManager
     {
         $path = '';
         if ($image_type == 'thumbnail') {
-            $path = asset('storage/app/public/product/thumbnail');
+            $path = cloudfront('product/thumbnail');
         } elseif ($image_type == 'product') {
-            $path = asset('storage/app/public/product');
+            $path = cloudfront('product');
         }
         return $path;
     }

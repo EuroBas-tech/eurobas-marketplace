@@ -230,7 +230,7 @@
                                                             @if($detail->digital_file_after_sell)
                                                                 <div class="mb-4">
                                                                     {{translate('uploaded_file')}} :
-                                                                    <a href="{{ asset('storage/app/public/product/digital-product/'.$detail->digital_file_after_sell) }}"
+                                                                    <a href="{{ cloudfront('product/digital-product/'.$detail->digital_file_after_sell) }}"
                                                                        class="btn btn-success btn-sm" title="Download" download><i class="tio-download"></i> {{translate('download')}}</a>
                                                                 </div>
                                                             @else
@@ -375,7 +375,7 @@
                 </div>
                 @endif
 
-                
+
                 <!-- Order & Shipping Info Card -->
                 <div class="card">
                     <div class="card-body text-capitalize d-flex flex-column gap-4">
@@ -393,7 +393,7 @@
                         </div>
                     </div>
                 </div>
-                
+
 
                 {{--
 
@@ -1088,7 +1088,7 @@
 
                             if (data.success == 0) {
                                 toastr.success('{{translate("order_is_already_delivered_you_can_not_change_it")}}!!');
-                                
+
                                 setTimeout(() => {
                                     location.reload();
                                 }, 2000);
@@ -1096,15 +1096,15 @@
                             } else {
                                 if(data.payment_status == 0){
                                     toastr.warning('{{translate("before_delivered_you_need_to_make_payment_status_paid")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
-                                    
+
                                 }else if(data.customer_status==0)
                                 {
                                     toastr.warning('{{translate("account_has_been_deleted_you_can_not_change_the_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
@@ -1112,14 +1112,14 @@
                                 }else if(data.shipping_data==0)
                                 {
                                     toastr.warning('{{translate("fill_shipping_data_before_you_change_delivery_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
 
                                 }else{
                                     toastr.success('{{translate("status_change_successfully")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
@@ -1157,7 +1157,7 @@
                         success: function (data) {
                             if (data.success == 0) {
                                 toastr.success('{{translate("order_is_already_delivered_you_can_not_change_it")}}!!');
-                                
+
                                 setTimeout(() => {
                                     location.reload();
                                 }, 2000);
@@ -1165,15 +1165,15 @@
                             } else {
                                 if(data.payment_status == 0){
                                     toastr.warning('{{translate("before_delivered_you_need_to_make_payment_status_paid")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
-                                    
+
                                 }else if(data.customer_status==0)
                                 {
                                     toastr.warning('{{translate("account_has_been_deleted_you_can_not_change_the_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
@@ -1181,14 +1181,14 @@
                                 }else if(data.shipping_data==0)
                                 {
                                     toastr.warning('{{translate("fill_shipping_data_before_you_change_delivery_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
 
                                 }else{
                                     toastr.success('{{translate("status_change_successfully")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);

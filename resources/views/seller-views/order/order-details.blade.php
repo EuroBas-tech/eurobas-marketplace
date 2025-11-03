@@ -115,7 +115,7 @@
                                     </div>
 
                                     @if(\App\CPU\Helpers::get_business_settings('order_verification'))
-                                    
+
                                         <span>
                                             {{translate('order_verification_code')}} : <strong>{{$order['verification_code']}}</strong>
                                         </span>
@@ -218,7 +218,7 @@
                                                             @if($detail->digital_file_after_sell)
                                                                 <div class="mb-4">
                                                                     {{translate('uploaded_file')}} :
-                                                                    <a href="{{ asset('storage/app/public/product/digital-product/'.$detail->digital_file_after_sell) }}"
+                                                                    <a href="{{ cloudfront('product/digital-product/'.$detail->digital_file_after_sell) }}"
                                                                        class="btn btn-success btn-sm" title="Download" download><i class="tio-download"></i> {{translate('download')}}</a>
                                                                 </div>
                                                             @else
@@ -421,7 +421,7 @@
 
                                 @if($order['order_status'] != 'canceled')
                                     <div>
-                                        <a onclick="choose_delivery_type()" 
+                                        <a onclick="choose_delivery_type()"
                                         class="btn btn-primary" href="#">
                                             <svg class="mr-2" style="fill: white;" width="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                                                 <path d="M112 0C85.5 0 64 21.5 64 48l0 48L16 96c-8.8 0-16 7.2-16 16s7.2 16 16 16l48 0 208 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L64 160l-16 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l16 0 176 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L64 224l-48 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l48 0 144 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L64 288l0 128c0 53 43 96 96 96s96-43 96-96l128 0c0 53 43 96 96 96s96-43 96-96l32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64 0-32 0-18.7c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7L416 96l0-48c0-26.5-21.5-48-48-48L112 0zM544 237.3l0 18.7-128 0 0-96 50.7 0L544 237.3zM160 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm272 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"/>
@@ -1019,7 +1019,7 @@
 
                             if (data.success == 0) {
                                 toastr.success('{{translate("order_is_already_delivered_you_can_not_change_it")}}!!');
-                                
+
                                 setTimeout(() => {
                                     location.reload();
                                 }, 2000);
@@ -1027,15 +1027,15 @@
                             } else {
                                 if(data.payment_status == 0){
                                     toastr.warning('{{translate("before_delivered_you_need_to_make_payment_status_paid")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
-                                    
+
                                 }else if(data.customer_status==0)
                                 {
                                     toastr.warning('{{translate("account_has_been_deleted_you_can_not_change_the_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
@@ -1043,14 +1043,14 @@
                                 }else if(data.shipping_data==0)
                                 {
                                     toastr.warning('{{translate("fill_shipping_data_before_you_change_delivery_status")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);
 
                                 }else{
                                     toastr.success('{{translate("status_change_successfully")}}!');
-                                    
+
                                     setTimeout(() => {
                                         location.reload();
                                     }, 2000);

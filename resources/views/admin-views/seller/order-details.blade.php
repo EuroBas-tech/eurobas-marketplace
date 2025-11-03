@@ -239,7 +239,7 @@
                                                             @if($detail->digital_file_after_sell)
                                                                 <div class="mb-4">
                                                                     {{translate('uploaded_file')}} :
-                                                                    <a href="{{ asset('storage/app/public/product/digital-product/'.$detail->digital_file_after_sell) }}"
+                                                                    <a href="{{ cloudfront('product/digital-product/'.$detail->digital_file_after_sell) }}"
                                                                        class="btn btn-success btn-sm" title="Download" download><i class="tio-download"></i> {{translate('download')}}</a>
                                                                 </div>
                                                             @else

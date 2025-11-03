@@ -35,7 +35,7 @@
                     <div class="media flex-wrap flex-sm-nowrap gap-3">
                         <a class="aspect-1 float-left overflow-hidden"
 
-                            @if(file_exists(base_path("storage/app/public/product/thumbnail/".$product['thumbnail'])))
+                            @if(Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
                                 href="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}"
                             @else
                                 href="{{asset("public/assets/front-end/img/image-place-holder.png")}}"
@@ -51,21 +51,21 @@
                                 @if ($product->product_type == 'physical' && $product->color_image)
                                     @foreach (json_decode($product->color_image) as $key => $photo)
                                         <a class="aspect-1 float-left overflow-hidden"
-                                            @if(file_exists(base_path("storage/app/public/product/".$photo->image_name)))
-                                                href="{{asset("storage/app/public/product/$photo->image_name")}}"
+                                            @if(Storage::disk()->exists("product/".$photo->image_name))
+                                                href="{{cloudfront("product/$photo->image_name")}}"
                                             @else
-                                                href="{{asset("public/assets/front-end/img/image-place-holder.png")}}"
+                                                href="{{cloudfront("public/assets/front-end/img/image-place-holder.png")}}"
                                             @endif data-lightbox="mygallery">
 
                                             <img width="50" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset("storage/app/public/product/$photo->image_name")}}" alt="Product image">
+                                            src="{{cloudfront("product/$photo->image_name")}}" alt="Product image">
                                         </a>
                                     @endforeach
                                 @else
                                     @foreach (json_decode($product->images) as $key => $photo)
-                                        <a class="aspect-1 float-left overflow-hidden" href="{{asset("storage/app/public/product/$photo")}}" data-lightbox="mygallery">
+                                        <a class="aspect-1 float-left overflow-hidden" href="{{cloudfront("product/$photo")}}" data-lightbox="mygallery">
                                             <img width="50" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset("storage/app/public/product/$photo")}}" alt="Product image">
+                                            src="{{cloudfront("product/$photo")}}" alt="Product image">
                                         </a>
                                     @endforeach
                                 @endif
@@ -185,8 +185,8 @@
                                         {{ translate('view_live') }}
                                     </a>
                                 @endif
-                                @if($product->digital_file_ready && file_exists(base_path('storage/app/public/product/digital-product/'.$product->digital_file_ready)))
-                                <a href="{{ asset('storage/app/public/product/digital-product/'.$product->digital_file_ready) }}" class="btn btn-outline--primary mr-1" title="Download" download>
+                                @if($product->digital_file_ready && Storage::disk()->exists('product/digital-product/'.$product->digital_file_ready))
+                                <a href="{{ cloudfront('product/digital-product/'.$product->digital_file_ready) }}" class="btn btn-outline--primary mr-1" title="Download" download>
                                     <i class="tio-download"></i>
                                     {{ translate('download') }}
                                 </a>

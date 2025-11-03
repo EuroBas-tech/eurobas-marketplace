@@ -13,13 +13,13 @@
     <!-- Viewport-->
 
     @if($product['meta_image'])
-        <meta property="og:image" content="{{asset("storage/app/public/product/meta")}}/{{$product->meta_image}}"/>
+        <meta property="og:image" content="{{cloudfront("product/meta")}}/{{$product->meta_image}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/product/meta")}}/{{$product->meta_image}}"/>
+              content="{{cloudfront("product/meta")}}/{{$product->meta_image}}"/>
     @else
-        <meta property="og:image" content="{{asset("storage/app/public/product/thumbnail")}}/{{$product->thumbnail}}"/>
+        <meta property="og:image" content="{{cloudfront("product/thumbnail")}}/{{$product->thumbnail}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/product/thumbnail/")}}/{{$product->thumbnail}}"/>
+              content="{{cloudfront("product/thumbnail/")}}/{{$product->thumbnail}}"/>
     @endif
 
     @if($product['meta_title'])
@@ -42,7 +42,7 @@
     @endif
     <meta property="twitter:url" content="{{route('product',[$product->slug])}}">
     <link rel="stylesheet" href="{{ theme_asset('assets/css/lightbox.min.css') }}">
-    
+
     <style>
         .custom-cool-blue {
             background: #4285F4;
@@ -62,7 +62,7 @@
             align-items: start;
             justify-content: space-between;
         }
-        
+
         .small-responsive-margin-top {
             margin-top: -50px;
         }
@@ -78,15 +78,15 @@
             .custom-responsive-display {
                 display: block !important;
             }
-            
+
             .countries-style {
                 margin-bottom: 8px;
             }
-            
+
             .responsive-margin-top {
                 margin-top: 0px !important;
             }
-            
+
             .small-responsive-margin-top {
                 margin-top: 0px !important;
             }
@@ -100,7 +100,7 @@
             border-color: inherit !important;
             text-decoration: none !important;
         }
-        
+
         .custom-chat-btn {
             background: #4285F4 !important;
         }
@@ -108,7 +108,7 @@
             opacity: 90% !important;
             transation: 0.5s;
         }
-        
+
 .countries-scroll {
   max-height: 55px;
   overflow-y: auto;
@@ -137,8 +137,8 @@
   background: #eee;
 }
 
-    </style>        
-    
+    </style>
+
 @endpush
 
 @section('content')
@@ -238,8 +238,8 @@
                                                                                 <span class="product__discount-badge currency-font">-{{\App\CPU\Helpers::currency_converter($product->discount)}}</span>
                                                                             @endif
 
-                                                                            <a href="{{asset("storage/app/public/product/".$photo->image_name)}}">
-                                                                                <img style="height: 415px; width: 100%;" src="{{asset("storage/app/public/product/".$photo->image_name)}}" class="dark-support" alt="" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'">
+                                                                            <a href="{{cloudfront("product/".$photo->image_name)}}">
+                                                                                <img style="height: 415px; width: 100%;" src="{{cloudfront("product/".$photo->image_name)}}" class="dark-support" alt="" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'">
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -251,8 +251,8 @@
                                                                             @elseif($product->discount > 0)
                                                                                 <span class="product__discount-badge currency-font">-{{\App\CPU\Helpers::currency_converter($product->discount)}}</span>
                                                                             @endif
-                                                                            <a href="{{asset("storage/app/public/product/".$photo->image_name)}}">
-                                                                                <img style="height: 415px; width: 100%;" src="{{asset("storage/app/public/product/".$photo->image_name)}}" class="dark-support" alt="" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" >
+                                                                            <a href="{{cloudfront("product/".$photo->image_name)}}">
+                                                                                <img style="height: 415px; width: 100%;" src="{{cloudfront("product/".$photo->image_name)}}" class="dark-support" alt="" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" >
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -267,8 +267,8 @@
                                                                         @elseif($product->discount > 0)
                                                                             <span class="product__discount-badge currency-font">-{{\App\CPU\Helpers::currency_converter($product->discount)}}</span>
                                                                         @endif
-                                                                        <a class="w-100" href="{{asset("storage/app/public/product/".$photo)}}">
-                                                                            <img src="{{asset("storage/app/public/product/".$photo)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support" alt="" style="height: 415px; width: 100%;" >
+                                                                        <a class="w-100" href="{{cloudfront("product/".$photo)}}">
+                                                                            <img src="{{cloudfront("product/".$photo)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support" alt="" style="height: 415px; width: 100%;" >
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -286,7 +286,7 @@
                                                                 @foreach (json_decode($product->color_image) as $key => $photo)
                                                                     @if($photo->color != null)
                                                                         <div class="swiper-slide position-relative aspect-1">
-                                                                            <img src="{{asset("storage/app/public/product/".$photo->image_name)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
+                                                                            <img src="{{cloudfront("product/".$photo->image_name)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
                                                                         </div>
                                                                     @endif
                                                                 @endforeach
@@ -294,14 +294,14 @@
                                                                 @foreach (json_decode($product->color_image) as $key => $photo)
                                                                     @if($photo->color == null)
                                                                         <div class="swiper-slide position-relative aspect-1">
-                                                                            <img src="{{asset("storage/app/public/product/".$photo->image_name)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
+                                                                            <img src="{{cloudfront("product/".$photo->image_name)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
                                                                         </div>
                                                                     @endif
                                                                 @endforeach
                                                             @else
                                                                 @foreach (json_decode($product->images) as $key => $photo)
                                                                     <div class="swiper-slide position-relative aspect-1">
-                                                                        <img src="{{asset("storage/app/public/product/".$photo)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
+                                                                        <img src="{{cloudfront("product/".$photo)}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded" alt="">
                                                                     </div>
                                                                 @endforeach
                                                             @endif
@@ -335,7 +335,7 @@
                                                             @endif
                                                         </div>
                                                     </div>
-                                                    
+
                                                     @if(($product['product_type'] == 'physical') && ($product['current_stock']<=0))
                                                         <p class="fw-semibold text-muted custom-text-danger"><i class="bi bi-exclamation-circle me-2"></i>{{translate('out_of_stock')}}</p>
                                                     @else
@@ -343,7 +343,7 @@
                                                             <div class="fw-semibold py-2 pb-3 d-flex align-items-center">
                                                                 <svg class="me-2" fill="gray" width="15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M290.8 48.6l78.4 29.7L288 109.5 206.8 78.3l78.4-29.7c1.8-.7 3.8-.7 5.7 0zM136 92.5l0 112.2c-1.3 .4-2.6 .8-3.9 1.3l-96 36.4C14.4 250.6 0 271.5 0 294.7L0 413.9c0 22.2 13.1 42.3 33.5 51.3l96 42.2c14.4 6.3 30.7 6.3 45.1 0L288 457.5l113.5 49.9c14.4 6.3 30.7 6.3 45.1 0l96-42.2c20.3-8.9 33.5-29.1 33.5-51.3l0-119.1c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-1.3-.5-2.6-.9-3.9-1.3l0-112.2c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-12.8-4.8-26.9-4.8-39.7 0l-96 36.4C150.4 48.4 136 69.3 136 92.5zM392 210.6l-82.4 31.2 0-89.2L392 121l0 89.6zM154.8 250.9l78.4 29.7L152 311.7 70.8 280.6l78.4-29.7c1.8-.7 3.8-.7 5.7 0zm18.8 204.4l0-100.5L256 323.2l0 95.9-82.4 36.2zM421.2 250.9c1.8-.7 3.8-.7 5.7 0l78.4 29.7L424 311.7l-81.2-31.1 78.4-29.7zM523.2 421.2l-77.6 34.1 0-100.5L528 323.2l0 90.7c0 3.2-1.9 6-4.8 7.3z"/></svg>
                                                                 <span class="me-1" >{{$product->current_stock}}</span>
-                                                                <span>{{translate('in_Stock')}}</span> 
+                                                                <span>{{translate('in_Stock')}}</span>
                                                             </div>
                                                         @endif
                                                     @endif
@@ -353,8 +353,8 @@
                                                         @endif
                                                         <ins class="product__new-price price-size currency-font">{{\App\CPU\Helpers::get_price_range($product) }}</ins>
                                                     </div>
-                                                </div>                                                
-                
+                                                </div>
+
                                                 @if($countryNames ||  $product->origin)
                                                     <div class="card order-1 order-sm-0 p-0 countries-style" >
                                                         <div class="card-body p-0">
@@ -368,8 +368,8 @@
                                                                         </div>
                                                                     </div>
                                                                 @endif
-                                    
-                                    
+
+
                                                                 @if($countryNames)
                                                                     <div  class="custom-green rounded p-2">
                                                                         <div  class="text-light"  >
@@ -400,7 +400,7 @@
                                                 @csrf
                                                 <div class="">
                                                     <input type="hidden" name="id" value="{{ $product->id }}">
-                                                    
+
                                                     <div class="d-flex gap-4 flex-wrap align-items-center mb-3">
                                                         <h6 class="fw-bold">{{translate('quantity')}} {{ $product->minimum_order_qty >1 ? translate('(Min Order)') : ""}} </h6>
 
@@ -420,7 +420,7 @@
                                                         </div>
                                                     </div>
 
-                                                    
+
                                                     @if (count(json_decode($product->colors)) > 0)
                                                         <div class="d-flex gap-4 flex-wrap align-items-center mb-3">
                                                             <h6 class="fw-bold">{{translate('color')}}</h6>
@@ -488,7 +488,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="d-flex flex-wrap gap-3 my-4"
                                                          style="--width: 24rem">
                                                         @if(($product->added_by == 'seller' && ($seller_temporary_close || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $current_date >= $seller_vacation_start_date && $current_date <= $seller_vacation_end_date))) ||
@@ -520,7 +520,7 @@
                                                             @endif
                                                         @endif
                                                     </div>
-                                                    
+
                                                     @if(($product->added_by == 'seller' && ($seller_temporary_close || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $current_date >= $seller_vacation_start_date && $current_date <= $seller_vacation_end_date))) ||
                                                     ($product->added_by == 'admin' && ($inhouse_temporary_close || ($inhouse_vacation_status && $current_date >= $inhouse_vacation_start_date && $current_date <= $inhouse_vacation_end_date))))
                                                         <div class="alert alert-danger mt-3" role="alert">
@@ -531,9 +531,9 @@
                                                     @endif
                                                 </div>
                                             </form>
-                                            
+
                                             @include('theme-views.layouts.partials.modal._chat-with-seller',['seller_id'=>$product->seller->id,'shop_id'=>$product->seller->shop->id])
-                                            
+
                                         </div>
                                         <!-- End Product Details Content -->
                                     </div>
@@ -542,7 +542,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-9 col-xl-9" >
                     <div class="card">
                         <div class="card-body">
@@ -757,7 +757,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="col-lg-4 col-xl-3 d-flex flex-column gap-3">
                     <div class="card order-1 order-sm-0">
                         <div class="card-body">
@@ -916,7 +916,7 @@
                                                                 @endif
                                                             @endfor
                                                         </div>
-    
+
                                                         <span>({{$total_reviews}})</span>
                                                     </div>
                                                 </div>

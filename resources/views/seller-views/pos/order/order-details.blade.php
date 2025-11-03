@@ -178,13 +178,13 @@
                                                                     @if($detail->product_all_status->digital_product_type == 'ready_after_sell' && $detail->digital_file_after_sell)
                                                                         <div class="mb-4">
                                                                             {{translate('uploaded_file')}} :
-                                                                            <a href="{{ asset('storage/app/public/product/digital-product/'.$detail->digital_file_after_sell) }}"
+                                                                            <a href="{{ cloudfront('product/digital-product/'.$detail->digital_file_after_sell) }}"
                                                                                class="btn btn-success btn-sm" title="Download" download><i class="tio-download"></i> Download</a>
                                                                         </div>
                                                                     @elseif($detail->product_all_status->digital_product_type == 'ready_product' && $detail->product_all_status->digital_file_ready)
                                                                         <div class="mb-4">
                                                                             {{translate('uploaded_file')}} :
-                                                                            <a href="{{ asset('storage/app/public/product/digital-product/'.$detail->product_all_status->digital_file_ready) }}"
+                                                                            <a href="{{ cloudfront('product/digital-product/'.$detail->product_all_status->digital_file_ready) }}"
                                                                                class="btn btn-success btn-sm" title="Download" download><i class="tio-download"></i> Download</a>
                                                                         </div>
                                                                     @endif
