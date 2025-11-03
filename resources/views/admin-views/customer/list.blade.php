@@ -89,7 +89,7 @@
                             <td>
                                 <a href="{{route('admin.customer.view',[$customer['id']])}}"
                                    class="title-color hover-c1 d-flex align-items-center gap-10">
-                                    <img src="{{ $customer['image'] ? env_asset('storage/profile/images/'.$customer['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}"
+                                    <img src="{{ $customer['image'] ? cloudfront('profile/images/'.$customer['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                         class="avatar rounded" alt="" width="40">
                                     {{$customer['name']}}
                                 </a>

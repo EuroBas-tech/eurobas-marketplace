@@ -75,7 +75,7 @@
                                     <div class="text-center mb-3">
                                         <img class="upload-img-view" id="viewer"
                                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset('storage/app/public/admin')}}/{{$e['image']}}"
+                                            src="{{cloudfront('admin')}}/{{$e['image']}}"
                                             alt="Product thumbnail"/>
                                     </div>
                                     <label for="name" class="title-color">{{translate('employee_image')}}</label>
@@ -99,7 +99,7 @@
                                                     <div class="col-md-4 mb-3">
                                                         <img height="150"
                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                        src="{{asset('storage/app/public/admin').'/'.$img}}">
+                                                        src="{{cloudfront('admin').'/'.$img}}">
                                                     </div>
                                                 @endforeach
                                             @endif

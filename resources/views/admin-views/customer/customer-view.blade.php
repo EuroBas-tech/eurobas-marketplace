@@ -220,7 +220,7 @@
                             <div class="media">
                                 <div class="mr-3">
                                     <img class="avatar rounded avatar-70"
-                                    src="{{$customer['image'] ? env_asset('storage/profile/images/'.$customer['image']) : theme_asset('assets/img/avatar/def-image.jpg')  }}"
+                                    src="{{$customer['image'] ? cloudfront('profile/images/'.$customer['image']) : theme_asset('assets/img/avatar/def-image.jpg')  }}"
                                     alt="Image">
                                 </div>
                                 <div class="media-body d-flex flex-column gap-1">

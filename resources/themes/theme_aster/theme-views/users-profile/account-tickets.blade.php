@@ -22,7 +22,7 @@
                                         <div class="media gap-2 gap-sm-3">
                                             <div class="avatar">
                                                 <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                    src="{{ $supportTicket->customer->image ? env_asset('storage/profile/images/'.$supportTicket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
+                                                    src="{{ $supportTicket->customer->image ? cloudfront('images/'.$supportTicket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                                     loading="lazy" class="img-fit dark-support" alt="">
                                             </div>
                                             <div class="media-body">

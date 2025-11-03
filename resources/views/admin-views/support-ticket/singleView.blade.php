@@ -29,8 +29,8 @@
                 $admin = \App\Model\Admin::get();
                 ?>
                 <div class="media d-flex gap-3">
-                    <img class="rounded-circle avatar" 
-                        src="{{ isset($userDetails) ? env_asset('storage/profile/images/'.$userDetails['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}"
+                    <img class="rounded-circle avatar"
+                        src="{{ isset($userDetails) ? cloudfront('profile/images/'.$userDetails['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                             onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
                             alt="{{isset($userDetails)?$userDetails['name']:'not found'}}"/>
                     <div class="media-body">

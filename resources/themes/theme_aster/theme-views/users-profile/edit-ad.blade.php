@@ -170,7 +170,7 @@
                                                                     name="image"
                                                                     accept="image/*"
                                                                     aria-required="true"
-                                                                    data-old="{{ asset('public/storage/ad/thumbnail')}}/{{$ad->thumbnail }}" {{-- this is key for JS to read the old image --}}
+                                                                    data-old="{{ cloudfront('ad/thumbnail')}}/{{$ad->thumbnail }}" {{-- this is key for JS to read the old image --}}
                                                                 >
 
                                                                 <div class="upload-file__img">

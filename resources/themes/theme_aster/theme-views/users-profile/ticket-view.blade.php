@@ -15,7 +15,7 @@
                             <div class="media flex-wrap gap-3">
                                 <div class="avatar avatar-lg rounded-circle">
                                     <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                    src="{{ $ticket->customer->image ? env_asset('storage/profile/images/'.$ticket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}" 
+                                    src="{{ $ticket->customer->image ? cloudfront('profile/images/'.$ticket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                     loading="lazy" class="img-fit rounded-circle dark-support" alt="">
                                 </div>
                                 <div class="media-body">

@@ -23,7 +23,7 @@
                     <div class="col-lg-7 col-xl-8">
                         <div class="media align-items-center flex-wrap flex-sm-nowrap gap-3">
                             <img width="250" class="rounded" onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
-                            src="{{asset('storage/app/public/admin')}}/{{$employee['image']}}" alt="Image Description">
+                            src="{{cloudfront('admin')}}/{{$employee['image']}}" alt="Image Description">
                             <div class="media-body">
                                 <div class="text-capitalize mb-4">
                                     <h4 class="mb-2">{{$employee->name}}</h4>

@@ -86,7 +86,7 @@
 
                                         <img class="rounded-circle __img-40 mt-2" style="text-align: {{Session::get('direction') === "rtl" ? 'left' : 'right'}};"
                                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset('storage/app/public/admin/'.$admin['image'])}}"
+                                            src="{{cloudfront('admin/'.$admin['image'])}}"
                                             alt=""/>
                                         <div class="mx-1 __incoming-msg">
 

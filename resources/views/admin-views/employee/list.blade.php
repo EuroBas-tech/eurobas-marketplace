@@ -117,7 +117,7 @@
                                     <div class="media align-items-center gap-10">
                                         <img class="rounded-circle avatar avatar-lg"
                                                 onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
-                                                src="{{asset('storage/app/public/admin')}}/{{$e['image']}}">
+                                                src="{{cloudfront('admin')}}/{{$e['image']}}">
                                         <div class="media-body">
                                             {{$e['name']}}
                                         </div>

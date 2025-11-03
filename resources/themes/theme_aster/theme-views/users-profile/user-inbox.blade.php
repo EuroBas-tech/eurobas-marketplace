@@ -54,7 +54,7 @@
                                                         <div class="avatar rounded-circle ">
                                                             <img width="40px" height="35px"
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                src="{{ env_asset('storage/profile/images/' . ($shop->$senderOrReceiver?->image ?? 'default.png')) }}"
+                                                                src="{{ cloudfront('profile/images/' . ($shop->$senderOrReceiver?->image ?? 'default.png')) }}"
                                                                 loading="lazy" class="img-fit rounded-circle dark-support" alt="">
                                                         </div>
                                                         <div class="media-body">
@@ -89,7 +89,7 @@
                                                 <div class="avatar rounded-circle">
                                                     <img
                                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                    src="{{env_asset('storage/profile/images/'.$user->image)}}"
+                                                    src="{{cloudfront('profile/images/'.$user->image)}}"
                                                     loading="lazy" id="image" class="img-fit rounded-circle dark-support"
                                                     alt="">
                                                 </div>
@@ -124,7 +124,7 @@
                                                                                 <a href="{{route('ads-show',$ad->slug)}}">
                                                                                     <img class="rounded chat-img"
                                                                                     src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
-                                                                                    onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" 
+                                                                                    onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'"
                                                                                     alt="ad_thumbnail">
                                                                                 </a>
                                                                             </div>
@@ -154,7 +154,7 @@
                                                                                 <a href="{{route('ads-show',$ad->slug)}}">
                                                                                     <img class="rounded chat-img"
                                                                                     src="{{env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
-                                                                                    onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" 
+                                                                                    onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'"
                                                                                     alt="ad_thumbnail">
                                                                                 </a>
                                                                             </div>
@@ -189,7 +189,7 @@
                                                         class="d-flex align-items-center gap-2 py-0 h-auto form-control focus-border rounded-10">
                                                         <input type="hidden"
                                                         value="{{$chat_with}}" id="chat_with" name="chat_with">
-                                                        
+
                                                         <textarea class="w-100 focus-input" id="msgInputValue"
                                                         placeholder="{{translate('start_a_new_message')}}"></textarea>
                                                     </div>
@@ -218,7 +218,7 @@
 
 
 @push('script')
-    <script> 
+    <script>
 
         // This script runs when the document is ready.
         $(document).ready(function () {

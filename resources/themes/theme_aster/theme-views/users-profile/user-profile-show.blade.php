@@ -97,11 +97,11 @@
                     <div class="card">
                         <div class="card-body p-0">
                             <div class="position-relative" >
-                                <img class="cover-image-size rounded" src="{{$user_profile['cover_image'] ? env_asset('storage/profile/covers/'.$user_profile['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}" alt="profile_cover_image">
+                                <img class="cover-image-size rounded" src="{{$user_profile['cover_image'] ? cloudfront('profile/covers/'.$user_profile['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}" alt="profile_cover_image">
 
                                 <div class="d-flex align-items-center gap-3 position-absolute bottom-0 start-0 p-3">
                                     <div class="text-center" >
-                                        <img class="rounded profile-image-size" src="{{$user_profile['image'] ? env_asset('storage/profile/images/'.$user_profile['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}" alt="profile_image">
+                                        <img class="rounded profile-image-size" src="{{$user_profile['image'] ? cloudfront('profile/images/'.$user_profile['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}" alt="profile_image">
                                     </div>
                                     <div class="d-flex flex-column gap-1" >
                                         <h3 class="text-white profile-name">{{$user_profile->name}}</h5>

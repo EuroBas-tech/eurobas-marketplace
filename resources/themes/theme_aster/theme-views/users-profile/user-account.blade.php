@@ -49,7 +49,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6">                       
+                                        <div class="col-sm-6">
                                             <div class="form-group" >
                                                 <label for="phone_code">{{translate('Phone')}}</label>
                                                 <div class="form-check form-switch d-flex gap-1 p-0 align-items-center mb-1">
@@ -146,11 +146,11 @@
                                                 <label for="email">{{translate('native_language')}}</label>
                                                 <select class="form-control custom-input-height emoji-font" name="native_language" id="native_language" >
                                                     @foreach (SYSTEM_LANGUAGE_FLAGS as $key =>$country)
-                                                        <option {{ $country['code'] == $customerDetail['native_language'] ? 'selected' : '' }} 
+                                                        <option {{ $country['code'] == $customerDetail['native_language'] ? 'selected' : '' }}
                                                             class="emoji-font" value="{{$country['code']}}">
                                                             {{ $country['flag']}} {{ ucwords($country['name']) }}
                                                         </option>
-                                                    @endforeach   
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -179,14 +179,14 @@
                                                 <label>{{translate('image')}}</label>
                                                 <div class="d-flex flex-column gap-2">
                                                     <div class="upload-file width-min-content">
-                                                        <input 
-                                                            type="file" 
-                                                            class="upload-file__input image width-min-content"  
+                                                        <input
+                                                            type="file"
+                                                            class="upload-file__input image width-min-content"
                                                             name="image"
                                                             id="thumbnail-input"
                                                             accept="image/*"
                                                             aria-required="true"
-                                                            data-old="{{$customerDetail['image'] ? env_asset('storage/profile/images/'.$customerDetail['image']) : theme_asset('assets/img/avatar/def-image.jpg')  }}"
+                                                            data-old="{{$customerDetail['image'] ? cloudfront('profile/images/'.$customerDetail['image']) : theme_asset('assets/img/avatar/def-image.jpg')  }}"
                                                         >
                                                         <div class="upload-file__img">
                                                             <div class="temp-img-box">
@@ -209,10 +209,10 @@
                                                 <label>{{ translate('profile_cover') }}</label>
                                                 <div class="row d-flex flex-column gap-2">
                                                     <div class="upload-file col-12 col-lg-7 col-md-6">
-                                                        <input 
+                                                        <input
                                                             type="file"
-                                                            class="upload-file__input cover" 
-                                                            name="cover_image" 
+                                                            class="upload-file__input cover"
+                                                            name="cover_image"
                                                             id="cover-input"
                                                             aria-required="true"
                                                             accept="image/*"
@@ -281,7 +281,7 @@
                                                 <label for="city">{{translate('City')}}</label>
                                                 <input class="form-control input-height" value="{{$customerDetail['city']}}" type="text" id="address-city" name="city" required>
                                             </div>
-                                            
+
                                             <div class="form-group mb-3">
                                                 <label for="postal_code">{{translate('postal_code')}}</label>
                                                 <input class="form-control input-height" value="{{$customerDetail['postal_code']}}" type="text" id="postal-code" name="postal_code">
@@ -292,7 +292,7 @@
                                                 <textarea name="street_address" id="address" rows="5" class="form-control input-height" placeholder="{{translate('Ex:_1216_Dhaka')}}">{{$customerDetail['street_address']}}</textarea>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 mt-5 mt-md-0">
                                             <div class="mt-5 mb-2 position-relative">
                                                 <input id="pac-input" class="controls rounded __inline-46" title="{{translate('search_your_location_here')}}" type="text" placeholder="{{translate('search_here')}}"/>
@@ -354,7 +354,7 @@
 
             img.attr("src", input.data("old"));
         });
-        
+
         $(window).on("load", function () {
             let input = $(".upload-file__input.cover");
             let img = input
@@ -412,29 +412,29 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const selectElement = document.getElementById('phone_code_select');
-    
+
     // Function to update the selected option display
     function updateSelectedDisplay() {
         const selectedOption = selectElement.options[selectElement.selectedIndex];
         if (selectedOption) {
             const flag = selectedOption.getAttribute('data-flag');
             const code = selectedOption.getAttribute('data-code');
-            
+
             // Create a temporary option to show only flag and code
             const tempOption = document.createElement('option');
             tempOption.value = selectedOption.value;
             tempOption.textContent = `${flag} ${code}`;
             tempOption.selected = true;
-            
+
             // Replace the selected option temporarily
             const originalHTML = selectedOption.innerHTML;
             selectedOption.innerHTML = tempOption.innerHTML;
-            
+
             // Store original content for when dropdown opens
             selectedOption.setAttribute('data-original', originalHTML);
         }
     }
-    
+
     // Function to restore full display when dropdown opens
     function restoreFullDisplay() {
         Array.from(selectElement.options).forEach(option => {
@@ -445,20 +445,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Update display on page load
     updateSelectedDisplay();
-    
+
     // Handle change event
     selectElement.addEventListener('change', function() {
         updateSelectedDisplay();
     });
-    
+
     // Handle focus to show full options
     selectElement.addEventListener('focus', function() {
         restoreFullDisplay();
     });
-    
+
     // Handle blur to show compact display
     selectElement.addEventListener('blur', function() {
         setTimeout(() => {
@@ -480,14 +480,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const city = document.getElementById('address-city').value.trim();
                 const postalCode = document.getElementById('postal-code').value.trim();
                 const address = document.getElementById('address').value.trim();
-                
+
                 // Only return true if there's meaningful data (not just a default country selection)
                 return city || postalCode || address;
             };
 
             // Europe center coordinates and bounds
             let myLatLng = { lat: 54.5260, lng: 15.2551 }; // Center of Europe
-            
+
             // Initialize the map
             const map = new google.maps.Map(document.getElementById("location_map_canvas"), {
                 center: myLatLng,
@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Create marker variable but don't add it to map initially
             let marker = null;
-            
+
             // Only create marker if there's existing data
             if (hasExistingData()) {
                 marker = new google.maps.Marker({
@@ -534,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         map: map,
                         draggable: true
                     });
-                    
+
                     // Add drag event listener to new marker
                     google.maps.event.addListener(marker, 'dragend', function(event) {
                         updateFormFields(event.latLng.lat(), event.latLng.lng());
@@ -548,9 +548,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
                 const address = document.getElementById('address').value;
-                
+
                 let searchQuery = '';
-                
+
                 // Determine what to search based on what fields are filled
                 if (address) {
                     searchQuery = `${address}, ${city}, ${country}`;
@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (country) {
                     searchQuery = country;
                 }
-                
+
                 if (searchQuery) {
                     geocodeAddress(searchQuery);
                 }
@@ -573,11 +573,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (status === 'OK' && results[0]) {
                         const location = results[0].geometry.location;
                         map.setCenter(location);
-                        
+
                         // Create marker if it doesn't exist
                         createMarkerIfNeeded(location);
                         marker.setPosition(location);
-                        
+
                         // Adjust zoom based on how specific the address is
                         if (document.getElementById('address').value) {
                             map.setZoom(16); // Very specific (street level)
@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else {
                             map.setZoom(5); // Country level
                         }
-                        
+
                         // Update hidden fields if they exist
                         if (document.getElementById('latitude')) {
                             document.getElementById('latitude').value = location.lat();
@@ -603,29 +603,29 @@ document.addEventListener('DOMContentLoaded', function() {
             // Function to update form fields based on coordinates
             function updateFormFields(lat, lng) {
                 const latlng = new google.maps.LatLng(lat, lng);
-                
+
                 geocoder.geocode({ 'location': latlng }, function(results, status) {
                     if (status === 'OK' && results[0]) {
                         const addressComponents = results[0].address_components;
                         const formattedAddress = results[0].formatted_address;
-                        
+
                         // Extract country, city, and postal code
                         let country = '';
                         let city = '';
                         let postalCode = '';
-                        
+
                         // Parse address components
                         for (let component of addressComponents) {
                             const types = component.types;
-                            
+
                             if (types.includes('country')) {
                                 country = component.long_name;
                             }
-                            
+
                             if (types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
-                            
+
                             if (types.includes('locality')) {
                                 city = component.long_name;
                             } else if (types.includes('sublocality_level_1') && !city) {
@@ -636,12 +636,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 city = component.long_name;
                             }
                         }
-                        
+
                         // Clean city name
                         if (city) {
                             city = city.replace(/^(Greater|Metropolitan|City of|Municipality of|Borough of)\s+/i, '');
                         }
-                        
+
                         // Update country dropdown
                         const countrySelect = document.getElementById('country');
                         for (let option of countrySelect.options) {
@@ -650,20 +650,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                 break;
                             }
                         }
-                        
+
                         // Update city field
                         if (city) {
                             document.getElementById('address-city').value = city;
                         }
-                        
+
                         // Update postal code field
                         if (postalCode && document.getElementById('postal-code')) {
                             document.getElementById('postal-code').value = postalCode;
                         }
-                        
+
                         // Update address field
                         document.getElementById('address').value = formattedAddress;
-                        
+
                         // Update hidden coordinates
                         if (document.getElementById('latitude')) {
                             document.getElementById('latitude').value = lat;
@@ -678,7 +678,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // NEW: Function to find user's current location using GPS
             function findCurrentLocation() {
                 const findLocationBtn = document.getElementById('find_location');
-                
+
                 // Check if geolocation is supported
                 if (!navigator.geolocation) {
                     alert('Geolocation is not supported by this browser.');
@@ -697,18 +697,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         const userLocation = new google.maps.LatLng(lat, lng);
-                        
+
                         // Center map on user's location
                         map.setCenter(userLocation);
                         map.setZoom(16); // Set to street level zoom
-                        
+
                         // Create marker if it doesn't exist
                         createMarkerIfNeeded(userLocation);
                         marker.setPosition(userLocation);
-                        
+
                         // Update form fields with the location data
                         updateFormFields(lat, lng);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -717,7 +717,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     function(error) {
                         let errorMessage = 'Unable to retrieve your location. ';
-                        
+
                         switch(error.code) {
                             case error.PERMISSION_DENIED:
                                 errorMessage += 'Please allow location access.';
@@ -732,9 +732,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 errorMessage += 'An unknown error occurred.';
                                 break;
                         }
-                        
+
                         alert(errorMessage);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -758,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Map click event
             google.maps.event.addListener(map, 'click', function(mapsMouseEvent) {
                 const coordinates = mapsMouseEvent.latLng.toJSON();
-                
+
                 // Create marker if it doesn't exist
                 createMarkerIfNeeded(new google.maps.LatLng(coordinates.lat, coordinates.lng));
                 marker.setPosition(new google.maps.LatLng(coordinates.lat, coordinates.lng));
@@ -778,38 +778,38 @@ document.addEventListener('DOMContentLoaded', function() {
             if (input) {
                 const searchBox = new google.maps.places.SearchBox(input);
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-                
+
                 map.addListener("bounds_changed", () => {
                     searchBox.setBounds(map.getBounds());
                 });
-                
+
                 let searchMarkers = [];
-                
+
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
-                    
+
                     if (places.length == 0) return;
-                    
+
                     searchMarkers.forEach(marker => marker.setMap(null));
                     searchMarkers = [];
-                    
+
                     const bounds = new google.maps.LatLngBounds();
                     places.forEach((place) => {
                         if (!place.geometry) return;
-                        
+
                         // Create marker if it doesn't exist
                         createMarkerIfNeeded(place.geometry.location);
                         marker.setPosition(place.geometry.location);
                         map.setCenter(place.geometry.location);
                         updateFormFields(place.geometry.location.lat(), place.geometry.location.lng());
-                        
+
                         if (place.geometry.viewport) {
                             bounds.union(place.geometry.viewport);
                         } else {
                             bounds.extend(place.geometry.location);
                         }
                     });
-                    
+
                     map.fitBounds(bounds);
                 });
             }
@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Define event handlers with debouncing
             const debouncedFocus = debounce(focusOnLocation, 500);
-            
+
             // Country change handler
             document.getElementById('country').addEventListener('change', function() {
                 document.getElementById('address-city').value = '';
