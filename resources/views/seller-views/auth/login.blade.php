@@ -8,7 +8,7 @@
     <title>{{translate('seller_login')}}</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset("storage/app/public/company")."/".$web_config['fav_icon']->value}}">
+    <link rel="shortcut icon" href="{{cloudfront("company")."/".$web_config['fav_icon']->value}}">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
@@ -16,9 +16,9 @@
         <!-- Rubik Google Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
-        
+
 
     <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/css/vendor.min.css">

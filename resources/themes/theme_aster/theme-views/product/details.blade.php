@@ -895,7 +895,7 @@
                                     <div class="media flex-wrap gap-2 pb-2">
                                         <div class="avatar border rounded-circle" style="--size: 3.437rem">
                                             <img
-                                                src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}"
+                                                src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}"
                                                 alt="" class="img-fit dark-support border-radius-15-percent"
                                                 onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" >
                                         </div>

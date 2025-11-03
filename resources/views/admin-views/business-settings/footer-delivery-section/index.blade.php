@@ -57,7 +57,7 @@
                                             </span>
 
                                             <div class="img_area_with_preview position-absolute z-index-2">
-                                                <img id="pre_img_header_logo{{$key}}" class="h-auto aspect-ratio-3-15 bg-white" src="{{asset('storage/app/public/company-reliability')}}/{{$value->image}}" onerror="this.classList.add('d-none')">
+                                                <img id="pre_img_header_logo{{$key}}" class="h-auto aspect-ratio-3-15 bg-white" src="{{cloudfront('company-reliability')}}/{{$value->image}}" onerror="this.classList.add('d-none')">
                                             </div>
                                             <div class="position-absolute h-100 top-0 w-100 d-flex align-content-center justify-content-center">
                                                 <div class="d-flex flex-column justify-content-center align-items-center">

@@ -3,12 +3,12 @@
 @section('title', translate('add_new_ad').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -52,7 +52,7 @@
                                     @csrf
                                     <input type="hidden" name="id" value="{{$ad->id}}">
                                     <div class="row gy-4">
-                                        
+
                                         @include('theme-views.ad.edit-pages.partials.identification-information')
 
                                         @include('theme-views.ad.edit-pages.partials.technical-information')
@@ -60,11 +60,11 @@
                                         @include('theme-views.ad.edit-pages.partials.media-data')
 
                                         @include('theme-views.ad.edit-pages.partials.price-data')
-                                        
+
                                         @include('theme-views.ad.edit-pages.partials.dimensions-and-sizes')
 
                                         @include('theme-views.ad.edit-pages.partials.contact-and-location-data')
-                                        
+
                                         @if($ad->category->slug !== 'vehicle-accessories' && $ad->category->slug !== 'spare-parts'
                                         && $ad->category->slug !== 'bicycles')
                                             @include('theme-views.ad.edit-pages.partials.environmental-information')
@@ -116,23 +116,23 @@
 
             const allowOffers = document.getElementById('allow-offers');
             const firstPrice = document.getElementById('first-price');
-            
+
             const categorySelect = document.getElementById('category');
             const categoryName = document.getElementById('dynamic-cat-name');
 
             const emailAddressDiv = document.getElementById('email-address');
             const phoneNumberDiv = document.getElementById('phone-number');
-            
+
             // Set initial state of phone number input fields
             const phoneInput = document.querySelector('input[name="contact_phone_number"]');
             const phoneCodeSelect = document.querySelector('select[name="phone_code"]');
-            
+
             // Initially disable the phone fields if checkbox is not checked
             if (!showPhoneCheckbox.checked) {
                 phoneInput.disabled = true;
                 phoneCodeSelect.disabled = true;
             }
-            
+
             // Add event listener to the checkbox
             showPhoneCheckbox.addEventListener('change', function() {
                 if (this.checked) {
@@ -161,9 +161,9 @@
 
             // Add event listener to the checkbox
             allowOffers.addEventListener('change', function() {
-                
+
                 document.getElementById('first-price-input').value = '';
-                
+
                 if (this.checked) {
                     // If checkbox is checked, remove d-none class
                     firstPrice.classList.remove('d-none');
@@ -173,7 +173,7 @@
                     firstPrice.classList.add('d-none');
                 }
             });
-            
+
             // Add event listener to the checkbox
             categorySelect.addEventListener('change', function() {
                 categoryName.innerHTML = this.options[this.selectedIndex].text;
@@ -186,7 +186,7 @@
             const priceBox = document.getElementById('price-box');
             const startingPriceBox = document.getElementById('starting-price-box');
             const offersBox = document.getElementById('offers-box');
-            
+
             function togglePriceFields() {
                 const selectedValue = purchaseTypeSelect.value;
 
@@ -202,7 +202,7 @@
 
                     if (selectedValue === 'asking_price') {
                         offersBox.classList.remove('d-none');
-                    } 
+                    }
                 } else if (selectedValue === 'auction') {
                     startingPriceBox.classList.remove('d-none');
                     priceBox.classList.add('d-none');
@@ -217,7 +217,7 @@
 
         });
 
-        
+
 
         // Replace your existing event listener code with this:
 document.addEventListener('click', function(e) {
@@ -240,7 +240,7 @@ function addMoreImage(input, targetSection) {
     const maxSize = 4 * 1024 * 1024; // 4MB in bytes
     const invalidFiles = [];
     const oversizedFiles = [];
-    
+
     Array.from(files).forEach(file => {
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!allowedTypes.includes(fileExtension)) {
@@ -264,12 +264,12 @@ function addMoreImage(input, targetSection) {
     }
 
     let container = document.querySelector(targetSection);
-    
+
     // First, find and remove all empty upload boxes to ensure proper ordering
     const allBoxes = container.querySelectorAll('.upload-file');
     const emptyBoxes = Array.from(allBoxes).filter(box => box.querySelector('.temp-img-box'));
     emptyBoxes.forEach(box => box.remove());
-    
+
     // Count only boxes with actual images (ignore empty upload boxes that might have been there)
     const imageBoxes = Array.from(container.querySelectorAll('.upload-file'));
 
@@ -285,11 +285,11 @@ function addMoreImage(input, targetSection) {
 
     // Keep track of processed files to know when to add the upload box
     let processedFiles = 0;
-    
+
     // Process each selected file
     Array.from(files).forEach((file) => {
         const reader = new FileReader();
-        
+
         reader.onload = function(e) {
             const newBoxHTML = `
                 <div class="upload-file position-relative">
@@ -304,18 +304,18 @@ function addMoreImage(input, targetSection) {
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', newBoxHTML);
-            
+
             // Get the newly added box and attach the file to its input
             const newBox = container.lastElementChild;
             const newInput = newBox.querySelector('.image-file-input');
-            
+
             // Create a new FileList-like object with just this file
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
             newInput.files = dataTransfer.files;
-            
+
             processedFiles++;
-            
+
             // If all files have been processed, add the empty input box at the end
             if (processedFiles === files.length) {
                 addEmptyUploadBox(container, targetSection);
@@ -329,13 +329,13 @@ function addMoreImage(input, targetSection) {
 function addEmptyUploadBox(container, targetSection) {
     const newInputHTML = `
         <div class="upload-file position-relative">
-            <input 
-                type="file" 
+            <input
+                type="file"
                 class="upload-file__input"
                 onchange="addMoreImage(this, '${targetSection}')"
-                name="images[]" 
-                multiple 
-                aria-required="true" 
+                name="images[]"
+                multiple
+                aria-required="true"
                 accept="image/*">
 
             <div class="upload-file__img">
@@ -360,7 +360,7 @@ function validateThumbnailImage(input) {
     const allowedTypes = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
     const maxSize = 4 * 1024 * 1024; // 4MB in bytes
     const fileExtension = file.name.split('.').pop().toLowerCase();
-    
+
     if (!allowedTypes.includes(fileExtension)) {
         toastr.error('Only JPG, JPEG, PNG, WEBP, AVIF files are acceptable');
         input.value = '';
@@ -381,13 +381,13 @@ document.addEventListener('click', function(e) {
     if (e.target.closest('.remove-image-btn')) {
         const uploadFile = e.target.closest('.upload-file');
         const container = uploadFile.parentElement;
-        
+
         uploadFile.remove();
-        
+
         // Check for an empty upload box
         const allBoxes = container.querySelectorAll('.upload-file');
         const emptyBox = Array.from(allBoxes).find(box => box.querySelector('.temp-img-box'));
-        
+
         // If there's an empty box, move it to the end, otherwise add one
         if (emptyBox) {
             // Remove and re-append the empty box to place it at the end
@@ -396,7 +396,7 @@ document.addEventListener('click', function(e) {
         } else {
             addEmptyUploadBox(container, '#additional_Image_Section');
         }
-        
+
         // Re-index file inputs if needed (ensures consistent naming)
         updateInputIndices(container);
     }
@@ -481,7 +481,7 @@ $(window).on("load", function () {
 
                 // 1. Get the form element
                 let form = $('#ads-store-form')[0];
-                
+
                 // 2. Create FormData object
                 let formData = new FormData(form);
 
@@ -501,7 +501,7 @@ $(window).on("load", function () {
 
                         if (response.success) {
                             toastr.success(response.message);
-                            
+
                             // Optional: Redirect after success
                             if (response.redirect_url) {
                                 setTimeout(function() {
@@ -512,7 +512,7 @@ $(window).on("load", function () {
                             // Handle unexpected success=false responses
                             toastr.warning(response.message || '{{translate("Operation completed with warnings")}}');
                         }
-                    },                    
+                    },
                     error: function(xhr) {
 
                         // Restore button
@@ -543,7 +543,7 @@ $(window).on("load", function () {
 
                 });
             }
-            
+
             // You need to call it, for example on a button click:
             $('#add-button').on('click', function() {
                 storeAd();
@@ -576,7 +576,7 @@ $(window).on("load", function () {
 
             // Store all model options
             const allModelOptions = $('#model option').clone();
-            
+
             // Create the "Other" options once with value="other"
             const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
             const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
@@ -588,7 +588,7 @@ $(window).on("load", function () {
                 if ($brandSelect.find('option[value="other"]').length === 0) {
                     $brandSelect.append(otherBrandOption);
                 }
-                
+
                 // Add "Other Model" if it doesn't exist
                 if ($modelSelect.find('option[value="other"]').length === 0) {
                     $modelSelect.append(otherModelOption);
@@ -601,7 +601,7 @@ $(window).on("load", function () {
 
                 // Clear models but keep the "Other Model" and default option
                 $modelSelect.find('option').not('[value="other"], [value=""]').remove();
-                
+
                 // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
@@ -619,9 +619,9 @@ $(window).on("load", function () {
                 if ($modelSelect.find('option[value="other"]').length > 1) {
                     $modelSelect.find('option[value="other"]').not(':last').remove();
                 }
-                
+
                 $modelSelect.val(null).trigger('change');
-                
+
                 // Ensure "Other Brand" exists
                 addPersistentOptions();
             }
@@ -763,7 +763,7 @@ $(window).on("load", function () {
         function initAutocomplete() {
             // Europe center coordinates (initial fallback)
             let myLatLng = { lat: 50.1109, lng: 8.6821 };
-            
+
             // Initialize the map focused on Europe initially
             const map = new google.maps.Map(document.getElementById("location_map_canvas"), {
                 center: myLatLng,
@@ -803,7 +803,7 @@ $(window).on("load", function () {
                         map: map,
                         draggable: true
                     });
-                    
+
                     // Add drag event listener when marker is created
                     google.maps.event.addListener(marker, 'dragend', function(event) {
                         updateFormFields(event.latLng.lat(), event.latLng.lng());
@@ -816,9 +816,9 @@ $(window).on("load", function () {
                 const country = document.getElementById('country').value;
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
-                
+
                 let searchQuery = '';
-                
+
                 // Build search query based on available data (prioritize more specific)
                 if (city && postalCode) {
                     searchQuery = `${postalCode}, ${city}, ${country}`;
@@ -827,7 +827,7 @@ $(window).on("load", function () {
                 } else if (country) {
                     searchQuery = country;
                 }
-                
+
                 if (searchQuery) {
                     geocodeAddress(searchQuery);
                 }
@@ -840,11 +840,11 @@ $(window).on("load", function () {
                         const location = results[0].geometry.location;
                         map.setCenter(location);
                         createOrUpdateMarker(location);
-                        
+
                         // Adjust zoom based on how specific the address is
                         const city = document.getElementById('address-city').value;
                         const postalCode = document.getElementById('postal-code').value;
-                        
+
                         if (city && postalCode) {
                             map.setZoom(14); // Postal code level
                         } else if (city) {
@@ -865,28 +865,28 @@ $(window).on("load", function () {
             // Function to update form fields based on coordinates
             function updateFormFields(lat, lng) {
                 const latlng = new google.maps.LatLng(lat, lng);
-                
+
                 geocoder.geocode({ 'location': latlng }, function(results, status) {
                     if (status === 'OK' && results[0]) {
                         const addressComponents = results[0].address_components;
-                        
+
                         // Extract country, city, and postal code
                         let country = '';
                         let city = '';
                         let postalCode = '';
-                        
+
                         // Parse address components
                         for (let component of addressComponents) {
                             const types = component.types;
-                            
+
                             if (types.includes('country')) {
                                 country = component.long_name;
                             }
-                            
+
                             if (types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
-                            
+
                             if (types.includes('locality')) {
                                 city = component.long_name;
                             } else if (types.includes('sublocality_level_1') && !city) {
@@ -897,12 +897,12 @@ $(window).on("load", function () {
                                 city = component.long_name;
                             }
                         }
-                        
+
                         // Clean city name
                         if (city) {
                             city = city.replace(/^(Greater|Metropolitan|City of|Municipality of|Borough of)\s+/i, '');
                         }
-                        
+
                         // Update country dropdown
                         const countrySelect = document.getElementById('country');
                         for (let option of countrySelect.options) {
@@ -911,12 +911,12 @@ $(window).on("load", function () {
                                 break;
                             }
                         }
-                        
+
                         // Update city field
                         if (city) {
                             document.getElementById('address-city').value = city;
                         }
-                        
+
                         // Update postal code field
                         if (postalCode) {
                             document.getElementById('postal-code').value = postalCode;
@@ -928,36 +928,36 @@ $(window).on("load", function () {
             // NEW FEATURE: GPS Location Detection Function
             function findUserLocation() {
                 const findLocationBtn = document.getElementById('find_location');
-                
+
                 // Check if geolocation is supported
                 if (!navigator.geolocation) {
                     alert('Geolocation is not supported by this browser.');
                     return;
                 }
-                
+
                 // Disable button and show loading state
                 if (findLocationBtn) {
                     findLocationBtn.disabled = true;
                     findLocationBtn.innerHTML = 'Finding Location...';
                 }
-                
+
                 // Get current position
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         const userLocation = new google.maps.LatLng(lat, lng);
-                        
+
                         // Center map on user location
                         map.setCenter(userLocation);
                         map.setZoom(14); // Set appropriate zoom level for user location
-                        
+
                         // Create or update marker at user location
                         createOrUpdateMarker(userLocation);
-                        
+
                         // Update form fields with user location data
                         updateFormFields(lat, lng);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -966,7 +966,7 @@ $(window).on("load", function () {
                     },
                     function(error) {
                         let errorMessage = 'Unable to retrieve your location. ';
-                        
+
                         switch(error.code) {
                             case error.PERMISSION_DENIED:
                                 errorMessage += 'Location access denied by user.';
@@ -981,9 +981,9 @@ $(window).on("load", function () {
                                 errorMessage += 'An unknown error occurred.';
                                 break;
                         }
-                        
+
                         alert(errorMessage);
-                        
+
                         // Reset button state
                         if (findLocationBtn) {
                             findLocationBtn.disabled = false;
@@ -1011,31 +1011,31 @@ $(window).on("load", function () {
             if (input) {
                 const searchBox = new google.maps.places.SearchBox(input);
                 // map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-                
+
                 map.addListener("bounds_changed", () => {
                     searchBox.setBounds(map.getBounds());
                 });
-                
+
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
-                    
+
                     if (places.length == 0) return;
-                    
+
                     const bounds = new google.maps.LatLngBounds();
                     places.forEach((place) => {
                         if (!place.geometry) return;
-                        
+
                         createOrUpdateMarker(place.geometry.location);
                         map.setCenter(place.geometry.location);
                         updateFormFields(place.geometry.location.lat(), place.geometry.location.lng());
-                        
+
                         if (place.geometry.viewport) {
                             bounds.union(place.geometry.viewport);
                         } else {
                             bounds.extend(place.geometry.location);
                         }
                     });
-                    
+
                     map.fitBounds(bounds);
                 });
             }
@@ -1045,7 +1045,7 @@ $(window).on("load", function () {
                 const country = document.getElementById('country').value;
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
-                
+
                 // Check if we have existing data to focus on
                 if (country || city || postalCode) {
                     focusOnLocation();
@@ -1054,7 +1054,7 @@ $(window).on("load", function () {
 
             // Define event handlers with debouncing
             const debouncedFocus = debounce(focusOnLocation, 500);
-            
+
             // Country change handler
             document.getElementById('country').addEventListener('change', function() {
                 if (this.value) {
@@ -1099,7 +1099,7 @@ $(window).on("load", function () {
         });
     </script>
 
-    <script defer async src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" ></script>    
+    <script defer async src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" ></script>
 @endpush
 
 

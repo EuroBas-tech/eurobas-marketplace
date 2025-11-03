@@ -3,12 +3,12 @@
 @section('title', translate('add_new_ad').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -71,7 +71,7 @@
                                                 <input type="email" id="email" class="form-control input-height" value="{{ old('email') }}" name="email" placeholder="">
                                             </div>
                                         </div>
-    
+
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label for="password">{{translate('Password')}}</label>
@@ -81,7 +81,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label for="password_confirmation">{{translate('Confirm_Password')}}</label>
@@ -91,17 +91,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-sm-12">
                                             <div class="py-2" >
                                                 <div class="d-flex align-items-start gap-1" >
                                                     <input class="form-check-input m-0" type="checkbox" name="agree" id="agree">
                                                     <label for="agree" class="m-0" >
-                                                        <span class="fw-normal" >{{translate('i_agree_to_the')}}</span> 
+                                                        <span class="fw-normal" >{{translate('i_agree_to_the')}}</span>
                                                         <a class="fw-medium text-primary" target="_blank" href="{{route('terms')}}">
                                                             {{translate('terms_and_conditions_and_privacy_policy')}}
                                                         </a>.
-                                                    </label>                                                
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@
                         // Restore button
                         $('#add-button').prop('disabled', false);
                         $('#add-button').html(`<i class="bi bi-person-plus fs-16"></i><span>{{translate('register')}}</span>`);
-                        
+
                         toastr.error("{{ translate('Please_check_the_recaptcha') }}");
                         return; // Stop execution
                     }
@@ -162,7 +162,7 @@
 
                 // 1. Get the form element
                 let form = $('#register-store-form')[0];
-                
+
                 // 2. Create FormData object
                 let formData = new FormData(form);
 
@@ -181,7 +181,7 @@
 
                         if (response.success) {
                             toastr.success(response.message);
-                            
+
                             // Optional: Redirect after success
                             if (response.redirect_url) {
                                 setTimeout(function() {
@@ -192,13 +192,13 @@
                             // Handle unexpected success=false responses
                             toastr.warning(response.message || '{{translate("Operation completed with warnings")}}');
                         }
-                    },                    
+                    },
                     error: function(xhr) {
 
                         // Restore button
                         $('#add-button').prop('disabled', false);
                         $('#add-button').html(`<i class="bi bi-person-plus fs-16"></i><span>{{translate('register')}}</span>`);
-                        
+
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
                             // Handle as simple array
@@ -223,7 +223,7 @@
 
                 });
             }
-            
+
             // You need to call it, for example on a button click:
             $('#add-button').on('click', function() {
                 registerStore();
@@ -237,7 +237,7 @@
         var onloadCallbackCustomerRegisterCompany = function () {
             // Add some randomization to potentially trigger more challenges
             var randomParam = Math.random().toString(36).substring(7);
-            
+
             let register_company_id = grecaptcha.render('recaptcha_element_customer_register_company', {
                 'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}',
                 'size': 'normal',
@@ -261,7 +261,7 @@
                 }
             });
             $('#recaptcha_element_customer_register_company').attr('data-register-company-id', register_company_id);
-            
+
             // Subtle techniques to potentially increase challenge probability
             // Add some mouse movement simulation
             var recaptchaElement = document.getElementById('recaptcha_element_customer_register_company');
@@ -273,7 +273,7 @@
                 }, Math.random() * 1000 + 500);
             }
         };
-        
+
         // Additional entropy for session
         (function() {
             var userAgent = navigator.userAgent;

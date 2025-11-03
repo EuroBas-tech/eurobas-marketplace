@@ -57,10 +57,10 @@
                                                 <a href="{{ route('account-order-details', ['id'=>$order->id])}}" class="d-block position-relative">
                                                 @if($order->seller_is == 'seller')
                                                     <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                    src="{{ asset('storage/app/public/shop/'.(isset($order->seller->shop) ? $order->seller->shop->image:''))}}" alt="img/products">
+                                                    src="{{ cloudfront('shop/'.(isset($order->seller->shop) ? $order->seller->shop->image:''))}}" alt="img/products">
                                                 @elseif($order->seller_is == 'admin')
                                                     <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                    src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}" alt="img/products">
+                                                    src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}" alt="img/products">
                                                 @endif
                                                 </a>
                                                 <div class="cont text-start">
@@ -137,10 +137,10 @@
                             <a href="{{ route('account-order-details', ['id'=>$order->id]) }}" class="d-block position-relative">
                                 @if($order->seller_is == 'seller')
                                     <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{ asset('storage/app/public/shop/'.(isset($order->seller->shop) ? $order->seller->shop->image:''))}}" class="border" alt="img/products">
+                                    src="{{ cloudfront('shop/'.(isset($order->seller->shop) ? $order->seller->shop->image:''))}}" class="border" alt="img/products">
                                 @elseif($order->seller_is == 'admin')
                                     <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" class="border"
-                                    src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}" alt="img/products">
+                                    src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}" alt="img/products">
                                 @endif
                             </a>
                             <div class="cont text-start">

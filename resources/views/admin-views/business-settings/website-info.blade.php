@@ -50,17 +50,17 @@
                 <form action="{{route('admin.maintenance-mode')}}" method="get" id="maintenance_mode_form">
                     @csrf
                     <div class="border rounded border-color-c1 px-4 py-3 d-flex justify-content-between mb-1">
-                        
+
                         @php($config=\App\CPU\Helpers::get_business_settings('maintenance_mode'))
-                        
+
                         <h5 class="mb-0 d-flex gap-1 c1">
                             {{translate('maintenance_mode')}}
                         </h5>
-                        
+
                         <div class="position-relative">
                             <label class="switcher">
-                                <input type="checkbox" class="switcher_input" id="maintenance_mode" 
-                                {{ isset($config) && $config == 1 ? 'checked' : '' }} 
+                                <input type="checkbox" class="switcher_input" id="maintenance_mode"
+                                {{ isset($config) && $config == 1 ? 'checked' : '' }}
                                 onclick="toogleStatusModal(event,'maintenance_mode','maintenance_mode-on.png','maintenance_mode-off.png','{{translate('Want_to_enable_the_Maintenance_Mode')}}','{{translate('Want_to_disable_the_Maintenance_Mode')}}',`<p>{{translate('if_enabled_all_your_apps_and_customer_website_will_be_temporarily_off')}}</p>`,`<p>{{translate('if_disabled_all_your_apps_and_customer_website_will_be_functional')}}</p>`)">
                                 <span class="switcher_control"></span>
                             </label>
@@ -968,7 +968,7 @@
                                 <input type="url" name="app_store_download_url" class="form-control" value="{{ $app_store_download['link'] ?? '' }}" placeholder="{{translate('Ex: https://www.apple.com/app-store/')}}">
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-6">
                             <div class="d-flex gap-2 align-items-center text-capitalize mb-3">
                                 <img width="22" src="{{asset('/public/assets/back-end/img/play_store.png')}}" alt="">
@@ -1071,7 +1071,7 @@
                             <center>
                                 <img height="60" id="viewerWL"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_web_logo'])->pluck('value')[0]}}">
+                                        src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_web_logo'])->pluck('value')[0]}}">
                             </center>
                             <div class="mt-4 position-relative">
                                 <input type="file" name="company_web_logo" id="customFileUploadWL"
@@ -1096,7 +1096,7 @@
                             <center>
                                 <img height="60" id="viewerWFL"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_footer_logo'])->pluck('value')[0]}}">
+                                    src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_footer_logo'])->pluck('value')[0]}}">
                             </center>
                             <div class="position-relative mt-4">
                                 <input type="file" name="company_footer_logo" id="customFileUploadWFL"
@@ -1121,7 +1121,7 @@
                             <center>
                                 <img height="60" id="viewerFI"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_fav_icon'])->pluck('value')[0]}}">
+                                        src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_fav_icon'])->pluck('value')[0]}}">
                             </center>
                             <div class="position-relative mt-4">
                                 <input type="file" name="company_fav_icon" id="customFileUploadFI"
@@ -1146,7 +1146,7 @@
                             <center>
                                 <img height="60" id="viewerLoader"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/company')}}/{{\App\CPU\Helpers::get_business_settings('loader_gif')}}">
+                                        src="{{cloudfront('company')}}/{{\App\CPU\Helpers::get_business_settings('loader_gif')}}">
                             </center>
                             <div class="position-relative mt-4">
                                 <input type="file" name="loader_gif" id="customFileUploadLoader"
@@ -1171,7 +1171,7 @@
                             <center>
                                 <img height="60" id="viewerML"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}">
+                                        src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}">
                             </center>
                             <div class="mt-4 position-relative">
                                 <input type="file" name="company_mobile_logo" id="customFileUploadML"

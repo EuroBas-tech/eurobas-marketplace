@@ -238,7 +238,7 @@
                 {{ucwords('Order overview')}}
             </th>
             <th class="p-0 text-right">
-                <img height="40" src="{{asset("storage/app/public/company/dark-logo.png")}}" alt="">
+                <img height="40" src="{{cloudfront("company/dark-logo.png")}}" alt="">
             </th>
         </tr>
 

@@ -8,7 +8,7 @@
         <meta property="og:title" content="{{ $shop->name}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @else
-        <meta property="og:image" content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+        <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="og:title" content="{{ $shop['name']}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
@@ -20,7 +20,7 @@
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @else
         <meta property="twitter:card"
-              content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+              content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
@@ -96,7 +96,7 @@
                                                 </span>
                                             @endif
                                             <img class="__inline-68"
-                                                src="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"
+                                                src="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                 alt="">
                                         </div>

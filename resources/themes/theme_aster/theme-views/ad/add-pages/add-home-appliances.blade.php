@@ -3,12 +3,12 @@
 @section('title', translate('add_new_ad').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -37,14 +37,14 @@
             border: 1px solid #d9d9d9;
             box-shadow: 0px 0px 2px #858585;
         }
-        
+
         .pricing-card.active {
             border: 1px solid #198754;
             transform: scale(1.08);
             transition: .2s;
         }
 
-                
+
         .payment-card {
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -140,7 +140,7 @@
         .payment-card.selected {
             transform: translateY(-3px) scale(1.02);
         }
-        
+
         .col-auto {
             margin-bottom: 1rem;
         }
@@ -176,7 +176,7 @@
                                 <form  action="" method="POST" id="ads-store-form" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row gy-4">
-                                        
+
                                         @include('theme-views.ad.add-pages.partials.identification-information')
 
                                         @include('theme-views.ad.add-pages.partials.home-appliances-data')
@@ -184,7 +184,7 @@
                                         @include('theme-views.ad.add-pages.partials.media-data')
 
                                         @include('theme-views.ad.add-pages.partials.price-data')
-                                        
+
                                         @include('theme-views.ad.add-pages.partials.dimensions-and-sizes')
 
                                         @include('theme-views.ad.add-pages.partials.contact-and-location-data')

@@ -3,12 +3,12 @@
 @section('title', translate('all_Brands'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Brands of {{$web_config['name']->value}} "/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Brands of {{$web_config['name']->value}}"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -24,7 +24,7 @@
                 <p class="fs-14 fw-semibold mb-0">{{translate('Find your favourite brands and products')}}</p>
             </div>
         </div>
-        
+
         <!-- Products grid-->
         <div class="brand_div-wrap mb-4">
             @foreach($brands as $brand)
@@ -33,7 +33,7 @@
                 </a>
             @endforeach
         </div>
-        
+
         <div class="row mx-n2">
             <div class="col-md-12">
                 <center>

@@ -1,12 +1,12 @@
 @extends('theme-views.layouts.home-app')
 
 @push('css_or_js')
-    <meta property="og:image" content="{{asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -20,8 +20,8 @@
         }
 
         .emoji-font {
-            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
-            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
+            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
 
@@ -39,7 +39,7 @@
             background: rgba(0, 0, 0, 0.5);
             background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
             color: white;
-            width: 205px; 
+            width: 205px;
             height: 55px;
             /* padding: 0 20px; */
             display: flex;
@@ -139,7 +139,7 @@
                 height: 40px !important;
             }
         }
-        
+
         @media (max-width: 575px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 line-height: 36px !important;
@@ -155,14 +155,14 @@
 @php($lang=app()->getLocale())
 
 @section('content')
-    
+
     <main class="main-content d-flex flex-column gap-3 py-3">
         <div>
 
-            
+
             <div class="px-sm-3" >
                 <div class="d-flex align-items-center gap-2 my-4 " >
-                    <h2>{{translate('all_ads_of_category')}} :</h2> 
+                    <h2>{{translate('all_ads_of_category')}} :</h2>
                     <h6 class="mt-1 fs-14">
                         <span class="bg-primary py-2 px-2 rounded text-light">
                             <i class="bi bi-tags-fill"></i>

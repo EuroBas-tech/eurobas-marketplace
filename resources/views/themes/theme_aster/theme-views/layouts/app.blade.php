@@ -17,13 +17,13 @@
     <meta name="_token" content="{{csrf_token()}}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+    <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
 
 
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <!-- Combined Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Mulish:wght@300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 

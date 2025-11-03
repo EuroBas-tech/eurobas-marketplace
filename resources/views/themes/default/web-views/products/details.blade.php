@@ -644,7 +644,7 @@
                             @if ($value['status'] == 1 && !empty($value['title']))
                                     <div class="shipping-details-bottom-border">
                                         <div class="px-3 py-3">
-                                            <img class="{{Session::get('direction') === "rtl" ? 'float-right ml-2' : 'mr-2'}} __img-20"  src="{{asset("/storage/app/public/company-reliability").'/'.$value['image']}}"
+                                            <img class="{{Session::get('direction') === "rtl" ? 'float-right ml-2' : 'mr-2'}} __img-20"  src="{{cloudfront("company-reliability").'/'.$value['image']}}"
                                             onerror="this.src='{{asset('/public/assets/front-end/img').'/'.$value['item'].'.png'}}'"
                                                     alt="">
                                             <span>{{translate($value['title'] ?? 'title_not_found')}}</span>
@@ -733,7 +733,7 @@
                                     <a href="{{route('shopView',[0])}}" class="row d-flex ">
                                         <div>
                                             <img class="__inline-32"
-                                                src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}"
+                                                src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                 alt="">
                                         </div>

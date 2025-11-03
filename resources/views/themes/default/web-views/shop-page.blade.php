@@ -8,19 +8,19 @@
         <meta property="og:title" content="{{ $shop->name}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @else
-        <meta property="og:image" content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+        <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="og:title" content="{{ $shop['name']}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
     @if($shop['id'] != 0)
-        <meta property="twitter:card" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="twitter:card" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @else
         <meta property="twitter:card"
-              content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+              content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
@@ -96,7 +96,7 @@
                                                 </span>
                                             @endif
                                             <img class="__inline-68"
-                                                src="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"
+                                                src="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                 alt="">
                                         </div>

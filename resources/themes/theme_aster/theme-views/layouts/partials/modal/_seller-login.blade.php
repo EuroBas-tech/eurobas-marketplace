@@ -19,7 +19,7 @@
                 <div class="mb-3 text-center">
                     <img
                         width="123"
-                        src="{{asset("storage/app/public/company")."/".$web_config['web_logo']->value}}"
+                        src="{{cloudfront("company")."/".$web_config['web_logo']->value}}"
                         alt=""
                         class="dark-support"
                     />

@@ -4,34 +4,34 @@
 
 @push('css_or_js')
     @if($shop['id'] != 0)
-        <meta property="og:image" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="og:image" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="og:title" content="{{ $shop->name}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @else
-        <meta property="og:image" content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+        <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="og:title" content="{{ $shop['name']}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
     @if($shop['id'] != 0)
-        <meta property="twitter:card" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="twitter:card" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @else
         <meta property="twitter:card"
-              content="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+              content="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @endif
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
-    
+
     <style>
         .shop-cover-style {
             height: 200px !important;
             object-fit: cover !important;
         }
     </style>
-    
+
 @endpush
 
 @section('content')
@@ -58,7 +58,7 @@
                         </div>
                         @endif
                     @endif
-                    
+
                 </div>
                 <div class="col-md-3 d-flex justify-content-center align-items-center" >
                     <div class="d-flex flex-wrap flex-lg-column margin-on-mobile flex-lg-down-grow-1 justify-content-center gap-3">
@@ -140,7 +140,7 @@
                             <div class="media gap-3">
                                 <div class="avatar rounded store-avatar">
                                     <div class="position-relative">
-                                        <img src="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"
+                                        <img src="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"
                                         onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded img-fit" alt="">
 
                                         @if($seller_temporary_close || $inhouse_temporary_close)

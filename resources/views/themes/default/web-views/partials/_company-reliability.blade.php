@@ -6,7 +6,7 @@
                     <div class="col-md-3 d-flex justify-content-center px-max-md-0">
                         <div class="shipping-method-system">
                             <div class="text-center">
-                                <img class="{{Session::get('direction') === "rtl" ? 'float-right ml-2' : 'mr-2'}} size-60"  src="{{asset("/storage/app/public/company-reliability").'/'.$value['image']}}"
+                                <img class="{{Session::get('direction') === "rtl" ? 'float-right ml-2' : 'mr-2'}} size-60"  src="{{cloudfront("company-reliability").'/'.$value['image']}}"
                                     onerror="this.src='{{asset('/public/assets/front-end/img').'/'.$value['item'].'.png'}}'"
                                         alt="">
                             </div>

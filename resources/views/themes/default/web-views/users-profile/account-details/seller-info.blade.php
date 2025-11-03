@@ -235,7 +235,7 @@
                             </div>
                         @else
                             <div class="media flex-wrap gap-3 border rounded p-3">
-                                <img class="rounded border" width="77" src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}"
+                                <img class="rounded border" width="77" src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}"
                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" alt="">
                                 <div class="media-body">
                                     <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between">

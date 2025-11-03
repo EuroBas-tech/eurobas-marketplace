@@ -10,7 +10,7 @@
     <title>{{translate('seller')}} | {{translate('reset_Password')}}</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}">
+    <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}">
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">

@@ -657,7 +657,7 @@
                     <div class="nav-wrapper">
                         <div class="d-xl-none">
                             <a class="logo" href="{{route('home')}}">
-                                <img src="{{asset("storage/app/public/company")."/".$web_config['mob_logo']->value}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
+                                <img src="{{cloudfront("company")."/".$web_config['mob_logo']->value}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
                             </a>
                         </div>
                         <ul class="nav main-menu align-items-center d-none d-xl-flex flex-nowrap">

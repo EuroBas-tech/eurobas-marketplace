@@ -17,7 +17,7 @@
     <meta name="_token" content="{{csrf_token()}}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+    <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
 
     <!-- Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,17 +26,17 @@
           rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
-    
+
     <!-- Rubik Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
     <!-- Cairo Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">    
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+
     <!-- ======= BEGIN GLOBAL MANDATORY STYLES ======= -->
     <link rel="stylesheet" href="{{ theme_asset('assets/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ theme_asset('assets/css/bootstrap-icons.min.css') }}"/>
@@ -49,11 +49,11 @@
 
     <!-- ======= MAIN STYLES ======= -->
     <link rel="stylesheet" href="{{ theme_asset('assets/css/style.css?v='.time()) }}"/>
-    
+
     <link rel="stylesheet" href="{{ theme_asset('assets/css/select2.min.css?v='.time()) }}"/>
 
     <!-- ======= END MAIN STYLES ======= -->
-     
+
     @stack('css_or_js')
 
     <!-- ======= CUSTOMIZE STYLES ======= -->
@@ -79,11 +79,11 @@
             background-color: {{ $web_config['announcement']['color'] }};
             color: {{$web_config['announcement']['text_color']}};
         }
-        
+
         #cke_notifications_area_description {
             display: none !important;
         }
-        
+
         @font-face {
         font-family: 'NotoColorEmojiLimited';
         unicode-range: U+1F1E6-1F1FF;
@@ -91,16 +91,16 @@
         }
 
         .emoji-font {
-            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
-            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
+            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
 
         @if(
-            auth("customer")->check() && 
-            (!auth("customer")->user()->phone_code || 
-            !auth("customer")->user()->phone || 
-            !auth("customer")->user()->country || 
+            auth("customer")->check() &&
+            (!auth("customer")->user()->phone_code ||
+            !auth("customer")->user()->phone ||
+            !auth("customer")->user()->country ||
             !auth("customer")->user()->city)
         )
             .main-content {
@@ -341,7 +341,7 @@
             }
         })
     }
-    
+
 </script>
 
 @if(!auth('customer')->check())

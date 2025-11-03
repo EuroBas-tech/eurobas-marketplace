@@ -81,7 +81,7 @@
                                             <div class="media align-items-center gap-3">
                                                 <div class="avatar rounded store-avatar">
                                                     <img  class="dark-support rounded img-fit" alt=""
-                                                         src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}"
+                                                         src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}"
                                                          onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'">
                                                 </div>
                                                 <div class="media-body d-flex flex-column gap-2">
@@ -114,7 +114,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="card flex-grow-1">
                                                 <div class="card-body grid-center">
                                                     <div class="text-center">

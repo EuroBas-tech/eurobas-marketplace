@@ -113,7 +113,7 @@
                 <td>
                    <div style="text-align: right;">
                         @php($logo=\App\Model\BusinessSetting::where(['type'=>'company_mobile_logo'])->first()->value)
-                        <img style="max-width:250px;border:0;border-radius: 10px;" src="{{asset('/storage/app/public/company/'.$logo)}}" title=""
+                        <img style="max-width:250px;border:0;border-radius: 10px;" src="{{cloudfront('company/'.$logo)}}" title=""
                             class="sitelogo" width="60%"  alt=""/>
                     </div>
                 </td>
@@ -126,7 +126,7 @@
     {
         $seller = \App\Model\Seller::find($order->seller_id);
         $shop = \App\Model\Shop::find($seller->id);
-     
+
     }
     ?>
     <table style="background-color: rgb(255, 255, 255);width: 90%;margin:auto; padding-bottom:20px;">
@@ -143,7 +143,7 @@
                         @endif
                         <div style="padding-left: 10px;">
                             <div style="margin-bottom: 5px;" ><span style="font-weight: bold; color: blue;font-size: 14px;">{{\App\CPU\translate('Seller ID :')}}  <span style="font-weight: normal; color: black;font-size: 14px;">{{ isset($seller->id) ? $seller->id : "no data" }}</span></span></div>
-                        
+
                             <div style="font-weight: bold; color: blue;font-size: 14px;margin-bottom: 5px;">{{\App\CPU\translate('shop_name :')}} <span style="font-weight: normal; color: black;font-size: 14px;">{{ isset($shop->name) ? $shop->name : "no data" }}</span></div>
                             <div style="font-weight: bold; color: blue;font-size: 14px;margin-bottom: 5px;">{{\App\CPU\translate('shop_adress :')}} <span style="font-weight: normal; color: black;font-size: 14px;">{{ isset($shop->address) ? $shop->address : "no data" }}</span></div>
                             <div style="font-weight: bold; color: blue;font-size: 14px;margin-bottom: 5px;">{{\App\CPU\translate('tax_number :')}} <span style="font-weight: normal; color: black;font-size: 14px;margin-bottom: 5px;">{{ isset($shop->optional_tax_number) ? $shop->optional_tax_number : "no data" }}</span></div>
@@ -162,7 +162,7 @@
                     <div style="text-align:right;margin-top:10px;">
                         <span style="color: #130505 !important;text-transform: capitalize;font-weight: bold;">{{\App\CPU\translate('payment_details')}}  </span><br>
                         <div style="margin-top: 10px;">
-                            
+
                             <span style="color: #414141 !important ; text-transform: capitalize;">{{ str_replace('_',' ',$order->payment_method) }}</span><br>
                             <div style="display: block;margin: 5px 0px;" >
                                 <span style="color: {{$order->payment_status=='paid'?'green':'red'}};margin-bottom: 5px;">
@@ -218,7 +218,7 @@
                                     {{\App\CPU\translate('variation')}} : {{$details['variant']}}
                                   </span>
                                 @endif
- 
+
                                 </td>
                                 <td style="padding:5px;">{{\App\CPU\Helpers::currency_converter($details['price'])}}</td>
                                 <td style="padding:5px;">{{$details->qty}}</td>
@@ -291,7 +291,7 @@
                         <tr class="bg-primary">
                             <th class="text-left"><b class="text-white">{{\App\CPU\translate('total')}} : </b></th>
                             <td class="text-white">
-                                {{\App\CPU\Helpers::currency_converter($order->order_amount)}} 
+                                {{\App\CPU\Helpers::currency_converter($order->order_amount)}}
                             </td>
                         </tr>
                         </tbody>
@@ -330,9 +330,9 @@
                 {{ucwords('Please note: This document is an overview of your purchase from an external Eurobas.com seller. An invoice with VAT details can be requested from the respective seller.')}}
             </h4>
     </table>
-    
+
     <div style="padding:5px;width:650px;margin:auto;margin-top:5px; margin-bottom:50px;">
-    
+
         <table style="margin:auto;width:90%; color:#777777;">
             <tbody>
                 <tr>
@@ -351,35 +351,35 @@
                         <div > {{\App\CPU\translate('email')}}
                             : {{$company_email}}</div>
                     </th>
-    
+
                 </tr>
                 <!--<tr>-->
                 <!--    @php($social_media = \App\Model\SocialMedia::where('active_status', 1)->get())-->
-    
+
                 <!--    @if(isset($social_media))-->
                 <!--        <th style="text-align: left; padding-top:20px;">-->
                 <!--            <div style="width: 100%;display: flex;-->
                 <!--            justify-content: flex-start;">-->
                 <!--              @foreach ($social_media as $item)-->
-    
+
                 <!--                <div class="" >-->
                 <!--                  <a href="{{$item->link}}" target=”_blank”>-->
                 <!--                  <img src="{{asset('public/assets/back-end/img/'.$item->name.'.png')}}" alt="" style="height: 50px; width:50px; margin:10px;">-->
                 <!--                  </a>-->
                 <!--                </div>-->
-    
+
                 <!--              @endforeach-->
                 <!--            </div>-->
                 <!--        </th>-->
                 <!--    @endif-->
                 <!--</tr>-->
-                
-                
+
+
             </tbody>
         </table>
-        
+
     </div>
-     
+
 
 </div>
 

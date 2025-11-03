@@ -888,11 +888,11 @@
                         <div class="card  order-0 order-sm-1">
                             <div class="card-body p-2">
                                 <div class="pt-1 overlay shop-bg-card"
-                                     data-bg-img="{{asset("storage/app/public/shop/")}}/{{ \App\CPU\Helpers::get_business_settings('shop_banner') }}">
+                                     data-bg-img="{{cloudfront("shop/")}}/{{ \App\CPU\Helpers::get_business_settings('shop_banner') }}">
                                     <div class="media flex-wrap gap-2 pb-2">
                                         <div class="avatar border rounded-circle" style="--size: 3.437rem">
                                             <img
-                                                src="{{asset("storage/app/public/company")}}/{{$web_config['fav_icon']->value}}"
+                                                src="{{cloudfront("company")}}/{{$web_config['fav_icon']->value}}"
                                                 alt="" class="img-fit dark-support border-radius-15-percent"
                                                 onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" >
                                         </div>

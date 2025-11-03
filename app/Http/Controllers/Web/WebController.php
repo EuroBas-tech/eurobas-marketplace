@@ -1172,7 +1172,7 @@ class WebController extends Controller
 
             DigitalProductOtpVerification::where(['token' => $request->otp, 'order_details_id' => $request->order_details_id])->delete();
 
-            if(File::exists(base_path('storage/app/public/product/digital-product/'. $file_name))) {
+            if(Storage::disk()->exists('product/digital-product/'. $file_name)) {
                 return response()->json([
                     'status' => 1,
                     'file_path' => $file_path ?? '',

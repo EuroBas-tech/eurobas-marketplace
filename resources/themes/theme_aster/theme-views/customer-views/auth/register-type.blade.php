@@ -3,12 +3,12 @@
 @section('title', translate('select_your_profile').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -29,42 +29,42 @@
             justify-content: center;
             text-align: center;
         }
-        
+
         .selection-card:hover {
             transform: translateY(-2px);
         }
-        
+
         .selection-card.selected {
             border: 2px solid #0d6efd;
             background-color: #f8f9ff;
         }
-        
+
         .selection-card .icon {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             color: #6c757d;
             transition: color 0.3s ease;
         }
-        
+
         .selection-card.selected .icon {
             color: #0d6efd;
         }
-        
+
         .selection-card .label {
             font-size: 1.1rem;
             font-weight: 500;
             color: #495057;
             margin: 0;
         }
-        
+
         .selection-card.selected .label {
             color: #0d6efd;
         }
-        
+
         .selection-radio {
             display: none;
         }
-        
+
         .next-btn {
             margin-top: 2rem;
             padding: 0.50rem 2rem;
@@ -121,7 +121,7 @@
                                                 <p class="label">{{translate('individual')}}</p>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-sm-auto col-6">
                                             <div class="selection-card product-card-shadow" data-value="company">
                                                 <input type="radio" name="type" value="company" class="selection-radio" id="company">
@@ -154,10 +154,10 @@
             $('.selection-card').click(function() {
                 // Remove selected class from all cards
                 $('.selection-card').removeClass('selected');
-                
+
                 // Add selected class to clicked card
                 $(this).addClass('selected');
-                
+
                 // Check the corresponding radio button
                 var value = $(this).data('value');
                 $('input[value="' + value + '"]').prop('checked', true);

@@ -129,7 +129,7 @@
                     @foreach ($company_reliability as $key=>$value)
                         @if ($value['status'] == 1 && !empty($value['title']))
                             <div class="col-sm-3 px-0 text-center mobile-padding">
-                                <img class="order-summery-footer-image" src="{{asset("/storage/app/public/company-reliability").'/'.$value['image']}}"
+                                <img class="order-summery-footer-image" src="{{cloudfront("company-reliability").'/'.$value['image']}}"
                                 onerror="this.src='{{asset('/public/assets/front-end/img').'/'.$value['item'].'.png'}}'" alt="">
                                 <div class="deal-title">{{translate($value['title'] ?? 'title_not_found')}}</div>
                             </div>

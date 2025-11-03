@@ -19,7 +19,7 @@
                 <div class="mb-4 text-center">
                     <img
                         width="200"
-                        src="{{asset('storage/app/public/company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}"
+                        src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}"
                         onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'"
                         alt=""
                         class="dark-support"
@@ -103,7 +103,7 @@
         var onloadCallbackCustomerLogin = function () {
             // Add some randomization to potentially trigger more challenges
             var randomParam = Math.random().toString(36).substring(7);
-            
+
             let login_id = grecaptcha.render('recaptcha_element_customer_login', {
                 'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}',
                 'size': 'normal',
@@ -127,7 +127,7 @@
                 }
             });
             $('#recaptcha_element_customer_login').attr('data-login-id', login_id);
-            
+
             // Subtle techniques to potentially increase challenge probability
             // Add some mouse movement simulation
             var recaptchaElement = document.getElementById('recaptcha_element_customer_login');
@@ -139,7 +139,7 @@
                 }, Math.random() * 1000 + 500);
             }
         };
-        
+
         // Additional entropy for session
         (function() {
             var userAgent = navigator.userAgent;
@@ -153,7 +153,7 @@
     <script>
         $("#customer_login_modal").submit(function (e) {
             e.preventDefault();
-                
+
             var customer_recaptcha = null;
 
             @if($web_config['recaptcha']['status'] == 1)

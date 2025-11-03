@@ -3,12 +3,12 @@
 @section('title', translate('add_new_ad').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="og:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{env_asset('storage/app/public/company')}}/{{$web_config['web_logo']->value}}"/>
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
@@ -19,7 +19,7 @@
             height: 0;
             overflow: hidden;
         }
-        
+
         .card-custom-shadow {
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
@@ -49,7 +49,7 @@
                                                 <div class="col-sm-12 mb-2">
                                                     <div class="form-group">
                                                         <label for="title">{{translate('title')}}</label>
-                                                        <input type="text" id="title" class="form-control" value="{{ old('title') }}" 
+                                                        <input type="text" id="title" class="form-control" value="{{ old('title') }}"
                                                         name="title" placeholder="{{translate('title')}}" required>
                                                     </div>
                                                 </div>
@@ -59,10 +59,10 @@
                                                         <select class="form-control" name="category_id" id="category" required>
                                                             <option value=""> -- {{ translate('choose_category') }} -- </option>
                                                             @foreach($categories as $category)
-                                                                <option 
+                                                                <option
                                                                 data-id="{{ $category['id'] }}"
                                                                 data-is-vehicle="{{$category['category_type']}}"
-                                                                {{ $category['id'] == old('category_id') ? 'selected' : ''}} 
+                                                                {{ $category['id'] == old('category_id') ? 'selected' : ''}}
                                                                 value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                                                             @endforeach
                                                         </select>
@@ -122,11 +122,11 @@
 @endsection
 
 @push('script')
-    
+
     <script>
-        $(document).ready(function () { 
-            const $brandSelect = $('#brand'); 
-            const $modelSelect = $('#model'); 
+        $(document).ready(function () {
+            const $brandSelect = $('#brand');
+            const $modelSelect = $('#model');
             const $categorySelect = $('#category'); // only used for value reading
 
             // Initialize Select2
@@ -226,7 +226,7 @@
                     $('#brand-box').addClass('hide-element');
                     $('#model-box').addClass('hide-element');
                 }
-                
+
                 filterBrands();
                 filterModels();
                 addPersistentOptions();
@@ -260,13 +260,13 @@
 
                 const newInputHTML = `
                     <div class="upload-file">
-                        <input 
-                            type="file" 
-                            class="upload-file__input"  
+                        <input
+                            type="file"
+                            class="upload-file__input"
                             onchange="addMoreImage(this, '${targetSection}')"
-                            name="images[]" 
-                            multiple 
-                            aria-required="true" 
+                            name="images[]"
+                            multiple
+                            aria-required="true"
                             accept="image/*">
 
                         <div class="upload-file__img">

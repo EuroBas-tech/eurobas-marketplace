@@ -130,14 +130,14 @@
                 </button>
                 <a class="navbar-brand d-none d-sm-block {{Session::get('direction') === "rtl" ? 'mr-3' : 'mr-3'}} flex-shrink-0 __min-w-7rem" href="{{route('home')}}">
                     <img class="__inline-11"
-                         src="{{asset("storage/app/public/company")."/".$web_config['web_logo']->value}}"
+                         src="{{cloudfront("company")."/".$web_config['web_logo']->value}}"
                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                          alt="{{$web_config['name']->value}}"/>
                 </a>
                 <a class="navbar-brand d-sm-none"
                    href="{{route('home')}}">
                     <img class="mobile-logo-img __inline-12"
-                         src="{{asset("storage/app/public/company")."/".$web_config['mob_logo']->value}}"
+                         src="{{cloudfront("company")."/".$web_config['mob_logo']->value}}"
                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                          alt="{{$web_config['name']->value}}"/>
                 </a>

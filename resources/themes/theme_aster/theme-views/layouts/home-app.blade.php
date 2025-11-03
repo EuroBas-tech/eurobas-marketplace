@@ -17,7 +17,7 @@
     <meta name="_token" content="{{csrf_token()}}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company')}}/{{$web_config['fav_icon']->value}}"/>
+    <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
 
     <!-- Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,17 +25,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
-    
+
     <!-- Rubik Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
     <!-- Cairo Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">    
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+
     <!-- ======= BEGIN GLOBAL MANDATORY STYLES ======= -->
     <link rel="stylesheet" href="{{ theme_asset('assets/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ theme_asset('assets/css/bootstrap-icons.min.css') }}"/>
@@ -107,8 +107,8 @@
         }
 
         .emoji-font {
-            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
-            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
+            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
 
@@ -193,7 +193,7 @@
 {{--loader--}}
 <div class="preloader d--none" id="loading">
     <img width="200"
-         src="{{asset('storage/app/public/company/loader.gif')}}"
+         src="{{cloudfront('company/loader.gif')}}"
          onerror="this.src='{{theme_asset('assets/img/loader.gif')}}'">
 </div>
 {{--loader--}}
@@ -201,7 +201,7 @@
 <!-- Header and top offer bar -->
 @include('theme-views.layouts.partials._header')
 
-    
+
 <!-- Settings Sidebar -->
 @include('theme-views.layouts.partials._settings-sidebar')
 
