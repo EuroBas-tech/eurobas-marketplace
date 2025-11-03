@@ -102,11 +102,11 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-sm-4 mb-2">
                                                     <div class="form-group">
                                                         <label for="year">{{translate('year')}}</label>
-                                                        <input type="number" min="1950" max="2025"  id="year" class="form-control" value="{{$ad->year}}" 
+                                                        <input type="number" min="1950" max="2025"  id="year" class="form-control" value="{{$ad->year}}"
                                                         name="year" placeholder="{{translate('year')}}">
                                                     </div>
                                                 </div>
@@ -164,10 +164,10 @@
 
                                                         <div class="d-flex flex-column gap-3">
                                                             <div class="upload-file" style="width: min-content;">
-                                                                <input 
-                                                                    type="file" 
-                                                                    class="upload-file__input thumbnail"  
-                                                                    name="image" 
+                                                                <input
+                                                                    type="file"
+                                                                    class="upload-file__input thumbnail"
+                                                                    name="image"
                                                                     accept="image/*"
                                                                     aria-required="true"
                                                                     data-old="{{ asset('public/storage/ad/thumbnail')}}/{{$ad->thumbnail }}" {{-- this is key for JS to read the old image --}}
@@ -180,10 +180,10 @@
                                                                             <div class="fs-12 text-muted">{{ translate('ad_image') }}</div>
                                                                         </div>
                                                                     </div>
-                                                                    <img 
-                                                                        src="#" 
-                                                                        class="dark-support img-fit-contain border" 
-                                                                        alt="ad Image" 
+                                                                    <img
+                                                                        src="#"
+                                                                        class="dark-support img-fit-contain border"
+                                                                        alt="ad Image"
                                                                         hidden
                                                                     >
                                                                 </div>
@@ -198,12 +198,12 @@
                                                             @foreach(json_decode($ad->images) as $image)
                                                                 <div class="upload-file">
                                                                     <input type="hidden" name="old_images[]" value="{{$image}}">
-                                                                    <input 
-                                                                        type="file" 
-                                                                        class="upload-file__input ad-images"  
-                                                                        name="images[]" 
+                                                                    <input
+                                                                        type="file"
+                                                                        class="upload-file__input ad-images"
+                                                                        name="images[]"
                                                                         multiple
-                                                                        data-old="{{ asset('public/storage/ad')}}/{{$image}}"
+                                                                        data-old="{{ cloudfront('ad')}}/{{$image}}"
                                                                         aria-required="true"
                                                                         accept="image/*">
                                                                     <div class="upload-file__img">
@@ -224,12 +224,12 @@
                                                                 </div>
                                                             @endforeach
                                                             <div class="upload-file" style="width: min-content;">
-                                                                <input 
-                                                                    type="file" 
-                                                                    class="upload-file__input"  
+                                                                <input
+                                                                    type="file"
+                                                                    class="upload-file__input"
                                                                     onchange="addMoreImage(this, '#additional_Image_Section')"
-                                                                    name="images[]" 
-                                                                    aria-required="true" 
+                                                                    name="images[]"
+                                                                    aria-required="true"
                                                                     accept="image/*">
 
                                                                 <div class="upload-file__img">
@@ -444,10 +444,10 @@
                                                         <label>{{translate('meta_image')}}</label>
                                                         <div class="d-flex flex-column gap-3">
                                                             <div class="upload-file">
-                                                                <input type="file" 
-                                                                class="upload-file__input meta_image" 
-                                                                name="meta_image" 
-                                                                aria-required="true" 
+                                                                <input type="file"
+                                                                class="upload-file__input meta_image"
+                                                                name="meta_image"
+                                                                aria-required="true"
                                                                 data-old="{{ asset('storage/app/public/ad/meta')}}/{{$ad->meta_image }}"
                                                                 accept="image/*">
                                                                 <div class="upload-file__img">
@@ -514,13 +514,13 @@
 
                 const newInputHTML = `
                     <div class="upload-file">
-                        <input 
-                            type="file" 
-                            class="upload-file__input"  
+                        <input
+                            type="file"
+                            class="upload-file__input"
                             onchange="addMoreImage(this, '${targetSection}')"
-                            name="images[]" 
-                            multiple 
-                            aria-required="true" 
+                            name="images[]"
+                            multiple
+                            aria-required="true"
                             accept="image/*">
 
                         <div class="upload-file__img">
@@ -671,7 +671,7 @@
         function initAutocomplete() {
             // Europe center coordinates (roughly centered on Germany/Central Europe)
             let myLatLng = { lat: 50.1109, lng: 8.6821 };
-            
+
             // Initialize the map focused on Europe
             const map = new google.maps.Map(document.getElementById("location_map_canvas"), {
                 center: myLatLng,
@@ -711,7 +711,7 @@
                         map: map,
                         draggable: true
                     });
-                    
+
                     // Add drag event listener when marker is created
                     google.maps.event.addListener(marker, 'dragend', function(event) {
                         updateFormFields(event.latLng.lat(), event.latLng.lng());
@@ -724,9 +724,9 @@
                 const country = document.getElementById('country').value;
                 const city = document.getElementById('address-city').value;
                 const postalCode = document.getElementById('postal-code').value;
-                
+
                 let searchQuery = '';
-                
+
                 // Determine what to search based on what fields are filled
                 if (city && postalCode) {
                     searchQuery = `${postalCode}, ${city}, ${country}`;
@@ -737,7 +737,7 @@
                 } else if (country) {
                     searchQuery = country;
                 }
-                
+
                 if (searchQuery) {
                     geocodeAddress(searchQuery);
                 }
@@ -750,11 +750,11 @@
                         const location = results[0].geometry.location;
                         map.setCenter(location);
                         createOrUpdateMarker(location);
-                        
+
                         // Adjust zoom based on how specific the address is
                         const city = document.getElementById('address-city').value;
                         const postalCode = document.getElementById('postal-code').value;
-                        
+
                         if (city && postalCode) {
                             map.setZoom(14); // Postal code level
                         } else if (city) {
@@ -775,28 +775,28 @@
             // Function to update form fields based on coordinates
             function updateFormFields(lat, lng) {
                 const latlng = new google.maps.LatLng(lat, lng);
-                
+
                 geocoder.geocode({ 'location': latlng }, function(results, status) {
                     if (status === 'OK' && results[0]) {
                         const addressComponents = results[0].address_components;
-                        
+
                         // Extract country, city, and postal code
                         let country = '';
                         let city = '';
                         let postalCode = '';
-                        
+
                         // Parse address components
                         for (let component of addressComponents) {
                             const types = component.types;
-                            
+
                             if (types.includes('country')) {
                                 country = component.long_name;
                             }
-                            
+
                             if (types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
-                            
+
                             if (types.includes('locality')) {
                                 city = component.long_name;
                             } else if (types.includes('sublocality_level_1') && !city) {
@@ -807,12 +807,12 @@
                                 city = component.long_name;
                             }
                         }
-                        
+
                         // Clean city name
                         if (city) {
                             city = city.replace(/^(Greater|Metropolitan|City of|Municipality of|Borough of)\s+/i, '');
                         }
-                        
+
                         // Update country dropdown
                         const countrySelect = document.getElementById('country');
                         for (let option of countrySelect.options) {
@@ -821,12 +821,12 @@
                                 break;
                             }
                         }
-                        
+
                         // Update city field
                         if (city) {
                             document.getElementById('address-city').value = city;
                         }
-                        
+
                         // Update postal code field
                         if (postalCode && document.getElementById('postal-code')) {
                             document.getElementById('postal-code').value = postalCode;
@@ -848,43 +848,43 @@
             if (input) {
                 const searchBox = new google.maps.places.SearchBox(input);
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-                
+
                 map.addListener("bounds_changed", () => {
                     searchBox.setBounds(map.getBounds());
                 });
-                
+
                 let searchMarkers = [];
-                
+
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
-                    
+
                     if (places.length == 0) return;
-                    
+
                     searchMarkers.forEach(marker => marker.setMap(null));
                     searchMarkers = [];
-                    
+
                     const bounds = new google.maps.LatLngBounds();
                     places.forEach((place) => {
                         if (!place.geometry) return;
-                        
+
                         createOrUpdateMarker(place.geometry.location);
                         map.setCenter(place.geometry.location);
                         updateFormFields(place.geometry.location.lat(), place.geometry.location.lng());
-                        
+
                         if (place.geometry.viewport) {
                             bounds.union(place.geometry.viewport);
                         } else {
                             bounds.extend(place.geometry.location);
                         }
                     });
-                    
+
                     map.fitBounds(bounds);
                 });
             }
 
             // Define event handlers with debouncing
             const debouncedFocus = debounce(focusOnLocation, 500);
-            
+
             // Country change handler
             document.getElementById('country').addEventListener('change', function() {
                 if (this.value) {

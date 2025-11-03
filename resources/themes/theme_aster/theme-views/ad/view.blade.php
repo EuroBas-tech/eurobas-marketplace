@@ -114,21 +114,21 @@
     </div>
 
     <div class="d-flex p-4 gap-4" >
-        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0 @if(auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city)) aside-margin-top @endif">        
+        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0 @if(auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city)) aside-margin-top @endif">
             <div class="card-border aside-shadow rounded p-3 bg-white custom-scroll" >
                 <div class="d-lg-none close-filter" >
                     <button class="filter-aside-close border-0 bg-primary text-white rounded-circle pt-1">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
-        
+
                 <div class="card-body d-flex flex-column">
                     <form id="filter-form">
                         @csrf
                         <div>
                             <h4 class="mb-3" >
                                 <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
-                                (<span class="fw-bold fs-15" id="ads-count-number">{{$initial_filter_count}}</span>) 
+                                (<span class="fw-bold fs-15" id="ads-count-number">{{$initial_filter_count}}</span>)
                             </h4>
                         </div>
                         <button type="button" id="clear-filters" class="btn btn-outline-danger d-inline mb-3 px-1 py-1" >
@@ -138,44 +138,44 @@
 
                         <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
                             @if(request('category_id') && request('category_id') != 0)
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                 data-id="category" role="button">
                                     <span>{{translate('category')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('brand_id') && request('brand_id') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                 data-id="brands" role="button">
                                     <span>{{translate('brand')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('model_id') && request('model_id') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                 data-id="models" role="button">
                                     <span>{{translate('model')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('construction_year') && request('construction_year') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                 data-id="min_construction_year" role="button">
                                     <span>{{translate('min_construction_year')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('price_range') && request('price_range') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                 data-id="max_price" role="button">
                                     <span>{{translate('max_price')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
@@ -183,133 +183,133 @@
                             @endif
 
                             @if(request('country') && request('country') != 'All Europe')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('country')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('furniture_material') && request('furniture_material') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('furniture_material')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('furniture_type') && request('furniture_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('furniture_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('home_garden_material') && request('home_garden_material') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('home_garden_material')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('shipbuilding_type') && request('shipbuilding_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('shipbuilding_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('engines_number') && request('engines_number') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('engines_number')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('cabins_number') && request('cabins_number') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('cabins_number')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('usage') && request('usage') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('home_garden_usage')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('machine_type') && request('machine_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('machine_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('power_source') && request('power_source') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('power_source')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('home_appliance_type') && request('home_appliance_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('home_appliance_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('electronic_type') && request('electronic_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('electronic_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('listing_type') && request('listing_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('listing_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                                                    
+
                             @if(request('property_type') && request('property_type') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('property_type')}}</span>
                                     <span class="ms-1 fs-15">&times;</span>
                                 </span>
                             @endif
-                            
+
                             @if(request('floor') && request('floor') != 'all')
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
                                 p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item location-filter-input"
                                 data-id="location_country" role="button">
                                     <span>{{translate('floor')}}</span>
@@ -323,13 +323,13 @@
                                 <label for="category">{{ translate('category') }}</label>
                                 <select style="height: 38px;" data-filter-label="{{translate('category')}}" data-filter-id="category"
                                 class="form-control custom-input-height filter-input fw-medium" name="category_id" id="category">
-                                    <option data-category-type="vehicles" 
-                                    data-id="0" 
+                                    <option data-category-type="vehicles"
+                                    data-id="0"
                                     value="all">
                                         {{translate('all')}}
                                     </option>
                                     @foreach($categories as $category)
-                                        <option 
+                                        <option
                                         {{ array_key_exists('category_id', $filter_data) && $filter_data['category_id'] == $category['id'] ? 'selected' : '' }}
                                         data-id="{{ $category['id'] }}"
                                         data-category-type="{{ $category->category_type }}"
@@ -340,12 +340,12 @@
                             </div>
                             <div class="form-group mb-4" data-category-types="vehicles">
                                 <label for="brand">{{ translate('brand') }}</label>
-                                <select style="height: 38px;" class="form-control filter-input fw-medium" 
+                                <select style="height: 38px;" class="form-control filter-input fw-medium"
                                 data-filter-label="{{translate('brand')}}" data-filter-id="brand" name="brand_id" id="brand">
                                     <option value="all">{{translate('all')}}</option>
                                     @foreach($brands as $brand)
-                                        <option data-brand-categories="{{ implode(', ', $brand['categories']) }}" 
-                                        {{ array_key_exists('brand_id', $filter_data) && $filter_data['brand_id'] == $brand['id'] ? 'selected' : '' }} 
+                                        <option data-brand-categories="{{ implode(', ', $brand['categories']) }}"
+                                        {{ array_key_exists('brand_id', $filter_data) && $filter_data['brand_id'] == $brand['id'] ? 'selected' : '' }}
                                         value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                                     @endforeach
                                 </select>
@@ -353,7 +353,7 @@
                             <div class="form-group mb-3 pt-2" data-category-types="vehicles" data-is-not-bicycle="1">
                                 <label for="model">{{ translate('model') }}</label>
                                 <select style="height: 38px;" data-filter-label="{{translate('model')}}" data-filter-id="model" id="model"
-                                class="form-control filter-input fw-medium" 
+                                class="form-control filter-input fw-medium"
                                 {{ array_key_exists('model_id', $filter_data) && $filter_data['model_id'] == 'all' ? 'disabled' : '' }}
                                 name="model_id" id="model">
                                     <option value="all">{{translate('all')}}</option>
@@ -369,40 +369,40 @@
                             </div>
                             <div class="form-group mb-4 mt-2 pt-3" data-is-not-bicycle="1" data-category-types="vehicles, home appliances, home garden, furniture, electronics, shipbuilding marine">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="firstmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('status')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="firstmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="firstmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="never_used">
                                                 <span>{{ translate('never_used') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="new">
                                                 <span>{{ translate('new') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="used">
                                                 <span>{{ translate('used') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="old">
                                                 <span>{{ translate('old') }}</span>
                                             </label>
@@ -412,33 +412,33 @@
                             </div>
                             <div class="form-group mb-4" data-category-types="vehicles" data-is-not-bicycle="1" data-vehicle-equipment="0">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="secondmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('gear')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="secondmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="secondmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('transmission_type')}}" data-filter-name="transmission_type[]" type="checkbox" name="transmission_type[]" value="automatic">
                                                 <span>{{ translate('automatic') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" 
+                                                <input class="form-check-input filter-input m-0"
                                                 data-filter-label="{{translate('transmission_type')}}" data-filter-name="transmission_type[]" type="checkbox" name="transmission_type[]" value="semi_automatic">
                                                 <span>{{ translate('semi_automatic') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('transmission_type')}}" data-filter-name="transmission_type[]" name="transmission_type[]" value="manually">
                                                 <span>{{ translate('manually') }}</span>
                                             </label>
@@ -448,310 +448,310 @@
                             </div>
                             <div class="form-group mb-4" data-category-types="vehicles" data-is-not-bicycle="1" data-vehicle-equipment="0">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="thirdmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('body_type')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="compact">
                                                 <span>{{ translate('compact') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="suv_off_Road">
                                                 <span>{{ translate('suv_off_Road') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="sedan">
                                                 <span>{{ translate('sedan') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="convertible">
                                                 <span>{{ translate('convertible') }}</span>
                                             </label>
-                                        </li>               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="hatchback">
                                                 <span>{{ translate('hatchback') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="coupe">
                                                 <span>{{ translate('coupe') }}</span>
                                             </label>
-                                        </li>               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="station_wagon">
                                                 <span>{{ translate('station_wagon') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="van">
                                                 <span>{{ translate('van') }}</span>
                                             </label>
-                                        </li>        
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('body_type')}}" data-filter-name="body_type[]" name="body_type[]" value="transporter">
                                                 <span>{{ translate('transporter') }}</span>
                                             </label>
-                                        </li>               
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="form-group mb-3" data-category-types="vehicles, shipbuilding marine" data-is-not-bicycle="1" data-vehicle-equipment="0">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="forthmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('fuel_type')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="forthmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="forthmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="petrol_gasoline">
                                                 <span>{{ translate('petrol_gasoline') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="diesel">
                                                 <span>{{ translate('diesel') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="electric_ev">
                                                 <span>{{ translate('electric_ev') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="hybrid">
                                                 <span>{{ translate('hybrid') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="Plug_in_hybrid_phev">
                                                 <span>{{ translate('Plug_in_hybrid_phev') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="lpg">
                                                 <span>{{ translate('lpg') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="cng">
                                                 <span>{{ translate('cng') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="hydrogen_fcev">
                                                 <span>{{ translate('hydrogen_fcev') }}</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('fuel_type')}}" data-filter-name="fuel_type[]" name="fuel_type[]" value="flex_fuel">
                                                 <span>{{ translate('flex_fuel') }}</span>
                                             </label>
-                                        </li>                                          
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="form-group mb-3 pt-2" data-category-types="vehicles" data-is-not-bicycle="1" data-vehicle-equipment="0">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="fivethmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('number_of_doors')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="fivethmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="fivethmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_doors')}}" data-filter-name="doors_number[]" name="doors_number[]" value="2/3">
                                                 <span>2/3</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_doors')}}" data-filter-name="doors_number[]" name="doors_number[]" value="4/5">
                                                 <span>4/5</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_doors')}}" data-filter-name="doors_number[]" name="doors_number[]" value="6/7">
                                                 <span>6/7</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="form-group mb-3 pt-2" data-category-types="vehicles" data-is-not-bicycle="1" data-vehicle-equipment="0">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                            style="height: 38px;" 
-                                            type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                            style="height: 38px;"
+                                            type="button"
                                             id="sixthmultiSelectDropdown"
-                                            data-bs-toggle="dropdown" 
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         {{translate('number_of_seats')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="sixthmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="sixthmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="1">
                                                 <span>1</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="2">
                                                 <span>2</span>
                                             </label>
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="3">
                                                 <span>3</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="4">
                                                 <span>4</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="5">
                                                 <span>5</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="6">
                                                 <span>6</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="7">
                                                 <span>7</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="8">
                                                 <span>8</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="9">
                                                 <span>9</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="10">
                                                 <span>10</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="11">
                                                 <span>11</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('number_of_seats')}}" data-filter-name="seats_number[]" name="seats_number[]" value="12">
                                                 <span>12</span>
                                             </label>
-                                        </li>                               
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="form-group mb-3 pt-2" data-category-types="vehicles, furniture" data-is-not-bicycle="1">
                                 <div class="dropdown w-100">
-                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                        style="height: 38px;" 
-                                        type="button" 
+                                    <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                        style="height: 38px;"
+                                        type="button"
                                         id="sevenmultiSelectDropdown"
-                                        data-bs-toggle="dropdown" 
+                                        data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                             {{translate('color')}}
                                     </button>
-                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="sevenmultiSelectDropdown" 
+                                    <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="sevenmultiSelectDropdown"
                                     style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 350px;overflow-x: auto;">
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="black">
                                                 <span>{{translate('Black')}}</span>
                                                 <span style="width: 25px;height: 15px;background: black;" ></span>
@@ -759,7 +759,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-2 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="white">
                                                 <span>{{translate('White')}}</span>
                                                 <span style="width: 25px;height: 15px;background: white;" ></span>
@@ -767,7 +767,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-2 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="silver">
                                                 <span>{{translate('Silver')}}</span>
                                                 <span style="width: 25px;height: 15px;background: silver;" ></span>
@@ -775,15 +775,15 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-2 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="gray">
                                                 <span>{{translate('gray')}}</span>
                                                 <span style="width: 25px;height: 15px;background: gray;" ></span>
                                             </label>
-                                        </li>                           
+                                        </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="blue">
                                                 <span>{{translate('Blue')}}</span>
                                                 <span style="width: 25px;height: 15px;background: blue;" ></span>
@@ -791,7 +791,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="red">
                                                 <span>{{translate('Red')}}</span>
                                                 <span style="width: 25px;height: 15px;background: red;" ></span>
@@ -799,7 +799,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="brown">
                                                 <span>{{translate('Brown')}}</span>
                                                 <span style="width: 25px;height: 15px;background: brown;" ></span>
@@ -807,7 +807,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="beige">
                                                 <span>{{translate('Beige')}}</span>
                                                 <span style="width: 25px;height: 15px;background: beige;" ></span>
@@ -815,7 +815,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="green">
                                                 <span>{{translate('green')}}</span>
                                                 <span style="width: 25px;height: 15px;background: green;" ></span>
@@ -823,7 +823,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="orange">
                                                 <span>{{translate('Orange')}}</span>
                                                 <span style="width: 25px;height: 15px;background: orange;" ></span>
@@ -831,7 +831,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="yellow">
                                                 <span>{{translate('Yellow')}}</span>
                                                 <span style="width: 25px;height: 15px;background: yellow;" ></span>
@@ -839,7 +839,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="gold">
                                                 <span>{{translate('Gold')}}</span>
                                                 <span style="width: 25px;height: 15px;background: gold;" ></span>
@@ -847,7 +847,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="purple">
                                                 <span>{{translate('Purple')}}</span>
                                                 <span style="width: 25px;height: 15px;background: purple;" ></span>
@@ -855,7 +855,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="pink">
                                                 <span>{{translate('Pink')}}</span>
                                                 <span style="width: 25px;height: 15px;background: pink;" ></span>
@@ -863,7 +863,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="turquoise">
                                                 <span>{{translate('Turquoise')}}</span>
                                                 <span style="width: 25px;height: 15px;background: turquoise;" ></span>
@@ -871,7 +871,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="darkred">
                                                 <span>{{translate('dark_red')}}</span>
                                                 <span style="width: 25px;height: 15px;background: darkred;" ></span>
@@ -879,7 +879,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="navy">
                                                 <span>{{translate('Navy Blue')}}</span>
                                                 <span style="width: 25px;height: 15px;background: navy;" ></span>
@@ -887,7 +887,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="peru">
                                                 <span>{{translate('Peru')}}</span>
                                                 <span style="width: 25px;height: 15px;background: peru;" ></span>
@@ -895,7 +895,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="olive">
                                                 <span>{{translate('Olive')}}</span>
                                                 <span style="width: 25px;height: 15px;background: olive;" ></span>
@@ -903,7 +903,7 @@
                                         </li>
                                         <li class="dropdown-item p-2 px-3">
                                             <label class="d-flex align-items-center gap-1 m-0">
-                                                <input class="form-check-input filter-input m-0" type="checkbox" 
+                                                <input class="form-check-input filter-input m-0" type="checkbox"
                                                 data-filter-label="{{translate('color')}}" data-filter-name="color[]" name="color[]" value="multicolor/custom">
                                                 <span>{{translate('Multicolor / Custom')}}</span>
                                             </label>
@@ -1025,9 +1025,9 @@
                                 <div class="row">
                                     <div class="col-6 pe-1" >
                                         <div class="form-group">
-                                            <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                            <select style="height: 38px;" class="form-select filter-input fw-medium"
                                             data-filter-label="{{translate('min_construction_year')}}" data-filter-id="min_construction_year" name="min_construction_year" id="min_construction_year" >
-                                                <option value="{{null}}">{{translate('from')}}</option>    
+                                                <option value="{{null}}">{{translate('from')}}</option>
                                                 @for ($year = 2025; $year >= 1940; $year--)
                                                     <option {{ $min_construction_year == $year ? 'selected' : '' }} value="{{ $year }}">{{ $year }}</option>
                                                 @endfor
@@ -1036,9 +1036,9 @@
                                     </div>
                                     <div class="col-6 ps-1" >
                                         <div class="form-group">
-                                            <select style="height: 38px;" class="form-select filter-input fw-medium" name="max_construction_year" 
+                                            <select style="height: 38px;" class="form-select filter-input fw-medium" name="max_construction_year"
                                             data-filter-label="{{translate('max_construction_year')}}" data-filter-id="max_construction_year" id="max_construction_year" >
-                                                <option value="{{null}}">{{translate('to')}}</option>    
+                                                <option value="{{null}}">{{translate('to')}}</option>
                                                 @for ($year = 2025; $year >= 1940; $year--)
                                                     <option value="{{ $year }}">{{ $year }}</option>
                                                 @endfor
@@ -1053,7 +1053,7 @@
                                 <div class="row">
                                     <div class="col-6 pe-1" >
                                         <div class="form-group">
-                                            <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                            <select style="height: 38px;" class="form-select filter-input fw-medium"
                                             data-filter-label="{{translate('min_mileage')}}" data-filter-id="min_mileage" id="min_mileage" name="min_mileage">
                                                 <option value="{{null}}">{{translate('from')}}</option>
                                                 <option value="500">500</option>
@@ -1100,7 +1100,7 @@
                                     </div>
                                     <div class="col-6 ps-1" >
                                         <div class="form-group">
-                                            <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                            <select style="height: 38px;" class="form-select filter-input fw-medium"
                                             data-filter-label="{{translate('max_mileage')}}" data-filter-id="max_mileage" id="max_mileage" name="max_mileage">
                                                 <option value="{{null}}">{{translate('to')}}</option>
                                                 <option value="500">500</option>
@@ -1148,1621 +1148,1621 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion" id="accordionExample"> 
+                        <div class="accordion" id="accordionExample">
                             <!-- First Accordion Item (Original) -->
-                            <div class="accordion-item"> 
-                                <h2 class="accordion-header" id="headingForth"> 
-                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"  
-                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseForth" aria-expanded="true" aria-controls="collapseForth"> 
-                                    <div class="" > 
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingForth">
+                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseForth" aria-expanded="true" aria-controls="collapseForth">
+                                    <div class="" >
                                         <span class="text-dark mx-1 fs-14" >{{ translate('other_types_information') }}</span>
-                                    </div> 
-                                </button> 
-                                </h2> 
+                                    </div>
+                                </button>
+                                </h2>
                                 <div id="collapseForth" class="accordion-collapse collapse" aria-labelledby="headingForth" data-bs-parent="#accordionExample4">
                                     <div class="accordion-body py-2 px-1">
 
-                                        <div class="form-group mb-3" data-category-types="vehicles" data-is-bicycle="1">  
-                                            <div class="dropdown w-100">  
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"   
-                                                        style="height: 38px;"   
-                                                        type="button"   
-                                                        id="thirdmultiSelectDropdown"  
-                                                        data-bs-toggle="dropdown"   
-                                                        aria-expanded="false">  
-                                                    {{translate('bicycle_type')}}  
-                                                </button>  
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"   
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">  
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="road">  
-                                                            <span>{{ translate('road') }}</span> 
-                                                        </label>  
+                                        <div class="form-group mb-3" data-category-types="vehicles" data-is-bicycle="1">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('bicycle_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="road">
+                                                            <span>{{ translate('road') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="mountain">  
-                                                            <span>{{ translate('mountain') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="mountain">
+                                                            <span>{{ translate('mountain') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="hybrid">  
-                                                            <span>{{ translate('hybrid') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="hybrid">
+                                                            <span>{{ translate('hybrid') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="cruiser">  
-                                                            <span>{{ translate('cruiser') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="cruiser">
+                                                            <span>{{ translate('cruiser') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="bmx">  
-                                                            <span>{{ translate('bmx') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="bmx">
+                                                            <span>{{ translate('bmx') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="folding">  
-                                                            <span>{{ translate('folding') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="folding">
+                                                            <span>{{ translate('folding') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="electric">  
-                                                            <span>{{ translate('electric') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="tandem">  
-                                                            <span>{{ translate('tandem') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="track">  
-                                                            <span>{{ translate('track') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="fat_tire">  
-                                                            <span>{{ translate('fat_tire') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="fixed_gear">  
-                                                            <span>{{ translate('fixed_gear') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="gravel">  
-                                                            <span>{{ translate('gravel') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"  
-                                                            name="multiple_bicycle_type[]" value="kids">  
-                                                            <span>{{ translate('kids') }}</span> 
-                                                        </label>  
-                                                    </li>
-                                                </ul>  
-                                            </div>  
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="vehicles" data-is-bicycle="1">  
-                                            <div class="dropdown w-100">  
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"   
-                                                        style="height: 38px;"   
-                                                        type="button"   
-                                                        id="thirdmultiSelectDropdown"  
-                                                        data-bs-toggle="dropdown"   
-                                                        aria-expanded="false">  
-                                                    {{translate('bicycle_size')}}  
-                                                </button>  
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"   
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">  
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="12">  
-                                                            <span>12</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="14">  
-                                                            <span>14</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="16">  
-                                                            <span>16</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="18">  
-                                                            <span>18</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="20">  
-                                                            <span>20</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="24">  
-                                                            <span>24</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="26">  
-                                                            <span>26</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="27.5">  
-                                                            <span>27.5</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="28">  
-                                                            <span>28</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="29">  
-                                                            <span>29</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="xs">  
-                                                            <span>xs</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="s">  
-                                                            <span>s</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="m">  
-                                                            <span>m</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="l">  
-                                                            <span>l</span> 
-                                                        </label>  
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"  
-                                                            name="multiple_bicycle_size[]" value="xl">  
-                                                            <span>xl</span> 
-                                                        </label>  
-                                                    </li>                                                
-                                                </ul>  
-                                            </div>  
-                                        </div>
-                                    
-                                        <div class="form-group mb-3" data-category-types="furniture"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('furniture_material')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="wood"> 
-                                                            <span>{{ translate('wood') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="leather"> 
-                                                            <span>{{ translate('leather') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="fabric"> 
-                                                            <span>{{ translate('fabric') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="metal"> 
-                                                            <span>{{ translate('metal') }}</span> 
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="glass"> 
-                                                            <span>{{ translate('glass') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="plastic"> 
-                                                            <span>{{ translate('plastic') }}</span> 
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="marble"> 
-                                                            <span>{{ translate('marble') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="rattan"> 
-                                                            <span>{{ translate('rattan') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="bamboo"> 
-                                                            <span>{{ translate('bamboo') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="foam"> 
-                                                            <span>{{ translate('foam') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="synthetic"> 
-                                                            <span>{{ translate('synthetic') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="furniture"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('furniture_type')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="sofa"> 
-                                                            <span>{{ translate('sofa') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bed"> 
-                                                            <span>{{ translate('bed') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="table"> 
-                                                            <span>{{ translate('table') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="chair"> 
-                                                            <span>{{ translate('chair') }}</span> 
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="armchair"> 
-                                                            <span>{{ translate('armchair') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="dining_table"> 
-                                                            <span>{{ translate('dining_table') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="coffee_table"> 
-                                                            <span>{{ translate('coffee_table') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="tv_stand"> 
-                                                            <span>{{ translate('tv_stand') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bookshelf"> 
-                                                            <span>{{ translate('bookshelf') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="wardrobe"> 
-                                                            <span>{{ translate('wardrobe') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="dresser"> 
-                                                            <span>{{ translate('dresser') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="nightstand"> 
-                                                            <span>{{ translate('nightstand') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="cabinet"> 
-                                                            <span>{{ translate('cabinet') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="desk"> 
-                                                            <span>{{ translate('desk') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bench"> 
-                                                            <span>{{ translate('bench') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="stool"> 
-                                                            <span>{{ translate('stool') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="recliner"> 
-                                                            <span>{{ translate('recliner') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="console_table"> 
-                                                            <span>{{ translate('console_table') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="shoe_rack"> 
-                                                            <span>{{ translate('shoe_rack') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="vanity"> 
-                                                            <span>{{ translate('vanity') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="crib"> 
-                                                            <span>{{ translate('crib') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bunk_bed"> 
-                                                            <span>{{ translate('bunk_bed') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="sideboard"> 
-                                                            <span>{{ translate('sideboard') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="ottoman"> 
-                                                            <span>{{ translate('ottoman') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="folding_bed"> 
-                                                            <span>{{ translate('folding_bed') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="rocking_chair"> 
-                                                            <span>{{ translate('rocking_chair') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="home garden"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('home_garden_material')}}
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="wood"> 
-                                                            <span>{{ translate('wood') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="leather"> 
-                                                            <span>{{ translate('leather') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="fabric"> 
-                                                            <span>{{ translate('fabric') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="metal"> 
-                                                            <span>{{ translate('metal') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="glass"> 
-                                                            <span>{{ translate('glass') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="plastic"> 
-                                                            <span>{{ translate('plastic') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="marble"> 
-                                                            <span>{{ translate('marble') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="rattan"> 
-                                                            <span>{{ translate('rattan') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="bamboo"> 
-                                                            <span>{{ translate('bamboo') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="foam"> 
-                                                            <span>{{ translate('foam') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="synthetic"> 
-                                                            <span>{{ translate('synthetic') }}</span> 
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-                                        
-                                        <div class="form-group mb-3" data-category-types="shipbuilding marine"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('shipbuilding_type')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="yacht"> 
-                                                            <span>{{ translate('yacht') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="fishing_boat"> 
-                                                            <span>{{ translate('fishing_boat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="cargo_ship"> 
-                                                            <span>{{ translate('cargo_ship') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="tanker"> 
-                                                            <span>{{ translate('tanker') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="container_ship"> 
-                                                            <span>{{ translate('container_ship') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="ferry"> 
-                                                            <span>{{ translate('ferry') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="cruise_ship"> 
-                                                            <span>{{ translate('cruise_ship') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="speedboat"> 
-                                                            <span>{{ translate('speedboat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="sailboat"> 
-                                                            <span>{{ translate('sailboat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="barge"> 
-                                                            <span>{{ translate('barge') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="tugboat"> 
-                                                            <span>{{ translate('tugboat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="patrol_boat"> 
-                                                            <span>{{ translate('patrol_boat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="naval_ship"> 
-                                                            <span>{{ translate('naval_ship') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="submarine"> 
-                                                            <span>{{ translate('submarine') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="research_vessel"> 
-                                                            <span>{{ translate('research_vessel') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="offshore_support_vessel"> 
-                                                            <span>{{ translate('offshore_support_vessel') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="dredger"> 
-                                                            <span>{{ translate('dredger') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="icebreaker"> 
-                                                            <span>{{ translate('icebreaker') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="fireboat"> 
-                                                            <span>{{ translate('fireboat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]" 
-                                                            name="multiple_shipbuilding_type[]" value="pilot_boat"> 
-                                                            <span>{{ translate('pilot_boat') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="shipbuilding marine"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('number_of_engines')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]" 
-                                                            name="multiple_engines_number[]" value="1"> 
-                                                            <span>1</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]" 
-                                                            name="multiple_engines_number[]" value="2"> 
-                                                            <span>2</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]" 
-                                                            name="multiple_engines_number[]" value="3"> 
-                                                            <span>3</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]" 
-                                                            name="multiple_engines_number[]" value="4"> 
-                                                            <span>4</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]" 
-                                                            name="multiple_engines_number[]" value="5"> 
-                                                            <span>5</span>
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="shipbuilding marine"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('number_of_cabines')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]" 
-                                                            name="multiple_cabins_number[]" value="1"> 
-                                                            <span>1</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]" 
-                                                            name="multiple_cabins_number[]" value="2"> 
-                                                            <span>2</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]" 
-                                                            name="multiple_cabins_number[]" value="3"> 
-                                                            <span>3</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]" 
-                                                            name="multiple_cabins_number[]" value="4"> 
-                                                            <span>4</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]" 
-                                                            name="multiple_cabins_number[]" value="5"> 
-                                                            <span>5</span>
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-                                        
-                                        <div class="form-group mb-3" data-category-types="home garden"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('home_garden_usage')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('home_garden_usage') }}" data-filter-name="usage[]" 
-                                                            name="multiple_usage[]" value="indoor"> 
-                                                            <span>{{ translate('indoor') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('home_garden_usage') }}" data-filter-name="usage[]" 
-                                                            name="multiple_usage[]" value="outdoor"> 
-                                                            <span>{{ translate('outdoor') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-                                        
-                                        <div class="form-group mb-3" data-category-types="industrial machines"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('machine_type')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="cutting"> 
-                                                            <span>{{ translate('cutting') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="forming"> 
-                                                            <span>{{ translate('forming') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="welding"> 
-                                                            <span>{{ translate('welding') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="molding"> 
-                                                            <span>{{ translate('molding') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="machining"> 
-                                                            <span>{{ translate('machining') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="packaging"> 
-                                                            <span>{{ translate('packaging') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="printing"> 
-                                                            <span>{{ translate('printing') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="assembling"> 
-                                                            <span>{{ translate('assembling') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="mixing"> 
-                                                            <span>{{ translate('mixing') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="pressing"> 
-                                                            <span>{{ translate('pressing') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="extruding"> 
-                                                            <span>{{ translate('extruding') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="rolling"> 
-                                                            <span>{{ translate('rolling') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="grinding"> 
-                                                            <span>{{ translate('grinding') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="polishing"> 
-                                                            <span>{{ translate('polishing') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="bending"> 
-                                                            <span>{{ translate('bending') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="lifting"> 
-                                                            <span>{{ translate('lifting') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="conveying"> 
-                                                            <span>{{ translate('conveying') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="cooling_heating"> 
-                                                            <span>{{ translate('cooling_heating') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="inspection"> 
-                                                            <span>{{ translate('inspection') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]" 
-                                                            name="multiple_machine_type[]" value="cleaning"> 
-                                                            <span>{{ translate('cleaning') }}</span>
-                                                        </label> 
-                                                    </li> 
-                                                </ul> 
-                                            </div> 
-                                        </div>
-
-                                        <div class="form-group mb-3" data-category-types="industrial machines"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('power_source')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]" 
-                                                            name="multiple_power_source[]" value="electric"> 
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="electric">
                                                             <span>{{ translate('electric') }}</span>
-                                                        </label> 
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="tandem">
+                                                            <span>{{ translate('tandem') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="track">
+                                                            <span>{{ translate('track') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="fat_tire">
+                                                            <span>{{ translate('fat_tire') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="fixed_gear">
+                                                            <span>{{ translate('fixed_gear') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="gravel">
+                                                            <span>{{ translate('gravel') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_type') }}" data-filter-name="bicycle_type[]"
+                                                            name="multiple_bicycle_type[]" value="kids">
+                                                            <span>{{ translate('kids') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="vehicles" data-is-bicycle="1">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('bicycle_size')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="12">
+                                                            <span>12</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="14">
+                                                            <span>14</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="16">
+                                                            <span>16</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="18">
+                                                            <span>18</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="20">
+                                                            <span>20</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="24">
+                                                            <span>24</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="26">
+                                                            <span>26</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="27.5">
+                                                            <span>27.5</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="28">
+                                                            <span>28</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="29">
+                                                            <span>29</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="xs">
+                                                            <span>xs</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="s">
+                                                            <span>s</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="m">
+                                                            <span>m</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="l">
+                                                            <span>l</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('bicycle_size') }}" data-filter-name="bicycle_size[]"
+                                                            name="multiple_bicycle_size[]" value="xl">
+                                                            <span>xl</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="furniture">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('furniture_material')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="wood">
+                                                            <span>{{ translate('wood') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="leather">
+                                                            <span>{{ translate('leather') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="fabric">
+                                                            <span>{{ translate('fabric') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="metal">
+                                                            <span>{{ translate('metal') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="glass">
+                                                            <span>{{ translate('glass') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="plastic">
+                                                            <span>{{ translate('plastic') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="marble">
+                                                            <span>{{ translate('marble') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="rattan">
+                                                            <span>{{ translate('rattan') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="bamboo">
+                                                            <span>{{ translate('bamboo') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="foam">
+                                                            <span>{{ translate('foam') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_material')}}" data-filter-name="furniture_material[]" name="multiple_furniture_material[]" value="synthetic">
+                                                            <span>{{ translate('synthetic') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="furniture">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('furniture_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="sofa">
+                                                            <span>{{ translate('sofa') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bed">
+                                                            <span>{{ translate('bed') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="table">
+                                                            <span>{{ translate('table') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="chair">
+                                                            <span>{{ translate('chair') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="armchair">
+                                                            <span>{{ translate('armchair') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="dining_table">
+                                                            <span>{{ translate('dining_table') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="coffee_table">
+                                                            <span>{{ translate('coffee_table') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="tv_stand">
+                                                            <span>{{ translate('tv_stand') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bookshelf">
+                                                            <span>{{ translate('bookshelf') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="wardrobe">
+                                                            <span>{{ translate('wardrobe') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="dresser">
+                                                            <span>{{ translate('dresser') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="nightstand">
+                                                            <span>{{ translate('nightstand') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="cabinet">
+                                                            <span>{{ translate('cabinet') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="desk">
+                                                            <span>{{ translate('desk') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bench">
+                                                            <span>{{ translate('bench') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="stool">
+                                                            <span>{{ translate('stool') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="recliner">
+                                                            <span>{{ translate('recliner') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="console_table">
+                                                            <span>{{ translate('console_table') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="shoe_rack">
+                                                            <span>{{ translate('shoe_rack') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="vanity">
+                                                            <span>{{ translate('vanity') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="crib">
+                                                            <span>{{ translate('crib') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="bunk_bed">
+                                                            <span>{{ translate('bunk_bed') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="sideboard">
+                                                            <span>{{ translate('sideboard') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="ottoman">
+                                                            <span>{{ translate('ottoman') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="folding_bed">
+                                                            <span>{{ translate('folding_bed') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('furniture_type')}}" data-filter-name="furniture_type[]" name="multiple_furniture_type[]" value="rocking_chair">
+                                                            <span>{{ translate('rocking_chair') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="home garden">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('home_garden_material')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="wood">
+                                                            <span>{{ translate('wood') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="leather">
+                                                            <span>{{ translate('leather') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="fabric">
+                                                            <span>{{ translate('fabric') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="metal">
+                                                            <span>{{ translate('metal') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="glass">
+                                                            <span>{{ translate('glass') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="plastic">
+                                                            <span>{{ translate('plastic') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="marble">
+                                                            <span>{{ translate('marble') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="rattan">
+                                                            <span>{{ translate('rattan') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="bamboo">
+                                                            <span>{{ translate('bamboo') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="foam">
+                                                            <span>{{ translate('foam') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('home_garden_material')}}" data-filter-name="home_garden_material[]" name="multiple_home_garden_material[]" value="synthetic">
+                                                            <span>{{ translate('synthetic') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="shipbuilding marine">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('shipbuilding_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="yacht">
+                                                            <span>{{ translate('yacht') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="fishing_boat">
+                                                            <span>{{ translate('fishing_boat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="cargo_ship">
+                                                            <span>{{ translate('cargo_ship') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="tanker">
+                                                            <span>{{ translate('tanker') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="container_ship">
+                                                            <span>{{ translate('container_ship') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="ferry">
+                                                            <span>{{ translate('ferry') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="cruise_ship">
+                                                            <span>{{ translate('cruise_ship') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="speedboat">
+                                                            <span>{{ translate('speedboat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="sailboat">
+                                                            <span>{{ translate('sailboat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="barge">
+                                                            <span>{{ translate('barge') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="tugboat">
+                                                            <span>{{ translate('tugboat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="patrol_boat">
+                                                            <span>{{ translate('patrol_boat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="naval_ship">
+                                                            <span>{{ translate('naval_ship') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="submarine">
+                                                            <span>{{ translate('submarine') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="research_vessel">
+                                                            <span>{{ translate('research_vessel') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="offshore_support_vessel">
+                                                            <span>{{ translate('offshore_support_vessel') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="dredger">
+                                                            <span>{{ translate('dredger') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="icebreaker">
+                                                            <span>{{ translate('icebreaker') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="fireboat">
+                                                            <span>{{ translate('fireboat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('shipbuilding_type')}}" data-filter-name="shipbuilding_type[]"
+                                                            name="multiple_shipbuilding_type[]" value="pilot_boat">
+                                                            <span>{{ translate('pilot_boat') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="shipbuilding marine">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('number_of_engines')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]"
+                                                            name="multiple_engines_number[]" value="1">
+                                                            <span>1</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]"
+                                                            name="multiple_engines_number[]" value="2">
+                                                            <span>2</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]"
+                                                            name="multiple_engines_number[]" value="3">
+                                                            <span>3</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]"
+                                                            name="multiple_engines_number[]" value="4">
+                                                            <span>4</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="number_of_engines" data-filter-name="engines_number[]"
+                                                            name="multiple_engines_number[]" value="5">
+                                                            <span>5</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="shipbuilding marine">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('number_of_cabines')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]"
+                                                            name="multiple_cabins_number[]" value="1">
+                                                            <span>1</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]"
+                                                            name="multiple_cabins_number[]" value="2">
+                                                            <span>2</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]"
+                                                            name="multiple_cabins_number[]" value="3">
+                                                            <span>3</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]"
+                                                            name="multiple_cabins_number[]" value="4">
+                                                            <span>4</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{translate('number_of_cabines')}}" data-filter-name="cabins_number[]"
+                                                            name="multiple_cabins_number[]" value="5">
+                                                            <span>5</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="home garden">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('home_garden_usage')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('home_garden_usage') }}" data-filter-name="usage[]"
+                                                            name="multiple_usage[]" value="indoor">
+                                                            <span>{{ translate('indoor') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('home_garden_usage') }}" data-filter-name="usage[]"
+                                                            name="multiple_usage[]" value="outdoor">
+                                                            <span>{{ translate('outdoor') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="industrial machines">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('machine_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="cutting">
+                                                            <span>{{ translate('cutting') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="forming">
+                                                            <span>{{ translate('forming') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="welding">
+                                                            <span>{{ translate('welding') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="molding">
+                                                            <span>{{ translate('molding') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="machining">
+                                                            <span>{{ translate('machining') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="packaging">
+                                                            <span>{{ translate('packaging') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="printing">
+                                                            <span>{{ translate('printing') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="assembling">
+                                                            <span>{{ translate('assembling') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="mixing">
+                                                            <span>{{ translate('mixing') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="pressing">
+                                                            <span>{{ translate('pressing') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="extruding">
+                                                            <span>{{ translate('extruding') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="rolling">
+                                                            <span>{{ translate('rolling') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="grinding">
+                                                            <span>{{ translate('grinding') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="polishing">
+                                                            <span>{{ translate('polishing') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="bending">
+                                                            <span>{{ translate('bending') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="lifting">
+                                                            <span>{{ translate('lifting') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="conveying">
+                                                            <span>{{ translate('conveying') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="cooling_heating">
+                                                            <span>{{ translate('cooling_heating') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="inspection">
+                                                            <span>{{ translate('inspection') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('machine_type') }}" data-filter-name="machine_type[]"
+                                                            name="multiple_machine_type[]" value="cleaning">
+                                                            <span>{{ translate('cleaning') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="industrial machines">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('power_source')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]"
+                                                            name="multiple_power_source[]" value="electric">
+                                                            <span>{{ translate('electric') }}</span>
+                                                        </label>
                                                     </li>
 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]" 
-                                                            name="multiple_power_source[]" value="diesel"> 
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]"
+                                                            name="multiple_power_source[]" value="diesel">
                                                             <span>{{ translate('diesel') }}</span>
-                                                        </label> 
-                                                    </li> 
+                                                        </label>
+                                                    </li>
 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]" 
-                                                            name="multiple_power_source[]" value="hydraulic"> 
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('power_source') }}" data-filter-name="power_source[]"
+                                                            name="multiple_power_source[]" value="hydraulic">
                                                             <span>{{ translate('hydraulic') }}</span>
-                                                        </label> 
+                                                        </label>
                                                     </li>
-                                                </ul> 
-                                            </div> 
-                                        </div>
-                                        
-                                        <div class="form-group mb-3" data-category-types="electronics"> 
-                                            <div class="dropdown w-100"> 
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"  
-                                                        style="height: 38px;"  
-                                                        type="button"  
-                                                        id="thirdmultiSelectDropdown" 
-                                                        data-bs-toggle="dropdown"  
-                                                        aria-expanded="false"> 
-                                                    {{translate('electronic_type')}} 
-                                                </button> 
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"  
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;"> 
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="tv"> 
-                                                            <span>{{ translate('tv') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="laptop"> 
-                                                            <span>{{ translate('laptop') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="desktop_computer"> 
-                                                            <span>{{ translate('desktop_computer') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="tablet"> 
-                                                            <span>{{ translate('tablet') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="smartphone"> 
-                                                            <span>{{ translate('smartphone') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="smartwatch"> 
-                                                            <span>{{ translate('smartwatch') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="camera"> 
-                                                            <span>{{ translate('camera') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="printer"> 
-                                                            <span>{{ translate('printer') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="scanner"> 
-                                                            <span>{{ translate('scanner') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="gaming_console"> 
-                                                            <span>{{ translate('gaming_console') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="monitor"> 
-                                                            <span>{{ translate('monitor') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="projector"> 
-                                                            <span>{{ translate('projector') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="router"> 
-                                                            <span>{{ translate('router') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="speaker"> 
-                                                            <span>{{ translate('speaker') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="headphones"> 
-                                                            <span>{{ translate('headphones') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="earbuds"> 
-                                                            <span>{{ translate('earbuds') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="drone"> 
-                                                            <span>{{ translate('drone') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="vr_headset"> 
-                                                            <span>{{ translate('vr_headset') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                    <li class="dropdown-item p-2 px-3"> 
-                                                        <label class="d-flex align-items-center gap-1 m-0"> 
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"  
-                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]" 
-                                                            name="multiple_electronic_type[]" value="gps"> 
-                                                            <span>{{ translate('gps') }}</span>
-                                                        </label> 
-                                                    </li>
-                                                </ul> 
-                                            </div> 
+                                                </ul>
+                                            </div>
                                         </div>
 
-                                        <div class="form-group mb-3" data-category-types="real estate">  
-                                            <div class="dropdown w-100">  
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"   
-                                                        style="height: 38px;"   
-                                                        type="button"   
-                                                        id="thirdmultiSelectDropdown"  
-                                                        data-bs-toggle="dropdown"   
-                                                        aria-expanded="false">  
-                                                    {{translate('listing_type')}}  
-                                                </button>  
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"   
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">  
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"  
-                                                            name="multiple_listing_type[]" value="for_sale">  
-                                                            <span>{{ translate('for_sale') }}</span> 
-                                                        </label>  
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"  
-                                                            name="multiple_listing_type[]" value="for_rent">  
-                                                            <span>{{ translate('for_rent') }}</span> 
-                                                        </label>  
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"  
-                                                            name="multiple_listing_type[]" value="for_exchange">  
-                                                            <span>{{ translate('for_exchange') }}</span> 
-                                                        </label>  
-                                                    </li> 
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"  
-                                                            name="multiple_listing_type[]" value="for_takeover">  
-                                                            <span>{{ translate('for_takeover') }}</span> 
-                                                        </label>  
-                                                    </li> 
-                                                </ul>  
-                                            </div>  
+                                        <div class="form-group mb-3" data-category-types="electronics">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('electronic_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="tv">
+                                                            <span>{{ translate('tv') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="laptop">
+                                                            <span>{{ translate('laptop') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="desktop_computer">
+                                                            <span>{{ translate('desktop_computer') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="tablet">
+                                                            <span>{{ translate('tablet') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="smartphone">
+                                                            <span>{{ translate('smartphone') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="smartwatch">
+                                                            <span>{{ translate('smartwatch') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="camera">
+                                                            <span>{{ translate('camera') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="printer">
+                                                            <span>{{ translate('printer') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="scanner">
+                                                            <span>{{ translate('scanner') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="gaming_console">
+                                                            <span>{{ translate('gaming_console') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="monitor">
+                                                            <span>{{ translate('monitor') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="projector">
+                                                            <span>{{ translate('projector') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="router">
+                                                            <span>{{ translate('router') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="speaker">
+                                                            <span>{{ translate('speaker') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="headphones">
+                                                            <span>{{ translate('headphones') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="earbuds">
+                                                            <span>{{ translate('earbuds') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="drone">
+                                                            <span>{{ translate('drone') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="vr_headset">
+                                                            <span>{{ translate('vr_headset') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('electronic_type') }}" data-filter-name="electronic_type[]"
+                                                            name="multiple_electronic_type[]" value="gps">
+                                                            <span>{{ translate('gps') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        
-                                        <div class="form-group mb-3" data-category-types="real estate">  
-                                            <div class="dropdown w-100">  
-                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"   
-                                                        style="height: 38px;"   
-                                                        type="button"   
-                                                        id="thirdmultiSelectDropdown"  
-                                                        data-bs-toggle="dropdown"   
-                                                        aria-expanded="false">  
-                                                    {{translate('property_type')}}  
-                                                </button>  
-                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"   
-                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">  
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="apartment">  
-                                                            <span>{{ translate('apartment') }}</span> 
-                                                        </label>  
+
+                                        <div class="form-group mb-3" data-category-types="real estate">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('listing_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"
+                                                            name="multiple_listing_type[]" value="for_sale">
+                                                            <span>{{ translate('for_sale') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="villa">  
-                                                            <span>{{ translate('villa') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"
+                                                            name="multiple_listing_type[]" value="for_rent">
+                                                            <span>{{ translate('for_rent') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="house">  
-                                                            <span>{{ translate('house') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"
+                                                            name="multiple_listing_type[]" value="for_exchange">
+                                                            <span>{{ translate('for_exchange') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="detached_house">  
-                                                            <span>{{ translate('detached_house') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('listing_type') }}" data-filter-name="listing_type[]"
+                                                            name="multiple_listing_type[]" value="for_takeover">
+                                                            <span>{{ translate('for_takeover') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="land">  
-                                                            <span>{{ translate('land') }}</span> 
-                                                        </label>  
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3" data-category-types="real estate">
+                                            <div class="dropdown w-100">
+                                                <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                        style="height: 38px;"
+                                                        type="button"
+                                                        id="thirdmultiSelectDropdown"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    {{translate('property_type')}}
+                                                </button>
+                                                <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="thirdmultiSelectDropdown"
+                                                style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;max-height: 280px;overflow-y: auto;">
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="apartment">
+                                                            <span>{{ translate('apartment') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="farm">  
-                                                            <span>{{ translate('farm') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="villa">
+                                                            <span>{{ translate('villa') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="shop">  
-                                                            <span>{{ translate('shop') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="house">
+                                                            <span>{{ translate('house') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="office">  
-                                                            <span>{{ translate('office') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="detached_house">
+                                                            <span>{{ translate('detached_house') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="warehouse">  
-                                                            <span>{{ translate('warehouse') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="land">
+                                                            <span>{{ translate('land') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="building">  
-                                                            <span>{{ translate('building') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="farm">
+                                                            <span>{{ translate('farm') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="room">  
-                                                            <span>{{ translate('room') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="shop">
+                                                            <span>{{ translate('shop') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="chalet_holiday_home">  
-                                                            <span>{{ translate('chalet_holiday_home') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="office">
+                                                            <span>{{ translate('office') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="commercial_property">  
-                                                            <span>{{ translate('commercial_property') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="warehouse">
+                                                            <span>{{ translate('warehouse') }}</span>
+                                                        </label>
                                                     </li>
-                                                    <li class="dropdown-item p-2 px-3">  
-                                                        <label class="d-flex align-items-center gap-1 m-0">  
-                                                            <input class="form-check-input filter-input m-0" type="checkbox"   
-                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"  
-                                                            name="multiple_property_type[]" value="industrial_property">  
-                                                            <span>{{ translate('industrial_property') }}</span> 
-                                                        </label>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="building">
+                                                            <span>{{ translate('building') }}</span>
+                                                        </label>
                                                     </li>
-                                                </ul>  
-                                            </div>  
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="room">
+                                                            <span>{{ translate('room') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="chalet_holiday_home">
+                                                            <span>{{ translate('chalet_holiday_home') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="commercial_property">
+                                                            <span>{{ translate('commercial_property') }}</span>
+                                                        </label>
+                                                    </li>
+                                                    <li class="dropdown-item p-2 px-3">
+                                                        <label class="d-flex align-items-center gap-1 m-0">
+                                                            <input class="form-check-input filter-input m-0" type="checkbox"
+                                                            data-filter-label="{{ translate('property_type') }}" data-filter-name="property_type[]"
+                                                            name="multiple_property_type[]" value="industrial_property">
+                                                            <span>{{ translate('industrial_property') }}</span>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
 
                             <!-- First Accordion Item (Original) -->
-                            <div class="accordion-item"> 
-                                <h2 class="accordion-header" id="headingSecond"> 
-                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"  
-                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="true" aria-controls="collapseSecond"> 
-                                    <div class="" > 
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSecond">
+                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecond" aria-expanded="true" aria-controls="collapseSecond">
+                                    <div class="" >
                                         <span class="text-dark mx-1 fs-14" >{{ translate('dimensions_information') }}</span>
-                                    </div> 
-                                </button> 
-                                </h2> 
+                                    </div>
+                                </button>
+                                </h2>
                                 <div id="collapseSecond" class="accordion-collapse collapse" aria-labelledby="headingSecond" data-bs-parent="#accordionExample">
                                     <div class="accordion-body py-2 px-1">
                                         <div class="form-group mb-2" data-category-types="vehicles, industrial machines, furniture, home garden, home appliances, electronics">
                                             <label for="city">{{translate('length')}}</label>
-                                            <input type="number" style="height: 38px;" id="length" value="" name="length" 
+                                            <input type="number" style="height: 38px;" id="length" value="" name="length"
                                             data-filter-label="{{translate('length')}}" data-filter-id="length" class="form-control filter-input" placeholder="{{translate('Ex: 2.5')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles, industrial machines, furniture, home garden, home appliances, electronics">
                                             <label for="city">{{translate('height')}}</label>
-                                            <input type="number" style="height: 38px;" id="height" value="" name="height" 
+                                            <input type="number" style="height: 38px;" id="height" value="" name="height"
                                             data-filter-label="{{translate('height')}}" data-filter-id="height" class="form-control filter-input" placeholder="{{translate('Ex: 3.6')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles, industrial machines, furniture, home garden, home appliances, electronics">
                                             <label for="city">{{translate('width')}}</label>
-                                            <input type="number" style="height: 38px;" id="width" value="" name="width" 
+                                            <input type="number" style="height: 38px;" id="width" value="" name="width"
                                             data-filter-label="{{translate('width')}}" data-filter-id="width" class="form-control filter-input" placeholder="{{translate('Ex: 1.85')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles, industrial machines, furniture, home garden, home appliances, electronics">
                                             <label for="city">{{translate('max_weight')}}</label>
-                                            <input type="number" style="height: 38px;" id="max_weight" value="" name="max_weight" 
+                                            <input type="number" style="height: 38px;" id="max_weight" value="" name="max_weight"
                                             data-filter-label="{{translate('max_weight')}}" data-filter-id="max_weight" class="form-control filter-input" placeholder="{{translate('Ex: 850')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles">
                                             <label for="city">{{translate('bag_capacity')}}</label>
-                                            <input type="number" style="height: 38px;" id="bag_capacity" value="" 
+                                            <input type="number" style="height: 38px;" id="bag_capacity" value=""
                                             data-filter-label="{{translate('bag_capacity')}}" data-filter-id="bag_capacity" name="bag_capacity" class="form-control filter-input" placeholder="{{translate('Ex: 280')}}">
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
 
                             <!-- First Accordion Item (Original) -->
-                            <div class="accordion-item"> 
-                                <h2 class="accordion-header" id="headingThird"> 
-                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"  
-                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="true" aria-controls="collapseThird"> 
-                                    <div class="" > 
-                                        <span class="text-dark mx-1 fs-14" >{{ translate('additional_information') }}</span> 
-                                    </div> 
-                                </button> 
-                                </h2> 
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThird">
+                                <button class="accordion-button collapsed px-1 bg-light" style="border-bottom: none !important;padding: 12px;"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseThird" aria-expanded="true" aria-controls="collapseThird">
+                                    <div class="" >
+                                        <span class="text-dark mx-1 fs-14" >{{ translate('additional_information') }}</span>
+                                    </div>
+                                </button>
+                                </h2>
                                 <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird" data-bs-parent="#accordionExample">
                                     <div class="accordion-body py-2 px-1">
                                         <div class="form-group mb-2" data-category-types="vehicles">
                                             <label for="city">{{translate('battery_charging_time')}}</label>
-                                            <input type="text" style="height: 38px;" id="battery_charging_time" 
-                                            data-filter-label="{{translate('battery_charging_time')}}" data-filter-id="battery_charging_time" value="" 
+                                            <input type="text" style="height: 38px;" id="battery_charging_time"
+                                            data-filter-label="{{translate('battery_charging_time')}}" data-filter-id="battery_charging_time" value=""
                                             name="battery_charging_time" class="form-control filter-input" placeholder="{{translate('Ex: 90')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles">
                                             <label for="city">{{translate('fast_battery_charging_time')}}</label>
-                                            <input type="text" style="height: 38px;" id="fast_battery_charging_time" value="" 
+                                            <input type="text" style="height: 38px;" id="fast_battery_charging_time" value=""
                                             data-filter-label="{{translate('fast_battery_charging_time')}}" data-filter-id="fast_battery_charging_time" name="fast_battery_charging_time" class="form-control filter-input" placeholder="{{translate('Ex: 30')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles">
                                             <label for="city">{{translate('battery_life')}}</label>
-                                            <input type="text" style="height: 38px;" id="battery_life" value="" name="battery_life" 
+                                            <input type="text" style="height: 38px;" id="battery_life" value="" name="battery_life"
                                             data-filter-label="{{translate('battery_life')}}" data-filter-id="battery_life" class="form-control filter-input" placeholder="{{translate('Ex: 5')}}">
                                         </div>
                                         <div class="form-group mb-2" data-category-types="vehicles">
                                             <label for="city">{{translate('acceleration_0_100')}}</label>
-                                            <input type="text" style="height: 38px;" id="acceleration_0_100" value="" 
+                                            <input type="text" style="height: 38px;" id="acceleration_0_100" value=""
                                             data-filter-label="{{translate('acceleration_0_100')}}" data-filter-id="acceleration_0_100" name="acceleration_0_100" class="form-control filter-input" placeholder="{{translate('Ex: 4')}}">
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -2775,10 +2775,10 @@
                         @foreach($paid_banners as $banner)
                             <div class="mb-4">
                                 <a href="{{ $banner->banner_url ?? '#' }}">
-                                    <img style="height: 120px !important;" 
-                                        class="rounded" 
-                                        width="100%" 
-                                        src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}" 
+                                    <img style="height: 120px !important;"
+                                        class="rounded"
+                                        width="100%"
+                                        src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                         alt="paid_banner_image">
                                 </a>
                             </div>
@@ -2786,7 +2786,7 @@
                     </div>
                 @endif
             </div>
-            
+
             @if($paid_banners->count() > 0)
                 <div class="mt-4 banner-sidebar">
                     <h4 class="mb-4">{{ translate('advertising_space') }}</h4>
@@ -2794,10 +2794,10 @@
                     @foreach($paid_banners as $banner)
                         <div class="mb-4">
                             <a href="{{ $banner->banner_url ?? '#' }}">
-                                <img style="height: 120px !important;" 
-                                    class="rounded" 
-                                    width="100%" 
-                                    src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}" 
+                                <img style="height: 120px !important;"
+                                    class="rounded"
+                                    width="100%"
+                                    src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                     alt="paid_banner_image">
                             </a>
                         </div>
@@ -2813,7 +2813,7 @@
                     <div class="lg-down-1 gap-4">
                         <div class="position-relative h-100" >
                             @include('theme-views.partials._ajax-products-view',['ads'=>$ads])
-                            <div id="fullscreen-loader" class="d-none" 
+                            <div id="fullscreen-loader" class="d-none"
                             style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 9999999;z-index: 9999999;">
                                 <div class="spinner-border text-primary" role="status" style="width: 7rem; height: 7rem;">
                                     <span class="visually-hidden">{{translate('Loading')}}...</span>
@@ -2860,28 +2860,28 @@
             const allModelOption = '<option value="all">{{ translate("all") }}</option>';
             const allColorOption = '<option value="all">{{ translate("all") }}</option>';
 
-            function filterBrandsAndModels() { 
-                const $selectedCategoryOption = $categorySelect.find('option:selected'); 
-                const selectedCategoryId = $selectedCategoryOption.val(); 
-                const selectedCategoryDataId = $selectedCategoryOption.data('id'); 
-            
+            function filterBrandsAndModels() {
+                const $selectedCategoryOption = $categorySelect.find('option:selected');
+                const selectedCategoryId = $selectedCategoryOption.val();
+                const selectedCategoryDataId = $selectedCategoryOption.data('id');
+
                 $brandSelect.find('option:not([value="all"])').remove(); // ✅ Fix: keep "all", remove the rest
-            
-                allBrandOptions.each(function () { 
-                    const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || []; 
-            
+
+                allBrandOptions.each(function () {
+                    const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
+
                     if (
                         $(this).val() === 'all' || // optional: can skip this since we kept it already
-                        selectedCategoryDataId === 0 || 
-                        brandCategories.includes(selectedCategoryId) 
-                    ) { 
+                        selectedCategoryDataId === 0 ||
+                        brandCategories.includes(selectedCategoryId)
+                    ) {
                         if ($(this).val() !== 'all') { // prevent appending "all" again
-                            $brandSelect.append($(this).clone()); 
+                            $brandSelect.append($(this).clone());
                         }
-                    } 
-                }); 
-            
-                $brandSelect.val('all').trigger('change'); 
+                    }
+                });
+
+                $brandSelect.val('all').trigger('change');
             }
 
             function filterModels() {
@@ -2980,29 +2980,29 @@
                     setTimeout(function applyColorSquares() {
                         const $options = colorSelectContainer.find('.select2-results__option');
 
-                        $options.each(function () { 
-            const $option = $(this);                      
-            const color = $option.text().trim();          
+                        $options.each(function () {
+            const $option = $(this);
+            const color = $option.text().trim();
 
-            if ( 
-                !$option.hasClass('select2-results__message') &&           
-                color &&                                                    
-                !$option.find('.color-square').length &&                    
-                color.toLowerCase() !== '{{ strtolower(translate("All")) }}' 
-            ) { 
-                const square = $('<span class="color-square"></span>').css({ 
-                    display: 'inline-block', 
-                    width: '30px', 
-                    height: '15px', 
-                    border: 'solid #cfcfcf 1px', 
-                    backgroundColor: color,              
-                    marginLeft: '8px', 
-                    verticalAlign: 'middle', 
-                    borderRadius: '2px' 
-                }); 
+            if (
+                !$option.hasClass('select2-results__message') &&
+                color &&
+                !$option.find('.color-square').length &&
+                color.toLowerCase() !== '{{ strtolower(translate("All")) }}'
+            ) {
+                const square = $('<span class="color-square"></span>').css({
+                    display: 'inline-block',
+                    width: '30px',
+                    height: '15px',
+                    border: 'solid #cfcfcf 1px',
+                    backgroundColor: color,
+                    marginLeft: '8px',
+                    verticalAlign: 'middle',
+                    borderRadius: '2px'
+                });
 
-                $option.append(square); 
-            } 
+                $option.append(square);
+            }
         });
 
                         setTimeout(applyColorSquares, 50);
@@ -3085,7 +3085,7 @@
                                 offset += 5;
                             }
                             if(response.ads_count == 0) {
-                                let formData = $('#filter-form').serializeArray(); 
+                                let formData = $('#filter-form').serializeArray();
                                 shownAdIds.forEach(id => {
                                     formData.push({ name: 'shown_ad_ids[]', value: id });
                                 });
@@ -3108,7 +3108,7 @@
 
                                         $('#ajax-products-view').append(`
                                             <div class="d-flex justify-content-center" >
-                                                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" 
+                                                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
                                                 class="mb-4 btn btn-primary d-flex align-items-center gap-2" >
                                                     <i class="bi bi-arrow-up"></i>
                                                     {{translate('back_to_top')}}
@@ -3203,7 +3203,7 @@
                     if (value && value !== 'all') {
                         if ($container.find(`.active-filter-item[data-id="${id}"]`).length === 0) {
                             const filterHtml = `
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium  mb-1 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium  mb-1 active-filter-item"
                                 data-id="${id}" role="button">
                                     <span>${label}</span>
                                     <span class="ms-1 fs-18">&times;</span>
@@ -3276,7 +3276,7 @@
 
                 if (isBicycle && selectedSlug !== 'bicycles') showItem = false;
 
-                if((selectedSlug == 'spare-parts' || selectedSlug == 'vehicle-accessories') && 
+                if((selectedSlug == 'spare-parts' || selectedSlug == 'vehicle-accessories') &&
                     $(this).data('vehicle-equipment') == 0) showItem = false;
 
                 if ($(this).data('is-not-bicycle') !== undefined && selectedSlug == 'bicycles') showItem = false;
@@ -3439,7 +3439,7 @@
         function initAutocomplete() {
             // Get initial center and zoom based on selected country
             const initialMapSettings = getInitialMapSettings();
-            
+
             // Initialize the map
             map = new google.maps.Map(document.getElementById("location_map_canvas"), {
                 zoom: initialMapSettings.zoom,
@@ -3455,7 +3455,7 @@
 
             // Initialize geocoder
             geocoder = new google.maps.Geocoder();
-            
+
             // Listen for country selection changes
             const countrySelect = document.getElementById("location_country");
             if (countrySelect) {
@@ -3500,7 +3500,7 @@
             const radiusInput = document.getElementById("location_radius");
             if (radiusInput) {
                 radiusInput.disabled = false; // Enable the radius input
-                
+
                 radiusInput.addEventListener('input', function() {
                     updateRadiusCircle();
                 });
@@ -3569,7 +3569,7 @@
             // Only draw circle if we have a valid radius and a center point
             if (radiusValue > 0 && currentMarker) {
                 const center = currentMarker.getPosition();
-                
+
                 currentCircle = new google.maps.Circle({
                     strokeColor: "#FF0000",
                     strokeOpacity: 0.8,
@@ -3584,7 +3584,7 @@
                 // Adjust map zoom to fit the circle
                 const bounds = currentCircle.getBounds();
                 map.fitBounds(bounds);
-                
+
                 // Ensure minimum zoom level for better visibility
                 google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
                     if (map.getZoom() > 15) {
@@ -3597,7 +3597,7 @@
         function getInitialMapSettings() {
             const countrySelect = document.getElementById("location_country");
             const selectedCountry = countrySelect ? countrySelect.value : '';
-            
+
             // Country coordinates and zoom levels - matching your SYSTEM_COUNTRIES exactly
             const countrySettings = {
                 'All Europe': { center: { lat: 54.5260, lng: 15.2551 }, zoom: 4 },
@@ -3649,14 +3649,14 @@
                 'South Korea': { center: { lat: 35.9078, lng: 127.7669 }, zoom: 7 },
                 'China': { center: { lat: 35.8617, lng: 104.1954 }, zoom: 4 }
             };
-            
+
             // Return settings for selected country or default to Europe
             return countrySettings[selectedCountry] || countrySettings['All Europe'];
         }
 
         function updateMapForCountry(countryName) {
             const settings = getInitialMapSettings();
-            
+
             // Clear existing markers and circles when changing country
             if (currentMarker) {
                 currentMarker.setMap(null);
@@ -3666,19 +3666,19 @@
                 currentCircle.setMap(null);
                 currentCircle = null;
             }
-            
+
             // Clear city input when changing country
             const cityInput = document.getElementById("location_city");
             if (cityInput) {
                 cityInput.value = '';
             }
-            
+
             // Clear radius input
             const radiusInput = document.getElementById("location_radius");
             if (radiusInput) {
                 radiusInput.value = '';
             }
-            
+
             // Update map view
             map.setCenter(settings.center);
             map.setZoom(settings.zoom);
@@ -3713,12 +3713,12 @@
                 applyButton.addEventListener('click', function() {
                     const cityValue = document.getElementById('location_city').value;
                     const radiusValue = document.getElementById('location_radius').value;
-                    
+
                     console.log('Applied filters:', {
                         city: cityValue,
                         radius: radiusValue
                     });
-                    
+
                     // You can add your filter application logic here
                 });
             }

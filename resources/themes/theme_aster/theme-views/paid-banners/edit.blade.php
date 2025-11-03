@@ -22,7 +22,7 @@
         border: 1px solid #d9d9d9;
         box-shadow: 0px 0px 2px #858585;
     }
-    
+
     .pricing-card.active {
         border: 1px solid #198754;
         transform: scale(1.08);
@@ -57,7 +57,7 @@
                                 <div id="user_ads_box" class="form-group @if(!$paid_banner['banner_url']) d-none @endif ">
                                     <div id="user_ads" >
                                         <label for="banner_url">{{translate('banner_url')}}</label>
-                                        <div class="dropdown mb-1">                                                                        
+                                        <div class="dropdown mb-1">
                                             <input type="hidden" name="ad_id" id="selected_ad_id" value="">
                                             <button style="border: 1px solid #ced4da;border-radius: 7px;"
                                                     class="btn btn-outline-secondary no-hover-btn w-100 custom-input-height justify-content-start"
@@ -69,8 +69,8 @@
                                             <ul class="dropdown-menu w-100 p-0" style="max-height: 350px;overflow-y: auto;border: 1px #80808026 solid;">
                                                 @foreach($user_ads as $user_ad)
                                                     <li class="p-0 border-bottom">
-                                                        <a class="dropdown-item font-size-16 d-flex align-items-center p-2 gap-2" 
-                                                        href="#" 
+                                                        <a class="dropdown-item font-size-16 d-flex align-items-center p-2 gap-2"
+                                                        href="#"
                                                         data-id="{{ $user_ad->id }}"
                                                         data-slug="{{ $user_ad->slug }}">
                                                             <div>
@@ -91,7 +91,7 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                    </div>        
+                                    </div>
                                 </div>
                             </div>
 
@@ -102,11 +102,11 @@
                                         <div class="row">
                                             <div class="col-xl-6 col-md-7 col-sm-10 col-12">
                                                 <div class="upload-file w-100" style="width: min-content;">
-                                                    <input 
+                                                    <input
                                                         type="file"
-                                                        class="upload-file__input banner" 
+                                                        class="upload-file__input banner"
                                                         name="banner_image"
-                                                        data-old="{{ env_asset('storage/paid-banners/'.$paid_banner->banner_image) }}"
+                                                        data-old="{{ cloudfront('paid-banners/'.$paid_banner->banner_image) }}"
                                                         id="cover-input"
                                                         aria-required="true"
                                                         accept="image/*"
@@ -127,10 +127,10 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="my-4" >
                                 <h2 class="my-3" >{{translate('pricing')}}</h2>
-                                
+
                                 <div class="mb-4">
                                     @if (\Carbon\Carbon::parse($paid_banner->expiration_date)->isPast())
                                         <span class="text-danger">
@@ -175,13 +175,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 mt-4"> 
-                                <div> 
+                            <div class="col-12 mt-4">
+                                <div>
                                     <button id="sponsor-submit-btn" type="submit" class="btn btn-primary d-flex align-items-center gap-1">
-                                        <span><i class="bi bi-floppy"></i></span> 
-                                        <span>{{translate('Update')}}</span> 
+                                        <span><i class="bi bi-floppy"></i></span>
+                                        <span>{{translate('Update')}}</span>
                                     </button>
-                                </div> 
+                                </div>
                             </div>
                         </form>
                     </div>

@@ -9,7 +9,7 @@
                             <div class="avatar border rounded" style="--size: 5rem">
                                 <a href="">
                                     <img
-                                    src="{{ env_asset('storage/paid-banners/'.$banner->banner_image)}}"
+                                    src="{{ cloudfront('paid-banners/'.$banner->banner_image)}}"
                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                     class="img-fit dark-support rounded aspect-1" alt="">
                                 </a>
@@ -69,7 +69,7 @@
                 <div class="avatar border rounded" style="--size: 5.75rem">
                     <a href="">
                         <img style="block-size: 6rem;"
-                            src="{{ env_asset('storage/paid-banners/'.$banner->banner_image)}}"
+                            src="{{ cloudfront('paid-banners/'.$banner->banner_image)}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                             class="dark-support rounded" alt="banner-image">
                     </a>
@@ -95,7 +95,7 @@
                         </div>
                         <div>
                             <span>
-                            <span class="tio-visible nav-indicator-icon fs-15"></span>    
+                            <span class="tio-visible nav-indicator-icon fs-15"></span>
                             <span>{{ translate('views') }} : {{$banner->views_number}}</span>
                             </span>
                         </div>

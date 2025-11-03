@@ -132,7 +132,7 @@
             width: 50px !important;
             height: 50px !important;
         }
-        
+
         /* More than 1200px (≥1200px) */
         @media (min-width: 1200px) {
             .responsive-ad-image {
@@ -142,7 +142,7 @@
               max-width: 325px;
             }
         }
-        
+
         @media (min-width: 1300px) {
             .side-bar-min-width {
                 min-width: 345px !important;
@@ -181,7 +181,7 @@
                 object-fit: cover !important;
             }
         }
-        
+
         @media (max-width: 576px) {
             .mobile-responsive-style {
                 height: 330px;
@@ -227,7 +227,7 @@
                                                 <div class="d-flex align-items-center gap-1 text-primary" >
                                                     <span><i class="bi bi-calendar-event fs-16"></i></i></span>
 
-                                                    @php 
+                                                    @php
                                                         $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();
                                                     @endphp
 
@@ -372,7 +372,7 @@
                                     <div class="col-12 h-100">
                                         <!-- Product Details Content -->
                                         <div class="product-details-content position-relative">
-                                            @if($ad->brand_id || $ad->custom_brand || $ad->model_id || $ad->color)                                            
+                                            @if($ad->brand_id || $ad->custom_brand || $ad->model_id || $ad->color)
                                                 <div class="d-flex align-items-center justify-content-between mb-2 mt-2" >
                                                     <div class="d-flex flex-column gap-1" >
                                                         @if($ad->brand_id || $ad->custom_brand)
@@ -392,7 +392,7 @@
                                                                 </div>
                                                             </div>
                                                         @endif
-                                                        
+
                                                         @if($ad->color)
                                                             <div class="d-flex gap-2 flex-wrap align-items-center">
                                                                 <h5 class="fw-bold">{{translate('ad_color')}} :</h5>
@@ -405,8 +405,8 @@
                                                     </div>
                                                     @if($ad->brand_id)
                                                         <div>
-                                                            <img class="rounded border" 
-                                                                width="70px" 
+                                                            <img class="rounded border"
+                                                                width="70px"
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                                                 src='{{asset("storage/brand")}}/{{ $ad->brand->image ?? "" }}'
                                                                 alt="brand-image">
@@ -414,7 +414,7 @@
                                                     @endif
                                                 </div>
                                             @endif
-                                            
+
                                             <div class="product__price d-flex flex-wrap align-items-center gap-2 my-3">
                                                 <ins
                                                     class="product__new-price text-primary fs-30 currency-font">
@@ -431,7 +431,7 @@
                                                     @endif
                                                 </ins>
                                             </div>
-                                            
+
 
                                             <div class="row" >
                                                 @if($ad->ad_status)
@@ -471,7 +471,7 @@
                                                 @endif
 
                                                 @if($ad->category->category_type == 'vehicles')
-                                                
+
                                                     @if($ad->body_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none">
@@ -579,7 +579,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->transmission_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none">
@@ -615,7 +615,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->acceleration_0_100)
                                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                             <div class="card shadow-none">
@@ -651,7 +651,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->bicycle_size)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none">
@@ -687,7 +687,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                        
+
                                                 @endif
 
                                                 @if($ad->category->category_type == 'real estate')
@@ -779,7 +779,7 @@
                                                 @endif
 
                                                 @if($ad->category->category_type == 'furniture')
-                                                
+
                                                     @if($ad->furniture_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none">
@@ -797,7 +797,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->material)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none min-width-max-content">
@@ -836,7 +836,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->manufacturer)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none min-width-max-content">
@@ -854,7 +854,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->power_capacity)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none min-width-max-content">
@@ -872,7 +872,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    
+
                                                     @if($ad->power_source)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
                                                             <div class="card shadow-none min-width-max-content">
@@ -911,7 +911,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 @if($ad->category->category_type == 'home appliances')
                                                     @if($ad->home_appliance_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
@@ -931,7 +931,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 @if($ad->category->category_type == 'home garden')
                                                     @if($ad->material)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
@@ -1060,18 +1060,18 @@
                                         </div>
                                         <!-- End Product Details Content -->
                                     </div>
-                                    
+
                                     <div class="mt-4" >
                                         <h3 class="my-4" >{{translate('description')}}</h3>
                                         <div class="fs-18 text-dark" >
                                             {!! $ad->description !!}
                                         </div>
                                     </div>
-                                    
+
                                     <div class="accordion mt-5" id="accordionExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingTwo">
-                                            <button class="accordion-button collapsed bg-light" style="border-bottom: none !important;" 
+                                            <button class="accordion-button collapsed bg-light" style="border-bottom: none !important;"
                                             type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 <div class="d-flex align-items-center gap-1" >
                                                     <img width="20px" src="{{ theme_asset('assets/img/svg/dimensions.svg') }}" alt="">
@@ -1100,7 +1100,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->width)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1118,7 +1118,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->length)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1136,8 +1136,8 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
-                                                        
+
+
                                                             @if($ad->bag_capacity)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1155,8 +1155,8 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
-                                                        
+
+
                                                             @if($ad->weight)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1174,7 +1174,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->max_weight)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1192,7 +1192,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                            
+
                                                             @if($ad->seats_number)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1210,7 +1210,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                            
+
                                                             @if($ad->doors_number)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1228,9 +1228,9 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
-                                                        
-                                                            
+
+
+
                                                         </div>
                                                     @else
                                                         <div>
@@ -1270,7 +1270,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->gas_emission_tax)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1288,7 +1288,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->energy_source)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1306,7 +1306,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->energy_consumption)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1332,7 +1332,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        </div>     
+                                        </div>
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingFour">
@@ -1364,7 +1364,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->fast_battery_charging_time)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1382,7 +1382,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                        
+
                                                             @if($ad->battery_life)
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
@@ -1410,7 +1410,7 @@
                                             </div>
                                         </div>
 
-                                        @if($ad->category->category_type == 'vehicles' && $ad->category->slug != 'bicycles' 
+                                        @if($ad->category->category_type == 'vehicles' && $ad->category->slug != 'bicycles'
                                         && $ad->category->slug != 'spare-parts' && $ad->category->slug != 'vehicle-accessories')
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingFive">
@@ -1522,7 +1522,7 @@
                                                                     </div>
                                                                 </div>
                                                             @endforeach
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1543,17 +1543,17 @@
                                             <div class="modal-content border-0 shadow-none">
                                                 <div class="modal-body">
                                                     <div class="product-quickview">
-                                                        <input id="pac-input" class="controls rounded __inline-46" 
-                                                            title="{{translate('search_your_location_here')}}" 
+                                                        <input id="pac-input" class="controls rounded __inline-46"
+                                                            title="{{translate('search_your_location_here')}}"
                                                             type="text" placeholder="{{translate('search_here')}}"/>
                                                         <div id="location_map_canvas" class="dark-support rounded w-100" style="height: 14rem;"></div>
                                                         <input type="hidden" id="latitude"
                                                             name="latitude" class="form-control d-inline"
-                                                            placeholder="{{ translate('Ex') }} : -94.22213" 
+                                                            placeholder="{{ translate('Ex') }} : -94.22213"
                                                             value="0" required readonly>
                                                         <input type="hidden"
                                                             name="longitude" class="form-control"
-                                                            placeholder="{{ translate('Ex') }} : 103.344322" id="longitude" 
+                                                            placeholder="{{ translate('Ex') }} : 103.344322" id="longitude"
                                                             value="0" required >
                                                     </div>
                                                 </div>
@@ -1573,14 +1573,14 @@
                                 <div class="d-flex align-items-start justify-content-between" >
                                     <div class="d-flex align-items-center mb-3 gap-2" >
                                         <div>
-                                            <img class="rounded profile-image"  
+                                            <img class="rounded profile-image"
                                             src="{{ $ad->user->image ? env_asset('storage/profile/images/'.$ad->user->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                             alt="user-image">
                                         </div>
                                         <div>
                                             <h5 class="mb-1">{{$ad->user->name}}</h5>
                                             <p class="fs-12 m-0">{{translate('Joined')}} {{date('M, Y',strtotime($ad->user->created_at))}}</p>
-                                            @php 
+                                            @php
                                                 $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();
                                             @endphp
                                             <p class="fs-12">({{$ad->user->created_at->locale($locale)->diffForHumans()}})</p>
@@ -1598,7 +1598,7 @@
                                     <a href="{{ route('show-profile', [$ad->user->id, $ad->user->name]) }}?tap=ads" style="text-decoration: underline;">
                                         <h6 class="mb-3" style="font-weight: 500;" >{{ translate('show_all_ads_of_this_user') }}</h6>
                                     </a>
-                                    
+
                                     <p class="p-2 text-light seller-card" >
                                         {{$ad->user->account_type == 'company' ? translate('this_seller_is_a_business_account') : translate('this_seller_is_an_individual_and_does_not_represent_any_private_ad_sales_company')}}.
                                     </p>
@@ -1608,7 +1608,7 @@
                                     <h4 class="mb-3 fw-normal" >{{ translate('seller_contact_informations') }}</h4>
                                     @php($guest_checkout=\App\CPU\Helpers::get_business_settings('guest_checkout'))
                                         @if($ad->show_email_address == 1)
-                                            <button style="background: #0d6efd;font-size: 15px;margin-bottom: 11px;" 
+                                            <button style="background: #0d6efd;font-size: 15px;margin-bottom: 11px;"
                                                 onclick="get_email_address('{{$ad->user->email}}', this)"
                                                 class="btn buy-now-btn-hover py-3 px-2 w-100 text-white" >
                                                 <i class="bi bi-envelope-fill me-1"></i>
@@ -1635,15 +1635,15 @@
                                         @endif
 
                                     @if (auth('customer')->check())
-                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" 
+                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white"
                                         data-bs-toggle="modal" data-bs-target="#contact_sellerModal">
-                                            <i class="bi bi-chat-square-fill"></i> 
+                                            <i class="bi bi-chat-square-fill"></i>
                                             {{translate('Chat_with_Seller')}}
                                         </button>
                                     @else
-                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover p-auto py-3 px-2 w-100 text-white" 
+                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover p-auto py-3 px-2 w-100 text-white"
                                         data-bs-toggle="modal" data-bs-target="#loginModal">
-                                            <i class="bi bi-chat-square-fill"></i> 
+                                            <i class="bi bi-chat-square-fill"></i>
                                             {{translate('Chat_with_Seller')}}
                                         </button>
                                     @endif
@@ -1664,26 +1664,26 @@
                                                     </div>
                                                 @endif
                                                 <div class="position-relative" >
-                                                    <span id="ad-currency" class="position-absolute fw-bold currency-font" 
+                                                    <span id="ad-currency" class="position-absolute fw-bold currency-font"
                                                     style="top:50%;left:15px;transform: translateY(-50%);" >{{\App\CPU\BackEndHelper::set_currency($ad->currency)}}</span>
                                                     <input type="number" id="auction_price_input" value="{{old('price')}}"
-                                                    class="form-control mb-3 mt-1 px-4" value="{{old('price')}}" 
+                                                    class="form-control mb-3 mt-1 px-4" value="{{old('price')}}"
                                                     name="price">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 @if(auth('customer')->check())
-                                                    <button type="button" style="font-size: 15px;" class="btn primary-blue-bg-color 
+                                                    <button type="button" style="font-size: 15px;" class="btn primary-blue-bg-color
                                                     buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" id="openAuctionOfferModalBtn"
                                                     >
-                                                        <i class="bi bi-hammer"></i> 
+                                                        <i class="bi bi-hammer"></i>
                                                         {{translate('send_the_offer')}}
                                                     </button>
                                                 @else
                                                     <button type="button" style="font-size: 15px;" class="btn primary-blue-bg-color
-                                                    buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" 
+                                                    buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white"
                                                     data-bs-toggle="modal" data-bs-target="#loginModal">
-                                                        <i class="bi bi-hammer"></i> 
+                                                        <i class="bi bi-hammer"></i>
                                                         {{translate('send_the_offer')}}
                                                     </button>
                                                 @endif
@@ -1763,7 +1763,7 @@
                                         </div>
                                     @endif
                                 @endif
-                                
+
                                 @if($ad->price_type == 'asking_price')
                                     @if($ad->allow_offers)
                                         <div class="mb-2" >
@@ -1777,27 +1777,27 @@
                                                         </div>
                                                     @endif
                                                     <div class="position-relative" >
-                                                        <span class="position-absolute fw-bold currency-font" 
+                                                        <span class="position-absolute fw-bold currency-font"
                                                         style="top:50%;left:15px;transform: translateY(-50%);" >{{\App\CPU\BackEndHelper::set_currency($ad->currency)}}</span>
                                                         <input type="number"  id="asking_price_input" value="{{old('price')}}"
-                                                        class="form-control mb-3 mt-1 px-4" value="{{old('price')}}" 
+                                                        class="form-control mb-3 mt-1 px-4" value="{{old('price')}}"
                                                         name="price">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     @if(auth('customer')->check())
-                                                        <button type="submit" style="font-size: 15px;" 
-                                                        class="btn primary-blue-bg-color 
+                                                        <button type="submit" style="font-size: 15px;"
+                                                        class="btn primary-blue-bg-color
                                                         buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" id="openAskingPriceOfferModalBtn" >
-                                                            <i class="bi bi-hammer"></i> 
+                                                            <i class="bi bi-hammer"></i>
                                                             {{translate('send_the_offer')}}
                                                         </button>
                                                     @else
-                                                        <button type="button" style="font-size: 15px;" 
-                                                        class="btn primary-blue-bg-color 
-                                                        buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" 
+                                                        <button type="button" style="font-size: 15px;"
+                                                        class="btn primary-blue-bg-color
+                                                        buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white"
                                                         data-bs-toggle="modal" data-bs-target="#loginModal">
-                                                            <i class="bi bi-hammer"></i> 
+                                                            <i class="bi bi-hammer"></i>
                                                             {{translate('send_the_offer')}}
                                                         </button>
                                                     @endif
@@ -1887,10 +1887,10 @@
                                             @foreach($paid_banners as $banner)
                                                 <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
                                                     <a href="{{ $banner->banner_url ?? '#' }}">
-                                                        <img style="height: 120px !important;" 
-                                                        class="rounded" 
-                                                        width="100%" 
-                                                        src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}" 
+                                                        <img style="height: 120px !important;"
+                                                        class="rounded"
+                                                        width="100%"
+                                                        src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                                         alt="paid_banner_image">
                                                     </a>
                                                 </div>
@@ -1898,7 +1898,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                
+
                                 <div class="card order-1 order-sm-0 mt-5">
                                     <div class="card-body p-0">
                                         <h5 class="mb-3">{{translate('More_from_the_Store')}}</h5>
@@ -2025,58 +2025,58 @@
             // Get elements
             const auctionOfferButton = document.getElementById('openAuctionOfferModalBtn');
             const askingPriceOfferButton = document.getElementById('openAskingPriceOfferModalBtn');
-            
+
             const auctionPriceInput = document.getElementById('auction_price_input');
             const askingPriceInput = document.getElementById('asking_price_input');
-            
+
             const auctionPriceValue = document.getElementById('auction_price_value');
             const askingPriceValue = document.getElementById('asking_price_value');
 
             const makeAnOfferModal = document.getElementById('makeAnOfferModal');
             const askingPriceModal = document.getElementById('askingPriceModal');
-            
+
             const auctionMessageBox = document.getElementById('auctionMessageBox');
             const askingPriceMessageBox = document.getElementById('askingPriceMessageBox');
-            
+
             // Check if elements exist before accessing them
-            const startingPrice = document.getElementById('starting_price') ? 
+            const startingPrice = document.getElementById('starting_price') ?
                 parseFloat(document.getElementById('starting_price').value) : 0;
-            
-            const firstPrice = document.getElementById('first_price') ? 
+
+            const firstPrice = document.getElementById('first_price') ?
                 parseFloat(document.getElementById('first_price').value) : 0;
-            
+
             // Define original message templates
-            const currencySymbol = document.getElementById('ad-currency') ? 
+            const currencySymbol = document.getElementById('ad-currency') ?
                                 document.getElementById('ad-currency').textContent.trim() : '';
-            
+
             const auctionOriginalMessage = auctionMessageBox ? auctionMessageBox.value : '';
             const askingPriceOriginalMessage = askingPriceMessageBox ? askingPriceMessageBox.value : '';
-        
+
             // Add event listeners if buttons exist
             if (auctionOfferButton) {
                 auctionOfferButton.addEventListener('click', function () {
                     if (!auctionPriceInput) {
                         return;
                     }
-                    
+
                     let price = auctionPriceInput.value.trim();
                     if (!price) {
                         toastr.error('{{translate("please_type_the_offer_price")}}');
                         return;
                     }
-                    
+
                     price = parseFloat(price);
                     if (startingPrice && price <= startingPrice) {
                         toastr.error('{{translate("offer_price_must_be_greater_than_starting_price")}}');
                         return;
                     }
-                    
+
                     // Set the message dynamically
                     if (auctionMessageBox) {
                         auctionMessageBox.value = auctionOriginalMessage.replace('[[PRICE]]', price);
                         auctionPriceValue.value = price;
                     }
-                    
+
                     // Manually open the modal
                     if (makeAnOfferModal) {
                         let modal = new bootstrap.Modal(makeAnOfferModal);
@@ -2084,31 +2084,31 @@
                     }
                 });
             }
-        
+
             if (askingPriceOfferButton) {
                 askingPriceOfferButton.addEventListener('click', function () {
                     if (!askingPriceInput) {
                         return;
                     }
-                    
+
                     let price = askingPriceInput.value.trim();
                     if (!price) {
                         toastr.error('{{translate("please_type_the_offer_price")}}');
                         return;
                     }
-                    
+
                     price = parseFloat(price);
                     if (firstPrice && price <= firstPrice) {
                         toastr.error('{{translate("offer_price_must_be_greater_than_starting_price")}}');
                         return;
                     }
-                    
+
                     // Set the message dynamically
                     if (askingPriceMessageBox) {
                         askingPriceMessageBox.value = askingPriceOriginalMessage.replace('[[PRICE]]', price);
                         askingPriceValue.value = price;
                     }
-                    
+
                     // Manually open the modal
                     if (askingPriceModal) {
                         let modal = new bootstrap.Modal(askingPriceModal);
@@ -2116,7 +2116,7 @@
                     }
                 });
             }
-        
+
         });
 
         function get_phone_number_and_whatsapp(phone_number, element) {
@@ -2255,8 +2255,8 @@
                                     }
                                 });
 
-                                let locationData = 
-                                ` 
+                                let locationData =
+                                `
                                     <div>
                                         <div>
                                             <h3 class="my-3" >{{translate('distance_from_your_location_to_the_seller_location')}}</h3>
@@ -2288,7 +2288,7 @@
                                             </div>
                                         </div>
                                         <div id="errorInfo" style="color:red;"></div>
-                                    </div>  
+                                    </div>
                                 `;
 
                                 directionsService.route(
@@ -2405,11 +2405,11 @@
                 const R = 6371; // Radius of the earth in km
                 const dLat = deg2rad(lat2 - lat1);
                 const dLon = deg2rad(lon2 - lon1);
-                const a = 
+                const a =
                     Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-                    Math.sin(dLon/2) * Math.sin(dLon/2); 
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                 const distance = R * c; // Distance in km
                 return distance;
             }
@@ -2424,7 +2424,7 @@
                 if (travelMode !== "DRIVING" && travelMode !== "BICYCLING") {
                     return;
                 }
-                
+
                 directionsService.route(
                     {
                         origin: origin,
@@ -2435,7 +2435,7 @@
                         if (status === "OK" && response) {
                             const route = response.routes[0];
                             const leg = route.legs[0];
-                            
+
                             // Log only distance and duration for car and bicycle
                             console.log(`${travelMode === "DRIVING" ? "Car" : "Bicycle"} travel: ${leg.distance.text}, time: ${leg.duration.text}`);
                         } else {
@@ -2560,7 +2560,7 @@
     @else
         <script>
             function initAutocomplete() {
-                
+
                 const country = document.getElementById('adCountry').value;
                 const city = document.getElementById('adCity').value;
                 const fullAddress = city + ", " + country;
@@ -2640,7 +2640,7 @@
             $(document).on("keydown", "input", function(e) {
                 if (e.which==13) e.preventDefault();
             });
-            
+
             function billingMap() {
                 let myLatLng = { lat: -33.8688, lng: 151.2195 };
                 const map = new google.maps.Map(document.getElementById("billing_location_map_canvas"), {
@@ -2648,12 +2648,12 @@
                     zoom: 13,
                     mapTypeId: "roadmap",
                 });
-            
+
                 let marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
                 });
-            
+
                 marker.setMap( map );
                 var geocoder = geocoder = new google.maps.Geocoder();
                 google.maps.event.addListener(map, 'click', function (mapsMouseEvent) {
@@ -2662,10 +2662,10 @@
                     var latlng = new google.maps.LatLng( coordinates['lat'], coordinates['lng'] ) ;
                     marker.setPosition( latlng );
                     map.panTo( latlng );
-            
+
                     document.getElementById('billing_latitude').value = coordinates['lat'];
                     document.getElementById('billing_longitude').value = coordinates['lng'];
-            
+
                     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             if (results[1]) {
@@ -2675,12 +2675,12 @@
                         }
                     });
                 });
-            
+
                 // Create the search box and link it to the UI element.
                 const input = document.getElementById("pac-input-billing");
-            
+
                 const searchBox = new google.maps.places.SearchBox(input);
-            
+
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
                 // Bias the SearchBox results towards current map's viewport.
                 map.addListener("bounds_changed", () => {
@@ -2691,7 +2691,7 @@
                 // more details for that place.
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
-            
+
                     if (places.length == 0) {
                         return;
                     }
@@ -2712,15 +2712,15 @@
                             title: place.name,
                             position: place.geometry.location,
                         });
-            
+
                         google.maps.event.addListener(mrkr, "click", function (event) {
                             document.getElementById('billing_latitude').value = this.position.lat();
                             document.getElementById('billing_longitude').value = this.position.lng();
-            
+
                         });
-            
+
                         markers.push(mrkr);
-            
+
                         if (place.geometry.viewport) {
                             // Only geocodes have viewport.
                             bounds.union(place.geometry.viewport);
@@ -2735,7 +2735,7 @@
             $(document).on("keydown", "input", function(e) {
                 if (e.which==13) e.preventDefault();
             });
-            
+
             function mapsShopping() {
                 try {
                     initAutocomplete();
@@ -2750,9 +2750,9 @@
     @endif
 
     <script src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=mapsShopping&libraries=places&v=3.49" defer></script>
-    
+
     <script src="{{ theme_asset('assets/js/lightbox.min.js') }}"></script>
-    
+
     <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script>
 
     <script>

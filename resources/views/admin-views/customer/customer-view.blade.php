@@ -35,11 +35,11 @@
                         </i> {{translate('joined_At')}} : {{date('d M Y H:i:s',strtotime($customer['created_at']))}} ({{$customer->created_at->diffForHumans()}})
                         </span>
                     </div>
-                    
+
                     @if($is_profile_incompleted)
                         <div class="d-sm-flex align-items-sm-center my-3">
                             <span class="fs-16" >
-                                <i class="tio-clear text-danger"></i> 
+                                <i class="tio-clear text-danger"></i>
                                 <strong>
                                     {{translate('profile_not_competed')}}
                                 </strong>
@@ -156,12 +156,12 @@
                                                 <a class="btn btn-outline--primary btn-sm edit square-btn"
                                                     title="{{translate('view')}}"
                                                     href="{{route('ads-show', $ad->slug)}}"><i
-                                                    class="tio-invisible"></i> 
+                                                    class="tio-invisible"></i>
                                                 </a>
                                                 <a class="btn btn-outline-info btn-sm square-btn"
                                                     title="{{translate('invoice')}}"
                                                     target="_blank"
-                                                    href=""><i class="tio-download"></i> 
+                                                    href=""><i class="tio-download"></i>
                                                 </a>
                                                 @if($ad['id'] != '0')
                                                     <a title="{{translate('delete')}}"
@@ -171,7 +171,7 @@
                                                     </a>
                                                 @endif
                                                 <form action="{{route('admin.ad.delete',[$ad['id']])}}" method="post" id="ad-{{$ad['id']}}">
-                                                    @csrf   
+                                                    @csrf
                                                     @method('delete')
                                                 </form>
                                             </div>
@@ -264,7 +264,7 @@
                                     @foreach($customer->paid_banners as $paid_banner)
                                         <div>
                                             <a href="{{$paid_banner->banner_url}}">
-                                                <img src="{{env_asset('storage/paid-banners/'.$paid_banner['banner_image']) }}" alt="banner_image">
+                                                <img src="{{cloudfront('paid-banners/'.$paid_banner['banner_image']) }}" alt="banner_image">
                                             </a>
                                         </div>
                                     @endforeach

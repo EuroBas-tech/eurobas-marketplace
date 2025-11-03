@@ -510,7 +510,7 @@
                                                     <div class="mb-4">
                                                         <a href="{{ $banner->banner_url ?? '#' }}">
                                                             <img style="height: 120px !important;" class="rounded" width="100%"
-                                                            src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}"
+                                                            src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                                             alt="paid_banner_image">
                                                         </a>
                                                     </div>
@@ -527,7 +527,7 @@
                                                 <div class="mb-4">
                                                     <a href="{{ $banner->banner_url ?? '#' }}">
                                                         <img style="height: 120px !important;" class="rounded" width="100%"
-                                                        src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}"
+                                                        src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                                         alt="paid_banner_image">
                                                     </a>
                                                 </div>

@@ -90,9 +90,9 @@
                                     {{$paid_banners->firstItem()+$key}}
                                 </td>
                                 <td class="mx-5" >
-                                    <a target="_blank" href="{{env_asset("storage/paid-banners/".$paid_banner['banner_image'])}}"
+                                    <a target="_blank" href="{{cloudfront("paid-banners/".$paid_banner['banner_image'])}}"
                                         class="title-color hover-c1 d-flex align-items-center gap-10">
-                                        <img src="{{env_asset("storage/paid-banners/".$paid_banner['banner_image'])}}"
+                                        <img src="{{cloudfront("paid-banners/".$paid_banner['banner_image'])}}"
                                         class="rounded" alt="banner_image" width="100px" height="50px">
                                     </a>
                                 </td>
@@ -119,15 +119,15 @@
                                     <div>{{$paid_banner->created_at->diffForHumans()}}</div>
                                 </td>
                                 <td>
-                                    <form action="{{route('admin.paid-banner.status-update')}}" 
-                                    method="post" 
-                                    id="paid_banner_status{{$paid_banner['id']}}_form" 
+                                    <form action="{{route('admin.paid-banner.status-update')}}"
+                                    method="post"
+                                    id="paid_banner_status{{$paid_banner['id']}}_form"
                                     class="paid_banner_status_form">
                                         @csrf
                                         <input type="hidden" name="id" value="{{$paid_banner['id']}}">
                                         <label class="switcher mx-auto">
-                                            <input type="checkbox" class="switcher_input" id="paid_banner_status{{$paid_banner['id']}}" name="status" value="1" 
-                                            {{ $paid_banner['status'] == 1 ? 'checked':'' }} 
+                                            <input type="checkbox" class="switcher_input" id="paid_banner_status{{$paid_banner['id']}}" name="status" value="1"
+                                            {{ $paid_banner['status'] == 1 ? 'checked':'' }}
                                             onclick="toogleStatusModal(event,'paid_banner_status{{$paid_banner['id']}}','paid-banner-block-on.png','paid-banner-block-off.png','{{translate('Want_to_restore')}} {{$paid_banner['title']}}','{{translate('Want_to_suspend')}} {{$paid_banner['title']}}',`<p>{{translate('if_enabled_this_paid_banner_will_be_unblocked_and_visible_again')}}</p>`,`<p>{{translate('if_disabled_this_paid_banner_will_be_blocked_and_not_visible')}}</p>`)">
                                             <span class="switcher_control"></span>
                                         </label>
@@ -137,7 +137,7 @@
                                     <div class="d-flex justify-content-center gap-2">
                                         <a title="{{translate('view')}}"
                                         class="btn btn-outline-info btn-sm square-btn"
-                                        href="{{env_asset("storage/paid-banners/".$paid_banner['banner_image'])}}">
+                                        href="{{cloudfront("paid-banners/".$paid_banner['banner_image'])}}">
                                             <i class="tio-invisible"></i>
                                         </a>
                                         @if($paid_banner['id'] != '0')
@@ -149,7 +149,7 @@
                                         @endif
                                     </div>
                                     <form action="{{route('admin.paid-banner.delete',[$paid_banner['id']])}}" method="post" id="paid-banner-{{$paid_banner['id']}}">
-                                        @csrf   
+                                        @csrf
                                         @method('delete')
                                     </form>
                                 </td>

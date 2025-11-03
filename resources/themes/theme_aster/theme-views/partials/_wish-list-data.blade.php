@@ -9,7 +9,7 @@
                         <div class="media gap-5 align-items-center mn-w200">
                             <div class="avatar border rounded" style="--size: 3.75rem">
                                 <img
-                                    src="{{ asset("public/storage/ad/thumbnail")}}/{{$ad['thumbnail'] }}"
+                                    src="{{ cloudfront("ad/thumbnail")}}/{{$ad['thumbnail'] }}"
                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                     class="img-fit dark-support rounded aspect-1" alt="">
                             </div>
@@ -68,7 +68,7 @@
                 <div class="media gap-4 bg-light p-3 rounded">
                     <div class="avatar border rounded" style="--size: 3.75rem">
                         <img
-                            src="{{asset("public/storage/ad/thumbnail")}}/{{$ad['thumbnail']}}"
+                            src="{{cloudfront("ad/thumbnail")}}/{{$ad['thumbnail']}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                             class="img-fit dark-support rounded" alt="">
                     </div>
