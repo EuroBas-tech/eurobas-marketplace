@@ -98,7 +98,7 @@
                         <div class="card-body p-0">
                             <div class="position-relative" >
                                 <img class="cover-image-size rounded" src="{{$user_profile['cover_image'] ? env_asset('storage/profile/covers/'.$user_profile['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}" alt="profile_cover_image">
-                                
+
                                 <div class="d-flex align-items-center gap-3 position-absolute bottom-0 start-0 p-3">
                                     <div class="text-center" >
                                         <img class="rounded profile-image-size" src="{{$user_profile['image'] ? env_asset('storage/profile/images/'.$user_profile['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}" alt="profile_image">
@@ -136,7 +136,7 @@
                                                 <div>
                                                     <h4 class="mb-3" >
                                                         <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
-                                                        (<span class="fw-bold fs-15" id="ads-count-number">{{ $user_profile->ads->count() }}</span>) 
+                                                        (<span class="fw-bold fs-15" id="ads-count-number">{{ $user_profile->ads->count() }}</span>)
                                                     </h4>
                                                 </div>
                                                 <button type="button" id="clear-filters" class="btn btn-outline-danger d-inline mb-3 px-1 py-1" >
@@ -146,44 +146,44 @@
 
                                                 <div class="mb-2 d-flex gap-0 flex-wrap" id="active-filters">
                                                     @if(request('category_id') && request('category_id') != 'all')
-                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                                         data-id="category" role="button">
                                                             <span>{{translate('categories')}}</span>
                                                             <span class="ms-1 fs-15">&times;</span>
                                                         </span>
                                                     @endif
-                                                    
+
                                                     @if(request('brand_id') && request('brand_id') != 'all')
-                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                                         data-id="brands" role="button">
                                                             <span>{{translate('brand')}}</span>
                                                             <span class="ms-1 fs-15">&times;</span>
                                                         </span>
                                                     @endif
-                                                    
+
                                                     @if(request('model_id') && request('model_id') != 'all')
-                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                                         data-id="models" role="button">
                                                             <span>{{translate('model')}}</span>
                                                             <span class="ms-1 fs-15">&times;</span>
                                                         </span>
                                                     @endif
-                                                    
+
                                                     @if(request('construction_year') && request('construction_year') != 'all')
-                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                                         data-id="min_construction_year" role="button">
                                                             <span>{{translate('min_construction_year')}}</span>
                                                             <span class="ms-1 fs-15">&times;</span>
                                                         </span>
                                                     @endif
-                                                    
+
                                                     @if(request('price_range') && request('price_range') != 'all')
-                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded 
-                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                                        p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                                         data-id="max_price" role="button">
                                                             <span>{{translate('max_price')}}</span>
                                                             <span class="ms-1 fs-15">&times;</span>
@@ -198,18 +198,18 @@
                                                         class="form-control custom-input-height filter-input fw-medium" name="category_id" id="category">
                                                             <option data-is-vehicle="1" value="all">{{translate('all')}}</option>
                                                             @foreach($categories as $category)
-                                                                <option 
+                                                                <option
                                                                 data-is-vehicle="{{$category->category_type == 'vehicles' ? 1 : 0}}" value="{{ $category->id }}">{{ $category->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group mb-3 my-4">
                                                         <label for="brand">{{ translate('brand') }}</label>
-                                                        <select style="height: 38px;" class="form-control filter-input fw-medium" 
+                                                        <select style="height: 38px;" class="form-control filter-input fw-medium"
                                                         data-filter-label="{{translate('brand')}}" data-filter-id="brand" name="brand_id" id="brand">
                                                             <option value="all">{{translate('all')}}</option>
                                                             @foreach($brands as $brand)
-                                                                <option 
+                                                                <option
                                                                 value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                                                             @endforeach
                                                         </select>
@@ -217,7 +217,7 @@
                                                     <div class="form-group mb-3 pt-2">
                                                         <label for="model">{{ translate('model') }}</label>
                                                         <select style="height: 38px;" data-filter-label="{{translate('model')}}" data-filter-id="model" id="model"
-                                                        class="form-control filter-input fw-medium" 
+                                                        class="form-control filter-input fw-medium"
                                                         name="model_id" id="model">
                                                             <option value="all">{{translate('all')}}</option>
                                                             @foreach($models as $model)
@@ -230,40 +230,40 @@
                                                     </div>
                                                     <div class="form-group mb-3 mt-2 pt-3" id="status-box">
                                                         <div class="dropdown w-100">
-                                                            <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select" 
-                                                                    style="height: 38px;" 
-                                                                    type="button" 
+                                                            <button class="form-control text-start w-100 fw-medium justify-content-between px-2 form-select"
+                                                                    style="height: 38px;"
+                                                                    type="button"
                                                                     id="firstmultiSelectDropdown"
-                                                                    data-bs-toggle="dropdown" 
+                                                                    data-bs-toggle="dropdown"
                                                                     aria-expanded="false">
                                                                 {{translate('status')}}
                                                             </button>
-                                                            <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="firstmultiSelectDropdown" 
+                                                            <ul class="dropdown-menu keep-open p-0 py-2" aria-labelledby="firstmultiSelectDropdown"
                                                             style="width: calc(100% - 2px); left: 1px; right: 1px; max-width: none;">
                                                                 <li class="dropdown-item p-2 px-3">
                                                                     <label class="d-flex align-items-center gap-1 m-0">
-                                                                        <input class="form-check-input filter-input m-0" 
+                                                                        <input class="form-check-input filter-input m-0"
                                                                         data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="never_used">
                                                                         <span>{{ translate('never_used') }}</span>
                                                                     </label>
                                                                 </li>
                                                                 <li class="dropdown-item p-2 px-3">
                                                                     <label class="d-flex align-items-center gap-1 m-0">
-                                                                        <input class="form-check-input filter-input m-0" 
+                                                                        <input class="form-check-input filter-input m-0"
                                                                         data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="new">
                                                                         <span>{{ translate('new') }}</span>
                                                                     </label>
                                                                 </li>
                                                                 <li class="dropdown-item p-2 px-3">
                                                                     <label class="d-flex align-items-center gap-1 m-0">
-                                                                        <input class="form-check-input filter-input m-0" 
+                                                                        <input class="form-check-input filter-input m-0"
                                                                         data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="used">
                                                                         <span>{{ translate('used') }}</span>
                                                                     </label>
                                                                 </li>
                                                                 <li class="dropdown-item p-2 px-3">
                                                                     <label class="d-flex align-items-center gap-1 m-0">
-                                                                        <input class="form-check-input filter-input m-0" 
+                                                                        <input class="form-check-input filter-input m-0"
                                                                         data-filter-label="{{translate('status')}}" data-filter-name="status[]" type="checkbox" name="status[]" value="old">
                                                                         <span>{{ translate('old') }}</span>
                                                                     </label>
@@ -377,9 +377,9 @@
                                                         <div class="row">
                                                             <div class="col-6 pe-1" >
                                                                 <div class="form-group">
-                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium"
                                                                     data-filter-label="{{translate('min_construction_year')}}" data-filter-id="min_construction_year" name="min_construction_year" id="min_construction_year" >
-                                                                        <option value="{{null}}">{{translate('from')}}</option>    
+                                                                        <option value="{{null}}">{{translate('from')}}</option>
                                                                         @for ($year = 2025; $year >= 1940; $year--)
                                                                             <option value="{{ $year }}">{{ $year }}</option>
                                                                         @endfor
@@ -388,9 +388,9 @@
                                                             </div>
                                                             <div class="col-6 ps-1" >
                                                                 <div class="form-group">
-                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium" name="max_construction_year" 
+                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium" name="max_construction_year"
                                                                     data-filter-label="{{translate('max_construction_year')}}" data-filter-id="max_construction_year" id="max_construction_year" >
-                                                                        <option value="{{null}}">{{translate('to')}}</option>    
+                                                                        <option value="{{null}}">{{translate('to')}}</option>
                                                                         @for ($year = 2025; $year >= 1940; $year--)
                                                                             <option value="{{ $year }}">{{ $year }}</option>
                                                                         @endfor
@@ -405,7 +405,7 @@
                                                         <div class="row">
                                                             <div class="col-6 pe-1" >
                                                                 <div class="form-group">
-                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium"
                                                                     data-filter-label="{{translate('min_mileage')}}" data-filter-id="min_mileage" id="min_mileage" name="min_mileage">
                                                                         <option value="{{null}}">{{translate('from')}}</option>
                                                                         <option value="500">500</option>
@@ -452,7 +452,7 @@
                                                             </div>
                                                             <div class="col-6 ps-1" >
                                                                 <div class="form-group">
-                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium" 
+                                                                    <select style="height: 38px;" class="form-select filter-input fw-medium"
                                                                     data-filter-label="{{translate('max_mileage')}}" data-filter-id="max_mileage" id="max_mileage" name="max_mileage">
                                                                         <option value="{{null}}">{{translate('to')}}</option>
                                                                         <option value="500">500</option>
@@ -509,8 +509,8 @@
                                                 @foreach($paid_banners as $banner)
                                                     <div class="mb-4">
                                                         <a href="{{ $banner->banner_url ?? '#' }}">
-                                                            <img style="height: 120px !important;" class="rounded" width="100%" 
-                                                            src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}" 
+                                                            <img style="height: 120px !important;" class="rounded" width="100%"
+                                                            src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}"
                                                             alt="paid_banner_image">
                                                         </a>
                                                     </div>
@@ -526,8 +526,8 @@
                                             @foreach($paid_banners as $banner)
                                                 <div class="mb-4">
                                                     <a href="{{ $banner->banner_url ?? '#' }}">
-                                                        <img style="height: 120px !important;" class="rounded" width="100%" 
-                                                        src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}" 
+                                                        <img style="height: 120px !important;" class="rounded" width="100%"
+                                                        src="{{ env_asset('storage/paid-banners/'.$banner->banner_image) }}"
                                                         alt="paid_banner_image">
                                                     </a>
                                                 </div>
@@ -537,7 +537,7 @@
                                 </div>
                                 <div class="col">
                                     @include('theme-views.partials._ajax-products-view',['ads'=>$user_ads])
-                                    <div id="fullscreen-loader" class="d-none" 
+                                    <div id="fullscreen-loader" class="d-none"
                                         style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 9999999;z-index: 9999999;">
                                         <div class="spinner-border text-primary" role="status" style="width: 7rem; height: 7rem;">
                                             <span class="visually-hidden">{{translate('Loading')}}...</span>
@@ -560,7 +560,7 @@
                                                                 <h3 class="mb-0 text-primary">{{translate('ads_number')}}</h3>
                                                             </div>
                                                             <p class="fs-28 fw-medium">{{$user_ads_count}}</p>
-                                                        </div>  
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -582,14 +582,14 @@
                                                     <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->email}}</p>
                                                 </div>
                                             @endif
-                                            
+
                                             @if($user_profile->show_location_data == 1)
                                                 <div class="d-flex align-items-center gap-2 mb-2" >
                                                     <i class="bi bi-geo-alt fs-16 text-primary"></i>
                                                     <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->country}}, {{$user_profile->city}}</p>
                                                 </div>
                                             @endif
-                                            
+
                                             @if($user_profile->show_location_data == 1)
                                                 <div class="d-flex align-items-center gap-2 mb-2" >
                                                     <i class="bi bi-mailbox fs-16 text-primary"></i>
@@ -604,7 +604,7 @@
                                                     <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->phone_code}}{{$user_profile->phone}}</p>
                                                 </div>
                                             @endif
-                                            
+
                                             @if($user_profile->show_location_data == 1)
                                                 <div class="d-flex align-items-start gap-2 mb-2" >
                                                     <i class="bi bi-pin-map fs-16 text-primary"></i>
@@ -627,7 +627,7 @@
                                                             @foreach($user_categories as $category)
                                                                 <div class="text-center" >
                                                                     <div>
-                                                                        <img class="small-responsive-icon" src="{{asset('storage/app/public/category')}}/{{ $category->icon }}" alt="category-icon">
+                                                                        <img class="small-responsive-icon" src="{{cloudfront('category')}}/{{ $category->icon }}" alt="category-icon">
                                                                     </div>
                                                                     <span class="fw-normal fs-12">{{$category->name}}</span>
                                                                 </div>
@@ -683,19 +683,19 @@
                     placeholder: "{{ translate('choose_brand') }}",
                     allowClear: true
                 });
-                
+
                 $modelSelect.select2({
                     placeholder: "{{ translate('choose_model') }}",
                     allowClear: true
                 });
             }
-            
+
             // Initialize Select2 on document ready
             initializeSelect2();
 
             // Store all model options
             const allModelOptions = $('#model option').clone();
-            
+
             // Create the "all" options once with value="all"
             const allBrandOption = '<option value="all">{{ translate("all") }}</option>';
             const allModelOption = '<option value="all">{{ translate("all") }}</option>';
@@ -708,7 +708,7 @@
                 if ($brandSelect.find('option[value="all"]').length === 0) {
                     $brandSelect.append(allBrandOption);
                 }
-                
+
                 // Add "all Models" if it doesn't exist
                 if ($modelSelect.find('option[value="all"]').length === 0) {
                     $modelSelect.append(allModelOption);
@@ -726,7 +726,7 @@
 
                 // Clear models but keep the "all Model" and default option
                 $modelSelect.find('option').not('[value="all"], [value=""]').remove();
-                
+
                 // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
@@ -744,9 +744,9 @@
                 if ($modelSelect.find('option[value="all"]').length > 1) {
                     $modelSelect.find('option[value="all"]').not(':last').remove();
                 }
-                
+
                 $modelSelect.val(null).trigger('change');
-                
+
                 // Ensure "all Brand" exists
                 addPersistentOptions();
             }
@@ -809,7 +809,7 @@
                 $brandSelect.val('all');
                 $modelSelect.prop('disabled', true).val('all');
             });
-                
+
         });
     </script>
 
@@ -865,9 +865,9 @@
 
                 if(is_available_items) {
                     let formData = $('#filter-form').serialize() + `&offset=${offset}&limit=5`;
-                    
+
                     $('#fullscreen-loader').removeClass('d-none');
-                    
+
                     $.ajax({
                         url: "{{ route('ads-filter') }}",
                         method: "POST",
@@ -879,7 +879,7 @@
                             if (response.html) {
                                 response.html.trim();
                                 $('#ajax-products-view').append(response.html);
-                                
+
                                 if (response.show_ad_ids) {
                                     let newIds = Array.isArray(response.show_ad_ids) ? response.show_ad_ids : Object.values(response.show_ad_ids);
                                     shownAdIds = [...shownAdIds, ...newIds];
@@ -887,12 +887,12 @@
                                 offset += 5;
                             }
                             if(response.ads_count == 0) {
-                                
-                                let formData = $('#filter-form').serializeArray(); 
+
+                                let formData = $('#filter-form').serializeArray();
                                 shownAdIds.forEach(id => {
                                     formData.push({ name: 'shown_ad_ids[]', value: id });
                                 });
-                                                
+
                                 $.ajax({
                                     url: "{{ route('load-related-ads') }}",
                                     method: "POST",
@@ -910,7 +910,7 @@
 
                                         $('#ajax-products-view').append(`
                                             <div class="d-flex justify-content-center" >
-                                                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" 
+                                                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
                                                 class="mb-4 btn btn-primary d-flex align-items-center gap-2" >
                                                     <i class="bi bi-arrow-up"></i>
                                                     {{translate('back_to_top')}}
@@ -934,7 +934,7 @@
 
         function filterAds() {
             var formData = $('#filter-form').serialize();
-            
+
             formData += '&user_id=' + user_id;
 
             // Show full-screen loader
@@ -994,7 +994,7 @@
                     placeholder: "{{ translate('choose_brand') }}",
                     allowClear: true
                 });
-                
+
                 if ($('#model').data('select2')) {
                     $('#model').select2('destroy');
                 }
@@ -1003,7 +1003,7 @@
                     allowClear: true
                 });
             });
-            
+
             let debounceTimer;
             $('.filter-input').on('change', function () {
                 $('#clear-filters').prop('disabled', false);
@@ -1070,7 +1070,7 @@
                         if (value && value !== 'all') {
                             if ($container.find(`.active-filter-item[data-id="${id}"]`).length === 0) {
                                 const filterHtml = `
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" 
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
                                     data-id="${id}" role="button">
                                         <span>${label}</span>
                                         <span class="ms-1 fs-18">&times;</span>
@@ -1080,16 +1080,16 @@
                             }
                         }
                     }
-                    
+
                 });
-                
+
             }
 
             $(document).on('click', '.active-filter-item', function () {
-                
+
                 const id = $(this).data('id');
                 const name = $(this).data('name');
-                
+
                 let $elmByDataId = $('[data-filter-id="' + id + '"]');
                 let $elmByName = $('[name="' + name + '"]');
 
@@ -1104,7 +1104,7 @@
                         }
                     }
 
-                }   
+                }
 
                 if (name) {
                     $elmByName.each(function () {

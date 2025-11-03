@@ -10,7 +10,7 @@
                 <div class="modal-body cursor-pointer __p-3px" onclick="location.href='{{$web_config['popup_banner']['url']}}'">
                     <img class="d-block w-100"
                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                         src="{{asset('storage/app/public/banner')}}/{{$web_config['popup_banner']['photo']}}"
+                         src="{{cloudfront('banner')}}/{{$web_config['popup_banner']['photo']}}"
                          alt="">
                 </div>
             </div>

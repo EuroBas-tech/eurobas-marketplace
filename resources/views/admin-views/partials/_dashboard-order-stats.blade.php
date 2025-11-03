@@ -46,7 +46,7 @@
         <!-- Card -->
         <a class="order-stats order-stats_packaging" href="{{route('admin.orders.list',['processing'])}}">
             <div class="order-stats__content" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
-                <img width="35" src="{{ asset('storage/app/public/category/'.$category->icon)}}" alt="">
+                <img width="35" src="{{ cloudfront('category/'.$category->icon)}}" alt="">
                 <h6 class="order-stats__subtitle">{{$category['name']}}</h6>
             </div>
             <span class="{{ $randomClass }} fw-bold">

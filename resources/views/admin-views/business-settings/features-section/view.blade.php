@@ -153,7 +153,7 @@
 
                                             <div class="mb-2 d-flex">
                                                 <div class="custom_img_upload aspect-ratio-3-15">
-                                                    <img id="pre_img_header_logo{{ $card_index }}" src="{{asset('storage/app/public/banner')}}/{{$item->icon}}"
+                                                    <img id="pre_img_header_logo{{ $card_index }}" src="{{cloudfront('banner')}}/{{$item->icon}}"
                                                         onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'" class="w-100">
                                                 </div>
                                             </div>

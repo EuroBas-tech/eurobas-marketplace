@@ -38,9 +38,9 @@
                                                     <div class="row g-2">
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 mt-1">
                                                             <div class="form-group padding-bottom-sm">
-                                                                <div class="dropup mb-1">                                                                        
+                                                                <div class="dropup mb-1">
                                                                     <input class="filter-input" type="hidden" name="category_id" id="selectedCategoryId" value="0">
-                                                                    <button style="border: 1px solid #ced4da;border-radius: 7px;" class="btn btn-outline-secondary w-100 custom-input-height justify-content-start" 
+                                                                    <button style="border: 1px solid #ced4da;border-radius: 7px;" class="btn btn-outline-secondary w-100 custom-input-height justify-content-start"
                                                                         type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <span id="selectedCategoryText" class="fw-normal font-size-16" >
                                                                             {{translate('category')}}
@@ -48,7 +48,7 @@
                                                                     </button>
                                                                     <ul class="dropdown-menu w-100 p-0" style="max-height: 50vh; overflow-y: auto;">
                                                                         <li class="p-0">
-                                                                            <a onclick="triggerFilterManually(this)" class="dropdown-item d-flex font-size-16 align-items-center category-option p-2 gap-2" href="#" 
+                                                                            <a onclick="triggerFilterManually(this)" class="dropdown-item d-flex font-size-16 align-items-center category-option p-2 gap-2" href="#"
                                                                                 data-id="0"
                                                                                 data-type="vehicles"
                                                                                 data-slug="">
@@ -57,11 +57,11 @@
                                                                         </li>
                                                                         @foreach($categories->where('position', 1) as $category)
                                                                             <li class="p-0">
-                                                                                <a onclick="triggerFilterManually(this)" class="dropdown-item font-size-16 d-flex align-items-center category-option p-2 gap-2" href="#" 
-                                                                                    data-id="{{ $category['id'] }}" 
+                                                                                <a onclick="triggerFilterManually(this)" class="dropdown-item font-size-16 d-flex align-items-center category-option p-2 gap-2" href="#"
+                                                                                    data-id="{{ $category['id'] }}"
                                                                                     data-type="{{ $category['category_type'] }}"
                                                                                     data-slug="{{ $category['slug'] }}">
-                                                                                    <img src="{{ asset('storage/app/public/category/'.$category['icon'])}}" alt="" style="width: 25px; height: 25px;">
+                                                                                    <img src="{{ cloudfront('category/'.$category['icon'])}}" alt="" style="width: 25px; height: 25px;">
                                                                                     {{ ucwords($category['name']) }}
                                                                                 </a>
                                                                             </li>
@@ -70,7 +70,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-xl-4 col-md-4 col-sm-12 col-12 px-1 mt-1" data-category-type="all">
                                                             <div class="form-group padding-bottom-sm">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height emoji-font country-select" name="country" id="country_select">
@@ -83,14 +83,14 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" 
+                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles"
                                                         data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand">
                                                                     <option value="all">{{translate('brand')}}</option>
                                                                     @foreach($brands as $brand)
-                                                                        <option 
-                                                                        {{ $brand['id'] == ($data['brand_id'] ?? '') || $brand['id'] == old('brand_id') ? 'selected' : ''}} 
+                                                                        <option
+                                                                        {{ $brand['id'] == ($data['brand_id'] ?? '') || $brand['id'] == old('brand_id') ? 'selected' : ''}}
                                                                         value="{{ $brand['id'] }}"
                                                                         data-brand-categories="{{ implode(', ', $brand['categories']) }}" >
                                                                             {{ $brand['name'] }}
@@ -100,15 +100,15 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" 
+                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1"
                                                         data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
-                                                                        <option data-brand-id="{{ $model['brand_id'] }}" 
+                                                                        <option data-brand-id="{{ $model['brand_id'] }}"
                                                                         data-model-categories="{{ implode(', ', $model['categories']) }}"
-                                                                        {{ $model['id'] == ($data['model_id'] ?? '') || $model['id'] == old('model_id') ? 'selected' : ''}} 
+                                                                        {{ $model['id'] == ($data['model_id'] ?? '') || $model['id'] == old('model_id') ? 'selected' : ''}}
                                                                         value="{{ $model['id'] }}">
                                                                             {{ $model['name'] }}
                                                                         </option>
@@ -134,7 +134,7 @@
                                                                     <option {{ old('bicycle_type') == 'fixed_gear' ? 'selected' : ''}} value="fixed_gear">{{ translate('fixed_gear') }}</option>
                                                                     <option {{ old('bicycle_type') == 'gravel' ? 'selected' : ''}} value="gravel">{{ translate('gravel') }}</option>
                                                                     <option {{ old('bicycle_type') == 'kids' ? 'selected' : ''}} value="kids">{{ translate('kids') }}</option>
-                                                                </select>                
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="bicycles" style="display: none;">
@@ -156,10 +156,10 @@
                                                                     <option {{ old('bicycle_size') == 'm' ? 'selected' : ''}} value="m">m</option>
                                                                     <option {{ old('bicycle_size') == 'l' ? 'selected' : ''}} value="l">l</option>
                                                                     <option {{ old('bicycle_size') == 'xl' ? 'selected' : ''}} value="xl">xl</option>
-                                                                </select>                
+                                                                </select>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="construction_year" id="construction_year_select">
@@ -316,7 +316,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home garden" data-for="home-garden" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="usage" id="usage">
@@ -393,7 +393,7 @@
                                                         </div>
 
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="electronics" data-for="electronics" style="display: none;">
-                                                            <div class="form-group mb-3"> 
+                                                            <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="electronic_type" id="electronic_type">
                                                                     <option value="all">{{ translate('type') }}</option>
                                                                     <option {{ old('electronic_type') == 'tv' ? 'selected' : ''}} value="tv">{{ translate('tv') }}</option>
@@ -454,7 +454,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="real estate" data-for="real-estate" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="floor" id="floor">
@@ -467,7 +467,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        
+
 
 
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="all" >
@@ -555,14 +555,14 @@
     </div>
 </section>
 
-<script src="{{ theme_asset('assets/js/jquery-3.6.0.min.js') }}"></script>  
+<script src="{{ theme_asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var swiper = new Swiper(".banner-swiper", {
             loop: true,
             autoplay: {
-                delay: 6000, 
+                delay: 6000,
                 disableOnInteraction: false,
             },
             speed: 1700,
@@ -595,7 +595,7 @@
             const defaultOption = $(`.category-option[data-id="${selectedCategoryId}"]`);
             if (defaultOption.length) {
                 const defaultType = defaultOption.data('type');
-                const defaultSlug = defaultOption.data('slug') 
+                const defaultSlug = defaultOption.data('slug')
                     ?? defaultOption.text().trim().toLowerCase().replace(/&/g, '').replace(/\s+/g, '-');
 
                 $('#selectedCategoryText').html(defaultOption.html());
@@ -617,7 +617,7 @@
 
             const categoryType = $(this).data('type');
             const categoryId = $(this).data('id');
-            const categorySlug = $(this).data('slug')   
+            const categorySlug = $(this).data('slug')
                 ?? $(this).text().trim().toLowerCase().replace(/&/g, '').replace(/\s+/g, '-');
 
             $('#selectedCategoryText').html($(this).html());

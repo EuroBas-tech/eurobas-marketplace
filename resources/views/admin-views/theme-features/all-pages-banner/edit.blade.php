@@ -78,7 +78,7 @@
                                             <img
                                                 class="ratio-6:1"
                                                 id="mbImageviewer"
-                                                src="{{asset('storage/app/public/banner')}}/{{json_decode($banner['value'])->image}}"
+                                                src="{{cloudfront('banner')}}/{{json_decode($banner['value'])->image}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'"
                                                 alt="banner image"/>
                                         </center>

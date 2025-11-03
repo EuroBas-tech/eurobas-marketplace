@@ -268,7 +268,7 @@
                     class="cursor-pointer d-block">
                     <img class="d-block footer_banner_img __inline-63"
                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                        src="{{asset('storage/app/public/banner')}}/{{$main_section_banner['photo']}}">
+                        src="{{cloudfront('banner')}}/{{$main_section_banner['photo']}}">
                 </a>
             </div>
         @endif
@@ -293,7 +293,7 @@
                             <a href="{{$banner->url}}" class="d-block">
                                 <img class="footer_banner_img __inline-63"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/banner')}}/{{$banner['photo']}}">
+                                    src="{{cloudfront('banner')}}/{{$banner['photo']}}">
                             </a>
                         </div>
                     </div>
@@ -354,7 +354,7 @@
                             <a href="{{$banner->url}}" class="d-block">
                                 <img class="footer_banner_img __inline-63"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/banner')}}/{{$banner['photo']}}">
+                                    src="{{cloudfront('banner')}}/{{$banner['photo']}}">
                             </a>
                         </div>
                     </div>
@@ -371,7 +371,7 @@
                             <a href="{{$banner->url}}" class="d-block">
                                 <img class="footer_banner_img __inline-63"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/banner')}}/{{$banner['photo']}}">
+                                    src="{{cloudfront('banner')}}/{{$banner['photo']}}">
                             </a>
                         </div>
                     @endforeach

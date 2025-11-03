@@ -35,7 +35,7 @@
                 <a href="{{$banner['url']}}" class="d-block">
                     <img class="w-100 __slide-img"
                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                        src="{{asset('storage/app/public/banner')}}/{{$banner['photo']}}"
+                        src="{{cloudfront('banner')}}/{{$banner['photo']}}"
                         alt="">
                 </a>
                 @endforeach

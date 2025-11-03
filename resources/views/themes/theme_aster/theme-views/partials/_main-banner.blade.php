@@ -62,7 +62,7 @@
 
                                                 <div class="swiper-slide">
                                                     <a href="{{ $banner['url'] }}" class="h-100">
-                                                        <img src="{{ asset('storage/app/public/banner') }}/{{ $banner['photo'] }}"
+                                                        <img src="{{ cloudfront('banner') }}/{{ $banner['photo'] }}"
                                                             loading="lazy"
                                                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder-2_1.png') }}'"
                                                             alt="" class="dark-support rounded responsive-banner-image">
@@ -95,7 +95,7 @@
                         {{-- @foreach ($footer_banner as $key => $banner)
                             <div class="col-6 d-none d-sm-block">
                                 <a href="{{ $banner['url'] }}" class="ad-hover h-100">
-                                    <img src="{{asset('storage/app/public/banner')}}/{{$banner['photo']}}" loading="lazy" alt=""
+                                    <img src="{{cloudfront('banner')}}/{{$banner['photo']}}" loading="lazy" alt=""
                                          onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'"
                                          class="dark-support rounded w-100 img-fit">
                                 </a>
@@ -140,7 +140,7 @@
             var swiper = new Swiper(".banner-swiper", {
                 loop: true,
                 autoplay: {
-                    delay: 6000, 
+                    delay: 6000,
                     disableOnInteraction: false,
                 },
                 speed: 1700,

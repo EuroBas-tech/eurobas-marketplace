@@ -144,7 +144,7 @@
                                             <td>
                                                 <img class="rounded" width="64"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                src="{{asset('storage/app/public/category')}}/{{$item->category['icon']}}">
+                                                src="{{cloudfront('category')}}/{{$item->category['icon']}}">
                                             </td>
                                             <td>
                                                 {{$item->category!=null?$item->category->name:translate('not_found')}}

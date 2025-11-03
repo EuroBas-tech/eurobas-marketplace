@@ -179,7 +179,7 @@
                                         <td class="text-center">
                                             <img class="rounded" width="64"
                                                  onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                 src="{{asset('storage/app/public/category')}}/{{$category['icon']}}">
+                                                 src="{{cloudfront('category')}}/{{$category['icon']}}">
                                         </td>
                                     @endif
                                     <td>{{($category['defaultname'])}}</td>

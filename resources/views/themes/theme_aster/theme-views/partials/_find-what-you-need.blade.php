@@ -5,7 +5,7 @@
             @if(isset($footer_banner[0]))
                 <div class="col-12 d-sm-none">
                     <a href="{{ $footer_banner[0]['url'] }}" class="ad-hover">
-                        <img src="{{asset('storage/app/public/banner')}}/{{$footer_banner[0]['photo']}}" loading="lazy" alt=""
+                        <img src="{{cloudfront('banner')}}/{{$footer_banner[0]['photo']}}" loading="lazy" alt=""
                                 onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'"
                                 class="dark-support rounded w-100">
                     </a>
@@ -51,7 +51,7 @@
                                                             {{ translate('View_All') }}
                                                             <i class="bi bi-chevron-right"></i>
                                                         </a>
-                                                            
+
                                                     </div>
 
                                                     <div class="find-what-you-need-items">
@@ -74,7 +74,7 @@
                                                                     <div
                                                                         class=" rounded " >
                                                                         <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                            src="{{asset('storage/app/public/category')}}/{{$sub_category['icon']}}" alt=""
+                                                                            src="{{cloudfront('category')}}/{{$sub_category['icon']}}" alt=""
                                                                             loading="lazy" class="dark-support img-fit prod-imag4 " >
                                                                     </div>
                                                                 </div>
@@ -120,7 +120,7 @@
                                                         <div
                                                             class="avatar avatar-xxl ov-hidden hover-zoom-in rounded">
                                                             <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                    src="{{asset('storage/app/public/category')}}/{{$sub_category['icon']}}" alt=""
+                                                                    src="{{cloudfront('category')}}/{{$sub_category['icon']}}" alt=""
                                                                     loading="lazy" class="dark-support img-fit " >
                                                         </div>
                                                         <div class="text-truncate">{{$sub_category['name']}}</div>

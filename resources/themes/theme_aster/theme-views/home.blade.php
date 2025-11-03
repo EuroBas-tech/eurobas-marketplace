@@ -20,8 +20,8 @@
         }
 
         .emoji-font {
-            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
-            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
+            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
 
@@ -39,7 +39,7 @@
             background: rgba(0, 0, 0, 0.5);
             background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
             color: white;
-            width: 205px; 
+            width: 205px;
             height: 55px;
             /* padding: 0 20px; */
             display: flex;
@@ -160,7 +160,7 @@
                 font-size: 16px;
             }
         }
-        
+
         @media (max-width: 575px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 line-height: 36px !important;
@@ -169,7 +169,7 @@
         }
 
         .hero-background-image {
-            background: url("{{ asset('storage/app/public/banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
+            background: url("{{ cloudfront('banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
             background-size: cover;
         }
 
@@ -199,11 +199,11 @@
 @php($lang=app()->getLocale())
 
 @section('content')
-    
+
     <main class="main-content d-flex flex-column gap-3 pt-0 pt-lg-3 pb-3">
         <!-- Main Banner -->
         <div class="container" >
-            
+
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
@@ -211,15 +211,15 @@
                     <!-- Background Card -->
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image"></div>
                     <!-- Filter Under Card -->
-                    <div class="d-flex mx-auto align-items-center justify-content-center 
+                    <div class="d-flex mx-auto align-items-center justify-content-center
                         w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
             @else
-                <div style="background-position: 50%;height: calc(95vh - 135px);max-height: 520px;" 
+                <div style="background-position: 50%;height: calc(95vh - 135px);max-height: 520px;"
                     class="hero-background-image pt-2 rounded d-flex align-items-end mb-3">
-                    <div class="d-flex mx-auto align-items-center justify-content-center 
+                    <div class="d-flex mx-auto align-items-center justify-content-center
                         w-100 p-2 px-4 px-sm-5" style="border-radius: 4px 4px 0 0;">
                         @include('theme-views.partials._ad-filter')
                     </div>
@@ -227,20 +227,20 @@
             @endif
         </div>
 
-        
+
         <div class="container" >
             <div class="home-banner-swiper">
                 <div class="swiper-wrapper">
                     @foreach($paid_banners as $banner)
                     <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                        <img src="{{ env_asset('storage/paid-banners/'.$banner->banner_image)}}" 
+                        <img src="{{ env_asset('storage/paid-banners/'.$banner->banner_image)}}"
                         alt="banner_image">
                     </div>
                     @endforeach
                 </div>
             </div>
         </div>
-        
+
         <!-- Recommended For You -->
         @include('theme-views.partials._recommended-product')
         <!-- Show System Vehicle Brands -->
@@ -316,7 +316,7 @@
             window.triggerFilterManually = function (clickedElement) {
                 $('#selectedCategoryId').val($(clickedElement).data('id'));
                 filterAds($('#selectedCategoryId'));
-                
+
                 $('.form-data select').each(function () {
                     $(this).prop('selectedIndex', 0);
                     $('#brand').val('all').trigger('change');

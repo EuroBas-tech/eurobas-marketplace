@@ -20,7 +20,7 @@
                              data-swiper-breakpoints='{"0": {"slidesPerView": "1"}, "768": {"slidesPerView": "2"}, "992": {"slidesPerView": "3"}}'>
                             <div class="swiper-wrapper">
                                 @foreach($top_sellers as $seller)
-                                    @if($seller->shop && $seller->product && !empty($seller->product)) 
+                                    @if($seller->shop && $seller->product && !empty($seller->product))
                                         <div class="swiper-slide align-items-start store-card-bg-color rounded">
                                             <!-- Top Store -->
                                             <div class="position-relative rounded p-3 p-sm-4 w-100">
@@ -105,7 +105,7 @@
         @if(isset($footer_banner[1]))
             <div class="col-12 mt-3 d-sm-none">
                 <a href="{{ $footer_banner[1]['url'] }}" class="ad-hover">
-                    <img src="{{asset('storage/app/public/banner')}}/{{$footer_banner[1]['photo']}}" loading="lazy" alt=""
+                    <img src="{{cloudfront('banner')}}/{{$footer_banner[1]['photo']}}" loading="lazy" alt=""
                             onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'"
                             class="dark-support rounded w-100">
                 </a>

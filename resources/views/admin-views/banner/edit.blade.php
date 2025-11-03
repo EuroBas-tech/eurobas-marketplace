@@ -53,7 +53,7 @@
                                         <label for="name" class="title-color text-capitalize">{{ translate('banner_URL')}}</label>
                                         <input type="url" name="url" class="form-control" id="url" required placeholder="{{ translate('enter_url') }}" value="{{$banner['url']}}">
                                     </div>
-                        
+
                                     <div class="form-group" id="resource-mobile" >
                                         <label for="for_mobile">{{\App\CPU\translate('onlymobile')}}</label>
                                         <select style="width: 100%"
@@ -100,7 +100,7 @@
                                     <div>
                                         <center class="mx-auto">
                                             <div class="uploadDnD">
-                                                <div class="form-group inputDnD input_image input_image_edit" style="background-image: url('{{env_asset('storage/app/public/banner')}}/{{$banner['photo']}}')" data-title="{{ file_exists('storage/app/public/banner/'.$banner['photo']) ? '': 'Drag and drop file or Browse file'}}">
+                                                <div class="form-group inputDnD input_image input_image_edit" style="background-image: url('{{cloudfront('banner')}}/{{$banner['photo']}}')" data-title="{{ Storage::disk()->exists('banner/'.$banner['photo']) ? '': 'Drag and drop file or Browse file'}}">
                                                     <input type="file" name="image" class="form-control-file text--primary font-weight-bold" onchange="readUrl(this)"  accept=".jpg, .png, .jpeg, .gif, .bmp, .webp |image/*">
                                                 </div>
                                             </div>

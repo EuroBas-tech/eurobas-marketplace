@@ -297,8 +297,8 @@ class Helpers
     public static function units()
     {
         $x = [
-            'Pc', 'Ton', 'Kg', 'GR', 'Lt', 'Ml', 
-            'Doz', 'Box', 'Pkg', 'Gal', 'Bag', 
+            'Pc', 'Ton', 'Kg', 'GR', 'Lt', 'Ml',
+            'Doz', 'Box', 'Pkg', 'Gal', 'Bag',
             'Set', 'Cm', 'Feet'
         ];
         return $x;
@@ -341,18 +341,18 @@ class Helpers
     }
 
     public static function prevent_if_profile_incomplete() {
-        if(auth("customer")->check() && (!auth("customer")->user()->phone_code || 
-        !auth('customer')->user()->phone || !auth('customer')->user()->country || 
+        if(auth("customer")->check() && (!auth("customer")->user()->phone_code ||
+        !auth('customer')->user()->phone || !auth('customer')->user()->country ||
         !auth('customer')->user()->city || !auth('customer')->user()->native_language)){
             return true;
         } else {
             return false;
         }
     }
-    
+
     public static function json_prevent_if_profile_incomplete() {
-        if(auth("customer")->check() && (!auth("customer")->user()->phone_code || 
-        !auth('customer')->user()->phone || !auth('customer')->user()->country || 
+        if(auth("customer")->check() && (!auth("customer")->user()->phone_code ||
+        !auth('customer')->user()->phone || !auth('customer')->user()->country ||
         !auth('customer')->user()->city || !auth('customer')->user()->native_language)){
             return true;
         } else {
@@ -954,28 +954,28 @@ class Helpers
 
         return $commission_amount;
     }
-    
+
     public static function seller_sales_commission($seller_is, $seller_id, $order_total)
     {
         $commission_amount = 0;
-        
+
         if ($seller_is == 'seller') {
             $seller = Seller::find($seller_id);
-    
+
             // جلب الكوميشن الخاصة بالبائع أو العامة إذا لم تكن موجودة
             if (isset($seller) && $seller['sales_commission_percentage'] !== null) {
                 $commission = $seller['sales_commission_percentage'];
             } else {
                 $commission = Helpers::get_business_settings('sales_commission') ; // افتراض 5% إذا لم تكن مضبوطة
             }
-    
+
             // حساب الكوميشن
             $commission_amount = ($order_total * $commission) / 100;
-            
+
             \Log::debug('first commision value : '. $commission_amount);
-            
+
         }
-       
+
         return $commission_amount;
     }
 
@@ -1075,9 +1075,9 @@ if (!function_exists('format_price')) {
 
 function translate($key)
 {
-    
+
     $local = Helpers::default_lang();
-    
+
     App::setLocale($local);
 
     try {
@@ -1126,7 +1126,7 @@ function sellerTranslate($key)
 
     $local = session('seller_prefered_language');
     App::setLocale($local);
-    
+
     \Log::debug('im here!!');
 
     try {
@@ -1496,6 +1496,17 @@ if (!function_exists('currency_converter')) {
         }
 
         return Helpers::set_symbol(round($amount * $rate, 2));
+    }
+}
+
+if (!function_exists('cloudfront')) {
+    function cloudfront($path)
+    {
+        $cdnUrl = config('filesystems.disks.s3.url', env('CLOUDFRONT_URL'));
+        $cdnUrl = rtrim($cdnUrl, '/');
+        $path = ltrim($path, '/');
+
+        return "{$cdnUrl}/{$path}";
     }
 }
 

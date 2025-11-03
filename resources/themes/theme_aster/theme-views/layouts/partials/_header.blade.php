@@ -15,8 +15,8 @@
         <h1 class="text-center text-white"  style="font-weight: 800;"> {{ translate('Euro Marketn') }}</h1>
         <h2 class="text-center text-white" style="font-weight: 600;">
         {!! trans('messages.marketplace') !!}
-        </h2>        
-    </div> 
+        </h2>
+    </div>
 @endif
 
 @php(
@@ -128,7 +128,7 @@
             gap: 10px !important;
             max-height: 500px;
             overflow-y: auto;
-            scrollbar-width: thin; 
+            scrollbar-width: thin;
             scrollbar-color: #888  #f1f1f1;
             scroll-behavior: smooth;
         }
@@ -195,7 +195,7 @@
 
 
         /***************** start voice recording css code  ***********/
-        
+
 /* Simple Voice Search Styles */
 
 /* Make sure button can position the dot */
@@ -287,13 +287,13 @@
                 left: -40px;
                 font-size: 1.2em;
             }
-            
+
             .pointing-hand.right-direction::after {
                 right: -40px;
                 font-size: 1.2em;
             }
         }
-    
+
         /* Modern Menu Css Code Start */
 
         .modern-menu .nav-menu {
@@ -595,7 +595,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 @if(auth('customer')->check())
                     <a href="{{ route('ads-adding-type') }}" class="btn btn-light text-light bg-orange fw-normal custom-fs-16 border-0 d-flex gap-1 px-2 py-1">
                         <i class="bi bi-plus-circle mx-1"></i>
@@ -639,19 +639,19 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <ul class="nav justify-content-center justify-content-sm-end align-items-center">
                     <li>
                         <div class="language-dropdown">
                             @php($country = session('show_by_country') ? session('show_by_country') : SYSTEM_COUNTRIES[0])
-                            <button type="button" class="border-0 emoji-font bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark text-white  p-0" data-bs-toggle="dropdown" aria-expanded="false">                                   
+                            <button type="button" class="border-0 emoji-font bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark text-white  p-0" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{$country['emoji']}} {{$country['name']}}
                             </button>
                             <ul class="dropdown-menu" style="--bs-dropdown-min-width: 10rem
                             ;overflow-x: auto;max-height: 500px;">
                                 @foreach (SYSTEM_COUNTRIES as $key => $data)
                                     <li>
-                                        <a class="d-flex gap-2 emoji-font align-items-center" 
+                                        <a class="d-flex gap-2 emoji-font align-items-center"
                                         href="{{route('show-by-country', ['code' => $data['code'], 'flag' => $data['emoji']])}}">
                                             {{$data['emoji']}} {{ ucwords($data['name']) }}
                                         </a>
@@ -692,7 +692,7 @@
                                 {{ translate('post_your_ad') }}
                             </a>
                         @else
-                            <a href="" 
+                            <a href=""
                             data-bs-toggle="modal" data-bs-target="#loginModal"
                             class="btn btn-light text-light bg-orange fw-normal fs-16 border-0 d-flex gap-1 ps-3 py-2">
                                 <i class="bi bi-plus-circle mx-1"></i>
@@ -714,7 +714,7 @@
                 <!-- Aside Body -->
                 <div>
                     <div class="aside-body" data-trigger="scrollbar">
-                        
+
                         <div class="mobile-search-container">
                             <div class="d-flex align-items-center gap-3 w-100">
                                 <div class="search-box position-relative d-flex align-items-center gap-3 w-100">
@@ -780,37 +780,37 @@
                             <li>
                                 <a href="{{route('home')}}">{{ translate('home') }}</a>
                             </li>
-                            <li> 
-                                <a href="{{route('categories')}}#">{{ translate('categories') }}</a> 
-                                <!-- Sub Menu --> 
-                                <ul class="sub_menu"> 
-                                    @foreach($categories as $key => $category) 
-                                        <li> 
-                                            <a href="javascript:"> 
+                            <li>
+                                <a href="{{route('categories')}}#">{{ translate('categories') }}</a>
+                                <!-- Sub Menu -->
+                                <ul class="sub_menu">
+                                    @foreach($categories as $key => $category)
+                                        <li>
+                                            <a href="javascript:">
                                                 <span onclick="location.href='{{ url('ads/filter?category_id=' . $category->id) }}'">
                                                     {{ $category->name }}
-                                                </span> 
-                                            </a> 
-                                            <ul class="sub_menu"></ul> 
-                                        </li> 
-                                    @endforeach 
-                                </ul> 
-                            </li> 
+                                                </span>
+                                            </a>
+                                            <ul class="sub_menu"></ul>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
 
-                            @if($web_config['brand_setting']) 
-                                <li> 
-                                    <a href="javascript:">{{ translate('brands') }}</a> 
-                                    <!-- Sub Menu --> 
-                                    <ul class="sub_menu"> 
-                                        @foreach($brands as $brand) 
-                                            <li> 
+                            @if($web_config['brand_setting'])
+                                <li>
+                                    <a href="javascript:">{{ translate('brands') }}</a>
+                                    <!-- Sub Menu -->
+                                    <ul class="sub_menu">
+                                        @foreach($brands as $brand)
+                                            <li>
                                                 <a href="{{ route('products',['id'=> $brand->id,'data_from'=>'brand','page'=>1]) }}">
                                                     {{ $brand->name }}
-                                                </a> 
-                                            </li> 
-                                        @endforeach 
-                                    </ul> 
-                                </li> 
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
                             @endif
                         </ul>
                         <!-- End Nav -->
@@ -875,9 +875,9 @@
                                             @foreach($categories as $key=>$category)
                                                 <a href="{{url('ads/filter?category_id='.$category->id)}}" class="media gap-3 align-items-center border-bottom">
                                                     <div class="avatar rounded-circle" style="--size: 2rem">
-                                                        <img width="50px" 
+                                                        <img width="50px"
                                                         onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                        src="{{ asset('storage/app/public/category/'.$category->icon)}}" alt="">
+                                                        src="{{ cloudfront('category/'.$category->icon)}}" alt="">
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
                                                         {{ $category->name }}
@@ -925,9 +925,9 @@
                     <!-- End Main Nav -->
                 </div>
 
-                @if(auth('customer')->check() && $sponsorTypes->isNotEmpty()) 
+                @if(auth('customer')->check() && $sponsorTypes->isNotEmpty())
                     <div class="modern-menu" >
-                        <ul class="nav-menu m-0">                        
+                        <ul class="nav-menu m-0">
                             <li class="nav-item">
                                 <a href="#" class="nav-link btn bg-transparent text-primary border-0 p-0 dropdown-btn-font-size w-100">
                                     <span><i class="bi bi-rocket"></i></span>
@@ -936,7 +936,7 @@
                                 <div class="dropdown">
                                     <div class="dropdown-content">
 
-                                        @if(isset($sponsorTypes['appearance_in_first_results'])) 
+                                        @if(isset($sponsorTypes['appearance_in_first_results']))
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=appearance-in-first-results" class="d-block rounded " role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('first_results_appearance') }}</h5>
@@ -945,9 +945,9 @@
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif 
+                                        @endif
 
-                                        @if(isset($sponsorTypes['urgent_sale_sticker'])) 
+                                        @if(isset($sponsorTypes['urgent_sale_sticker']))
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=urgent-sale-sticker" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('urgent_sale_sticker') }}</h5>
@@ -956,9 +956,9 @@
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif 
+                                        @endif
 
-                                        @if(isset($sponsorTypes['promotional_video'])) 
+                                        @if(isset($sponsorTypes['promotional_video']))
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=promotional-video" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_video') }}</h5>
@@ -967,9 +967,9 @@
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif 
+                                        @endif
 
-                                        @if(isset($sponsorTypes['promotional_banner'])) 
+                                        @if(isset($sponsorTypes['promotional_banner']))
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.paid-banners')}}" class="d-block rounded" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_banner') }}</h5>
@@ -978,7 +978,7 @@
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif 
+                                        @endif
 
                                     </div>
                                 </div>
@@ -986,7 +986,7 @@
                         </ul>
                     </div>
                 @endif
-                    
+
                 <ul class="list-unstyled list-separator mb-0">
 
                     @if(auth('customer')->check())
@@ -994,7 +994,7 @@
                             <div class="profile-dropdown">
                                 <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark p-0 user" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="avatar overflow-hidden header-avatar rounded-circle" style="--size: 1.5rem">
-                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? env_asset('storage/profile/images/'.auth('customer')->user()->image) : theme_asset('assets/img/icons/profile-icon.png') }}" 
+                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? env_asset('storage/profile/images/'.auth('customer')->user()->image) : theme_asset('assets/img/icons/profile-icon.png') }}"
                                         onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
                                     </span>
                                 </button>
@@ -1081,7 +1081,7 @@
             <div id="mySidebar" class="sidebar" >
                 <span role="button" class="closebtn" onclick="closeNav()">
                     <i class="bi bi-x-circle main-text-color exit-btn"></i>
-                </span>                                 
+                </span>
             </div>
 
         </div>
@@ -1093,7 +1093,7 @@
         document.getElementById("mySidebar").style.transform = "translateX(0)";
         // document.getElementById("main").style.marginLeft = "250px";
     }
-    
+
     function closeNav() {
         document.getElementById("mySidebar").style.transform = "translateX(-335px)";
         // document.getElementById("main").style.marginLeft= "0";
@@ -1109,42 +1109,42 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() { 
-    const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
-    
-    navItems.forEach(item => { 
-        const dropdown = item.querySelector('.dropdown'); 
-        let hoverTimeout; 
-        
-        if (dropdown) { 
-            item.addEventListener('mouseenter', function() { 
-                clearTimeout(hoverTimeout); 
-                dropdown.style.display = 'block'; 
-            }); 
-            
-            item.addEventListener('mouseleave', function() { 
-                hoverTimeout = setTimeout(() => { 
-                    dropdown.style.display = ''; 
-                }, 100); // Small delay to prevent flickering 
-            }); 
-        } 
-        
+document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.modern-menu .nav-item');
+
+    navItems.forEach(item => {
+        const dropdown = item.querySelector('.dropdown');
+        let hoverTimeout;
+
+        if (dropdown) {
+            item.addEventListener('mouseenter', function() {
+                clearTimeout(hoverTimeout);
+                dropdown.style.display = 'block';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                hoverTimeout = setTimeout(() => {
+                    dropdown.style.display = '';
+                }, 100); // Small delay to prevent flickering
+            });
+        }
+
         // Add click animation for the anchor tags directly
-        const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
-        cardLinks.forEach(link => { 
-            link.addEventListener('click', function(e) { 
+        const cardLinks = item.querySelectorAll('.modern-menu .card a');
+        cardLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
                 // Add subtle click animation to the parent card
                 const card = this.closest('.card');
                 if (card) {
-                    card.style.transform = 'translateY(-8px) scale(0.98)'; 
-                    setTimeout(() => { 
-                        card.style.transform = ''; 
-                    }, 150); 
+                    card.style.transform = 'translateY(-8px) scale(0.98)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 150);
                 }
                 // Let the link navigate naturally - don't prevent default
-            }); 
-        }); 
-    }); 
+            });
+        });
+    });
 });
 </script>
 

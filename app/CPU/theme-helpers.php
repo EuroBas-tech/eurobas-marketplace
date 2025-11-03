@@ -26,7 +26,7 @@ if (!function_exists('asset')) {
 }
 
 if (!function_exists('cloudfront')) {
-    function cdn_asset($path)
+    function cloudfront($path)
     {
         $cdnUrl = config('filesystems.disks.s3.url', env('CLOUDFRONT_URL'));
         $cdnUrl = rtrim($cdnUrl, '/');

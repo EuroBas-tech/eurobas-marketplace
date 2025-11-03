@@ -11,7 +11,7 @@
     <meta property="twitter:title" content="Welcome To {{$web_config['name']->value}} Home"/>
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
-    
+
     <!-- Add lazy loading styles -->
     <style>
         .lazy-section {
@@ -33,7 +33,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         /* Your existing styles */
         .select-category-button {
             display: none;
@@ -49,7 +49,7 @@
             background: rgba(0, 0, 0, 0.5);
             background: linear-gradient(to bottom right, #00008b, #1e90ff);
             color: white;
-            width: 205px; 
+            width: 205px;
             height: 55px;
             display: flex;
             align-items: center;
@@ -83,9 +83,9 @@
                     @foreach ($main_section_banner as $main_section_banners)
                     <div class="col-md-4 xs-12 pl-0 pr-0 mb-4 cat_img position-relative">
                         <a href="{{$main_section_banners->url}}" style="">
-                            <img class="d-block footer_banner_img rounded" loading="lazy" style="width: 100%; height: auto !important;" 
+                            <img class="d-block footer_banner_img rounded" loading="lazy" style="width: 100%; height: auto !important;"
                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                            src="{{asset('storage/app/public/banner')}}/{{$main_section_banners['photo']}}">
+                            src="{{cloudfront('banner')}}/{{$main_section_banners['photo']}}">
                             @php($category = \App\Model\Category::where('id', $main_section_banners->resource_id)->first())
                             <p class="category-name">{{$category->name}}</p>
                         </a>
@@ -107,7 +107,7 @@
                                 <div class="position-relative">
                                     <div class="avatar-cat rounded-circle ">
                                         <img  onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                            src="{{ asset('storage/app/public/category/'.$categors->icon)}}" alt="" loading="lazy"
+                                            src="{{ cloudfront('category/'.$categors->icon)}}" alt="" loading="lazy"
                                             class=" img-fit rounded-circle-cat dark-support ">
                                     </div>
                                 </div>
@@ -125,51 +125,51 @@
         </div>
 
         <!-- Below-the-fold content (lazy loaded) -->
-        
+
         <!-- Flash Deal -->
         @if ($web_config['flash_deals'])
             <div class="lazy-section" data-section="flash-deals">
                 <div class="loading-spinner"></div>
             </div>
         @endif
-        
+
         <!-- Find What You Need -->
         <div class="lazy-section" data-section="find-what-you-need">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- Featured Deals -->
         @if ($web_config['featured_deals']->count()>0)
             <div class="lazy-section" data-section="featured-deals">
                 <div class="loading-spinner"></div>
             </div>
         @endif
-        
+
         <!-- Recommended For You -->
         <div class="lazy-section" data-section="recommended-product">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- Top Rated Products -->
         <div class="lazy-section" data-section="top-rated-products">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- Today's Best Deal and Just for you -->
         <div class="lazy-section" data-section="best-deal-just-for-you">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- Home Categories -->
         <div class="lazy-section" data-section="home-categories">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- Top Stores -->
         <div class="lazy-section" data-section="top-stores">
             <div class="loading-spinner"></div>
         </div>
-        
+
         <!-- More Stores -->
         @if($web_config['business_mode'] == 'multi')
             <div class="lazy-section" data-section="more-stores">
@@ -187,14 +187,14 @@
                         if (entry.isIntersecting) {
                             const section = entry.target;
                             const sectionName = section.getAttribute('data-section');
-                            
+
                             // Load the section content via AJAX
                             fetch(`/lazy-load-section/${sectionName}`)
                                 .then(response => response.text())
                                 .then(html => {
                                     section.innerHTML = html;
                                     section.classList.remove('lazy-section');
-                                    
+
                                     // Initialize any components in the loaded section
                                     if (typeof initSwiper === 'function') {
                                         initSwiper();
@@ -204,7 +204,7 @@
                                     console.error('Error loading section:', error);
                                     section.innerHTML = '<div class="alert alert-danger">Failed to load content. Please try again.</div>';
                                 });
-                            
+
                             // Stop observing this section
                             observer.unobserve(section);
                         }

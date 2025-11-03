@@ -157,7 +157,7 @@
                                     <td>
                                         <img class="ratio-4:1" width="80"
                                              onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'"
-                                             src="{{asset('storage/app/public/banner')}}/{{json_decode($banner['value'])->image}}">
+                                             src="{{cloudfront('banner')}}/{{json_decode($banner['value'])->image}}">
                                     </td>
                                     <td>{{translate(ucwords(str_replace('_',' ',$banner->type)))}}</td>
                                     <td>
