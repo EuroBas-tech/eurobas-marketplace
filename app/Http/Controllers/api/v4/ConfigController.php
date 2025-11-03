@@ -68,10 +68,10 @@ class ConfigController extends Controller
         $admin_shipping = ShippingType::where('seller_id',0)->first();
         $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
 
-        $company_logo = asset("storage/app/public/company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
-        $company_cover_image = asset("storage/app/public/logo/").'/'.BusinessSetting::where(['type'=>'shop_banner'])->first()->value;
-        $company_fav_icon = asset("storage/app/public/company/").'/'.BusinessSetting::where(['type'=>'company_fav_icon'])->first()->value;
-        $footer_logo = asset("storage/app/public/company/").'/'.BusinessSetting::where(['type'=>'company_footer_logo'])->first()->value;
+        $company_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
+        $company_cover_image = cloudfront("logo/").'/'.BusinessSetting::where(['type'=>'shop_banner'])->first()->value;
+        $company_fav_icon = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_fav_icon'])->first()->value;
+        $footer_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_footer_logo'])->first()->value;
         $android = BusinessSetting::where(['type'=>'download_app_google_stroe'])->first()->value;
         $android = json_decode($android)->link;
         $shops = Shop::whereHas('seller', function ($query) {

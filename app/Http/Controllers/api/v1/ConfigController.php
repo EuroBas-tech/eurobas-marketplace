@@ -75,7 +75,7 @@ class ConfigController extends Controller
         $admin_shipping = ShippingType::where('seller_id',0)->first();
         $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
 
-        $company_logo = asset("storage/app/public/company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
+        $company_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
 
         return response()->json([
             'brand_setting' => BusinessSetting::where('type', 'product_brand')->first()->value,

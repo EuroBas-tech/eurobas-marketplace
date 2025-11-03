@@ -33,7 +33,7 @@ class PaymentController extends Controller
             'payment_method' => 'required',
             'payment_platform' => 'required',
         ]);
-        
+
         $validator->sometimes('customer_id', 'required', function ($input) {
             return in_array($input->payment_request_from, ['app', 'react']);
         });
@@ -128,7 +128,7 @@ class PaymentController extends Controller
     {
         $additional_data = [
             'business_name' => BusinessSetting::where(['type' => 'company_name'])->first()->value,
-            'business_logo' => asset('storage/app/public/company') . '/' . Helpers::get_business_settings('company_web_logo'),
+            'business_logo' => cloudfront('company') . '/' . Helpers::get_business_settings('company_web_logo'),
             'payment_mode' => $request->has('payment_platform') ? $request->payment_platform : 'web',
         ];
 
@@ -317,7 +317,7 @@ class PaymentController extends Controller
 
         $additional_data = [
             'business_name' => BusinessSetting::where(['type' => 'company_name'])->first()->value,
-            'business_logo' => asset('storage/app/public/company') . '/' . Helpers::get_business_settings('company_web_logo'),
+            'business_logo' => cloudfront('company') . '/' . Helpers::get_business_settings('company_web_logo'),
             'payment_mode' => $request->has('payment_platform') ? $request->payment_platform : 'web',
         ];
 

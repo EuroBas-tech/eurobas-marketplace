@@ -564,7 +564,7 @@ class WebController extends Controller
         // }
 
         // Helpers::send_order_notification($request->order_status,'customer',$order);
-        
+
         $order->order_status = 'delivery_confirmed';
 
         $order->save();
@@ -1162,10 +1162,10 @@ class WebController extends Controller
             if($order_details_data){
                 $file_name = '';
                 if( $order_details_data->product->digital_product_type == 'ready_product' && $order_details_data->product->digital_file_ready) {
-                    $file_path = asset('storage/app/public/product/digital-product/' .$order_details_data->product->digital_file_ready);
+                    $file_path = cloudfront('product/digital-product/' .$order_details_data->product->digital_file_ready);
                     $file_name = $order_details_data->product->digital_file_ready;
                 }else{
-                    $file_path = asset('storage/app/public/product/digital-product/' . $order_details_data->digital_file_after_sell);
+                    $file_path = cloudfront('product/digital-product/' . $order_details_data->digital_file_after_sell);
                     $file_name = $order_details_data->digital_file_after_sell;
                 }
             }
