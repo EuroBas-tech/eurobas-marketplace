@@ -10,6 +10,7 @@ class ImageManager
 {
     public static function upload(string $dir, string $format, $image, $default_image_name = null)
     {
+
         if ($image != null) {
             if(in_array($image->getClientOriginalExtension(), ['gif', 'svg'])){
                 $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
@@ -18,14 +19,14 @@ class ImageManager
                 $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $format;
             }
 
-            if (!Storage::disk('public')->exists($dir)) {
-                Storage::disk('public')->makeDirectory($dir);
+            if (!Storage::disk()->exists($dir)) {
+                Storage::disk()->makeDirectory($dir);
             }
 
             if(in_array($image->getClientOriginalExtension(), ['gif', 'svg'])) {
-                Storage::disk('public')->put($dir . $imageName, file_get_contents($image));
+                Storage::disk()->put($dir . $imageName, file_get_contents($image));
             }else{
-                Storage::disk('public')->put($dir . $imageName, $image_webp);
+                Storage::disk()->put($dir . $imageName, $image_webp);
                 $image_webp->destroy();
             }
 
@@ -40,10 +41,10 @@ class ImageManager
     {
         if ($file != null) {
             $fileName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $format;
-            if (!Storage::disk('public')->exists($dir)) {
-                Storage::disk('public')->makeDirectory($dir);
+            if (!Storage::disk()->exists($dir)) {
+                Storage::disk()->makeDirectory($dir);
             }
-            Storage::disk('public')->put($dir . $fileName, file_get_contents($file));
+            Storage::disk()->put($dir . $fileName, file_get_contents($file));
         } else {
             $fileName = 'def.png';
         }
@@ -53,8 +54,8 @@ class ImageManager
 
     public static function update(string $dir, $old_image, string $format, $image, $file_type = 'image')
     {
-        if (Storage::disk('public')->exists($dir . $old_image)) {
-            Storage::disk('public')->delete($dir . $old_image);
+        if (Storage::disk()->exists($dir . $old_image)) {
+            Storage::disk()->delete($dir . $old_image);
         }
 
         $imageName = $file_type == 'file' ? ImageManager::file_upload($dir, $format, $image) : ImageManager::upload($dir, $format, $image, 'image.def');
@@ -64,8 +65,8 @@ class ImageManager
 
     public static function delete($full_path)
     {
-        if (Storage::disk('public')->exists($full_path)) {
-            Storage::disk('public')->delete($full_path);
+        if (Storage::disk()->exists($full_path)) {
+            Storage::disk()->delete($full_path);
         }
 
         return [

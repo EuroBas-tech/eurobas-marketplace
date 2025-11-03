@@ -311,7 +311,7 @@
                             </div>
                             <div class="card search-card __inline-13 position-absolute z-99 w-100 bg-white start-0 search-result-box d--none"></div>
                         </form>
-    
+
                     </div>
 
                 </div>
@@ -719,7 +719,7 @@
                                             @foreach($brands as $brand)
                                             <a href="{{ route('products',['id'=> $brand['id'],'data_from'=>'brand','page'=>1]) }}" class="media gap-3 align-items-center border-bottom">
                                                 <div class="avatar rounded-circle" style="--size: 1.25rem">
-                                                    <img onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" src="{{asset("storage/app/public/brand")}}/{{ $brand->image }}" loading="lazy" class="img-fit rounded-circle dark-support" alt="" />
+                                                    <img onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" src="{{cloudfront("brand")}}/{{ $brand->image }}" loading="lazy" class="img-fit rounded-circle dark-support" alt="" />
                                                 </div>
                                                 <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
                                                     {{ $brand->name }}
@@ -746,7 +746,7 @@
                     </div>
                     <!-- End Main Nav -->
                 </div>
-                
+
                 <ul class="list-unstyled list-separator mb-0">
 
                     @if(auth('customer')->check())
@@ -790,7 +790,7 @@
                             </a>
                         </li>
                     @endif
-                    
+
                         @if(auth('customer')->check())
                             <li class="d-none d-xl-block">
                                 <a href="{{ route('chat', 'seller') }}" class="position-relative">
@@ -870,7 +870,7 @@
                             <span onclick="location.href='{{route('products',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}'" class="font-size-17">{{ $category['name'] }}</span>
                             <span class="position-relative" data-bs-toggle="collapse" href="#sidenav-item-{{$key}}" role="button" aria-expanded="false" aria-controls="sidenav-item-{{$key}}" class="collapsed" onclick="setTimeout(() => toggleIcon(this), 400)" >
                                 @if ($category->childes->count() > 0)
-                                    <i class="bi bi-plus"></i>                
+                                    <i class="bi bi-plus"></i>
                                 @endif
                             </span>
                         </div>
@@ -914,10 +914,10 @@
 
 
 
-                    
+
                 @endforeach
 
-                                                               
+
             </div>
 
 
@@ -933,7 +933,7 @@
         document.getElementById("mySidebar").style.transform = "translateX(0)";
         // document.getElementById("main").style.marginLeft = "250px";
     }
-    
+
     function closeNav() {
         document.getElementById("mySidebar").style.transform = "translateX(-335px)";
         // document.getElementById("main").style.marginLeft= "0";

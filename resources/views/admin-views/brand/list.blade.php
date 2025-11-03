@@ -86,14 +86,14 @@
                                         <td>
                                             <img class="rounded avatar-60"
                                                  onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
-                                                 src="{{asset('storage/app/public/brand')}}/{{$b['image']}}">
+                                                 src="{{cloudfront('brand')}}/{{$b['image']}}">
                                         </td>
                                         <td>{{$b['defaultname']}}</td>
                                         <td>{{ $b['brand_all_ads_count'] }}</td>
                                         <td style="max-width: 250px;" >
                                             <div class="d-flex align-items-center flex-wrap" >
                                                 @foreach($b['categories']->pluck('name')->toArray() as $category_name)
-                                                    <span>{{$category_name}}</span> @if(!$loop->last) <span class="mx-1" >,</span> @endif 
+                                                    <span>{{$category_name}}</span> @if(!$loop->last) <span class="mx-1" >,</span> @endif
                                                 @endforeach
                                             </div>
                                         </td>

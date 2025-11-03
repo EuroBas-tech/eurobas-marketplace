@@ -25,6 +25,17 @@ if (!function_exists('asset')) {
     }
 }
 
+if (!function_exists('cloudfront')) {
+    function cdn_asset($path)
+    {
+        $cdnUrl = config('filesystems.disks.s3.url', env('CLOUDFRONT_URL'));
+        $cdnUrl = rtrim($cdnUrl, '/');
+        $path = ltrim($path, '/');
+
+        return "{$cdnUrl}/{$path}";
+    }
+}
+
 if (!function_exists('env_asset')) {
     function env_asset($path)
     {
@@ -33,4 +44,11 @@ if (!function_exists('env_asset')) {
     }
 }
 
+if (! function_exists('cdn_image')) {
+    function cdn_image($path)
+    {
+        $cdnUrl = env('CDN_IMAGE_URL', null);
+        return $cdnUrl ? rtrim($cdnUrl, '/') . '/' . ltrim($path, '/') : asset($path);
+    }
+}
 

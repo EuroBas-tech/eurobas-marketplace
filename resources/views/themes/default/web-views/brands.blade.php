@@ -24,16 +24,16 @@
                 <p class="fs-14 fw-semibold mb-0">{{translate('Find your favourite brands and products')}}</p>
             </div>
         </div>
-        
+
         <!-- Products grid-->
         <div class="brand_div-wrap mb-4">
             @foreach($brands as $brand)
                 <a href="{{route('products',['id'=> $brand['id'],'data_from'=>'brand','page'=>1])}}" class="brand_div" data-toggle="tooltip" title="{{$brand->name}}">
-                    <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{asset("storage/app/public/brand/$brand->image")}}" alt="{{$brand->name}}">
+                    <img onerror="this.src='{{cloudfront('public/assets/front-end/img/image-place-holder.png')}}'" src="{{cloudfront("brand/$brand->image")}}" alt="{{$brand->name}}">
                 </a>
             @endforeach
         </div>
-        
+
         <div class="row mx-n2">
             <div class="col-md-12">
                 <center>

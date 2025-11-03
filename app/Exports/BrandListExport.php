@@ -72,7 +72,7 @@ class BrandListExport implements FromView, ShouldAutoSize, WithStyles,WithColumn
             $drawing = new Drawing();
             $drawing->setName($item->name);
             $drawing->setDescription($item->name);
-            $drawing->setPath(file_exists(storage_path('app/public/brand/'.$item->image))? storage_path('app/public/brand/'.$item->image) : public_path('assets/back-end/img/brand.png'));
+            $drawing->setPath(file_exists(storage_path('brand/'.$item->image))? storage_path('brand/'.$item->image) : public_path('assets/back-end/img/brand.png'));
             $drawing->setHeight(50);
             $drawing->setOffsetX(40);
             $drawing->setOffsetY(7);
