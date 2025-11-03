@@ -903,7 +903,7 @@
                                                     <div class="avatar" style="--size: 2.25rem">
                                                         <img
                                                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                            src="{{ asset('storage/app/public/brand/'.$brand->image) }}"
+                                                            src="{{ cloudfront('brand/'.$brand->image) }}"
                                                             loading="lazy" class="dark-support" alt="" width="80px" />
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
