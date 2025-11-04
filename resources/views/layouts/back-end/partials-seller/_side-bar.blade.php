@@ -10,7 +10,7 @@
                         @if (isset($shop))
                             <img onerror="this.src='{{asset('public/assets/back-end/img/900x400/img1.jpg')}}'"
                                 class="navbar-brand-logo-mini for-seller-logo"
-                                src="{{asset("storage/app/public/shop/$shop->image")}}" alt="Logo">
+                                src="{{cloudfront("shop/$shop->image")}}" alt="Logo">
                         @else
                             <img class="navbar-brand-logo-mini for-seller-logo"
                                 src="{{asset('public/assets/back-end/img/900x400/img1.jpg')}}" alt="Logo">
@@ -438,7 +438,7 @@
                                 </span>
                             </a>
                         </li>
-                        
+
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/accounting')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.accounting.index')}}"
@@ -451,7 +451,7 @@
                                         where('seller_checked',0)
                                         ->where('seller_id', auth('seller')->id())
                                         ->count())
-                                        
+
                                         @if($requests != 0)
                                             <span class="btn-status btn-xs-status btn-status-danger position-absolute top-0 menu-status">
                                             </span>

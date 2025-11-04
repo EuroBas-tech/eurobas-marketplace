@@ -13,7 +13,7 @@
       "image": "961341543644.dkr.ecr.eu-central-1.amazonaws.com/production-eurobas-repository:latest",
       "essential": true,
       "cpu": 1024,
-      "memory": 2048,
+      "memory": 2000,
       "portMappings": [
         {
           "containerPort": 3000,

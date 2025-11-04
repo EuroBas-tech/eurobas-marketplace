@@ -25,7 +25,7 @@
                     <a class="navbar-brand" href="{{route('admin.dashboard.index')}}" aria-label="Front">
                         <img onerror="this.src='{{asset('public/assets/back-end/img/900x400/img1.jpg')}}'"
                              class="navbar-brand-logo-mini for-web-logo max-h-30"
-                             src="{{asset("storage/app/public/company/$e_commerce_logo")}}" alt="Logo">
+                             src="{{cloudfront("company/$e_commerce_logo")}}" alt="Logo">
                     </a>
                     <!-- Navbar Vertical Toggle -->
                     <button type="button"
@@ -166,7 +166,7 @@
                                     style="display: {{Request::is('admin/model*')?'block':'none'}}">
                                     <li class="nav-item {{Request::is('admin/list/list/body_types')?'active':''}}"
                                         title="{{translate('add_new')}}">
-                                        <a class="nav-link gap-2" href="{{route('admin.list.list', 'body_types')}}"> 
+                                        <a class="nav-link gap-2" href="{{route('admin.list.list', 'body_types')}}">
                                             <span class="tio-car nav-indicator-icon fs-15"></span>
                                             <span class="text-truncate">{{translate('body_types')}}</span>
                                         </a>
@@ -362,7 +362,7 @@
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                 href="{{route('admin.report.list')}}"
                                 title="{{translate('Reports')}}">
-                                <i class="tio-flag-outlined nav-icon"></i>                                
+                                <i class="tio-flag-outlined nav-icon"></i>
                                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 <span class="position-relative">
                                     {{translate('Reports')}}
@@ -383,7 +383,7 @@
                                 {{translate('accounting')}}
                             </small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-                        </li>                            
+                        </li>
                         <li class="navbar-vertical-aside-has-menu {{Request::is('admin/report/order')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                 href="{{route('admin.accounting.index')}}"
@@ -480,7 +480,7 @@
                                 </a>
                                 <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
                                     style="display: {{Request::is('admin/subscription')?'active':''}}">
-                                    
+
                                     <li class="nav-item {{(Request::is('admin/subscription/packages/list') || Request::is('admin/subscription/packages/list') || Request::is('admin/subscription/packages/list*'))?'active':''}}">
                                         <a class="nav-link" href="{{route('admin.subscription.packages.list')}}"
                                         title="{{translate('subscription_packages')}}">
@@ -496,7 +496,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item {{(Request::is('admin/subscription/settings') || Request::is('admin/subscription/settings') || Request::is('admin/subscription/settings*'))?'active':''}}">
-                                        <a class="nav-link" href="{{route('admin.subscription.subscription-settings')}}"  
+                                        <a class="nav-link" href="{{route('admin.subscription.subscription-settings')}}"
                                         title="{{translate('subscription_settings')}}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{translate('subscription_settings')}}</span>
