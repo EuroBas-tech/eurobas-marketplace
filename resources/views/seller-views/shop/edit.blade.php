@@ -89,7 +89,7 @@
                                     <center>
                                         <img class="upload-img-view upload-img-view__banner" id="viewerBanner"
                                              onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'"
-                                             src="{{asset('storage/app/public/shop/banner/'.$shop->banner)}}"alt="banner image"/>
+                                             src="{{cloudfront('shop/banner/'.$shop->banner)}}"alt="banner image"/>
                                     </center>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                     <center>
                                         <img class="upload-img-view upload-img-view__banner" id="viewerBottomBanner"
                                              onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'"
-                                             src="{{asset('storage/app/public/shop/banner/'.$shop->bottom_banner)}}"alt="banner image"/>
+                                             src="{{cloudfront('shop/banner/'.$shop->bottom_banner)}}"alt="banner image"/>
                                     </center>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                         <center>
                                             <img class="upload-img-view upload-img-view__banner" id="viewerOfferBanner"
                                                 onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'"
-                                                src="{{asset('storage/app/public/shop/banner/'.$shop->offer_banner)}}"alt="banner image"/>
+                                                src="{{cloudfront('shop/banner/'.$shop->offer_banner)}}"alt="banner image"/>
                                         </center>
                                     </div>
                                 </div>

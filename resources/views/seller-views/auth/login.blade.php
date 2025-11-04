@@ -63,7 +63,7 @@
     <div class="container py-5 pt-3 py-sm-4">
         @php($e_commerce_logo=\App\Model\BusinessSetting::where(['type'=>'company_mobile_logo'])->first()->value)
         <a class="d-flex justify-content-center mb-5" href="javascript:">
-            <img class="z-index-2" height="70" src="{{asset("storage/app/public/company/".$e_commerce_logo)}}" alt="Logo"
+            <img class="z-index-2" height="70" src="{{cloudfront("company/".$e_commerce_logo)}}" alt="Logo"
                  onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'">
         </a>
 
