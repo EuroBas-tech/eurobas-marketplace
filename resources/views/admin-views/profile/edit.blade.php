@@ -78,7 +78,7 @@
                     <div class="card mb-3 mb-lg-5" id="generalDiv">
                         <!-- Profile Cover -->
                         <div class="profile-cover">
-                            @php($shop_banners = $shop_banner ? asset('storage/app/public/shop/'.$shop_banner) : 'https://images.pexels.com/photos/866398/pexels-photo-866398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+                            @php($shop_banners = $shop_banner ? cloudfront('shop/'.$shop_banner) : 'https://images.pexels.com/photos/866398/pexels-photo-866398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
                             <div class="profile-cover-img-wrapper" style="background-image: url({{ $shop_banners }}); background-repeat: no-repeat; background-size: cover;"></div>
                         </div>
                         <!-- End Profile Cover -->

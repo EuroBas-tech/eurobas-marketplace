@@ -197,7 +197,7 @@
                     <div class="card-body">
                         @if($order->seller_is =='seller')
                             <div class="media flex-wrap gap-2 gap-sm-3 border rounded p-3">
-                                <img class="rounded border seller-info-img" src="{{ asset('storage/app/public/shop/'.$order->seller->shop->image)}}"
+                                <img class="rounded border seller-info-img" src="{{ cloudfront('shop/'.$order->seller->shop->image)}}"
                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" alt="">
                                 <div class="media-body">
                                     <div class="d-flex gap-2 gap-sm-3 align-items-sm-center justify-content-between">

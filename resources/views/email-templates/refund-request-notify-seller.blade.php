@@ -36,7 +36,7 @@
                 <tr>
                     <td align="left" valign="top" colspan="2"
                         style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
-                        <img alt="" border="0" src="{{url('/').'/storage/app/public/company/dark-logo.png'}}" title=""
+                        <img alt="" border="0" src="{{cloudfront('company/dark-logo.png')}}" title=""
                              class="sitelogo" width="60%" style="max-width:250px;"/>
                     </td>
                 </tr>

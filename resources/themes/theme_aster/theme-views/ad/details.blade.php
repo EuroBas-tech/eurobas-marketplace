@@ -408,7 +408,7 @@
                                                             <img class="rounded border"
                                                                 width="70px"
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                src='{{asset("storage/brand")}}/{{ $ad->brand->image ?? "" }}'
+                                                                src='{{cloudfront("brand")}}/{{ $ad->brand->image ?? "" }}'
                                                                 alt="brand-image">
                                                         </div>
                                                     @endif

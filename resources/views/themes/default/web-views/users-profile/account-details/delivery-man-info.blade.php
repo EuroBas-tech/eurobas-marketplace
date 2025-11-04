@@ -199,7 +199,7 @@
                         <div class="p-sm-3">
                             {{-- Deliveryman Profile --}}
                             <div class="delivery-man-info-box bg-white media gap-2 gap-sm-3 shadow-sm rounded p-3">
-                                <img class="rounded-circle" width="77" src="{{ asset('storage/app/public/delivery-man/'.$order->delivery_man->image)}}"
+                                <img class="rounded-circle" width="77" src="{{ cloudfront('delivery-man/'.$order->delivery_man->image)}}"
                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" alt="">
                                 <div class="media-body">
                                     <div class="d-flex gap-2 gap-sm-3 align-items-start align-items-sm-center justify-content-between">
@@ -261,7 +261,7 @@
                                         {{translate('picture_upload_by')}} {{$order->delivery_man->f_name}}&nbsp{{$order->delivery_man->l_name}}
                                     </h6>
                                     @foreach ($order->verification_images as $image)
-                                        @if(file_exists(base_path("storage/app/public/delivery-man/verification-image/".$image->image)))
+                                        @if(\Illuminate\Support\Facades\Storage::disk()->exists("delivery-man/verification-image/".$image->image))
                                             <img class="rounded" width="100" src="{{asset('public/assets/front-end/img/cod.png')}}" alt="">
                                         @endif
                                     @endforeach

@@ -4,7 +4,7 @@
 
 @push('css_or_js')
     @if($shop['id'] != 0)
-        <meta property="og:image" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="og:image" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="og:title" content="{{ $shop->name}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @else
@@ -14,7 +14,7 @@
     @endif
     <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
     @if($shop['id'] != 0)
-        <meta property="twitter:card" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="twitter:card" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="twitter:title" content="{{route('shopView',[$shop['id']])}}"/>
         <meta property="twitter:url" content="{{route('shopView',[$shop['id']])}}">
     @else
@@ -44,7 +44,7 @@
                 <div class="col-md-9" >
                     @if($shop['id'] != 0 && $shop->bottom_banner)
                         <div class="">
-                            <img src="{{asset('storage/app/public/shop/banner')}}/{{$shop->bottom_banner}}" class="dark-support rounded img-fit shop-cover-style"
+                            <img src="{{cloudfront('shop/banner')}}/{{$shop->bottom_banner}}" class="dark-support rounded img-fit shop-cover-style"
                             onerror="this.src='{{theme_asset('assets/img/image-place-holder-4_1.png')}}'"
                             alt="">
                         </div>
@@ -52,7 +52,7 @@
                         @php($bottom_banner=\App\CPU\Helpers::get_business_settings('bottom_banner'))
                         @if($bottom_banner)
                         <div class="">
-                            <img src="{{asset('storage/app/public/shop')}}/{{$bottom_banner ?? ""}}" class="dark-support rounded img-fit"
+                            <img src="{{cloudfront('shop')}}/{{$bottom_banner ?? ""}}" class="dark-support rounded img-fit"
                                  onerror="this.src='{{theme_asset('assets/img/image-place-holder-4_1.png')}}'"
                                  alt="">
                         </div>
@@ -93,7 +93,7 @@
                             <div class="media gap-3">
                                 <div class="avatar rounded store-avatar">
                                     <div class="position-relative">
-                                        <img src="{{asset('storage/app/public/shop')}}/{{$shop->image}}"
+                                        <img src="{{cloudfront('shop')}}/{{$shop->image}}"
                                         onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded img-fit" alt="">
 
                                         @if($seller_temporary_close || $inhouse_temporary_close)

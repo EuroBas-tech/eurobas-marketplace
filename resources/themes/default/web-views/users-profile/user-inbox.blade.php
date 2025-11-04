@@ -92,7 +92,7 @@
                                                 id="user_{{$unique_id}}">
                                             <div class="chat_people">
                                                 <div class="chat_img">
-                                                    <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{ $shop->delivery_man_id ?asset('storage/app/public/delivery-man/'.$shop->image) : asset('storage/app/public/shop/'.$shop->image)}}"
+                                                    <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{ $shop->delivery_man_id ? cloudfront('delivery-man/'.$shop->image) : cloudfront('shop/'.$shop->image)}}"
                                                         class="__inline-14 __rounded-10 img-profile" alt="">
                                                 </div>
                                                 <div class="chat_ib">
@@ -129,7 +129,7 @@
                                     <div class="inbox_msg">
                                         <div class="mesgs">
                                             <a class="msg-user" href="#">
-                                                <img src="{{ $last_chat->delivery_man ?asset('storage/app/public/delivery-man/'.$last_chat->delivery_man->image) : asset('storage/app/public/shop/'.$last_chat->shop->image)}}"
+                                                <img src="{{ $last_chat->delivery_man ? cloudfront('delivery-man/'.$last_chat->delivery_man->image) : cloudfront('shop/'.$last_chat->shop->image)}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" alt="" class="img">
                                                 <h5 class="m-0">{{$last_chat->delivery_man?$last_chat->delivery_man->f_name.' '.$last_chat->delivery_man->l_name : $last_chat->shop->name  }}</h5>
                                             </a>
@@ -139,7 +139,7 @@
                                                         @if ($chat->sent_by_seller? $chat->sent_by_seller : $chat->sent_by_delivery_man)
                                                             <div class="incoming_msg d-flex">
                                                                 <div class="incoming_msg_img">
-                                                                    <img src="{{ $shop->delivery_man_id ?asset('storage/app/public/delivery-man/'.$last_chat->delivery_man->image) : asset('storage/app/public/shop/'.$last_chat->shop->image)}}"
+                                                                    <img src="{{ $shop->delivery_man_id ? cloudfront('delivery-man/'.$last_chat->delivery_man->image) : cloudfront('shop/'.$last_chat->shop->image)}}"
                                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                                         alt="photo"></div>
                                                                 <div class="received_msg">
@@ -155,10 +155,10 @@
                                                                             <div class="row g-2 flex-wrap mt-3">
                                                                                 @foreach (json_decode($chat['attachment']) as $index => $photo)
                                                                                     <div class="col-sm-6 col-md-4 position-relative img_row{{$index}}">
-                                                                                        <a data-lightbox="mygallery" href="{{asset("storage/app/public/chatting/".$photo)}}"
+                                                                                        <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                                            class="aspect-1 overflow-hidden d-block border rounded">
                                                                                             <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                                                 src="{{asset('storage/app/public/chatting')}}/{{$photo}}" class="img-fit"
+                                                                                                 src="{{cloudfront('schatting')}}/{{$photo}}" class="img-fit"
                                                                                                  alt="img">
                                                                                         </a>
                                                                                     </div>
@@ -185,10 +185,10 @@
                                                                         <div class="row g-2 flex-wrap mt-3 justify-content-end">
                                                                             @foreach (json_decode($chat['attachment']) as $index => $photo)
                                                                                 <div class="col-sm-6 col-md-4 position-relative img_row{{$index}}">
-                                                                                    <a data-lightbox="mygallery" href="{{asset("storage/app/public/chatting/".$photo)}}"
+                                                                                    <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                                        class="aspect-1 overflow-hidden d-block border rounded">
                                                                                         <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                                             src="{{asset('storage/app/public/chatting')}}/{{$photo}}" class="img-fit"
+                                                                                             src="{{cloudfront('chatting')}}/{{$photo}}" class="img-fit"
                                                                                              alt="img">
                                                                                     </a>
                                                                                 </div>
@@ -375,7 +375,7 @@
                                     )
 
                                 } else {
-                                    let img_path = element.image == 'def.png' ? `{{ asset('storage/app/public/shop') }}/${element.image}` : `{{ (isset($shop->delivery_man_id) && $shop->delivery_man_id) ? asset('storage/app/public/delivery-man') : asset('storage/app/public/shop') }}/${element.image}`;
+                                    let img_path = element.image == 'def.png' ? `{{ cloudfront('shop') }}/${element.image}` : `{{ (isset($shop->delivery_man_id) && $shop->delivery_man_id) ? cloudfront('delivery-man') : cloudfront('shop') }}/${element.image}`;
 
                                     $(".msg_history").append(`
                                         <div class="incoming_msg d-flex" id="incoming_msg">
@@ -436,7 +436,7 @@
                         if(respons.image.length != 0){
                             imageContainer = '<div class="row g-2 flex-wrap mt-3 justify-content-end">';
                             respons.image.forEach(function (imageUrl, index) {
-                                let img_path = `{{ asset('storage/app/public/chatting') }}/${imageUrl}`;
+                                let img_path = `{{ cloudfront('chatting') }}/${imageUrl}`;
                                 imageContainer += `
                                     <div class="col-sm-3 col-md-4 spartan_item_wrapper position-relative img_row${index}">
                                         <a data-lightbox="mygallery" href="${img_path}" class="aspect-1 overflow-hidden d-block border rounded">

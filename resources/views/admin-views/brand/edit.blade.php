@@ -27,7 +27,7 @@
                     <form action="{{route('admin.brand.update',[$b['id']])}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6">                                       
+                            <div class="col-md-6">
                                 <div class="form-group" >
                                     <label class="title-color" for="name">{{ translate('brand_Name')}}</label>
                                     <input type="text" name="name" value="{{$b['name']}}"class="form-control" id="name"
@@ -57,7 +57,7 @@
                                 <div class="text-center">
                                     <img class="upload-img-view" id="viewer"
                                         onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
-                                        src="{{asset('storage/app/public/brand')}}/{{$b['image']}}" alt="banner image"/>
+                                        src="{{cloudfront('brand')}}/{{$b['image']}}" alt="banner image"/>
                                 </div>
                             </div>
                         </div>

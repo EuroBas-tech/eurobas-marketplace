@@ -68,7 +68,7 @@
                                 <div class="text-center">
                                     <img class="upload-img-view" id="viewer"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/shop/'.$shop->image)}}" alt="Product thumbnail"/>
+                                    src="{{cloudfront('shop/'.$shop->image)}}" alt="Product thumbnail"/>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4 mt-2">

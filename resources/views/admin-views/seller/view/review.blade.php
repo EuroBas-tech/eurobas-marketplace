@@ -154,10 +154,10 @@
                                             </p>
                                             @if($review->attachment)
                                                 @foreach (json_decode($review->attachment) as $img)
-                                                    <a href="{{asset('storage/app/public/review')}}/{{$img}}"
+                                                    <a href="{{cloudfornt('review')}}/{{$img}}"
                                                         data-lightbox="mygallery">
                                                         <img class="p-1" width="60" height="60"
-                                                                src="{{asset('storage/app/public/review')}}/{{$img}}"
+                                                                src="{{cloudfront('review')}}/{{$img}}"
                                                                 alt="" onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'">
                                                     </a>
                                                 @endforeach

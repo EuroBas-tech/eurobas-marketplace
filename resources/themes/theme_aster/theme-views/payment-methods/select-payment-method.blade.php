@@ -53,24 +53,24 @@
                         <form action="{{route('redirect.payment.method')}}" method="POST">
                             @csrf
                             <input type="hidden" name="payment_method" id="payment_method" value="">
-                            
+
                             <h1 class="text-center pb-5" >{{translate('select_a_payment_method')}}</h1>
-                            
-                            <div class="row mb-5"> 
-                                <div class="col-6"> 
-                                    <div data-method-name="paypal" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative"> 
-                                        <img src="{{env_asset('storage/payment_modules/gateway_image')}}/{{$payment_methods_images['paypal']}}" alt="paypal_image"> 
-                                        <i class="bi bi-check-circle-fill check-icon"></i>
-                                    </div> 
-                                </div> 
+
+                            <div class="row mb-5">
                                 <div class="col-6">
-                                    <div data-method-name="stripe" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative"> 
-                                        <img src="{{env_asset('storage/payment_modules/gateway_image')}}/{{$payment_methods_images['stripe']}}" alt="stripe_image"> 
+                                    <div data-method-name="paypal" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative">
+                                        <img src="{{cloudfront('payment_modules/gateway_image')}}/{{$payment_methods_images['paypal']}}" alt="paypal_image">
                                         <i class="bi bi-check-circle-fill check-icon"></i>
-                                    </div> 
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div data-method-name="stripe" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative">
+                                        <img src="{{cloudfront('payment_modules/gateway_image')}}/{{$payment_methods_images['stripe']}}" alt="stripe_image">
+                                        <i class="bi bi-check-circle-fill check-icon"></i>
+                                    </div>
                                 </div>
                             </div>
-    
+
                             <div class="mb-4" >
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h3>{{translate($package->type->name)}}</h3>
@@ -82,7 +82,7 @@
                                     <h4>€{{ number_format($package->price, 2) }}</h4>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-3" >
                                 <span class="text-center" >
                                     <span class="fw-bold text-dark" >{{translate('note')}} : </span>

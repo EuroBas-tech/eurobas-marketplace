@@ -123,7 +123,7 @@
                                             <span class="img_remove_icon" onclick="remove_img_row('{{$key}}')"><i class="czi-close"></i></span>
                                             <div class="overflow-hidden upload_img_box_img rounded">
                                                 <img class="h-auto" onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                     src="{{asset('storage/app/public/review')}}/{{$photo}}"
+                                                     src="{{cloudfront('review')}}/{{$photo}}"
                                                      alt="VR Collection">
                                             </div>
                                         </div>

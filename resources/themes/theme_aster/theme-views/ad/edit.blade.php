@@ -311,7 +311,7 @@
                                                                         class="upload-file__input ad-images"
                                                                         name="images[]"
                                                                         multiple
-                                                                        data-old="{{ env_asset('storage/ad/'.$image)}}"
+                                                                        data-old="{{ cloudfront('ad/'.$image)}}"
                                                                         aria-required="true"
                                                                         accept="image/*">
                                                                     <div class="upload-file__img">

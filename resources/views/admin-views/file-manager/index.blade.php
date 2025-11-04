@@ -57,7 +57,7 @@
                                         <button class="btn p-0 w-100" data-toggle="modal"
                                                 data-target="#imagemodal{{$key}}" title="{{$file['name']}}">
                                             <span class="d-flex flex-column justify-content-center gallary-card aspect-1 overflow-hidden border rounded">
-                                                <img src="{{asset('storage/app/'.$file['path'])}}"
+                                                <img src="{{cloudfront('app/'.$file['path'])}}"
                                                      alt="{{$file['name']}}" class="h-auto w-100">
                                             </span>
                                             <span class="overflow-hidden pt-2 m-0">{{Str::limit($file['name'],10)}}</span>
@@ -74,7 +74,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <img src="{{asset('storage/app/'.$file['path'])}}"
+                                                        <img src="{{cloudfront('app/'.$file['path'])}}"
                                                              class="w-100 h-auto" alt="">
                                                     </div>
                                                     <div class="modal-footer">

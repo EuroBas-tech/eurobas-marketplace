@@ -474,7 +474,7 @@
                             <div class="mr-3">
                                 <img class="avatar rounded-circle avatar-70"
                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                    src="{{asset('storage/app/public/profile/'.$order->customer->image)}}"
+                                    src="{{cloudfront('profile/'.$order->customer->image)}}"
                                     alt="Image">
                             </div>
                             <div class="media-body d-flex flex-column gap-1">
@@ -621,7 +621,7 @@
                         <div class="media">
                             <div class="mr-3">
                                 <img class="avatar rounded avatar-70"
-                                     src="{{!empty($order->seller->shop) ? asset('storage/app/public/seller/'.auth('seller')->user()->image) : ''}}"
+                                     src="{{!empty($order->seller->shop) ? cloudfront('seller/'.auth('seller')->user()->image) : ''}}"
                                      onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'" alt="">
                             </div>
                             @if(!empty($order->seller->shop))
@@ -664,7 +664,7 @@
                                 @foreach ($order->verification_images as $image)
                                     <div class="col-lg-4 col-sm-6 ">
                                         <div class="mb-2 mt-2 border-1">
-                                            <img src="{{asset("storage/app/public/delivery-man/verification-image/".$image->image)}}"
+                                            <img src="{{cloudfront("delivery-man/verification-image/".$image->image)}}"
                                             class="w-100"
                                             onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
                                             >
@@ -1389,7 +1389,7 @@
 
             google.maps.event.addListener(marker, 'click', (function (marker) {
                 return function () {
-                    infowindow.setContent("<div class='float-left'><img class='__inline-5' src='{{asset('public/storage/app/public/profile/')}}{{$order->customer->image??""}}'></div><div class='float-right __p-10'><b>{{$order->customer->f_name??""}} {{$order->customer->l_name??""}}</b><br/>{{$shipping_address->address??""}}</div>");
+                    infowindow.setContent("<div class='float-left'><img class='__inline-5' src='{{cloudfront('profile/')}}{{$order->customer->image??""}}'></div><div class='float-right __p-10'><b>{{$order->customer->f_name??""}} {{$order->customer->l_name??""}}</b><br/>{{$shipping_address->address??""}}</div>");
                     infowindow.open(map, marker);
                 }
             })(marker));

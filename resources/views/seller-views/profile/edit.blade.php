@@ -81,7 +81,7 @@
                     <div class="card mb-3 mb-lg-5" id="generalDiv">
                         <!-- Profile Cover -->
                         <div class="profile-cover">
-                        @php($shop_banners = $shop_banner ? asset('storage/app/public/shop/banner/'.$shop_banner) : 'https://images.pexels.com/photos/866398/pexels-photo-866398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+                        @php($shop_banners = $shop_banner ? cloudfront('shop/banner/'.$shop_banner) : 'https://images.pexels.com/photos/866398/pexels-photo-866398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
 
                             <div class="profile-cover-img-wrapper" style="background-image: url({{ $shop_banners }}); background-repeat: no-repeat; background-size: cover;">
                             </div>
@@ -95,7 +95,7 @@
                             <img id="viewer"
                                  onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
                                  class="avatar-img"
-                                 src="{{asset('storage/app/public/seller')}}/{{$data->image}}"
+                                 src="{{cloudfront('seller')}}/{{$data->image}}"
                                  alt="Image">
                         </label>
                         <!-- End Avatar -->
@@ -181,7 +181,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row form-group">
                                 <label for="newEmailLabel"
                                        class="col-sm-3 col-form-label input-label">{{translate('Seller ID')}}</label>

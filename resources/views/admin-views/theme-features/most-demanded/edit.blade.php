@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <div class="text-center mt-lg-3">
                                         <img class="border radius-10 ratio-4:1 max-w-655px w-100" id="viewer"
-                                        onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'" src="{{asset('storage/app/public/most-demanded')}}/{{$most_demanded_product['banner']}}" alt="banner image"/>
+                                        onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'" src="{{cloudfront('most-demanded')}}/{{$most_demanded_product['banner']}}" alt="banner image"/>
                                     </div>
                                 </div>
                             </div>

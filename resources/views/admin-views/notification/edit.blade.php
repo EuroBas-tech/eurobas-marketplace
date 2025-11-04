@@ -42,7 +42,7 @@
                                 <img class="upload-img-view mt-4"
                                     id="viewer"
                                     onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
-                                    src="{{asset('storage/app/public/notification')}}/{{$notification['image']}}"
+                                    src="{{cloudfront('notification')}}/{{$notification['image']}}"
                                         alt="image"/>
                             </center>
                             <label class="title-color">{{translate('image')}}</label>

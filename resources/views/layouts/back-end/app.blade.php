@@ -12,7 +12,7 @@
     <!--    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company/'.$web_config['fav_icon']->value)}}">
+    <link rel="shortcut icon" href="{{cloudfront('company/'.$web_config['fav_icon']->value)}}">
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

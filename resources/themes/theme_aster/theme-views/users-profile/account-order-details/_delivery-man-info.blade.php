@@ -24,7 +24,7 @@
                                         <div class="media gap-2 gap-sm-3">
                                             <div class="avatar overflow-hidden rounded store-avatar2">
                                                 <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                     src="{{ asset('storage/app/public/delivery-man/'.$order->delivery_man->image)}}" class="dark-support rounded img-fit" alt="">
+                                                     src="{{ cloudfront('delivery-man/'.$order->delivery_man->image)}}" class="dark-support rounded img-fit" alt="">
                                             </div>
                                             <div class="media-body d-flex flex-column gap-2">
                                                 <h4>{{$order->delivery_man->f_name}}&nbsp{{$order->delivery_man->l_name}}</h4>
@@ -160,7 +160,7 @@
                                                 <label for="third_party_tracking_number">{{translate('third_party_delivery_tracking_id')}}</label>
                                                 <div class="d-flex align-items-center justify-content-between gap-2" >
                                                     <input readonly class="form-control custom-block-size" type="text" id="third_party_tracking_number" name="third_party_tracking_number" value="{{$order->third_party_tracking_number}}" placeholder=". . .">
-                                                    <a href="#" 
+                                                    <a href="#"
                                                     onclick="copyToClipboard(this)"
                                                     class="btn btn-primary copy-btn custom-block-size d-flex align-items-center" >
                                                         <i class="bi bi-clipboard copy-icon"></i>
@@ -180,7 +180,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                    
+
                             </div>
 
                             @if($order->delivery_type == 'self_delivery' && isset($order->delivery_man))
@@ -195,9 +195,9 @@
 
                                                 <div class="d-flex flex-wrap gap-3">
                                                     @foreach ($order->verification_images as $image)
-                                                        @if(file_exists(base_path("storage/app/public/delivery-man/verification-image/".$image->image)))
-                                                        <a href="{{asset("storage/app/public/delivery-man/verification-image/".$image->image)}}" data-lightbox="">
-                                                                <img src="{{asset("storage/app/public/delivery-man/verification-image/".$image->image)}}" class="height-100 rounded remove-mask-img"
+                                                        @if(\Illuminate\Support\Facades\Storage::disk()->exists("delivery-man/verification-image/".$image->image)))
+                                                        <a href="{{cloudfront("delivery-man/verification-image/".$image->image)}}" data-lightbox="">
+                                                                <img src="{{cloudfront("delivery-man/verification-image/".$image->image)}}" class="height-100 rounded remove-mask-img"
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'">
                                                         </a>
                                                         @endif

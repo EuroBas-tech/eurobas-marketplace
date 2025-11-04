@@ -402,7 +402,7 @@
                                    class="__brand-item">
                                     <img
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset("storage/app/public/brand/$brand->image")}}"
+                                        src="{{cloudfront("brand/$brand->image")}}"
                                         alt="{{$brand->name}}">
                                 </a>
                             </div>

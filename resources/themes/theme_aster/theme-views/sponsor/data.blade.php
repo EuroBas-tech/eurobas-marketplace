@@ -22,7 +22,7 @@
         border: 1px solid #d9d9d9;
         box-shadow: 0px 0px 2px #858585;
     }
-    
+
     .pricing-card.active {
         border: 1px solid #198754;
         transform: scale(1.08);
@@ -52,7 +52,7 @@
                                                         <div class="avatar border rounded" style="--size: 5rem">
                                                             <a href="{{route('ads-show', $ad->slug)}}">
                                                                 <img
-                                                                src="{{ env_asset('storage/ad/thumbnail/'.$ad->thumbnail)}}"
+                                                                src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                                                 class="img-fit dark-support rounded aspect-1" alt="">
                                                             </a>
@@ -62,7 +62,7 @@
                                                             <h4 class="mb-3" >{{$ad->title}}</h4>
                                                             @foreach($ad->sponsor as $sponsor)
                                                                 <div class="@if(!$loop->last) mb-4 @endif d-flex flex-column align-items-start gap-1" >
-                                                                    
+
                                                                     <div class="d-flex align-items-start align-items-sm-center flex-column flex-md-row gap-2 fw-medium">
                                                                         <div class="d-flex align-items-center gap-1 mb-sm-0 mb-2" >
                                                                             <span>
@@ -121,8 +121,8 @@
 @endsection
 
 @push('script')
-    
 
-    
+
+
 
 @endpush

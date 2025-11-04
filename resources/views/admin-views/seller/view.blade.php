@@ -74,7 +74,7 @@
                     <div class="media flex-column flex-sm-row gap-3">
                         <img class="avatar avatar-170 rounded-0"
                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                            src="{{asset('storage/app/public/shop/'.$seller->shop->image)}}"alt="image">
+                            src="{{cloudfront('shop/'.$seller->shop->image)}}"alt="image">
 
                         <div class="media-body">
                             @if($seller->shop->temporary_close || ($seller->shop->vacation_status && $current_date >= date('Y-m-d', strtotime($seller->shop->vacation_start_date)) && $current_date <= date('Y-m-d', strtotime($seller->shop->vacation_end_date))))
@@ -460,7 +460,7 @@
     <div class="flex-item">
         <img class="product-image rounded-0"
              onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
-             src="{{ asset('storage/app/public/shop/product/' . $image) }}"
+             src="{{ cloudfront('shop/product/' . $image) }}"
              alt="product image">
     </div>
 @endforeach

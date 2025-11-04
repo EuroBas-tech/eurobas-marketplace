@@ -75,7 +75,7 @@
                     </div>
                 </div>
 
-                <div class="pt-10 rounded bg-position-center bg-soft-secondary" data-bg-img="{{asset('storage/app/public/shop')}}/{{\App\CPU\Helpers::get_business_settings('shop_banner')}}">
+                <div class="pt-10 rounded bg-position-center bg-soft-secondary" data-bg-img="{{cloudfront('shop')}}/{{\App\CPU\Helpers::get_business_settings('shop_banner')}}">
                     <div class="media flex-wrap align-items-end gap-3 p-2">
                         <div class="bg-white rounded py-4 px-5 shadow-lg">
                             <img width="80" src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_web_logo'])->pluck('value')[0]}}"

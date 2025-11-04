@@ -16,7 +16,7 @@
             margin: 0;
         }
     </style>
-    
+
     <?php
         use App\Model\BusinessSetting;
         $company_phone =BusinessSetting::where('type', 'company_phone')->first()->value;
@@ -47,7 +47,7 @@
                 <tr>
                     <td align="left" valign="top" colspan="2"
                         style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
-                        <img alt="" border="0" src="{{url('/').'/storage/app/public/company/'.'dark-logo.png'}}" title=""
+                        <img alt="" border="0" src="{{cloudfront('company').'dark-logo.png'}}" title=""
                              class="sitelogo" width="60%" style="max-width:180px;text-align: end;"/>
                     </td>
                 </tr>
@@ -78,23 +78,23 @@
                             <br/><br/>
 
                             {{\App\CPU\sellerTranslate('From')}} {{$web_config['name']->value}}
-                            
+
                             <br/><br/>
 
                             {{\App\CPU\sellerTranslate('best_regards')}},
-                
+
                             <br/><br/>
-                
+
                             {{\App\CPU\sellerTranslate('the_EuroBas_team')}}.
-                
+
                             <br/><br/>
-                              
+
                             <a class="btn" href="eurobas.de">
                                 {{ sellerTranslate('visit_our_website') }}
                             </a>
-                                
+
                             <br/><br/>
-                
+
                             {{$company_email}}
 
                         </span>

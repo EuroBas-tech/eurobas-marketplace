@@ -39,8 +39,8 @@
 @section('content')
 @php($decimal_point_settings = \App\CPU\Helpers::get_business_settings('decimal_point_settings'))
 <div class="__inline-59 pt-md-3">
-    @if(file_exists('storage/app/public/deal/'.$deal['banner']))
-        @php($deal_banner = asset('storage/app/public/deal/'.$deal['banner']))
+    @if(\Illuminate\Support\Facades\Storage::disk()->exists('deal/'.$deal['banner']))
+        @php($deal_banner = cloudfront('deal/'.$deal['banner']))
     @else
         @php($deal_banner = asset('public/assets/front-end/img/flash-deals.png'))
     @endif

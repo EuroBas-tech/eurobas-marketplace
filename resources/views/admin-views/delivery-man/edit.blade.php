@@ -129,7 +129,7 @@
                                         <center>
                                             <img class="upload-img-view" id="viewer"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                 src="{{asset('storage/app/public/delivery-man').'/'.$delivery_man['image']}}"
+                                                 src="{{cloudfront('delivery-man').'/'.$delivery_man['image']}}"
                                                  alt="delivery-man image"/>
                                         </center>
                                     </div>
@@ -145,7 +145,7 @@
                                                         <div class="col-md-4 mb-3">
                                                             <img height="150"
                                                              onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                             src="{{asset('storage/app/public/delivery-man').'/'.$img}}">
+                                                             src="{{cloudfront('delivery-man').'/'.$img}}">
                                                         </div>
                                                     @endforeach
                                                 @endif

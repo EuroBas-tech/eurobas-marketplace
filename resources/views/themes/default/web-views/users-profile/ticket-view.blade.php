@@ -25,7 +25,7 @@
                             <div class="support_ticket_head-media media flex-wrap gap-2 gap-sm-3">
                                 <div class="rounded-circle overflow-hidden">
                                     <img onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
-                                    src="{{asset('storage/app/public/profile')}}/{{\App\CPU\customer_info()->image}}" class="rounded other-store-logo" width="50"  alt="img/products">
+                                    src="{{cloudfront('profile')}}/{{\App\CPU\customer_info()->image}}" class="rounded other-store-logo" width="50"  alt="img/products">
                                 </div>
                                 <div class="media-body">
                                     <div class="d-flex flex-column">
@@ -100,10 +100,10 @@
                                                 <div class="row g-2 flex-wrap mt-3 justify-content-start">
                                                     @foreach (json_decode($conversation['attachment']) as $key => $photo)
                                                         <div class="col-sm-6 col-md-4 position-relative img_row{{$key}}">
-                                                            <a data-lightbox="mygallery" href="{{asset("storage/app/public/support-ticket/".$photo)}}"
+                                                            <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                                class="aspect-1 overflow-hidden d-block border rounded">
                                                                 <img onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                     src="{{asset('storage/app/public/support-ticket')}}/{{$photo}}" class="img-fit"
+                                                                     src="{{cloudfront('support-ticket')}}/{{$photo}}" class="img-fit"
                                                                      alt="img">
                                                             </a>
                                                         </div>
@@ -131,10 +131,10 @@
                                             <div class="row g-2 flex-wrap mt-3 justify-content-end">
                                                 @foreach (json_decode($conversation['attachment']) as $key => $photo)
                                                     <div class="col-sm-6 col-md-4 position-relative img_row{{$key}}">
-                                                        <a data-lightbox="mygallery" href="{{asset("storage/app/public/support-ticket/".$photo)}}"
+                                                        <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                            class="aspect-1 overflow-hidden d-block border rounded">
                                                             <img onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                src="{{asset('storage/app/public/support-ticket')}}/{{$photo}}" class="img-fit"
+                                                                src="{{cloudfront('support-ticket')}}/{{$photo}}" class="img-fit"
                                                             alt="img">
                                                         </a>
                                                     </div>
@@ -162,10 +162,10 @@
                                     <div class="row g-2 flex-wrap mt-3 justify-content-end">
                                         @foreach (json_decode($ticket['attachment']) as $key => $photo)
                                             <div class="col-sm-6 col-md-4 position-relative img_row{{$key}}">
-                                                <a data-lightbox="mygallery" href="{{asset("storage/app/public/support-ticket/".$photo)}}"
+                                                <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                    class="aspect-1 overflow-hidden d-block border rounded">
                                                     <img onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                         src="{{asset('storage/app/public/support-ticket')}}/{{$photo}}" class="img-fit"
+                                                         src="{{cloudfront('support-ticket')}}/{{$photo}}" class="img-fit"
                                                          alt="img">
                                                 </a>
                                             </div>

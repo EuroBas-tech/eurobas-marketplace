@@ -216,7 +216,7 @@
                                                             id="cover-input"
                                                             aria-required="true"
                                                             accept="image/*"
-                                                            data-old="{{ $customerDetail['cover_image'] ? env_asset('storage/profile/covers/'.$customerDetail['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}"
+                                                            data-old="{{ $customerDetail['cover_image'] ? cloudfront('profile/covers/'.$customerDetail['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}"
                                                         >
                                                         <div class="upload-file__img w-100">
                                                             <div class="temp-img-box">

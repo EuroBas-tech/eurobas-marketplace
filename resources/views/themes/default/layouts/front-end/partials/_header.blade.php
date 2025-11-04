@@ -196,7 +196,7 @@
                                aria-expanded="false">
                                 <div class="navbar-tool-icon-box bg-secondary">
                                     <div class="navbar-tool-icon-box bg-secondary">
-                                        <img  src="{{asset('storage/app/public/profile/'.auth('customer')->user()->image)}}"
+                                        <img  src="{{cloudfront('profile/'.auth('customer')->user()->image)}}"
                                              onerror="this.src='{{asset('public/assets/front-end/img/user.png')}}'"
                                              class="img-profile rounded-circle __inline-14">
                                     </div>

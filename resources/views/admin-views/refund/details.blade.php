@@ -267,8 +267,8 @@
                         @if ($refund->images !=null)
                             <div class="gallery grid-gallery">
                                 @foreach (json_decode($refund->images) as $key => $photo)
-                                    <a href="{{asset('storage/app/public/refund')}}/{{$photo}}" data-lightbox="mygallery">
-                                        <img src="{{asset('storage/app/public/refund')}}/{{$photo}}" alt="">
+                                    <a href="{{cloudfront('refund')}}/{{$photo}}" data-lightbox="mygallery">
+                                        <img src="{{cloudfront('refund')}}/{{$photo}}" alt="">
                                     </a>
                                 @endforeach
                             </div>

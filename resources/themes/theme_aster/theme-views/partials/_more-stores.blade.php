@@ -86,7 +86,7 @@
                                     <div class="position-relative">
                                         <div class="avatar rounded-circle">
                                             <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                src="{{ asset('storage/app/public/shop/'.$seller->shop->image)}}" alt="" loading="lazy"
+                                                src="{{ cloudfront('shop/'.$seller->shop->image)}}" alt="" loading="lazy"
                                                 class="dark-support img-fit rounded-circle-cat responsive-profile-image">
                                         </div>
                                         @if($seller->shop->vacation_status && ($current_date >= $start_date) && ($current_date <= $end_date))

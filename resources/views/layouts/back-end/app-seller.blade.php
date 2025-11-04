@@ -12,7 +12,7 @@
     <!--to make http ajax request to https-->
     <!--    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{asset('storage/app/public/company/'.$web_config['fav_icon']->value)}}">
+    <link rel="shortcut icon" href="{{cloudfront('company/'.$web_config['fav_icon']->value)}}">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
     <!-- CSS Implementing Plugins -->
@@ -34,7 +34,7 @@
     @endif
     {{-- light box --}}
     <link rel="stylesheet" href="{{ asset('public/css/lightbox.css') }}">
-    @stack('css_or_js') 
+    @stack('css_or_js')
     <!-- <style>
         :root {
             --theameColor: #045cff;
@@ -310,7 +310,7 @@
                 },
             });
         }, 10000);
-        
+
         setInterval(function() {
             $.get({
                 url: '{{ route('seller.get-canceled-orders') }}',
@@ -324,8 +324,8 @@
                 },
             });
         }, 10000);
-        
-        
+
+
         setInterval(function() {
             $.get({
                 url: '{{ route('seller.get-balance-transactions') }}',
@@ -339,7 +339,7 @@
                 },
             });
         }, 10000);
-        
+
         setInterval(function() {
             $.get({
                 url: '{{ route('seller.get-refund-requests') }}',
@@ -357,7 +357,7 @@
         function check_order() {
             location.href = "{{ route('seller.orders.list', ['status' => 'all']) }}";
         }
-                
+
         function check_balance_transactions() {
             location.href = "{{route('seller.accounting.balance-transactions')}}";
         }

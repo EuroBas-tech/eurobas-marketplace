@@ -10,13 +10,13 @@
     <!-- Viewport-->
 
     @if($ad['meta_image'])
-        <meta property="og:image" content="{{asset("storage/app/public/ad/meta")}}/{{$ad->meta_image}}"/>
+        <meta property="og:image" content="{{cloudfront("ad/meta")}}/{{$ad->meta_image}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/ad/meta")}}/{{$ad->meta_image}}"/>
+              content="{{cloudfront("ad/meta")}}/{{$ad->meta_image}}"/>
     @else
-        <meta property="og:image" content="{{asset("storage/app/public/ad/thumbnail")}}/{{$ad->thumbnail}}"/>
+        <meta property="og:image" content="{{cloudfront("ad/thumbnail")}}/{{$ad->thumbnail}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/ad/thumbnail/")}}/{{$ad->thumbnail}}"/>
+              content="{{cloudfront("ad/thumbnail/")}}/{{$ad->thumbnail}}"/>
     @endif
 
     @if($ad['meta_title'])
@@ -121,7 +121,7 @@
                                                         @foreach (json_decode($ad->images) as $key => $photo)
                                                             <div class="swiper-slide position-relative w-100">
                                                                 <div class="easyzoom easyzoom--overlay">
-                                                                    <a class="w-100"  href="{{asset("storage/app/public/ad/".$photo)}}">
+                                                                    <a class="w-100"  href="{{cloudfront("ad/".$photo)}}">
                                                                         <img style="height: 415px; width: 100%;" src="https://cdn.bmwblog.com/wp-content/uploads/2024/08/2025-bmw-x3-m50-dune-grey-13.jpg" class="dark-support" alt="">
                                                                     </a>
                                                                 </div>
@@ -154,7 +154,7 @@
 
                                     <div class="col-lg-6 h-100">
                                         <!-- Product Details Content -->
-                                        <div class="product-details-content position-relative">                                            
+                                        <div class="product-details-content position-relative">
                                             <h2 class="product_title mb-4">{{$ad->name}}</h2>
 
                                             <h6 class="mt-3 mb-4">
@@ -172,14 +172,14 @@
                                                             <span class="mx-1" >{{$ad->brand->name}}</span>
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="d-flex gap-2 flex-wrap align-items-center mb-3">
                                                         <h5 class="fw-bold">{{translate('model')}} :</h5>
                                                         <div class="d-flex align-items-center" >
                                                             <span class="mx-1" >{{$ad->model->name}}</span>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="d-flex gap-2 flex-wrap align-items-center mb-3">
                                                         <h5 class="fw-bold">{{translate('ad_color')}} :</h5>
                                                         <div class="d-flex align-items-center" >
@@ -192,8 +192,8 @@
                                                     <img class="rounded border" width="120px" src="https://logowik.com/content/uploads/images/398_bmw.jpg" alt="">
                                                 </div>
                                             </div>
-                                            
-                                            
+
+
                                             <div class="product__price d-flex flex-wrap align-items-center gap-2 mb-3">
                                                 <ins
                                                     class="product__new-price text-dark fs-28 currency-font">{{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($ad->price))}}</ins>
@@ -466,7 +466,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>          
+                                        </div>
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingFour">
                                             <button class="accordion-button collapsed bg-light dashed-border" style="border-bottom: none !important;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -540,7 +540,7 @@
                                             <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body">
                                                     <div class="row" >
-                                                    
+
                                                         @php
                                                             $options = [
                                                                 'abs',
@@ -588,7 +588,7 @@
 
                                                         @foreach($options as $option)
 
-                                                            @php($true_or_false = $ad_options[$option] == true ? 'true' : 'false') 
+                                                            @php($true_or_false = $ad_options[$option] == true ? 'true' : 'false')
 
                                                             <div class="col-md-3 mb-3">
                                                                 <div class="card">
@@ -604,7 +604,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        @endforeach                                                     
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                             </div>
@@ -651,7 +651,7 @@
 
                                 <div class="mt-5 mb-4 pb-2">
                                     @php($guest_checkout=\App\CPU\Helpers::get_business_settings('guest_checkout'))
-                                        <button style="background: #0d6efd;font-size: 15px;margin-bottom: 11px;" 
+                                        <button style="background: #0d6efd;font-size: 15px;margin-bottom: 11px;"
                                             onclick="get_email_address('example@test.com', this)"
                                             class="btn buy-now-btn-hover py-3 px-2 w-100 text-white" >
                                             <i class="bi bi-envelope-fill me-1"></i>
@@ -665,15 +665,15 @@
                                     </button>
 
                                     @if (auth('customer')->check())
-                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white" 
+                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover mb-2 py-3 px-2 w-100 text-white"
                                         data-bs-toggle="modal" data-bs-target="#contact_sellerModal">
-                                            <i class="bi bi-chat-square-fill"></i> 
+                                            <i class="bi bi-chat-square-fill"></i>
                                             {{translate('Chat_with_Seller')}}
                                         </button>
                                     @else
-                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover p-auto px-2 w-100 text-white" 
+                                        <button style="font-size: 15px;" class="btn primary-blue-bg-color buy-now-btn-hover p-auto px-2 w-100 text-white"
                                         data-bs-toggle="modal" data-bs-target="#loginModal">
-                                            <i class="bi bi-chat-square-fill"></i> 
+                                            <i class="bi bi-chat-square-fill"></i>
                                             {{translate('Chat_with_Seller')}}
                                         </button>
                                     @endif
@@ -797,7 +797,7 @@
                                         <div class="row gy-4">
                                             <div class="col-lg-5">
                                                 <div class="rating-review mx-auto text-center mb-30">
-    
+
                                                     @if(count($ad->reviews)==0)
                                                         <div class="card">
                                                             <div class="card-body">
@@ -805,7 +805,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-    
+
                                                     <h2 class="rating-review__title"><span
                                                             class="rating-review__out-of">{{round($overallRating[0], 1)}}</span>/5
                                                     </h2>
@@ -824,12 +824,12 @@
                                                         <span>{{$reviews_of_product->total()}} {{translate('ratings')}}</span>
                                                     </div>
                                                 </div>
-    
-    
+
+
                                                 <ul class="list-rating gap-10">
                                                     <li>
                                                         <span class="review-name">5 {{translate('star')}}</span>
-    
+
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar"
                                                                     style="width: {{($rating[0] != 0?number_format($rating[0]*100 / array_sum($rating)):0)}}%"
@@ -840,7 +840,7 @@
                                                     </li>
                                                     <li>
                                                         <span class="review-name">4 {{translate('star')}}</span>
-    
+
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar"
                                                                     style="width: {{($rating[1] != 0?number_format($rating[1]*100 / array_sum($rating)):0)}}%"
@@ -851,7 +851,7 @@
                                                     </li>
                                                     <li>
                                                         <span class="review-name">3 {{translate('star')}}</span>
-    
+
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar"
                                                                     style="width: {{($rating[2] != 0?number_format($rating[2]*100 / array_sum($rating)):0)}}%"
@@ -862,7 +862,7 @@
                                                     </li>
                                                     <li>
                                                         <span class="review-name">2 {{translate('star')}}</span>
-    
+
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar"
                                                                     style="width: {{($rating[3] != 0?number_format($rating[3]*100 / array_sum($rating)):0)}}%"
@@ -873,7 +873,7 @@
                                                     </li>
                                                     <li>
                                                         <span class="review-name">1 {{translate('star')}}</span>
-    
+
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar"
                                                                     style="width: {{($rating[4] != 0?number_format($rating[4]*100 / array_sum($rating)):0)}}%"
@@ -920,11 +920,11 @@
                                                                         <div>{{$item->updated_at->format("d M Y h:i:s A")}}</div>
                                                                     </div>
                                                                     <p>{{$item->comment}}</p>
-    
+
                                                                     <div class="d-flex flex-wrap gap-2 products-comments-img">
                                                                         @foreach(json_decode($item->attachment) as $img)
-                                                                            @if(file_exists(base_path("storage/app/public/review/".$img)))
-                                                                                <a href="{{asset("storage/app/public/review/".$img)}}" data-lightbox="">
+                                                                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("review/".$img))
+                                                                                <a href="{{cloudfront("review/".$img)}}" data-lightbox="">
                                                                                     <img src="https://img.freepik.com/free-photo/organic-cosmetic-product-with-dreamy-aesthetic-fresh-background_23-2151382816.jpg" class="remove-mask-img"
                                                                                             onerror="this.src='img.freepik.com/free-photo/organic-cosmetic-product-with-dreamy-aesthetic-fresh-background_23-2151382816.jpg'">
                                                                                 </a>

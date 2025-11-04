@@ -139,7 +139,7 @@
                     @if ($order->seller_is == 'seller')
                         @if(isset($shop->image))
                             <div style="display:flex; align-items:center;margin-top:10px;">
-                            <img style="border:0;border-radius:10px" src="{{asset('/storage/app/public/shop/'.$shop->image)}}" title="" class="sitelogo" width="20%" height="30%" alt=""/>
+                            <img style="border:0;border-radius:10px" src="{{cloudfront('shop/'.$shop->image)}}" title="" class="sitelogo" width="20%" height="30%" alt=""/>
                         @endif
                         <div style="padding-left: 10px;">
                             <div style="margin-bottom: 5px;" ><span style="font-weight: bold; color: blue;font-size: 14px;">{{\App\CPU\translate('Seller ID :')}}  <span style="font-weight: normal; color: black;font-size: 14px;">{{ isset($seller->id) ? $seller->id : "no data" }}</span></span></div>

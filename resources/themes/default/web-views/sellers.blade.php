@@ -58,7 +58,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-12 px-2 pb-4 text-center">
                             <a href="{{route('shopView',['id'=>$seller['id']])}}" class="others-store-card text-capitalize">
                                 <div class="overflow-hidden other-store-banner">
-                                    <img src="{{asset('storage/app/public/shop/banner/'.$seller->banner)}}"
+                                    <img src="{{cloudfront('shop/banner/'.$seller->banner)}}"
                                          onerror="this.src='{{ asset('public/assets/front-end/img/seller-banner.png') }}'"
                                          class="w-100 h-100 object-cover" alt="">
                                 </div>
@@ -66,7 +66,7 @@
                                     <div class="position-relative">
                                         <div class="overflow-hidden other-store-logo rounded-full">
                                             <img class="rounded-full" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                 src="{{ asset('storage/app/public/shop/'.$seller->image)}}" alt="others-store">
+                                                 src="{{ cloudfront('shop/'.$seller->image)}}" alt="others-store">
                                         </div>
                                         <!-- Temporary Closed Store Status -->
                                         @if($seller->temporary_close || ($seller->vacation_status && ($current_date >= $seller->vacation_start_date) && ($current_date <= $seller->vacation_end_date)))

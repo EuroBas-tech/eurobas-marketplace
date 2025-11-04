@@ -55,7 +55,7 @@
                                                         <div class="avatar rounded-circle ">
                                                             <img
                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                src="{{ $shop->delivery_man_id ?asset('storage/app/public/delivery-man/'.$shop->image) : asset('storage/app/public/shop/'.$shop->image)}}"
+                                                                src="{{ $shop->delivery_man_id ? cloudfront('delivery-man/'.$shop->image) : cloudfront('shop/'.$shop->image)}}"
                                                                 loading="lazy"
                                                                 class="img-fit rounded-circle dark-support" alt="">
                                                         </div>
@@ -73,7 +73,7 @@
                                                                     <div class="fs-10 mx-2">{{date('M d',strtotime($shop->created_at))}}</div>
                                                                     <span class="fs-10 px-1 rounded-circle bg-danger text-white">{{$shop->unseen_message_count}}</span>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                             @php($email = $shop->seller_email ? $shop->seller_email : $shop->email)
                                                             <p class="fs-10">{{substr($email, 0, 28)}}{{ strlen($email) > 28 ? '...' : '' }}</p>
@@ -92,7 +92,7 @@
                                             <div class="avatar rounded-circle">
                                                 <img
                                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                    src="{{ $last_chat->delivery_man ?asset('storage/app/public/delivery-man/'.$last_chat->delivery_man->image) : asset('storage/app/public/shop/'.$last_chat->shop->image)}}"
+                                                    src="{{ $last_chat->delivery_man ? cloudfront('delivery-man/'.$last_chat->delivery_man->image) : cloudfront('public/shop/'.$last_chat->shop->image)}}"
                                                     loading="lazy" id="image" class="img-fit rounded-circle dark-support"
                                                     alt="">
                                             </div>
@@ -122,9 +122,9 @@
                                                                 @if (json_decode($chat['attachment']) !=null)
                                                                     <div class="row g-2 flex-wrap mt-3 justify-content-start">
                                                                         @foreach (json_decode($chat['attachment']) as $index => $photo)
-                                                                            @if(file_exists(base_path("storage/app/public/chatting/".$photo)))
+                                                                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("chatting/".$photo)))
                                                                             <div class="col-sm-6 col-md-3">
-                                                                                <img src="{{asset("storage/app/public/chatting/".$photo)}}" class="height-100 rounded remove-mask-img"
+                                                                                <img src="{{cloudfront("chatting/".$photo)}}" class="height-100 rounded remove-mask-img"
                                                                                      onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'">
                                                                             </div>
                                                                             @endif
@@ -145,9 +145,9 @@
                                                             @if (json_decode($chat['attachment']) !=null)
                                                                 <div class="row g-2 flex-wrap mt-3 justify-content-end">
                                                                     @foreach (json_decode($chat['attachment']) as $index => $photo)
-                                                                        @if(file_exists(base_path("storage/app/public/chatting/".$photo)))
+                                                                        @if(\Illuminate\Support\Facades\Storage::disk()->exists("chatting/".$photo)))
                                                                             <div class="col-sm-6 col-md-3">
-                                                                                <img src="{{asset("storage/app/public/chatting/".$photo)}}" class="height-100 rounded remove-mask-img"
+                                                                                <img src="{{cloudfront("chatting/".$photo)}}" class="height-100 rounded remove-mask-img"
                                                                                      onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'">
                                                                             </div>
                                                                         @endif

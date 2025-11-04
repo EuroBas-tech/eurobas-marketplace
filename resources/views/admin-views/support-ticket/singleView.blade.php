@@ -74,10 +74,10 @@
                                                     <div class="row g-2 flex-wrap pt-1 justify-content-end">
                                                         @foreach (json_decode($message['attachment']) as $index => $photo)
                                                             <div class="col-6 col-md-2 position-relative img_row{{$index}}">
-                                                                <a data-lightbox="mygallery" href="{{asset("storage/app/public/support-ticket/".$photo)}}"
+                                                                <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                                    class="aspect-1 overflow-hidden d-block border rounded">
                                                                     <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                         src="{{asset('storage/app/public/support-ticket/'.$photo)}}"
+                                                                         src="{{cloudfront('support-ticket/'.$photo)}}"
                                                                          alt="" class="img-fit">
                                                                 </a>
                                                             </div>
@@ -104,10 +104,10 @@
                                                 <div class="row g-2 flex-wrap pt-1 justify-content-start">
                                                     @foreach (json_decode($message['attachment']) as $index => $photo)
                                                         <div class="col-6 col-md-2 position-relative img_row{{$index}}">
-                                                            <a data-lightbox="mygallery" href="{{asset("storage/app/public/chatting/".$photo)}}"
+                                                            <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                class="aspect-1 overflow-hidden d-block border rounded">
                                                                 <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                     src="{{asset('storage/app/public/chatting/'.$photo)}}"
+                                                                     src="{{cloudfront('chatting/'.$photo)}}"
                                                                      alt="" class="img-fit">
                                                             </a>
                                                         </div>
@@ -136,10 +136,10 @@
                                             <div class="row g-2 flex-wrap pt-1">
                                                 @foreach (json_decode($ticket['attachment']) as $index => $photo)
                                                     <div class="col-6 col-md-2 position-relative img_row{{$index}}">
-                                                        <a data-lightbox="mygallery" href="{{asset("storage/app/public/support-ticket/".$photo)}}"
+                                                        <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                            class="aspect-1 overflow-hidden d-block border rounded">
                                                             <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                 src="{{asset('storage/app/public/support-ticket/'.$photo)}}"
+                                                                 src="{{cloudfront('support-ticket/'.$photo)}}"
                                                                  alt="" class="img-fit">
                                                         </a>
                                                     </div>

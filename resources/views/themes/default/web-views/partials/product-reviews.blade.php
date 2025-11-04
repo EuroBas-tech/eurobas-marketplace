@@ -7,7 +7,7 @@
                 class="media media-ie-fix  {{Session::get('direction') === "rtl" ? 'ml-4 pl-2' : 'mr-4 pr-2'}}">
                 <img class="rounded-circle __img-64 object-cover"
                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                    src="{{asset("storage/app/public/profile")}}/{{(isset($productReview->user)?$productReview->user->image:'')}}"
+                    src="{{cloudfront("profile")}}/{{(isset($productReview->user)?$productReview->user->image:'')}}"
                     alt="{{isset($productReview->user)?$productReview->user->f_name:'not exist'}}"/>
                 <div
                     class="media-body {{Session::get('direction') === "rtl" ? 'pr-3' : 'pl-3'}} text-body">
@@ -28,7 +28,7 @@
             <p class="mb-3 text-body __text-sm" style="word-wrap:break-word;">{{isset($productReview->comment) ? $productReview->comment : ''}}</p>
             @if (isset($productReview->attachment) && !empty(json_decode($productReview->attachment)))
                 @foreach (json_decode($productReview->attachment) as $key => $photo)
-                    <img onclick="showInstaImage('{{asset("storage/app/public/review/$photo")}}')" class="cz-image-zoom __img-70 rounded border" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{asset("storage/app/public/review/$photo")}}" alt="Product review">
+                    <img onclick="showInstaImage('{{cloudfront("review/$photo")}}')" class="cz-image-zoom __img-70 rounded border" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{cloudfront("review/$photo")}}" alt="Product review">
                 @endforeach
             @endif
         </div>

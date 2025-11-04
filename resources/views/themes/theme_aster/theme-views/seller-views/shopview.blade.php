@@ -44,7 +44,7 @@
                 <div class="col-md-9" >
                     @if($shop['id'] != 0 && $shop->bottom_banner)
                         <div class="">
-                            <img src="{{asset('storage/app/public/shop/banner')}}/{{$shop->bottom_banner}}" class="dark-support rounded img-fit shop-cover-style"
+                            <img src="{{cloudfront('shop/banner')}}/{{$shop->bottom_banner}}" class="dark-support rounded img-fit shop-cover-style"
                             onerror="this.src='{{theme_asset('assets/img/image-place-holder-4_1.png')}}'"
                             alt="">
                         </div>
@@ -52,7 +52,7 @@
                         @php($bottom_banner=\App\CPU\Helpers::get_business_settings('bottom_banner'))
                         @if($bottom_banner)
                         <div class="">
-                            <img src="{{asset('storage/app/public/shop')}}/{{$bottom_banner ?? ""}}" class="dark-support rounded img-fit"
+                            <img src="{{cloudfront('shop')}}/{{$bottom_banner ?? ""}}" class="dark-support rounded img-fit"
                                  onerror="this.src='{{theme_asset('assets/img/image-place-holder-4_1.png')}}'"
                                  alt="">
                         </div>
@@ -93,7 +93,7 @@
                             <div class="media gap-3">
                                 <div class="avatar rounded store-avatar">
                                     <div class="position-relative">
-                                        <img src="{{asset('storage/app/public/shop')}}/{{$shop->image}}"
+                                        <img src="{{cloudfront('shop')}}/{{$shop->image}}"
                                         onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" class="dark-support rounded img-fit" alt="">
 
                                         @if($seller_temporary_close || $inhouse_temporary_close)

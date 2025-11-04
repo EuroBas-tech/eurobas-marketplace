@@ -81,10 +81,10 @@
                                             @if ($conversation['attachment'] !=null && count(json_decode($conversation['attachment'])) > 0)
                                                 <div class="d-flex flex-wrap g-2 gap-2 justify-content-end">
                                                     @foreach (json_decode($conversation['attachment']) as $key => $photo)
-                                                        @if(file_exists(base_path("storage/app/public/support-ticket/".$photo)))
+                                                        @if(\Illuminate\Support\Facades\Storage::disk()->exists("support-ticket/".$photo)))
                                                             <div class="col-sm-6 col-md-3">
                                                                 <img onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                    src="{{asset('storage/app/public/support-ticket')}}/{{$photo}}" height="100" class="rounded"
+                                                                    src="{{cloudfront('support-ticket')}}/{{$photo}}" height="100" class="rounded"
                                                                     alt="img">
                                                             </div>
                                                         @endif
@@ -104,10 +104,10 @@
                                             @if ($conversation['attachment'] !=null && count(json_decode($conversation['attachment'])) > 0)
                                                 <div class="d-flex flex-wrap g-2 gap-2 justify-content-start">
                                                     @foreach (json_decode($conversation['attachment']) as $key => $photo)
-                                                        @if(file_exists(base_path("storage/app/public/support-ticket/".$photo)))
+                                                        @if(\Illuminate\Support\Facades\Storage::disk()->exists("support-ticket/".$photo)))
                                                             <div class="col-sm-6 col-md-3">
                                                                 <img onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                     src="{{asset('storage/app/public/support-ticket')}}/{{$photo}}" height="100" class="rounded"
+                                                                     src="{{cloudfront('support-ticket')}}/{{$photo}}" height="100" class="rounded"
                                                                      alt="img">
                                                             </div>
                                                         @endif

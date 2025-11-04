@@ -22,7 +22,7 @@
                                     <div class="media gap-2 gap-sm-3">
                                         <div class="avatar">
                                             <img onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                 src="{{asset('storage/app/public/profile')}}/{{\App\CPU\customer_info()->image}}"
+                                                 src="{{cloudfront('profile')}}/{{\App\CPU\customer_info()->image}}"
                                                  loading="lazy" class="img-fit dark-support" alt="">
                                         </div>
                                         <div class="media-body">

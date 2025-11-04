@@ -688,7 +688,7 @@
                                                                 <div class="avatar overflow-hidden border rounded-circle"
                                                                      style="--size: 3.437rem">
                                                                     <img
-                                                                        src="{{asset("storage/app/public/profile")}}/{{(isset($item->user)?$item->user->image:'')}}"
+                                                                        src="{{cloudfront("profile")}}/{{(isset($item->user)?$item->user->image:'')}}"
                                                                         alt=""
                                                                         class="img-fit dark-support"
                                                                         onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" >
@@ -719,9 +719,9 @@
 
                                                                     <div class="d-flex flex-wrap gap-2 products-comments-img">
                                                                         @foreach(json_decode($item->attachment) as $img)
-                                                                            @if(file_exists(base_path("storage/app/public/review/".$img)))
-                                                                                <a href="{{asset("storage/app/public/review/".$img)}}" data-lightbox="">
-                                                                                    <img src="{{asset("storage/app/public/review/".$img)}}" class="remove-mask-img"
+                                                                            @if(\Illuminate\Support\Facades\Storage::disk()->exists("review/".$img))
+                                                                                <a href="{{cloudfront("review/".$img)}}" data-lightbox="">
+                                                                                    <img src="{{cloudfront("review/".$img)}}" class="remove-mask-img"
                                                                                          onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'">
                                                                                 </a>
                                                                             @endif
@@ -820,11 +820,11 @@
                             <div class="card order-0 order-sm-1">
                                 <div class="card-body">
                                     <div class="p-2 overlay shop-bg-card"
-                                         data-bg-img="{{asset('storage/app/public/shop/banner')}}/{{$product->seller->shop->banner}}">
+                                         data-bg-img="{{cloudfront('shop/banner')}}/{{$product->seller->shop->banner}}">
                                         <div class="media flex-wrap gap-2 p-2">
                                             <div class="avatar border rounded-circle" style="--size: 3.437rem">
                                                 <img
-                                                    src="{{asset('storage/app/public/shop')}}/{{$product->seller->shop->image}}"
+                                                    src="{{cloudfront('shop')}}/{{$product->seller->shop->image}}"
                                                     alt="" class="img-fit dark-support border-radius-15-percent"
                                                     onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'">
                                             </div>

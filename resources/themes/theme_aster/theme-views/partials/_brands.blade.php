@@ -20,7 +20,7 @@
                                         <div class="d-flex flex-column gap-2">
                                             <div>
                                                 <img class="d-block m-auto"
-                                                src="{{ asset('storage/app/public/brand/'.$brand['image'])}}"
+                                                src="{{ cloudfront('brand/'.$brand['image'])}}"
                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
                                                 alt="brand-image"
                                                 loading="lazy">

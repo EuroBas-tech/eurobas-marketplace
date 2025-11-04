@@ -246,9 +246,9 @@
                                                 <div class="mt-3">
                                                     <div class="d-flex gap-2 flex-wrap">
                                                         @foreach (json_decode($order_details->product->reviews_by_customer[0]->attachment) as $key => $photo)
-                                                        <a data-lightbox="mygallery" href="{{asset('storage/app/public/review')}}/{{$photo}}">
+                                                        <a data-lightbox="mygallery" href="{{cloudfront('review')}}/{{$photo}}">
                                                             <img class="border rounded border-primary-light" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                src="{{asset('storage/app/public/review')}}/{{$photo}}"
+                                                                src="{{cloudfront('review')}}/{{$photo}}"
                                                                 alt="VR Collection" width="60">
                                                         </a>
                                                         @endforeach

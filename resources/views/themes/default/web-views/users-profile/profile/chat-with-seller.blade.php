@@ -95,7 +95,7 @@
                                                     id="user_{{$unique_id}}">
                                                 <div class="chat_people">
                                                     <div class="chat_img">
-                                                        <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{ $shop->delivery_man_id ?asset('storage/app/public/delivery-man/'.$shop->image) : asset('storage/app/public/shop/'.$shop->image)}}"
+                                                        <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{ $shop->delivery_man_id ? cloudfront('delivery-man/'.$shop->image) : cloudfront('shop/'.$shop->image)}}"
                                                             class="__inline-14 __rounded-10 img-profile">
                                                     </div>
                                                     <div class="chat_ib">
@@ -147,7 +147,7 @@
                                             <div class="inbox_msg">
                                                 <div class="mesgs">
                                                     <a class="msg-user" href="#">
-                                                        <img src="{{ $last_chat->delivery_man ?asset('storage/app/public/delivery-man/'.$last_chat->delivery_man->image) : asset('storage/app/public/shop/'.$last_chat->shop->image)}}"
+                                                        <img src="{{ $last_chat->delivery_man ? cloudfront('delivery-man/'.$last_chat->delivery_man->image) : cloudfront('shop/'.$last_chat->shop->image)}}"
                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" alt="" class="img">
                                                         <h5 class="m-0">{{$last_chat->delivery_man?$last_chat->delivery_man->f_name.' '.$last_chat->delivery_man->l_name : $last_chat->shop->name  }}</h5>
                                                     </a>
@@ -157,7 +157,7 @@
                                                                 @if ($chat->sent_by_seller? $chat->sent_by_seller : $chat->sent_by_delivery_man)
                                                                     <div class="outgoing_msg incoming_msg">
                                                                         <div class="incoming_msg_img"><img
-                                                                                src="{{ $shop->delivery_man_id ?asset('storage/app/public/delivery-man/'.$last_chat->delivery_man->image) : asset('storage/app/public/shop/'.$last_chat->shop->image)}}"
+                                                                                src="{{ $shop->delivery_man_id ? cloudfront('delivery-man/'.$last_chat->delivery_man->image) : cloudfront('shop/'.$last_chat->shop->image)}}"
                                                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                                                 alt="photo"></div>
                                                                         <div class="received_msg">
@@ -182,7 +182,7 @@
                                                                                     @foreach (json_decode($chat['attachment']) as $key => $photo)
                                                                                         <div class="w-70px spartan_item_wrapper position-relative img_row{{$key}}">
                                                                                             <img class="border rounded border-primary-light h-70px" onerror="this.src=' {{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                                                src="{{asset('storage/app/public/chatting')}}/{{$photo}}"
+                                                                                                src="{{cloudfront('chatting')}}/{{$photo}}"
                                                                                                 alt="VR Collection">
                                                                                         </div>
                                                                                     @endforeach
@@ -349,7 +349,7 @@
                                     )
 
                                 } else {
-                                    let img_path = element.image == 'def.png' ? `{{ asset('storage/app/public/shop') }}/${element.image}` : `{{ (isset($shop->delivery_man_id) && $shop->delivery_man_id) ? asset('storage/app/public/delivery-man') : asset('storage/app/public/shop') }}/${element.image}`;
+                                    let img_path = element.image == 'def.png' ? `{{ cloudfront('shop') }}/${element.image}` : `{{ (isset($shop->delivery_man_id) && $shop->delivery_man_id) ? cloudfront('delivery-man') : cloudfront('shop') }}/${element.image}`;
 
                                     $(".msg_history").append(`
                                         <div class="incoming_msg d-flex" id="incoming_msg">
@@ -433,7 +433,7 @@
                         var imageContainer = '<div class="d-flex gap-3 flex-wrap mt-3">';
                         // Loop through the image URLs and create HTML for each image
                         respons.image.forEach(function (imageUrl, index) {
-                            let img_path = `{{ asset('storage/app/public/chatting') }}/${imageUrl}`;
+                            let img_path = `{{ cloudfront('chatting') }}/${imageUrl}`;
                             imageContainer += `
                                 <div class="w-70px spartan_item_wrapper position-relative img_row${index}">
                                     <img class="border rounded border-primary-light h-70px" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"

@@ -2,13 +2,13 @@
 
     if(!function_exists('testTranslate')) {
         function testTranslate($key, $id) {
-            
+
             $order = App\Model\Order::with('seller')->find($id);
-    
+
             \Illuminate\Support\Facades\Log::debug('locale : '.$order->seller->prefered_language);
-            
+
             \Illuminate\Support\Facades\App::setLocale($order->seller->prefered_language);
-        
+
             try {
                 $lang_array = include(base_path('resources/lang/' . $order->seller->prefered_language . '/messages.php'));
                 $processed_key = ucfirst(str_replace('_', ' ', \App\CPU\Helpers::remove_invalid_charcaters($key)));
@@ -24,9 +24,9 @@
             } catch (\Exception $exception) {
                 $result = __('messages.' . $key);
             }
-        
+
             return $result;
-            
+
         }
     }
 
@@ -73,7 +73,7 @@
 
                     <td align="left" valign="top" colspan="2"
                         style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
-                        <img alt="" border="0" src="{{url('/').'/storage/app/public/company/dark-logo.png'}}" title=""
+                        <img alt="" border="0" src="{{cloudfront('company/dark-logo.png')}}" title=""
                              class="sitelogo" width="60%" style="max-width:250px;"/>
                     </td>
 

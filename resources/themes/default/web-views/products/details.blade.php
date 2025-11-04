@@ -664,7 +664,7 @@
                                         <a href="{{route('shopView',['id'=>$product->seller->id])}}" class="d-block">
                                             <div class="d-flex __seller-author align-items-center">
                                                 <div>
-                                                    <img class="__img-60 img-circle" src="{{asset('storage/app/public/shop')}}/{{$product->seller->shop->image}}"
+                                                    <img class="__img-60 img-circle" src="{{cloudfront('shop')}}/{{$product->seller->shop->image}}"
                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                         alt="">
                                                 </div>

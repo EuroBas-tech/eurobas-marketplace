@@ -422,7 +422,7 @@
                                         <img
                                             class="avatar-img"
                                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset('storage/app/public/profile/'.$review->customer->image)}}"
+                                            src="{{cloudfront('profile/'.$review->customer->image)}}"
                                             alt="Image Description">
                                     </div>
                                     <div class="{{Session::get('direction') === "rtl" ? 'mr-3' : 'ml-3'}}">
@@ -446,8 +446,8 @@
                                     </p>
                                     @if(json_decode($review->attachment))
                                         @foreach (json_decode($review->attachment) as $img)
-                                            <a class="aspect-1 float-left overflow-hidden" href="{{asset('storage/app/public/review')}}/{{$img}}" data-lightbox="mygallery">
-                                                <img class="p-2" width="60" height="60" src="{{asset('storage/app/public/review')}}/{{$img}}" alt="" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'">
+                                            <a class="aspect-1 float-left overflow-hidden" href="{{cloudfront('review')}}/{{$img}}" data-lightbox="mygallery">
+                                                <img class="p-2" width="60" height="60" src="{{cloudfront('review')}}/{{$img}}" alt="" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'">
                                             </a>
                                         @endforeach
                                     @endif

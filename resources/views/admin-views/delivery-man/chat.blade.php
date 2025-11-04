@@ -45,11 +45,11 @@
                                 @foreach($chattings_user as $key => $chatting)
                                     <div class="list_search">
                                         <div class="chat_list p-3 d-flex gap-2 user_{{$chatting->delivery_man_id}} seller-list @if ($key == 0) active @endif"
-                                             id="{{$chatting->delivery_man_id}}" data-name="{{$chatting->f_name}} {{$chatting->l_name}}" data-phone="{{ $chatting->phone }}" data-image="{{ asset('storage/app/public/delivery-man/'.$chatting->image) }}"
+                                             id="{{$chatting->delivery_man_id}}" data-name="{{$chatting->f_name}} {{$chatting->l_name}}" data-phone="{{ $chatting->phone }}" data-image="{{ cloudfront('delivery-man/'.$chatting->image) }}"
                                         onclick="message_view('{{$chatting->delivery_man_id}}')">
                                             <div class="chat_people media gap-10" id="chat_people">
                                                 <div class="chat_img avatar avatar-sm avatar-circle">
-                                                    <img src="{{ asset('storage/app/public/delivery-man/'.$chatting->image) }}"
+                                                    <img src="{{ cloudfront('delivery-man/'.$chatting->image) }}"
                                                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                          alt="">
                                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
@@ -81,7 +81,7 @@
                             <!-- Profile -->
                             <div class="media align-items-center gap-3">
                                 <div class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" id="profile_image" src="{{ asset('storage/app/public/delivery-man/'.$chattings_user[0]->image) }}" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'" alt="Image Description">
+                                    <img class="avatar-img" id="profile_image" src="{{ cloudfront('delivery-man/'.$chattings_user[0]->image) }}" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'" alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
                                 <div class="media-body">
@@ -115,10 +115,10 @@
                                                                 <div class="row g-2 flex-wrap pt-1">
                                                                     @foreach (json_decode($message['attachment']) as $index => $photo)
                                                                         <div class="col-sm-3 col-md-2 position-relative img_row{{$index}}">
-                                                                            <a data-lightbox="mygallery" href="{{asset("storage/app/public/chatting/".$photo)}}"
+                                                                            <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                                class="aspect-1 overflow-hidden d-block border rounded">
                                                                                 <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                                     src="{{asset('storage/app/public/chatting/'.$photo)}}"
+                                                                                     src="{{cloudfront('chatting/'.$photo)}}"
                                                                                      alt="" class="img-fit">
                                                                             </a>
                                                                         </div>
@@ -145,10 +145,10 @@
                                                             <div class="row g-2 flex-wrap pt-1 justify-content-end">
                                                                 @foreach (json_decode($message['attachment']) as $index => $photo)
                                                                     <div class="col-sm-3 col-md-2 position-relative img_row{{$index}}">
-                                                                        <a data-lightbox="mygallery" href="{{asset("storage/app/public/chatting/".$photo)}}"
+                                                                        <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                            class="aspect-1 overflow-hidden d-block border rounded">
                                                                             <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                                                 src="{{asset('storage/app/public/chatting/'.$photo)}}"
+                                                                                 src="{{cloudfront('chatting/'.$photo)}}"
                                                                                  alt="" class="img-fit">
                                                                         </a>
                                                                     </div>
@@ -279,7 +279,7 @@
                             let imageContainer = ''
                             if(response.image && response.image.length !== 0){
                                 response.image.forEach(function (imageUrl, index) {
-                                    let img_path = `{{ asset('storage/app/public/chatting') }}/${imageUrl}`;
+                                    let img_path = `{{ cloudfront('chatting') }}/${imageUrl}`;
                                     imageContainer += `
                                     <div class="col-sm-3 col-md-2 position-relative img_row${index}">
                                         <a data-lightbox="mygallery" href="${img_path}" class="aspect-1 overflow-hidden d-block border rounded">
@@ -433,7 +433,7 @@
                             if(attachment_files.length !== 0){
                                 imageContainer = '';
                                 JSON.parse(attachment_files).map((imageUrl, index) => {
-                                    let img_path = `{{ asset('storage/app/public/chatting') }}/${imageUrl}`;
+                                    let img_path = `{{ cloudfront('chatting') }}/${imageUrl}`;
                                     imageContainer += `
                                     <div class="col-sm-3 col-md-2 position-relative img_row${index}">
                                         <a data-lightbox="mygallery" href="${img_path}" class="aspect-1 overflow-hidden d-block border rounded">

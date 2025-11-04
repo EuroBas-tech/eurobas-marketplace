@@ -52,24 +52,24 @@
                         <form action="{{route('multiple.redirect.payment.method')}}" method="POST">
                             @csrf
                             <input type="hidden" name="payment_method" id="payment_method" value="">
-                            
+
                             <h1 class="text-center pb-5" >{{translate('select_a_payment_method')}}</h1>
-                            
-                            <div class="row mb-5"> 
+
+                            <div class="row mb-5">
                                 <div class="col-6">
-                                    <div data-method-name="paypal" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative"> 
-                                        <img src="{{env_asset('storage/payment_modules/gateway_image')}}/{{$payment_methods_images['paypal']}}" alt="paypal_image"> 
+                                    <div data-method-name="paypal" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative">
+                                        <img src="{{cloudfront('payment_modules/gateway_image')}}/{{$payment_methods_images['paypal']}}" alt="paypal_image">
                                         <i class="bi bi-check-circle-fill check-icon"></i>
-                                    </div> 
-                                </div>  
+                                    </div>
+                                </div>
                                 <div class="col-6">
-                                    <div data-method-name="stripe" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative"> 
-                                        <img src="{{env_asset('storage/payment_modules/gateway_image')}}/{{$payment_methods_images['stripe']}}" alt="stripe_image"> 
+                                    <div data-method-name="stripe" role="button" class="card payment-method-card large-screen-aside-shadow px-4 py-2 position-relative">
+                                        <img src="{{cloudfront('payment_modules/gateway_image')}}/{{$payment_methods_images['stripe']}}" alt="stripe_image">
                                         <i class="bi bi-check-circle-fill check-icon"></i>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
-    
+
                             <div class="mb-4" >
                                 @foreach($packages as $package)
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -90,7 +90,7 @@
                                     {{translate('payments_for_this_service_are_non_refundable')}}
                                 </span>
                             </div>
-    
+
                             <div class="row">
                                 <div class="col-12">
                                     <button disabled id="pay-btn" class="btn btn-primary rounded w-100" >{{translate('pay')}}</button>

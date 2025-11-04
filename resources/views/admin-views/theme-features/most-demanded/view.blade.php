@@ -130,7 +130,7 @@
                                     <td>
                                         <img class="ratio-4:1" width="80"
                                             onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'"
-                                            src="{{asset('storage/app/public/most-demanded')}}/{{$most_demanded['banner']}}">
+                                            src="{{cloudfront('most-demanded')}}/{{$most_demanded['banner']}}">
                                     </td>
                                     <td>{{ isset($most_demanded->product->name) ? $most_demanded->product->name : translate('no_product_found')}}</td>
                                     <td class="d-flex justify-content-center">

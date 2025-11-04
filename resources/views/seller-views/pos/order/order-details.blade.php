@@ -287,7 +287,7 @@
                                     <div>
                                         <img class="avatar rounded-circle avatar-70"
                                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                            src="{{asset('storage/app/public/profile/'.$order->customer->image)}}"
+                                            src="{{cloudfront('profile/'.$order->customer->image)}}"
                                             alt="Image">
                                     </div>
                                     <div class="media-body d-flex flex-column gap-1">

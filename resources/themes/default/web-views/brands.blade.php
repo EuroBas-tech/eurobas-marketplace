@@ -29,7 +29,7 @@
         <div class="brand_div-wrap mb-4">
             @foreach($brands as $brand)
                 <a href="{{route('products',['id'=> $brand['id'],'data_from'=>'brand','page'=>1])}}" class="brand_div" data-toggle="tooltip" title="{{$brand->name}}">
-                    <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{asset("storage/app/public/brand/$brand->image")}}" alt="{{$brand->name}}">
+                    <img onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{cloudfront("brand/$brand->image")}}" alt="{{$brand->name}}">
                 </a>
             @endforeach
         </div>

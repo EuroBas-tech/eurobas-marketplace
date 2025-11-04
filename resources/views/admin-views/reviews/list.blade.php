@@ -205,9 +205,9 @@
                                         @if($review->attachment)
                                             <div class="d-flex flex-wrap">
                                                 @foreach (json_decode($review->attachment) as $img)
-                                                    <a href="{{ asset('storage/app/public/review') }}/{{ $img }}"
+                                                    <a href="{{ cloudfront('review') }}/{{ $img }}"
                                                         data-lightbox="mygallery">
-                                                        <img width="60" height="60" src="{{ asset('storage/app/public/review') }}/{{ $img }}"
+                                                        <img width="60" height="60" src="{{ cloudfront('review') }}/{{ $img }}"
                                                         onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
                                                                 alt="Image">
                                                     </a>

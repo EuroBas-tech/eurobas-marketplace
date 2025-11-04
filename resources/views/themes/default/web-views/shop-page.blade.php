@@ -4,7 +4,7 @@
 
 @push('css_or_js')
     @if($shop['id'] != 0)
-        <meta property="og:image" content="{{asset('storage/app/public/shop')}}/{{$shop->image}}"/>
+        <meta property="og:image" content="{{cloudfront('shop')}}/{{$shop->image}}"/>
         <meta property="og:title" content="{{ $shop->name}} "/>
         <meta property="og:url" content="{{route('shopView',[$shop['id']])}}">
     @else
@@ -49,13 +49,13 @@
             <div class="bg-white __shop-banner-main">
                 @if($shop['id'] != 0)
                     <img class="__shop-page-banner"
-                            src="{{asset('storage/app/public/shop/banner')}}/{{$shop->banner}}"
+                            src="{{cloudfront('shop/banner')}}/{{$shop->banner}}"
                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                             alt="">
                 @else
                     @php($banner=\App\CPU\Helpers::get_business_settings('shop_banner'))
                     <img class="__shop-page-banner"
-                            src="{{asset("storage/app/public/shop")}}/{{$banner??""}}"
+                            src="{{cloudfront("shop")}}/{{$banner??""}}"
                             onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                             alt="">
                 @endif
@@ -79,7 +79,7 @@
                                                 </span>
                                             @endif
                                             <img class="__inline-68"
-                                                src="{{asset('storage/app/public/shop')}}/{{$shop->image}}"
+                                                src="{{cloudfront('shop')}}/{{$shop->image}}"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                 alt="">
                                         </div>

@@ -691,7 +691,7 @@
                                             @foreach($web_config['shops'] as $shop)
                                             <a href="{{route('shopView',['id'=>$shop['id']])}}" class="media gap-3 align-items-center border-bottom">
                                                 <div class="avatar rounded" style="--size: 2.5rem">
-                                                    <img onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" src="{{asset("storage/app/public/shop")}}/{{ $shop->image }}" loading="lazy" class="img-fit rounded dark-support overflow-hidden" alt="" />
+                                                    <img onerror="this.src='{{theme_asset('assets/img/image-place-holder.png')}}'" src="{{cloudfront("shop")}}/{{ $shop->image }}" loading="lazy" class="img-fit rounded dark-support overflow-hidden" alt="" />
                                                 </div>
                                                 <div class="media-body text-truncate" style="--width: 7rem" title="Morning Mart">
                                                     {{Str::limit($shop->name, 14)}}
@@ -754,7 +754,7 @@
                             <div class="profile-dropdown">
                                 <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark p-0 user" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="avatar overflow-hidden header-avatar rounded-circle" style="--size: 1.5rem">
-                                        <img loading="lazy" src="{{asset('storage/app/public/profile/'.auth('customer')->user()->image)}}" onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
+                                        <img loading="lazy" src="{{cloudfront('profile/'.auth('customer')->user()->image)}}" onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
                                     </span>
                                 </button>
                                 <ul class="dropdown-menu" style="--bs-dropdown-min-width: 10rem">

@@ -179,7 +179,7 @@
                             <div class="card-body">
                                 <div class="payment--gateway-img">
                                     <img style="height: 80px" id="gateway_img{{$payment->key_name}}"
-                                    src="{{asset('storage/app/public/payment_modules/gateway_image')}}/{{$additional_data != null ? $additional_data['gateway_image'] : ''}}"
+                                    src="{{cloudfront('payment_modules/gateway_image')}}/{{$additional_data != null ? $additional_data['gateway_image'] : ''}}"
                                     onerror="this.src='{{asset('public/assets/back-end/img/payment-gateway-placeholder.png')}}'"
                                     alt="public">
                                 </div>

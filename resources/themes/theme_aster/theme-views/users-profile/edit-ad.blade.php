@@ -448,7 +448,7 @@
                                                                 class="upload-file__input meta_image"
                                                                 name="meta_image"
                                                                 aria-required="true"
-                                                                data-old="{{ asset('storage/app/public/ad/meta')}}/{{$ad->meta_image }}"
+                                                                data-old="{{ cloudfront('ad/meta')}}/{{$ad->meta_image }}"
                                                                 accept="image/*">
                                                                 <div class="upload-file__img">
                                                                     <div class="temp-img-box">

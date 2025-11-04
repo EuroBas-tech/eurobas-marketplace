@@ -457,7 +457,7 @@
                                         <div class="media m-1 gap-3">
                                             <img class="avatar rounded-circle"
                                                 onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
-                                                src="{{asset('storage/app/public/profile/'.isset($order->delivery_man->image) ?? '')}}"
+                                                src="{{cloudfront('profile/'.isset($order->delivery_man->image) ?? '')}}"
                                                 alt="Image">
                                             <div class="media-body">
                                                 <h5 class="mb-1">{{ isset($order->delivery_man) ? $order->delivery_man->f_name.' '.$order->delivery_man->l_name :''}}</h5>
@@ -530,7 +530,7 @@
                             <div class="">
                                 <img class="avatar rounded-circle avatar-70"
                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                        src="{{asset('storage/app/public/profile/'.$order->customer->image)}}"
+                                        src="{{cloudfront('profile/'.$order->customer->image)}}"
                                         alt="Image">
                             </div>
                             <div class="media-body d-flex flex-column gap-1">
@@ -675,7 +675,7 @@
                             @if($order->seller_is == 'admin')
                                 <div class="mr-3">
                                     <img class="avatar rounded avatar-70 img-fit-contain" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
-                                         src="{{asset("storage/app/public/company/$company_web_logo")}}" alt="">
+                                         src="{{cloudfront("company/$company_web_logo")}}" alt="">
                                 </div>
 
                                 <div class="media-body d-flex flex-column gap-2">
@@ -686,7 +686,7 @@
                                 @if(!empty($order->seller->shop))
                                     <div class="mr-3">
                                         <img class="avatar rounded avatar-70 img-fit-contain" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
-                                             src="{{asset('storage/app/public/shop')}}/{{$order->seller->shop->image}}" alt="">
+                                             src="{{cloudfront('shop')}}/{{$order->seller->shop->image}}" alt="">
                                     </div>
                                     <div class="media-body d-flex flex-column gap-2">
                                         <h5>{{ $order->seller->shop->name }}</h5>
@@ -729,7 +729,7 @@
                                 @foreach ($order->verification_images as $image)
                                     <div class="col-lg-4 col-sm-6 ">
                                         <div class="mb-2 mt-2 border-1">
-                                            <img src="{{asset("storage/app/public/delivery-man/verification-image/".$image->image)}}"
+                                            <img src="{{cloudfront("delivery-man/verification-image/".$image->image)}}"
                                             class="w-100"
                                             onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
                                             >
@@ -1557,7 +1557,7 @@
 
             google.maps.event.addListener(marker, 'click', (function (marker) {
                 return function () {
-                    infowindow.setContent("<div class='float-left'><img class='__inline-5' src='{{asset('storage/app/public/profile/')}}{{$order->customer->image??""}}'></div><div class='float-right __p-10'><b>{{$order->customer->f_name??""}} {{$order->customer->l_name??""}}</b><br/>{{$shipping_address->address??""}}</div>");
+                    infowindow.setContent("<div class='float-left'><img class='__inline-5' src='{{cloudfront('profile/')}}{{$order->customer->image??""}}'></div><div class='float-right __p-10'><b>{{$order->customer->f_name??""}} {{$order->customer->l_name??""}}</b><br/>{{$shipping_address->address??""}}</div>");
                     infowindow.open(map, marker);
                 }
             })(marker));

@@ -647,7 +647,7 @@
                                                     <div class="d-flex align-items-center gap-3 flex-wrap" >
                                                         @foreach($user_brands as $brand)
                                                             <div>
-                                                                <img class="small-responsive-icon" src="{{asset('storage/app/public/brand')}}/{{ $brand->image }}" alt="category-icon">
+                                                                <img class="small-responsive-icon" src="{{cloudfront('brand')}}/{{ $brand->image }}" alt="category-icon">
                                                             </div>
                                                         @endforeach
                                                     </div>

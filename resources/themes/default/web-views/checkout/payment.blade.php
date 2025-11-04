@@ -119,7 +119,7 @@
                                             <label class="d-flex align-items-center gap-2 mb-0 form-check py-2 cursor-pointer">
                                                 <input type="radio" id="{{($payment_gateway->key_name)}}" name="online_payment" class="form-check-input custom-radio" value="{{($payment_gateway->key_name)}}">
                                                 <img width="30" onerror="this.src='{{asset('public/assets/front-end/img/img1.jpg')}}'"
-                                                src="{{asset('storage/app/public/payment_modules/gateway_image')}}/{{(json_decode($payment_gateway->additional_data)->gateway_image) != null ? (json_decode($payment_gateway->additional_data)->gateway_image) : ''}}" alt="">
+                                                src="{{cloudfront('payment_modules/gateway_image')}}/{{(json_decode($payment_gateway->additional_data)->gateway_image) != null ? (json_decode($payment_gateway->additional_data)->gateway_image) : ''}}" alt="">
                                                 <span class="text-capitalize form-check-label">{{(json_decode($payment_gateway->additional_data)->gateway_title)}}</span>
                                             </label>
                                         </form>
