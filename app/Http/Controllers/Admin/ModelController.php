@@ -21,8 +21,6 @@ class ModelController extends Controller
 {
     public function add_new()
     {
-        $br = VehicleModel::latest()->paginate(Helpers::pagination_limit());
-
         $brands = Brand::with('categories:id')->get()->map(function ($brand) {
             return [
                 'id' => $brand->id,
@@ -33,7 +31,7 @@ class ModelController extends Controller
 
         $categories = Category::where('category_type', 'vehicles')->get();
 
-        return view('admin-views.model.add-new', compact('br', 'brands', 'categories'));
+        return view('admin-views.model.add-new', compact('brands', 'categories'));
     }
 
     public function store(Request $request)
@@ -56,11 +54,6 @@ class ModelController extends Controller
         return redirect()->route('admin.model.list');
     }
 
-    /**
-     * Brand list show, search
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
     function list(Request $request)
     {
         $search      = $request['search'];
@@ -177,12 +170,9 @@ class ModelController extends Controller
 
     public function delete(Request $request)
     {
-        $translation = Translation::where('translationable_type','App\Model\Brand')
-        ->where('translationable_id',$request->id);
-        $translation->delete();
-        $brand = Brand::find($request->id);
-        ImageManager::delete('/brand/' . $brand['image']);
-        $brand->delete();
+        $model = VehicleModel::find($request->id);
+        ImageManager::delete('/brand/' . $model['image']);
+        $model->delete();
         return response()->json();
     }
 }
