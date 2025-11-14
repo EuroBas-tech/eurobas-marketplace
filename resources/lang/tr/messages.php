@@ -7933,5 +7933,5 @@ daki Çıkış seçeneğini seçin',
   'Country is required' => 'Country is required',
   'City is required' => 'City is required',
   'Price Type Status name is required' => 'Price Type Status name is required',
-  'Image is required' => 'Image is required777',
+  'Image is required' => 'Image is required',
 );
