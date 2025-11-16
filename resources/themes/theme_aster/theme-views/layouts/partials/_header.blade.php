@@ -755,14 +755,14 @@
 
                                             @if(isset($sponsorTypes['urgent_sale_sticker']) && $sponsorTypes['urgent_sale_sticker'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=urgent-sale-sticker">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('urgent_sale_sticker') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_video']) && $sponsorTypes['promotional_video'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=promotional-video">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_video') }}</span>
                                                 </a>
                                             @endif
