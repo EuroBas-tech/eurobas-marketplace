@@ -659,6 +659,8 @@
         const $modelSelect = $('#model');
         const $categoryInput = $('#selectedCategoryId');
 
+        $('#model').prop('disabled', true);
+
         // Initialize Select2
         $brandSelect.select2({
             placeholder: "{{ translate('brand') }}",
@@ -711,6 +713,7 @@
         }
 
         function filterModels() {
+
             const selectedBrandId = $brandSelect.val();
             const selectedCategoryId = $categoryInput.val();
 
@@ -731,7 +734,7 @@
                 }
             });
 
-            $modelSelect.val('all').trigger('change').prop('disabled', false);
+            // $modelSelect.val('all').trigger('change').prop('disabled', false);
         }
 
         $('.category-option').on('click', function () {
@@ -740,9 +743,25 @@
             filterBrandsAndModels();
         });
 
-        $brandSelect.on('change', filterModels);
+        let initialized = false;
 
-        // Initial setup (optional)
+        $brandSelect.on('select2:select', function (e) {
+            const selectedValue = e.params.data.id;
+            if (initialized) {
+                if (selectedValue === 'all') {
+                    $modelSelect.val('all').trigger('change').prop('disabled', true);
+                } else {
+                    $('#model').prop('disabled', false);
+                }
+            }
+        });
+
+        $brandSelect.on('change', function() {
+            filterModels();
+        });
+
         filterBrandsAndModels();
+        initialized = true;
+
     });
 </script>
