@@ -144,6 +144,7 @@ function global_search() {
                 $("#loading").addClass("d-grid");
             },
             success: function (data) {
+                $(".search-card").show();
                 $(".search-result-box").show().empty().html(data.result);
             },
             complete: function () {
@@ -152,6 +153,7 @@ function global_search() {
         });
     } else {
         $(".search-result-box").empty();
+        $(".search-card").hide();
     }
 }
 
