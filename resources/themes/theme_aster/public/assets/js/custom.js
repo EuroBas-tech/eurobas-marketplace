@@ -133,7 +133,6 @@ function global_search() {
     let base_url = $('meta[name="base-url"]').attr("content");
 
     if (name.length > 0) {
-        $(".search-card").css("display", "block");
         $.get({
             url: base_url + "/searched-products",
             dataType: "json",
@@ -145,6 +144,7 @@ function global_search() {
                 $("#loading").css("display", "block");
             },
             success: function (data) {
+                $(".search-card").css("display", "block");
                 $(".search-result-box").show().empty().html(data.result);
             },
             complete: function () {
