@@ -1,4 +1,4 @@
-f
+
 //كود الهيدر
 
 // //popup for desktop
@@ -128,11 +128,12 @@ function currency_change(currency_code) {
 }
 
 function global_search() {
-    $(".search-card").css("display", "block");
     let name = $(".search-bar-input").val();
     let category_id = $("#search_category_value").val();
     let base_url = $('meta[name="base-url"]').attr("content");
+
     if (name.length > 0) {
+        $(".search-card").css("display", "block");
         $.get({
             url: base_url + "/searched-products",
             dataType: "json",
@@ -144,7 +145,6 @@ function global_search() {
                 $("#loading").addClass("d-grid");
             },
             success: function (data) {
-                $(".search-card").show();
                 $(".search-result-box").show().empty().html(data.result);
             },
             complete: function () {
@@ -153,7 +153,7 @@ function global_search() {
         });
     } else {
         $(".search-result-box").empty();
-        $(".search-card").hide();
+        $(".search-card").css("display", "none");
     }
 }
 

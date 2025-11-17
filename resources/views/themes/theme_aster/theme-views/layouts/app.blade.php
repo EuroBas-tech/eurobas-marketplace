@@ -15,39 +15,39 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/> 
     <!-- Hreflang Tags -->
-<link rel="alternate" href="https://eurobas.com/" hreflang="x-default" />
-<link rel="alternate" href="https://eurobas.com/en" hreflang="en" />
-<link rel="alternate" href="https://eurobas.com/nl" hreflang="nl" />
-<link rel="alternate" href="https://eurobas.com/de" hreflang="de" />
-<link rel="alternate" href="https://eurobas.com/tr" hreflang="tr" />
-<link rel="alternate" href="https://eurobas.com/es" hreflang="es" />
-<link rel="alternate" href="https://eurobas.com/it" hreflang="it" />
-<link rel="alternate" href="https://eurobas.com/ru" hreflang="ru" />
-<link rel="alternate" href="https://eurobas.com/fr" hreflang="fr" />
-<link rel="alternate" href="https://eurobas.com/ar" hreflang="ar" />
-<link rel="alternate" href="https://eurobas.com/el" hreflang="el" />
-<link rel="alternate" href="https://eurobas.com/pl" hreflang="pl" />
-<link rel="alternate" href="https://eurobas.com/ro" hreflang="ro" />
-<link rel="alternate" href="https://eurobas.com/uk" hreflang="uk" />
-<link rel="alternate" href="https://eurobas.com/bg" hreflang="bg" />
-<link rel="alternate" href="https://eurobas.com/pt" hreflang="pt" />
-<link rel="alternate" href="https://eurobas.com/sr" hreflang="sr" />
-<link rel="alternate" href="https://eurobas.com/da" hreflang="da" />
-<link rel="alternate" href="https://eurobas.com/sv" hreflang="sv" />
-<link rel="alternate" href="https://eurobas.com/fi" hreflang="fi" />
-<link rel="alternate" href="https://eurobas.com/no" hreflang="no" />
-<link rel="alternate" href="https://eurobas.com/hr" hreflang="hr" />
-<link rel="alternate" href="https://eurobas.com/hu" hreflang="hu" />
-<link rel="alternate" href="https://eurobas.com/cs" hreflang="cs" />
-<link rel="alternate" href="https://eurobas.com/sq" hreflang="sq" />
-<link rel="alternate" href="https://eurobas.com/bs" hreflang="bs" />
-<link rel="alternate" href="https://eurobas.com/lt" hreflang="lt" />
-<link rel="alternate" href="https://eurobas.com/sl" hreflang="sl" />
-<link rel="alternate" href="https://eurobas.com/sk" hreflang="sk" />
- <link rel="alternate" href="https://eurobas.com/zh-Hans" hreflang="zh-Hans" />
-<link rel="alternate" href="https://eurobas.com/ko" hreflang="ko" />
+    <link rel="alternate" href="https://eurobas.com/" hreflang="x-default" />
+    <link rel="alternate" href="https://eurobas.com/en" hreflang="en" />
+    <link rel="alternate" href="https://eurobas.com/nl" hreflang="nl" />
+    <link rel="alternate" href="https://eurobas.com/de" hreflang="de" />
+    <link rel="alternate" href="https://eurobas.com/tr" hreflang="tr" />
+    <link rel="alternate" href="https://eurobas.com/es" hreflang="es" />
+    <link rel="alternate" href="https://eurobas.com/it" hreflang="it" />
+    <link rel="alternate" href="https://eurobas.com/ru" hreflang="ru" />
+    <link rel="alternate" href="https://eurobas.com/fr" hreflang="fr" />
+    <link rel="alternate" href="https://eurobas.com/ar" hreflang="ar" />
+    <link rel="alternate" href="https://eurobas.com/el" hreflang="el" />
+    <link rel="alternate" href="https://eurobas.com/pl" hreflang="pl" />
+    <link rel="alternate" href="https://eurobas.com/ro" hreflang="ro" />
+    <link rel="alternate" href="https://eurobas.com/uk" hreflang="uk" />
+    <link rel="alternate" href="https://eurobas.com/bg" hreflang="bg" />
+    <link rel="alternate" href="https://eurobas.com/pt" hreflang="pt" />
+    <link rel="alternate" href="https://eurobas.com/sr" hreflang="sr" />
+    <link rel="alternate" href="https://eurobas.com/da" hreflang="da" />
+    <link rel="alternate" href="https://eurobas.com/sv" hreflang="sv" />
+    <link rel="alternate" href="https://eurobas.com/fi" hreflang="fi" />
+    <link rel="alternate" href="https://eurobas.com/no" hreflang="no" />
+    <link rel="alternate" href="https://eurobas.com/hr" hreflang="hr" />
+    <link rel="alternate" href="https://eurobas.com/hu" hreflang="hu" />
+    <link rel="alternate" href="https://eurobas.com/cs" hreflang="cs" />
+    <link rel="alternate" href="https://eurobas.com/sq" hreflang="sq" />
+    <link rel="alternate" href="https://eurobas.com/bs" hreflang="bs" />
+    <link rel="alternate" href="https://eurobas.com/lt" hreflang="lt" />
+    <link rel="alternate" href="https://eurobas.com/sl" hreflang="sl" />
+    <link rel="alternate" href="https://eurobas.com/sk" hreflang="sk" />
+    <link rel="alternate" href="https://eurobas.com/zh-Hans" hreflang="zh-Hans" />
+    <link rel="alternate" href="https://eurobas.com/ko" hreflang="ko" />
 
-<link rel="alternate" href="https://eurobas.com/ja" hreflang="ja" />
+    <link rel="alternate" href="https://eurobas.com/ja" hreflang="ja" />
 
     <meta name="_token" content="{{csrf_token()}}"> 
     <link rel="canonical" href="{{ url()->current() }}" />
