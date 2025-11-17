@@ -526,7 +526,7 @@
                                                             data-action="{{ route('show-ads-filter') }}"
                                                             data-filter-count="filter-count">
                                                             <span class="ads-count-number">
-                                                                {{ \App\Model\Ad::count() }}
+                                                                {{ \App\Model\Ad::active()->count() }}
                                                             </span>
                                                             <span>{{ translate('result') }}</span>
                                                             <div class="filter_count_loader spinner-border d-none" style="width: 18px;height: 18px;" role="status">
