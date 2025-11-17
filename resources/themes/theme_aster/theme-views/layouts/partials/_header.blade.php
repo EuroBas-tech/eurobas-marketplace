@@ -628,6 +628,11 @@
                                     <div class="search-bar search_dropdown">
                                         <input type="search" name="name" class="form-control search-bar-input-mobile" autocomplete="off" placeholder="{{ translate('Search_for_items') }}...">
                                         <input name="page" value="1" hidden="">
+                                        <div class="d-flex align-items-center" style="width: 30px;" >
+                                            <div class="spinner-border" id="loading" style="width: 1.3rem; height: 1.3rem;display: none;" role="status">
+                                                <span class="visually-hidden"></span>
+                                            </div>
+                                        </div>
                                         <button type="button" class="search_voice" title="{{translate('search_by_voice')}}" data-bs-toggle="tooltip" data-bs-placement="top">
                                             <span><i class="bi bi-mic voice-search-icon"></i></span>
                                             <span class="recording-pulse"></span>

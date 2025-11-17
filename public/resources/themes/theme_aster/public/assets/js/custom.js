@@ -142,13 +142,13 @@ function global_search() {
                 category_id,
             },
             beforeSend: function () {
-                $("#loading").addClass("d-grid");
+                $("#loading").css("display", "block");
             },
             success: function (data) {
                 $(".search-result-box").show().empty().html(data.result);
             },
             complete: function () {
-                $("#loading").removeClass("d-grid");
+                $("#loading").css("display", "none");
             },
         });
     } else {
