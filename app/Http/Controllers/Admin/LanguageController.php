@@ -243,14 +243,21 @@ class LanguageController extends Controller
     public function translate_submit(Request $request, $lang)
     {
         $full_data = include(base_path('resources/lang/' . $lang . '/messages.php'));
-        $data_filtered = [];
+        
+        // Remove any existing duplicate of this key first
         foreach ($full_data as $key => $data) {
-            $data_filtered[Helpers::remove_invalid_charcaters($key)] = $data;
+            if ($key === $request['key']) {
+                unset($full_data[$key]);
+            }
         }
-        $data_filtered[$request['key']] = $request['value'];
-        $str = "<?php return " . var_export($data_filtered, true) . ";";
+        
+        // Now add the key with new value (this ensures no duplicates)
+        $full_data[$request['key']] = $request['value'];
+        
+        $str = "<?php return " . var_export($full_data, true) . ";";
         file_put_contents(base_path('resources/lang/' . $lang . '/messages.php'), $str);
     }
+
 
     public function auto_translate(Request $request, $lang): \Illuminate\Http\JsonResponse
     {
