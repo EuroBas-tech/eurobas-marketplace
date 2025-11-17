@@ -49,7 +49,9 @@
 
 <link rel="alternate" href="https://eurobas.com/ja" hreflang="ja" />
 
-    <meta name="_token" content="{{csrf_token()}}">
+    <meta name="_token" content="{{csrf_token()}}"> 
+    <link rel="canonical" href="{{ url()->current() }}" />
+
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
