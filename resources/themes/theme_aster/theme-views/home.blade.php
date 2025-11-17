@@ -227,9 +227,6 @@
             @endif
         </div>
 
-        <div>test 123456</div>
-
-
         <div class="container" >
             <div class="home-banner-swiper">
                 <div class="swiper-wrapper">
