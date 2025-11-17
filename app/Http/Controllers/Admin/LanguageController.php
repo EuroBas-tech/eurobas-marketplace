@@ -258,7 +258,6 @@ class LanguageController extends Controller
         file_put_contents(base_path('resources/lang/' . $lang . '/messages.php'), $str);
     }
 
-
     public function auto_translate(Request $request, $lang): \Illuminate\Http\JsonResponse
     {
         $lang_code = getLanguageCode($lang);
