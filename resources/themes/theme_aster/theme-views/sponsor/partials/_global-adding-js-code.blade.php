@@ -430,7 +430,7 @@
 
         // Store all model options
         const allModelOptions = $('#model option').clone();
-        
+
         // Create the "Other" options once with value="other"
         const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
         const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
@@ -481,8 +481,15 @@
         }
 
         $brandSelect.on('change', function () {
-            filterModels();
-            $modelSelect.prop('disabled', false);
+            const selectedBrandId = $brandSelect.val();
+            
+            if (!selectedBrandId || selectedBrandId === '') {
+                $modelSelect.prop('disabled', true);
+            } else {
+                filterModels();
+                $modelSelect.prop('disabled', false);
+            }
+            
             addPersistentOptions();
         });
 
@@ -615,6 +622,5 @@
                 }, 0);
             });
         });
-
     });
 </script>
