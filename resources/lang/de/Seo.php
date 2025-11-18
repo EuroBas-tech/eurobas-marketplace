@@ -1,0 +1,2 @@
+'meta_title' => 'EuroBas – Europas einheitlicher Marktplatz für Fahrzeuge & Immobilien',
+'meta_description' => 'EuroBas ist Europas kostenloser, einheitlicher Marktplatz für den Kauf und Verkauf von Fahrzeugen, Immobilien, Yachten, Elektronik und vielen weiteren Produkten. Erstellen Sie Ihr Konto, veröffentlichen Sie unbegrenzt kostenlose Anzeigen und verbinden Sie sich mit Käufern und Verkäufern in ganz Europa.',

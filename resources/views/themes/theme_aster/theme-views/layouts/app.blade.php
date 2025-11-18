@@ -3,9 +3,13 @@
 <head>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+    
+ <!-- Title: allow page override, fallback to translation -->
+<title>@yield('title', __('messages.meta_title'))</title>
 
-    <title>@yield('title')</title>
+<!-- Meta description: allow page override, fallback to translation -->
+ <meta name="description" content="@yield('meta_description', __('seo.meta_description'))"> 
 
     <!-- CSRF Token -->
     <meta name="base-url" content="{{ url('/') }}">
