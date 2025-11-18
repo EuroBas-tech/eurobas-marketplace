@@ -407,220 +407,129 @@
 </script>
     
 <script>
-    $(document).ready(function () {
-        const $brandSelect = $('#brand');
-        const $modelSelect = $('#model');
-        const $categorySelect = $('#category');
 
-        // Initialize Select2
-        $brandSelect.select2({
-            placeholder: "{{ translate('choose_brand') }}",
-            allowClear: true
-        });
+    const $brandSelect = $('#brand');
+    const $modelSelect = $('#model');
+    const $categorySelect = $('#category');
 
-        $modelSelect.select2({
-            placeholder: "{{ translate('choose_model') }}",
-            allowClear: true
-        });
-
-        $('#color').select2({
-            placeholder: "{{ translate('choose_color') }}",
-            allowClear: true
-        });
-
-        // Store all model options
-        const allModelOptions = $('#model option').clone();
-
-        // Create the "Other" options once with value="other"
-        const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
-        const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
-
-        addPersistentOptions();
-
-        function addPersistentOptions() {
-            // Add "Other Brand" if it doesn't exist
-            if ($brandSelect.find('option[value="other"]').length === 0) {
-                $brandSelect.append(otherBrandOption);
-            }
-            
-            // Add "Other Model" if it doesn't exist
-            if ($modelSelect.find('option[value="other"]').length === 0) {
-                $modelSelect.append(otherModelOption);
-            }
-        }
-
-        function filterModels() {
-            const selectedBrandId = $brandSelect.val();
-            const selectedCategoryId = $categorySelect.val();
-
-            // Clear models but keep the "Other Model" and default option
-            $modelSelect.find('option').not('[value="other"], [value=""]').remove();
-            
-            // Filter and add matching models
-            allModelOptions.each(function () {
-                const brandId = $(this).data('brand-id');
-                const categoryId = $(this).data('category-id');
-
-                if (
-                    (!brandId || brandId == selectedBrandId) &&
-                    (!categoryId || categoryId == selectedCategoryId)
-                ) {
-                    $modelSelect.append($(this).clone());
-                }
-            });
-
-            // Ensure "Other Model" is at the end and only appears once
-            if ($modelSelect.find('option[value="other"]').length > 1) {
-                $modelSelect.find('option[value="other"]').not(':last').remove();
-            }
-            
-            $modelSelect.val(null).trigger('change');
-            
-            // Ensure "Other Brand" exists
-            addPersistentOptions();
-        }
-
-        $brandSelect.on('change', function () {
-            const selectedBrandId = $brandSelect.val();
-            
-            if (!selectedBrandId || selectedBrandId === '') {
-                $modelSelect.prop('disabled', true);
-            } else {
-                filterModels();
-                $modelSelect.prop('disabled', false);
-            }
-            
-            addPersistentOptions();
-        });
-
-        $categorySelect.on('change', function () {
-            $brandSelect.val(null).trigger('change');
-            $modelSelect.val(null).trigger('change');
-
-            if($(this).find(':selected').data('is-vehicle') == 1) {
-                $('#year-box').removeClass('d-none');
-                $('#engine-type-box').removeClass('d-none');
-                $('#mileage-box').removeClass('d-none');
-                $('#transmission-type-box').removeClass('d-none');
-                $('#body-type-box').removeClass('d-none');
-                $('#bag-capacity-box').removeClass('d-none');
-                $('#environmental-information-box').removeClass('d-none');
-                $('#ad-options-box').removeClass('d-none');
-                $('#additional-information-box').removeClass('d-none');
-                $('#engine-type-box').removeClass('d-none');
-                $('#engine-size-box').removeClass('d-none');
-                $('#cylinders-box').removeClass('d-none');
-                $('#power-box').removeClass('d-none');
-            } else {
-                $('#year-box').addClass('d-none');
-                $('#engine-type-box').addClass('d-none');
-                $('#mileage-box').addClass('d-none');
-                $('#transmission-type-box').addClass('d-none');
-                $('#body-type-box').addClass('d-none');
-                $('#bag-capacity-box').addClass('d-none');
-                $('#environmental-information-box').addClass('d-none');
-                $('#ad-options-box').addClass('d-none');
-                $('#additional-information-box').addClass('d-none');
-                $('#engine-type-box').addClass('d-none');
-                $('#engine-size-box').addClass('d-none');
-                $('#cylinders-box').addClass('d-none');
-                $('#power-box').addClass('d-none');
-            }
-
-            filterModels();
-            addPersistentOptions();
-        });
-
-        $('#color').on('select2:open', function () {
-            setTimeout(function () {
-                const $options = $('.select2-results__option');
-                $options.each(function (index) {
-                    if (index === $options.length - 1) return;
-
-                    const $option = $(this);
-                    const color = $('#color option').filter(function () {
-                        return $(this).text().trim() === $option.text().trim();
-                    }).val();
-
-                    if (!$(this).find('.color-square').length && color) {
-                        const square = $('<span class="color-square"></span>').css({
-                            display: 'inline-block',
-                            width: '30px',
-                            height: '15px',
-                            border: 'solid #cfcfcf 1px',
-                            'background-color': color,
-                            'margin-left': '8px',
-                            'vertical-align': 'middle',
-                            'border-radius': '2px'
-                        });
-
-                        $(this).append(square);
-                    }
-                });
-            }, 0);
-        });
-
-        $('#color').on('change', function () {
-            setTimeout(function () {
-                const $selection = $('#color').next('.select2-container').find('.select2-selection__rendered');
-                $selection.find('.selected-color-square').remove();
-
-                const color = $('#color').val(); // Use actual value, not translated text
-
-                const square = $('<span class="selected-color-square"></span>').css({
-                    display: 'inline-block',
-                    width: '30px',
-                    height: '15px',
-                    border: 'solid #cfcfcf 1px',
-                    'background-color': color,
-                    'margin-left': '8px',
-                    'vertical-align': 'middle',
-                    'border-radius': '2px'
-                });
-
-                $selection.append(square);
-            }, 0);
-        });
-
-        $('#color').on('select2:open', function () {
-            const colorSelectContainer = $('#color').data('select2').$dropdown;
-            const searchInput = colorSelectContainer.find('.select2-search__field');
-
-            searchInput.off('input').on('input', function () {
-                setTimeout(function applyColorSquares() {
-                    const $options = colorSelectContainer.find('.select2-results__option');
-
-                    $options.each(function (index) {
-                        if (index === $options.length - 1) return;
-
-                        const $option = $(this);
-                        const color = $('#color option').filter(function () {
-                            return $(this).text().trim() === $option.text().trim();
-                        }).val();
-
-                        if (
-                            !$option.hasClass('select2-results__message') &&
-                            color &&
-                            !$option.find('.color-square').length
-                        ) {
-                            const square = $('<span class="color-square"></span>').css({
-                                display: 'inline-block',
-                                width: '30px',
-                                height: '15px',
-                                border: 'solid #cfcfcf 1px',
-                                'background-color': color,
-                                'margin-left': '8px',
-                                'vertical-align': 'middle',
-                                'border-radius': '2px'
-                            });
-
-                            $option.append(square);
-                        }
-                    });
-
-                    setTimeout(applyColorSquares, 50);
-                }, 0);
-            });
-        });
+    // Initialize Select2
+    $brandSelect.select2({
+        placeholder: "{{ translate('choose_brand') }}",
+        allowClear: true
     });
+
+    $modelSelect.select2({
+        placeholder: "{{ translate('choose_model') }}",
+        allowClear: true
+    });
+
+    $('#color').select2({
+        placeholder: "{{ translate('choose_color') }}",
+        allowClear: true
+    });
+
+    // Store all model options
+    const allModelOptions = $('#model option').clone();
+
+    // Create the "Other" options once with value="other"
+    const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
+    const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
+
+    addPersistentOptions();
+
+    function addPersistentOptions() {
+        // Add "Other Brand" if it doesn't exist
+        if ($brandSelect.find('option[value="other"]').length === 0) {
+            $brandSelect.append(otherBrandOption);
+        }
+        
+        // Add "Other Model" if it doesn't exist
+        if ($modelSelect.find('option[value="other"]').length === 0) {
+            $modelSelect.append(otherModelOption);
+        }
+    }
+
+    function filterModels() {
+        const selectedBrandId = $brandSelect.val();
+        const selectedCategoryId = $categorySelect.val();
+
+        // Clear models but keep the "Other Model" and default option
+        $modelSelect.find('option').not('[value="other"], [value=""]').remove();
+        
+        // Filter and add matching models
+        allModelOptions.each(function () {
+            const brandId = $(this).data('brand-id');
+            const categoryId = $(this).data('category-id');
+
+            if (
+                (!brandId || brandId == selectedBrandId) &&
+                (!categoryId || categoryId == selectedCategoryId)
+            ) {
+                $modelSelect.append($(this).clone());
+            }
+        });
+
+        // Ensure "Other Model" is at the end and only appears once
+        if ($modelSelect.find('option[value="other"]').length > 1) {
+            $modelSelect.find('option[value="other"]').not(':last').remove();
+        }
+        
+        $modelSelect.val(null).trigger('change');
+        
+        // Ensure "Other Brand" exists
+        addPersistentOptions();
+    }
+
+    $brandSelect.on('change', function () {
+        const selectedBrandId = $brandSelect.val();
+        
+        if (!selectedBrandId || selectedBrandId === '') {
+            $modelSelect.val(null).trigger('change');
+            $modelSelect.prop('disabled', true);
+        } else {
+            filterModels();
+            $modelSelect.prop('disabled', false);
+        }
+        
+        addPersistentOptions();
+    });
+
+    $categorySelect.on('change', function () {
+        $brandSelect.val(null).trigger('change');
+        $modelSelect.val(null).trigger('change');
+
+        if($(this).find(':selected').data('is-vehicle') == 1) {
+            $('#year-box').removeClass('d-none');
+            $('#engine-type-box').removeClass('d-none');
+            $('#mileage-box').removeClass('d-none');
+            $('#transmission-type-box').removeClass('d-none');
+            $('#body-type-box').removeClass('d-none');
+            $('#bag-capacity-box').removeClass('d-none');
+            $('#environmental-information-box').removeClass('d-none');
+            $('#ad-options-box').removeClass('d-none');
+            $('#additional-information-box').removeClass('d-none');
+            $('#engine-type-box').removeClass('d-none');
+            $('#engine-size-box').removeClass('d-none');
+            $('#cylinders-box').removeClass('d-none');
+            $('#power-box').removeClass('d-none');
+        } else {
+            $('#year-box').addClass('d-none');
+            $('#engine-type-box').addClass('d-none');
+            $('#mileage-box').addClass('d-none');
+            $('#transmission-type-box').addClass('d-none');
+            $('#body-type-box').addClass('d-none');
+            $('#bag-capacity-box').addClass('d-none');
+            $('#environmental-information-box').addClass('d-none');
+            $('#ad-options-box').addClass('d-none');
+            $('#additional-information-box').addClass('d-none');
+            $('#engine-type-box').addClass('d-none');
+            $('#engine-size-box').addClass('d-none');
+            $('#cylinders-box').addClass('d-none');
+            $('#power-box').addClass('d-none');
+        }
+
+        filterModels();
+        addPersistentOptions();
+    });
+
 </script>
