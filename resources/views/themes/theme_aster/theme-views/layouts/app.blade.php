@@ -9,8 +9,7 @@
 <title>@yield('title', __('messages.meta_title'))</title>
 
 <!-- Meta description: allow page override, fallback to translation -->
-<meta name="description" content="@yield('meta_description', __('messages.meta_description'))">
- 
+ <meta name="description" content="@yield('meta_description', __('seo.meta_description'))"> 
 
     <!-- CSRF Token -->
     <meta name="base-url" content="{{ url('/') }}">
