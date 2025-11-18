@@ -710,6 +710,7 @@
             }
 
             $brandSelect.val('all').trigger('change');
+            $modelSelect.prop('disabled', true);
         }
 
         function filterModels() {
@@ -765,3 +766,4 @@
 
     });
 </script>
+
