@@ -42,6 +42,11 @@
         .select2-container .select2-selection--single .select2-selection__rendered {
             overflow: visible !important;
         }
+
+        .select2-selection__clear {
+            display: none !important;
+        }
+
         .line-height-15 {
             line-height: 1.5 !important;
         }
