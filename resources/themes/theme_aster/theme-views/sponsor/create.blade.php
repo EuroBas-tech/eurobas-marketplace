@@ -204,7 +204,7 @@
                     @include('theme-views.sponsor.partials._'.$sponsor_type)
                 @else
                     <div class="col-auto px-3 flex-grow-1">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-warning mt-sm-2 mt-0">
                             <h5 class="alert-heading fw-medium">{{ translate('you_dont_have_ads_you_can_publish_ad_by_clicking') }} <a class="text-decoration-underline" href="{{ route('ads-adding-type') }}">{{'here'}}</a></h5>
                         </div>
                     </div>
