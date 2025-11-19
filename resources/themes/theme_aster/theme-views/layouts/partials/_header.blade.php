@@ -31,7 +31,7 @@
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
         return \App\Model\Brand::active()
-        ->take(15)
+        ->take(14)
         ->get();
     })
 )
@@ -41,9 +41,6 @@
         return \App\Model\SponsoredAdType::where('status', 1)->pluck('status', 'name');
     })
 )
-
-@php(\Log::debug($brands))
-@php(\Log::debug($categories))
 
     <style>
 
@@ -904,17 +901,17 @@
                                         <div class="d-flex gap-4">
                                             <div class="column-2">
                                                 @foreach($brands as $brand)
-                                                <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
-                                                    <div class="avatar" style="--size: 2.25rem">
-                                                        <img
-                                                            onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                            src="{{ cloudfront('brand/'.$brand->image) }}"
-                                                            loading="lazy" class="dark-support" alt="" width="80px" />
-                                                    </div>
-                                                    <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
-                                                        {{ $brand->name }}
-                                                    </div>
-                                                </a>
+                                                    <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
+                                                        <div class="avatar" style="--size: 2.25rem">
+                                                            <img
+                                                                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                                                                src="{{ cloudfront('brand/'.$brand->image) }}"
+                                                                loading="lazy" class="dark-support" alt="" width="80px" />
+                                                        </div>
+                                                        <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
+                                                            {{ $brand->name }}
+                                                        </div>
+                                                    </a>
                                                 @endforeach
                                                 <div class="d-flex">
                                                     <a href="{{route('brands')}}" class="fw-bold text-primary d-flex justify-content-center">{{ translate('view_all') }}...
