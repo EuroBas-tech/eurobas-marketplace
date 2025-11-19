@@ -874,7 +874,7 @@
                             </li>
                             <li>
                                 <a class="cursor-pointer">{{ translate('Categories') }}</a>
-                                <div class="sub-menu megamenu p-3" style="--bs-dropdown-min-width: max-content;z-index: 1111111;">
+                                <div class="sub-menu megamenu p-3" style="--bs-dropdown-min-width: max-content;z-index: 1111111;overflow-y:auto;max-height: 540px;">
                                     <div class="d-flex gap-4 flex-column">
                                         <div class="">
                                             @foreach($categories as $key=>$category)
