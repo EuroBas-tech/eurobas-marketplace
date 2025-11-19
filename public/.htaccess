@@ -12,7 +12,11 @@
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    RewriteRule ^ %1 [L,R=301] 
+
+# Allow sitemap.xml to be served directly
+RewriteRule ^sitemap\.xml$ sitemap.xml [L]
+
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
