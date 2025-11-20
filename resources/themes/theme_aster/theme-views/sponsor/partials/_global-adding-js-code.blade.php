@@ -532,4 +532,96 @@
         addPersistentOptions();
     });
 
+    $('#color').on('select2:open', function () {
+        setTimeout(function () {
+            const $options = $('.select2-results__option');
+            $options.each(function (index) {
+                if (index === $options.length - 1) return;
+
+                const $option = $(this);
+                const color = $('#color option').filter(function () {
+                    return $(this).text().trim() === $option.text().trim();
+                }).val();
+
+                if (!$(this).find('.color-square').length && color) {
+                    const square = $('<span class="color-square"></span>').css({
+                        display: 'inline-block',
+                        width: '30px',
+                        height: '15px',
+                        border: 'solid #cfcfcf 1px',
+                        'background-color': color,
+                        'margin-left': '8px',
+                        'vertical-align': 'middle',
+                        'border-radius': '2px'
+                    });
+
+                    $(this).append(square);
+                }
+            });
+        }, 0);
+    });
+
+    $('#color').on('change', function () {
+        setTimeout(function () {
+            const $selection = $('#color').next('.select2-container').find('.select2-selection__rendered');
+            $selection.find('.selected-color-square').remove();
+
+            const color = $('#color').val(); // Use actual value, not translated text
+
+            const square = $('<span class="selected-color-square"></span>').css({
+                display: 'inline-block',
+                width: '30px',
+                height: '15px',
+                border: 'solid #cfcfcf 1px',
+                'background-color': color,
+                'margin-left': '8px',
+                'vertical-align': 'middle',
+                'border-radius': '2px'
+            });
+
+            $selection.append(square);
+        }, 0);
+    });
+
+    $('#color').on('select2:open', function () {
+        const colorSelectContainer = $('#color').data('select2').$dropdown;
+        const searchInput = colorSelectContainer.find('.select2-search__field');
+
+        searchInput.off('input').on('input', function () {
+            setTimeout(function applyColorSquares() {
+                const $options = colorSelectContainer.find('.select2-results__option');
+
+                $options.each(function (index) {
+                    if (index === $options.length - 1) return;
+
+                    const $option = $(this);
+                    const color = $('#color option').filter(function () {
+                        return $(this).text().trim() === $option.text().trim();
+                    }).val();
+
+                    if (
+                        !$option.hasClass('select2-results__message') &&
+                        color &&
+                        !$option.find('.color-square').length
+                    ) {
+                        const square = $('<span class="color-square"></span>').css({
+                            display: 'inline-block',
+                            width: '30px',
+                            height: '15px',
+                            border: 'solid #cfcfcf 1px',
+                            'background-color': color,
+                            'margin-left': '8px',
+                            'vertical-align': 'middle',
+                            'border-radius': '2px'
+                        });
+
+                        $option.append(square);
+                    }
+                });
+
+                setTimeout(applyColorSquares, 50);
+            }, 0);
+        });
+    });
+
 </script>

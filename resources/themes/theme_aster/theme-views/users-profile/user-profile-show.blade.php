@@ -514,7 +514,7 @@
                                                 @foreach($paid_banners as $banner)
                                                     <div class="mb-4">
                                                         <a href="{{ $banner->banner_url ?? '#' }}">
-                                                            <img style="height: 120px !important;" class="rounded" width="100%"
+                                                            <img style="height: 140px !important;" class="rounded" width="100%"
                                                             src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                                             alt="paid_banner_image">
                                                         </a>
@@ -531,7 +531,7 @@
                                             @foreach($paid_banners as $banner)
                                                 <div class="mb-4">
                                                     <a href="{{ $banner->banner_url ?? '#' }}">
-                                                        <img style="height: 120px !important;" class="rounded" width="100%"
+                                                        <img style="height: 140px !important;" class="rounded" width="100%"
                                                         src="{{ cloudfront('paid-banners/'.$banner->banner_image) }}"
                                                         alt="paid_banner_image">
                                                     </a>
