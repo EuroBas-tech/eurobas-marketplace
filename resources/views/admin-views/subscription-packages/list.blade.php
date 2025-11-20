@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 d-flex gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/brand.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/brand.png')}}" alt="">
                 {{translate('subscription_packages_List')}}
                 <span class="badge badge-soft-dark radius-50 fz-14">{{ $packages->count() }}</span>
             </h2>
@@ -31,11 +31,11 @@
                                         {{translate('export')}}
                                         <i class="tio-chevron-down"></i>
                                     </button>
-    
+
                                     <ul class="dropdown-menu">
                                         <li>
                                             <a class="dropdown-item" href="{{ route('admin.brand.export',['search'=>request('search')]) }}">
-                                                <img width="14" src="{{asset('/public/assets/back-end/img/excel.png')}}" alt="">
+                                                <img width="14" src="{{asset('/assets/back-end/img/excel.png')}}" alt="">
                                                 {{ translate('excel') }}
                                             </a>
                                         </li>
@@ -87,8 +87,8 @@
                                             <td>
                                                 <div class="d-flex justify-content-end gap-2">
                                                     @if($package->type->name != 'promotional_video')
-                                                        <a href="{{ route('admin.subscription.packages.add-remove-features', $package['id']) }}" 
-                                                        class="btn btn-outline-primary btn-sm square-btn" 
+                                                        <a href="{{ route('admin.subscription.packages.add-remove-features', $package['id']) }}"
+                                                        class="btn btn-outline-primary btn-sm square-btn"
                                                         title="{{translate('features')}}">
                                                             <i class="tio-star"></i>
                                                         </a>
@@ -112,7 +112,7 @@
                     </div>
                     @if(count($packages)==0)
                         <div class="text-center p-4">
-                            <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
+                            <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
                             <p class="mb-0">{{ translate('no_data_to_show')}}</p>
                         </div>
                     @endif

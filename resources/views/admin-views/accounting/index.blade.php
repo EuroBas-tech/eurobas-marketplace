@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex gap-2 align-items-center">
-                <img width="20" src="{{asset('public/assets/back-end/img/accounting.png')}}" alt="">
+                <img width="20" src="{{asset('assets/back-end/img/accounting.png')}}" alt="">
                 {{translate('accounting')}}
             </h2>
         </div>
@@ -89,7 +89,7 @@
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
                                     <a class="dropdown-item" href="{{ route('admin.accounting.admin-earning-excel-export', ['date_type'=>$date_type, 'from'=>$from, 'to'=>$to]) }}">
-                                        <img width="14" src="{{asset('public/assets/back-end/img/excel.png')}}" alt="">
+                                        <img width="14" src="{{asset('assets/back-end/img/excel.png')}}" alt="">
                                         {{translate('excel')}}
                                     </a>
                                 </li>
@@ -153,7 +153,7 @@
                         <tr>
                             <td colspan="9">
                                 <div class="text-center p-4">
-                                    <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg"
+                                    <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg"
                                          alt="Image Description">
                                     <p class="mb-0">{{ translate('no_data_to_show')}}</p>
                                 </div>
@@ -174,14 +174,14 @@
 @push('script_2')
 
 <!-- Chart JS -->
-    <script src="{{ asset('public/assets/back-end') }}/js/chart.js/dist/Chart.min.js"></script>
-    <script src="{{ asset('public/assets/back-end') }}/js/chart.js.extensions/chartjs-extensions.js"></script>
-    <script src="{{ asset('public/assets/back-end') }}/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js">
+    <script src="{{ asset('assets/back-end') }}/js/chart.js/dist/Chart.min.js"></script>
+    <script src="{{ asset('assets/back-end') }}/js/chart.js.extensions/chartjs-extensions.js"></script>
+    <script src="{{ asset('assets/back-end') }}/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js">
     </script>
 <!-- Chart JS -->
 
     <!-- Apex Charts -->
-    <script src="{{ asset('public/assets/back-end/js/apexcharts.js') }}"></script>
+    <script src="{{ asset('assets/back-end/js/apexcharts.js') }}"></script>
     <!-- Apex Charts -->
 
 

@@ -7,7 +7,7 @@
         <!-- Page Title -->
         <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
             <h2 class="h1 mb-0">
-                <img src="{{asset('/public/assets/back-end/img/brand-setup.png')}}" class="mb-1 mr-1" alt="">
+                <img src="{{asset('/assets/back-end/img/brand-setup.png')}}" class="mb-1 mr-1" alt="">
                 @if($category['position'] == 1)
                     {{translate('sub')}}
                 @elseif($category['position'] == 2)
@@ -116,7 +116,7 @@
                                         <center>
                                             <img class="upload-img-view"
                                                     id="viewer"
-                                                    onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                                                    onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                                                     src="{{cloudfront('category')}}/{{$category['icon']}}"
                                                     alt=""/>
                                         </center>

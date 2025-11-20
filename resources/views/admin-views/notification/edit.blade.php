@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/push_notification.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/push_notification.png')}}" alt="">
                 {{translate('push_notification_update')}}
             </h2>
         </div>
@@ -41,7 +41,7 @@
                             <center>
                                 <img class="upload-img-view mt-4"
                                     id="viewer"
-                                    onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
+                                    onerror="this.src='{{asset('assets/back-end/img/160x160/img2.jpg')}}'"
                                     src="{{cloudfront('notification')}}/{{$notification['image']}}"
                                         alt="image"/>
                             </center>

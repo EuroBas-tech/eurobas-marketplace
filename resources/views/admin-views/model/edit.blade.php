@@ -3,8 +3,8 @@
 @section('title', translate('model_Edit'))
 
 @push('css_or_js')
-    <link href="{{asset('public/assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
-    <link href="{{asset('public/assets/back-end/css/croppie.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{asset('assets/back-end/css/croppie.css')}}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
@@ -13,7 +13,7 @@
     <!-- Page Title -->
     <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
         <h2 class="h1 mb-0 align-items-center d-flex gap-2">
-            <img width="20" src="{{asset('/public/assets/back-end/img/model.png')}}" alt="">
+            <img width="20" src="{{asset('/assets/back-end/img/model.png')}}" alt="">
             {{translate('model_Update')}}
         </h2>
     </div>
@@ -42,7 +42,7 @@
                                     <select class="form-control" name="brand" id="brand">
                                         <option value="">-- {{ translate('choose_model_brand') }} --</option>
                                         @foreach($brands as $brand)
-                                            <option data-brand-categories="{{ !empty($brand['categories']) ? implode(',', $brand['categories']) : '' }}" {{ $m['brand_id'] == $brand['id'] ? 'selected' : '' }} 
+                                            <option data-brand-categories="{{ !empty($brand['categories']) ? implode(',', $brand['categories']) : '' }}" {{ $m['brand_id'] == $brand['id'] ? 'selected' : '' }}
                                             value="{{$brand['id']}}">
                                                 {{$brand['name']}}
                                             </option>
@@ -51,21 +51,21 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group lang_form">
                                     <label for="name" class="title-color">{{ translate('Categories')}}<span class="text-danger">*</span> <span>({{translate('press_ctrl_for_multiple_selection')}})</span></label>
                                     <select class="form-control" name="categories[]" id="categories" multiple>
                                         @foreach($categories as $category)
-                                            <option {{ in_array($category['id'], $modelCategoriesIds) ? 'selected' : '' }} 
+                                            <option {{ in_array($category['id'], $modelCategoriesIds) ? 'selected' : '' }}
                                             value="{{$category->id}}">{{$category->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-                            
+
                         <div class="d-flex justify-content-end gap-3">
                             <button type="reset" id="reset" class="btn btn-secondary px-4">{{ translate('reset')}}</button>
                             <button type="submit" class="btn btn--primary px-4">{{ translate('update')}}</button>
@@ -88,7 +88,7 @@
             $('#dataTable').DataTable();
         });
     </script>
-    <script src="{{asset('public/assets/back-end')}}/js/select2.min.js"></script>
+    <script src="{{asset('assets/back-end')}}/js/select2.min.js"></script>
     <script>
         $(".js-example-theme-single").select2({
             theme: "classic"

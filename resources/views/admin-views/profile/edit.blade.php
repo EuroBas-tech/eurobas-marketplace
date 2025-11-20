@@ -3,7 +3,7 @@
 @section('title', translate('profile_Settings'))
 
 @push('css_or_js')
-<link href="{{asset('public/assets/back-end/css/croppie.css')}}" rel="stylesheet">
+<link href="{{asset('assets/back-end/css/croppie.css')}}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
@@ -14,7 +14,7 @@
         <div class="page-header">
             <div class="row align-items-end">
                 <h2 class="col-sm mb-2 mb-sm-0 h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                    <img width="20" src="{{asset('/public/assets/back-end/img/profile_setting.png')}}" alt="">
+                    <img width="20" src="{{asset('/assets/back-end/img/profile_setting.png')}}" alt="">
                     {{translate('settings')}}
                 </h2>
 
@@ -88,7 +88,7 @@
                             class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar"
                             for="customFileUpload">
                             <img id="viewer"
-                                 onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
+                                 onerror="this.src='{{asset('assets/back-end/img/160x160/img1.jpg')}}'"
                                  class="avatar-img"
                                  src="{{cloudfront('admin')}}/{{$data->image}}"
                                  alt="Image">

@@ -2,7 +2,7 @@
 @section('title', translate('package_feature_settings') . ' - Eurobas.com')
 
 @push('css_or_js')
-    <link href="{{asset('public/assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{asset('assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
@@ -56,7 +56,7 @@
     <!-- Page Title -->
     <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
         <h2 class="h1 mb-0 d-flex align-items-center gap-2">
-            <img width="20" src="{{asset('/public/assets/back-end/img/brand.png')}}" alt="">
+            <img width="20" src="{{asset('/assets/back-end/img/brand.png')}}" alt="">
             {{translate($package->name)}} {{translate('features')}}
         </h2>
     </div>
@@ -70,24 +70,24 @@
                     <form action="{{route('admin.subscription.packages.store-remove-features')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="package_id" value="{{$package->id}}">
-                        
+
                         <div class="row flex-column gap-2">
                             @foreach($features as $feature)
 
                             @php($is_feature_exists = $package->features->contains('id', $feature->id))
 
                                 <div class="d-flex align-items-center gap-2">
-                                    <label role="button" class="custom-switch mb-2" for="feature_{{$loop->index}}"> 
-                                        <input  
-                                            type="checkbox"  
-                                            id="feature_{{$loop->index}}"  
-                                            name="features[]"  
-                                            value="{{ $feature->id }}" 
-                                            {{ $is_feature_exists ? 'checked' : '' }}> 
-                                        <span class="custom-switch-slider"></span> 
+                                    <label role="button" class="custom-switch mb-2" for="feature_{{$loop->index}}">
+                                        <input
+                                            type="checkbox"
+                                            id="feature_{{$loop->index}}"
+                                            name="features[]"
+                                            value="{{ $feature->id }}"
+                                            {{ $is_feature_exists ? 'checked' : '' }}>
+                                        <span class="custom-switch-slider"></span>
                                     </label>
                                     <label role="button" for="feature_{{$loop->index}}" class="mb-0">
-                                        <h3>{{ translate($feature->name) }}</h3> 
+                                        <h3>{{ translate($feature->name) }}</h3>
                                     </label>
                                 </div>
                             @endforeach

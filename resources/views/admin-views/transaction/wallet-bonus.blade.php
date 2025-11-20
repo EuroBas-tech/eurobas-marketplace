@@ -7,7 +7,7 @@
         <!-- Page Title -->
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4 pb-2">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/order_report.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/order_report.png')}}" alt="">
                 {{translate('transaction_report')}}
             </h2>
 
@@ -28,7 +28,7 @@
                         </div>
                         <div class="modal-body px-4 px-sm-5 pt-0 text-center">
                             <div class="d-flex flex-column align-items-center gap-2">
-                                <img width="80" class="mb-3" src="{{asset('/public/assets/back-end/img/para.png')}}" loading="lazy" alt="">
+                                <img width="80" class="mb-3" src="{{asset('/assets/back-end/img/para.png')}}" loading="lazy" alt="">
                                 <h4 class="lh-md">Wallet bonus is only applicable when a customer add fund to wallet via outside payment gateway !</h4>
                                 <p>Customer will get extra amount to his / her wallet additionally with the amount he / she added from other payment gateways. The bonus amount will be deduct from admin wallet & will consider as admin expense</p>
                             </div>
@@ -89,7 +89,7 @@
                                 <input type="date" name="end_date" id="end_date" class="form-control" required>
                             </div>
                         </div>
-                        
+
                         <div class="col-12">
                             <div class="d-flex gap-3 justify-content-end">
                                 <button type="reset" class="btn btn-secondary px-5">{{translate('reset')}}</button>
@@ -100,7 +100,7 @@
                 </form>
             </div>
         </div>
-        
+
         <h4 class="mt-4 text-capitalize d-flex">{{translate('total_transactions')}}</h4>
         <div class="card mt-2">
             <div class="px-3 py-4">

@@ -19,7 +19,7 @@
         <!-- Page Title -->
         <div class="mb-4">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/video.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/video.png')}}" alt="">
                 {{ translate('videos_list') }}
                 <span class="badge badge-soft-dark radius-50">{{$promotional_videos->count()}}</span>
             </h2>
@@ -75,10 +75,8 @@
                                 </td>
                                 <td>
                                     @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
-                                        <a target="_blank" href="https://image.mux.com/{{$video['playback_id']}}/thumbnail.jpg">
-                                            <img src="https://image.mux.com/{{$video['playback_id']}}/thumbnail.jpg" 
-                                            class="rounded" alt="video_image" width="60" >
-                                        </a>
+                                        <img src="https://image.mux.com/{{$video['playback_id']}}/thumbnail.jpg"
+                                        class="rounded" alt="video_image" width="60" >
                                     @endif
                                 </td>
                                 <td class="mx-5" >
@@ -99,7 +97,7 @@
                                 <td>
                                     <div>{{ \Carbon\Carbon::parse($video->expiration_date)->format('d-m-Y') }}</div>
                                     <div>{{ \Carbon\Carbon::parse($video->expiration_date)->diffForHumans() }}</div>
-                                </td>                       
+                                </td>
                                 <td>
                                     @if(!\Carbon\Carbon::parse($video->expiration_date)->isPast() && !$video->is_video_deleted && !$video->is_video_suspended)
                                         <span class="badge bg-success text-white">{{translate('valid')}}</span>
@@ -181,7 +179,7 @@
 
             @if(count($promotional_videos)==0)
                 <div class="text-center p-4">
-                    <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg"
+                    <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg"
                     alt="Image Description">
                     <p class="mb-0">{{translate('no_data_to_show')}}</p>
                 </div>

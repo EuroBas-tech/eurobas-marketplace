@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
             <h2 class="h1 mb-1 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/banner.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/banner.png')}}" alt="">
                 {{translate('banner_Setup')}}
             </h2>
             <div class="btn-group">
@@ -24,7 +24,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right bg-aliceblue border border-color-primary-light p-4 dropdown-w-lg-30">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img width="20" src="{{asset('/public/assets/back-end/img/note.png')}}" alt="">
+                        <img width="20" src="{{asset('/assets/back-end/img/note.png')}}" alt="">
                         <h5 class="text-primary mb-0">{{translate('note')}}</h5>
                     </div>
                     <p class="title-color font-weight-medium mb-0">{{ translate('currently_you_are_managing_banners_for_')}}{{ucwords(str_replace("_", " ", theme_root_path()))}}.{{translate('these_saved_data_is_only_applicable_only_for_')}}{{ucwords(str_replace("_", " ", theme_root_path()))}}.{{translate('if_you_change_theme_from_theme_setup_these_banners_will_not_be_shown_in_changed_theme._You_have_upload_all_the_banners_over_again _according_to_the_new_theme_ratio_and_sizes._If_you_switch_back_to_')}}{{ucwords(str_replace("_", " ", theme_root_path()))}}{{translate('_again_,_you_will_see_the_saved_data.') }}</p>
@@ -278,7 +278,7 @@
                                     <td class="pl-xl-5">{{$banner->priority}}</td>
                                     <td>
                                         <img class="ratio-4:1" width="80"
-                                             onerror="this.src='{{asset('public/assets/front-end/img/placeholder.png')}}'"
+                                             onerror="this.src='{{asset('assets/front-end/img/placeholder.png')}}'"
                                              src="{{cloudfront('banner')}}/{{$banner['photo']}}">
                                     </td>
                                     <td>{{translate(str_replace('_',' ',$banner->banner_type))}}</td>
@@ -342,7 +342,7 @@
                     @if(count($banners)==0)
                         <div class="text-center p-4">
                             <img class="mb-3 w-160"
-                                 src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg"
+                                 src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg"
                                  alt="Image Description">
                             <p class="mb-0">{{ translate('no_data_to_show')}}</p>
                         </div>
