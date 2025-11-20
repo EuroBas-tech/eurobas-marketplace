@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\CPU\Helpers;
-use App\Http\Controllers\Controller;
-use App\Model\BusinessSetting;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use App\Model\BusinessSetting;
+use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 
 class MailController extends Controller
 {

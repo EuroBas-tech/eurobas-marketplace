@@ -53,7 +53,7 @@
                         {{translate('confirm')}}
                     </a>
                 @else
-                    <a href="{{ route('admin.report.confirm', $report->id) }}" class="btn btn-success report-confirmed" disabled >
+                    <a href="#" class="btn btn-success report-confirmed" disabled >
                         <i class="tio-done"></i>
                         {{translate('confirmed')}}
                     </a>

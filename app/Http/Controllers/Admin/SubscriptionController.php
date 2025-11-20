@@ -86,19 +86,37 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function promotional_videos() {
+    public function promotional_videos(Request $request) {
 
-        $promotional_videos = SponsoredAd::with('ad.user')->where('type', 'promotional_video')->latest()
-        ->paginate(Helpers::pagination_limit());
+        $query_param = [];
+        $search = $request['search'];
 
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
+        $query = SponsoredAd::with('ad.user')
+        ->where('type', 'promotional_video');
+
+        if ($search = $request->input('search')) {
+            $keywords = explode(' ', $search);
+
+            $query->whereHas('ad', function ($q) use ($keywords) {
+                $q->where(function ($sub) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $sub->orWhere('title', 'like', "%{$word}%");
+                    }
+                });
+            });
+
+            $query_param = ['search' => $search];
+        }
+
+        $promotional_videos = $query->latest()->paginate(Helpers::pagination_limit());
+
         Cache::forget('business_settings');
 
         return view('admin-views.subscriptions.promotional-videos', 
-        compact('promotional_videos', 'muxTokenId', 'muxTokenSecret'));
-
+        compact('promotional_videos', 'muxTokenId', 'muxTokenSecret', 'search'));
     }
 
     public function status_update(Request $request)

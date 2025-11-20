@@ -31,7 +31,7 @@
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
         return \App\Model\Brand::active()
-        ->take(15)
+        ->take(14)
         ->get();
     })
 )
@@ -41,9 +41,6 @@
         return \App\Model\SponsoredAdType::where('status', 1)->pluck('status', 'name');
     })
 )
-
-@php(\Log::debug($brands))
-@php(\Log::debug($categories))
 
     <style>
 
@@ -628,6 +625,11 @@
                                     <div class="search-bar search_dropdown">
                                         <input type="search" name="name" class="form-control search-bar-input-mobile" autocomplete="off" placeholder="{{ translate('Search_for_items') }}...">
                                         <input name="page" value="1" hidden="">
+                                        <div class="d-flex align-items-center" style="width: 30px;" >
+                                            <div class="spinner-border" id="loading" style="width: 1.3rem; height: 1.3rem;display: none;" role="status">
+                                                <span class="visually-hidden"></span>
+                                            </div>
+                                        </div>
                                         <button type="button" class="search_voice" title="{{translate('search_by_voice')}}" data-bs-toggle="tooltip" data-bs-placement="top">
                                             <span><i class="bi bi-mic voice-search-icon"></i></span>
                                             <span class="recording-pulse"></span>
@@ -755,14 +757,14 @@
 
                                             @if(isset($sponsorTypes['urgent_sale_sticker']) && $sponsorTypes['urgent_sale_sticker'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=urgent-sale-sticker">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('urgent_sale_sticker') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_video']) && $sponsorTypes['promotional_video'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=promotional-video">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_video') }}</span>
                                                 </a>
                                             @endif
@@ -869,7 +871,7 @@
                             </li>
                             <li>
                                 <a class="cursor-pointer">{{ translate('Categories') }}</a>
-                                <div class="sub-menu megamenu p-3" style="--bs-dropdown-min-width: max-content;z-index: 1111111;">
+                                <div class="sub-menu megamenu p-3" style="--bs-dropdown-min-width: max-content;z-index: 1111111;overflow-y:auto;max-height: 540px;">
                                     <div class="d-flex gap-4 flex-column">
                                         <div class="">
                                             @foreach($categories as $key=>$category)
@@ -899,17 +901,17 @@
                                         <div class="d-flex gap-4">
                                             <div class="column-2">
                                                 @foreach($brands as $brand)
-                                                <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
-                                                    <div class="avatar" style="--size: 2.25rem">
-                                                        <img
-                                                            onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                            src="{{ cloudfront('brand/'.$brand->image) }}"
-                                                            loading="lazy" class="dark-support" alt="" width="80px" />
-                                                    </div>
-                                                    <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
-                                                        {{ $brand->name }}
-                                                    </div>
-                                                </a>
+                                                    <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
+                                                        <div class="avatar" style="--size: 2.25rem">
+                                                            <img
+                                                                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                                                                src="{{ cloudfront('brand/'.$brand->image) }}"
+                                                                loading="lazy" class="dark-support" alt="" width="80px" />
+                                                        </div>
+                                                        <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
+                                                            {{ $brand->name }}
+                                                        </div>
+                                                    </a>
                                                 @endforeach
                                                 <div class="d-flex">
                                                     <a href="{{route('brands')}}" class="fw-bold text-primary d-flex justify-content-center">{{ translate('view_all') }}...

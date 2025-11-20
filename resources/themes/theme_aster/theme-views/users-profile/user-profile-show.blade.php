@@ -42,6 +42,11 @@
         .select2-container .select2-selection--single .select2-selection__rendered {
             overflow: visible !important;
         }
+
+        .select2-selection__clear {
+            display: none !important;
+        }
+
         .line-height-15 {
             line-height: 1.5 !important;
         }
@@ -668,148 +673,186 @@
 
 
 @push('script')
+
     <script>
-        // Store user_id from controller
-        var user_id = {{ $user_id }};
         $(document).ready(function () {
             const $brandSelect = $('#brand');
             const $modelSelect = $('#model');
             const $colorSelect = $('#color');
             const $categorySelect = $('#category');
 
-            // Function to initialize Select2 only for brand and model
-            function initializeSelect2() {
-                $brandSelect.select2({
-                    placeholder: "{{ translate('choose_brand') }}",
-                    allowClear: true
-                });
+            // Select2 init
+            $brandSelect.select2({
+                placeholder: "{{ translate('brand') }}",
+                allowClear: true
+            });
 
-                $modelSelect.select2({
-                    placeholder: "{{ translate('choose_model') }}",
-                    allowClear: true
-                });
-            }
+            $modelSelect.select2({
+                placeholder: "{{ translate('model') }}",
+                allowClear: true
+            });
 
-            // Initialize Select2 on document ready
-            initializeSelect2();
+            $colorSelect.select2({
+                placeholder: "{{ translate('color') }}",
+                allowClear: true
+            });
 
-            // Store all model options
-            const allModelOptions = $('#model option').clone();
+            const allBrandOptions = $brandSelect.find('option').clone();
+            const allModelOptions = $modelSelect.find('option').clone();
 
-            // Create the "all" options once with value="all"
             const allBrandOption = '<option value="all">{{ translate("all") }}</option>';
             const allModelOption = '<option value="all">{{ translate("all") }}</option>';
             const allColorOption = '<option value="all">{{ translate("all") }}</option>';
 
-            addPersistentOptions();
+            function filterBrandsAndModels() {
+                const $selectedCategoryOption = $categorySelect.find('option:selected');
+                const selectedCategoryId = $selectedCategoryOption.val();
+                const selectedCategoryDataId = $selectedCategoryOption.data('id');
 
-            function addPersistentOptions() {
-                // Add "all Brands" if it doesn't exist
-                if ($brandSelect.find('option[value="all"]').length === 0) {
-                    $brandSelect.append(allBrandOption);
-                }
+                $brandSelect.find('option:not([value="all"])').remove(); // ✅ Fix: keep "all", remove the rest
 
-                // Add "all Models" if it doesn't exist
-                if ($modelSelect.find('option[value="all"]').length === 0) {
-                    $modelSelect.append(allModelOption);
-                }
-
-                // Add "all colors" if it doesn't exist
-                if ($colorSelect.find('option[value="all"]').length === 0) {
-                    $colorSelect.append(allColorOption);
-                }
-            }
-
-            function filterModels() {
-                const selectedBrandId = $brandSelect.val();
-                const selectedCategoryId = $categorySelect.val();
-
-                // Clear models but keep the "all Model" and default option
-                $modelSelect.find('option').not('[value="all"], [value=""]').remove();
-
-                // Filter and add matching models
-                allModelOptions.each(function () {
-                    const brandId = $(this).data('brand-id');
-                    const categoryId = $(this).data('category-id');
+                allBrandOptions.each(function () {
+                    const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
 
                     if (
-                        (!brandId || brandId == selectedBrandId) &&
-                        (!categoryId || categoryId == selectedCategoryId)
+                        $(this).val() === 'all' || // optional: can skip this since we kept it already
+                        selectedCategoryDataId === 0 ||
+                        brandCategories.includes(selectedCategoryId)
                     ) {
-                        $modelSelect.append($(this).clone());
+                        if ($(this).val() !== 'all') { // prevent appending "all" again
+                            $brandSelect.append($(this).clone());
+                        }
                     }
                 });
 
-                // Ensure "all Model" is at the end and only appears once
-                if ($modelSelect.find('option[value="all"]').length > 1) {
-                    $modelSelect.find('option[value="all"]').not(':last').remove();
+                $brandSelect.val('all').trigger('change');
+            }
+
+            function filterModels() {
+                const selectedCategoryId = $categorySelect.val();
+                const selectedBrandId = $brandSelect.val();
+
+                $modelSelect.html(allModelOption);
+                const addedValues = new Set(['all']);
+
+                allModelOptions.each(function () {
+                    const brandId = $(this).data('brand-id');
+                    const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
+                    const value = $(this).val();
+
+                    const brandMatch = !brandId || brandId == selectedBrandId || selectedBrandId === 'all';
+                    const categoryMatch = selectedCategoryId === "all" || modelCategories.includes(selectedCategoryId);
+
+                    if (brandMatch && categoryMatch && !addedValues.has(value)) {
+                        $modelSelect.append($(this).clone());
+                        addedValues.add(value);
+                    }
+                });
+
+                $modelSelect.val('all').trigger('change');
+
+                if (selectedBrandId === 'all') {
+                    $modelSelect.prop('disabled', true);
+                } else {
+                    $modelSelect.prop('disabled', false);
                 }
 
-                $modelSelect.val(null).trigger('change');
-
-                // Ensure "all Brand" exists
-                addPersistentOptions();
             }
+
+            $categorySelect.on('change', function () {
+                filterBrandsAndModels();
+            });
 
             $brandSelect.on('change', function () {
                 filterModels();
-                addPersistentOptions();
-
-                var selectedBrand = $(this).val();
-
-                if (selectedBrand === 'all') {
-                    $modelSelect.prop('disabled', true).val('all');
-                } else {
-                    $modelSelect.prop('disabled', false).val('all');
-                }
-
             });
 
-            $categorySelect.on('change', function () {
-                $brandSelect.val(null).trigger('change');
-                $modelSelect.val(null).trigger('change');
+            // Initial trigger
+            filterBrandsAndModels();
 
-                if($(this).find(':selected').data('is-vehicle') == 1) {
-                    $('#model-box').removeClass('d-none');
-                    $('#year-box').removeClass('d-none');
-                    $('#color-box').removeClass('d-none');
-                    $('#engine-type-box').removeClass('d-none');
-                    $('#mileage-box').removeClass('d-none');
-                    $('#transmission-type-box').removeClass('d-none');
-                    $('#body-type-box').removeClass('d-none');
-                    $('#bag-capacity-box').removeClass('d-none');
-                    $('#environmental-information-box').removeClass('d-none');
-                    $('#ad-options-box').removeClass('d-none');
-                    $('#additional-information-box').removeClass('d-none');
-                    $('#fuel-type-box').removeClass('d-none');
-                    $('#engine-size-box').removeClass('d-none');
-                    $('#cylinders-box').removeClass('d-none');
-                    $('#power-box').removeClass('d-none');
-                } else {
-                    $('#model-box').addClass('d-none');
-                    $('#year-box').addClass('d-none');
-                    $('#color-box').addClass('d-none');
-                    $('#engine-type-box').addClass('d-none');
-                    $('#mileage-box').addClass('d-none');
-                    $('#transmission-type-box').addClass('d-none');
-                    $('#body-type-box').addClass('d-none');
-                    $('#bag-capacity-box').addClass('d-none');
-                    $('#environmental-information-box').addClass('d-none');
-                    $('#ad-options-box').addClass('d-none');
-                    $('#additional-information-box').addClass('d-none');
-                    $('#engine-type-box').addClass('d-none');
-                    $('#fuel-type-box').addClass('d-none');
-                    $('#engine-size-box').addClass('d-none');
-                    $('#cylinders-box').addClass('d-none');
-                    $('#power-box').addClass('d-none');
-                }
-
-                filterModels();
-                addPersistentOptions();
-                $brandSelect.val('all');
-                $modelSelect.prop('disabled', true).val('all');
+            // --- COLOR HANDLING ---
+            $colorSelect.on('select2:open', function () {
+                setTimeout(function () {
+                    $('.select2-results__option').each(function () {
+                        const color = $(this).text().trim();
+                        if (!$(this).find('.color-square').length && color.toLowerCase() !== '{{ strtolower(translate("All")) }}') {
+                            const square = $('<span class="color-square"></span>').css({
+                                display: 'inline-block',
+                                width: '30px',
+                                height: '15px',
+                                border: 'solid #cfcfcf 1px',
+                                backgroundColor: color,
+                                marginLeft: '8px',
+                                verticalAlign: 'middle',
+                                borderRadius: '2px'
+                            });
+                            $(this).append(square);
+                        }
+                    });
+                }, 0);
             });
 
+            $colorSelect.on('change', function () {
+                setTimeout(function () {
+                    const $selection = $colorSelect.next('.select2-container').find('.select2-selection__rendered');
+                    $selection.find('.selected-color-square').remove();
+
+                    const color = $selection.text().trim();
+
+                    if (color.toLowerCase() === 'all') return;
+
+                    const square = $('<span class="selected-color-square"></span>').css({
+                        display: 'inline-block',
+                        width: '30px',
+                        height: '15px',
+                        border: 'solid #cfcfcf 1px',
+                        backgroundColor: color,
+                        marginLeft: '8px',
+                        verticalAlign: 'middle',
+                        borderRadius: '2px'
+                    });
+
+                    $selection.append(square);
+                }, 0);
+            });
+
+            $colorSelect.on('select2:open', function () {
+                const colorSelectContainer = $colorSelect.data('select2').$dropdown;
+                const searchInput = colorSelectContainer.find('.select2-search__field');
+
+                searchInput.off('input').on('input', function () {
+                    setTimeout(function applyColorSquares() {
+                        const $options = colorSelectContainer.find('.select2-results__option');
+
+                        $options.each(function () {
+            const $option = $(this);
+            const color = $option.text().trim();
+
+            if (
+                !$option.hasClass('select2-results__message') &&
+                color &&
+                !$option.find('.color-square').length &&
+                color.toLowerCase() !== '{{ strtolower(translate("All")) }}'
+            ) {
+                const square = $('<span class="color-square"></span>').css({
+                    display: 'inline-block',
+                    width: '30px',
+                    height: '15px',
+                    border: 'solid #cfcfcf 1px',
+                    backgroundColor: color,
+                    marginLeft: '8px',
+                    verticalAlign: 'middle',
+                    borderRadius: '2px'
+                });
+
+                $option.append(square);
+            }
+        });
+
+                        setTimeout(applyColorSquares, 50);
+                    }, 0);
+                });
+            });
         });
     </script>
 

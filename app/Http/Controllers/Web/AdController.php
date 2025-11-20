@@ -1314,7 +1314,7 @@ class AdController extends Controller
 
     }
 
-    public function ads_filter(Request $request) {        
+    public function ads_filter(Request $request) {
 
         $query = Ad::active()->with('sponsor');
         
@@ -1325,7 +1325,6 @@ class AdController extends Controller
         $query = $this->ad_query_filter($query, $request);
                 
         if ($request->city != '' && $request->city) {
-
             $coordinates = $this->getLocationCoordinates($request->city);
             
             if($request->radius != '') {
@@ -1334,7 +1333,6 @@ class AdController extends Controller
                 $query->where('latitude', $coordinates['latitude'])
                 ->where('longitude', $coordinates['longitude']);
             }
-
         }
         
         if ($request->status) {
@@ -1425,7 +1423,6 @@ class AdController extends Controller
             $query->whereIn('electronic_type', $request['multiple_electronic_type']);
         }
 
-
         if ($request->length) {
             $query->where('length', $request->length);
         }
@@ -1458,7 +1455,7 @@ class AdController extends Controller
             $query->where('battery_life', $request->battery_life);
         }
         
-        if ($request->acceleration_0_100 ) {
+        if ($request->acceleration_0_100) {
             $query->where('acceleration_0_100', $request->acceleration_0_100);
         }
 
@@ -1484,7 +1481,6 @@ class AdController extends Controller
         }
 
         $count = $query->count();
-
         $ads = $query->limit(5)->get();
 
         return response()->json([
@@ -1492,7 +1488,6 @@ class AdController extends Controller
             'show_ad_ids' => $ads->pluck('id')->toArray(),
             'count' => $count,
         ]);
-        
     }
 
     public function profile_ads_filter(Request $request) {        
@@ -1506,7 +1501,6 @@ class AdController extends Controller
         $query = $this->ad_query_filter($query, $request);
                 
         if ($request->city != '' && $request->city) {
-
             $coordinates = $this->getLocationCoordinates($request->city);
             
             if($request->radius != '') {
@@ -1515,7 +1509,6 @@ class AdController extends Controller
                 $query->where('latitude', $coordinates['latitude'])
                 ->where('longitude', $coordinates['longitude']);
             }
-
         }
         
         if ($request->status) {
@@ -1574,7 +1567,7 @@ class AdController extends Controller
             $query->where('battery_life', $request->battery_life);
         }
         
-        if ($request->acceleration_0_100 ) {
+        if ($request->acceleration_0_100) {
             $query->where('acceleration_0_100', $request->acceleration_0_100);
         }
 
@@ -1600,7 +1593,6 @@ class AdController extends Controller
         }
 
         $count = $query->count();
-
         $ads = $query->limit(5)->get();
 
         return response()->json([
@@ -1608,7 +1600,6 @@ class AdController extends Controller
             'show_ad_ids' => $ads->pluck('id')->toArray(),
             'count' => $count,
         ]);
-        
     }
 
     public function getAdsInRadius($query, $radius, $latitude, $longitude)

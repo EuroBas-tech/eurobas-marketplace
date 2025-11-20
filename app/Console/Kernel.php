@@ -24,8 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('translations:backUp')->daily();
-        $schedule->command('PromotionalVideos:AutoDelete')->everyThreeHours();
+        $schedule->command('PromotionalVideos:AutoDelete')->hourly();
     }
 
     /**

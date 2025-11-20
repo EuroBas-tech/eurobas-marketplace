@@ -103,7 +103,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1"
                                                         data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
+                                                                <select disabled class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
                                                                         <option data-brand-id="{{ $model['brand_id'] }}"
@@ -526,7 +526,7 @@
                                                             data-action="{{ route('show-ads-filter') }}"
                                                             data-filter-count="filter-count">
                                                             <span class="ads-count-number">
-                                                                {{ \App\Model\Ad::count() }}
+                                                                {{ \App\Model\Ad::active()->count() }}
                                                             </span>
                                                             <span>{{ translate('result') }}</span>
                                                             <div class="filter_count_loader spinner-border d-none" style="width: 18px;height: 18px;" role="status">
@@ -659,6 +659,8 @@
         const $modelSelect = $('#model');
         const $categoryInput = $('#selectedCategoryId');
 
+        $('#model').prop('disabled', true);
+
         // Initialize Select2
         $brandSelect.select2({
             placeholder: "{{ translate('brand') }}",
@@ -708,9 +710,11 @@
             }
 
             $brandSelect.val('all').trigger('change');
+            $modelSelect.prop('disabled', true);
         }
 
         function filterModels() {
+
             const selectedBrandId = $brandSelect.val();
             const selectedCategoryId = $categoryInput.val();
 
@@ -731,7 +735,7 @@
                 }
             });
 
-            $modelSelect.val('all').trigger('change').prop('disabled', false);
+            // $modelSelect.val('all').trigger('change').prop('disabled', false);
         }
 
         $('.category-option').on('click', function () {
@@ -740,9 +744,26 @@
             filterBrandsAndModels();
         });
 
-        $brandSelect.on('change', filterModels);
+        let initialized = false;
 
-        // Initial setup (optional)
+        $brandSelect.on('select2:select', function (e) {
+            const selectedValue = e.params.data.id;
+            if (initialized) {
+                if (selectedValue === 'all') {
+                    $modelSelect.val('all').trigger('change').prop('disabled', true);
+                } else {
+                    $('#model').prop('disabled', false);
+                }
+            }
+        });
+
+        $brandSelect.on('change', function() {
+            filterModels();
+        });
+
         filterBrandsAndModels();
+        initialized = true;
+
     });
 </script>
+

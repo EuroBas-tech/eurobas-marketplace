@@ -227,7 +227,6 @@
             @endif
         </div>
 
-
         <div class="container" >
             <div class="home-banner-swiper">
                 <div class="swiper-wrapper">
@@ -281,12 +280,17 @@
 
     <script>
         $(document).ready(function () {
+            let isCategoryChanging = false;
+
             $('.filter-input').on('change', function () {
+                // Skip filtering during category change
+                if (isCategoryChanging) {
+                    return;
+                }
                 filterAds($(this));
             });
 
             function filterAds(changedInput) {
-
                 const parentForm = changedInput.closest('form');
                 const formData = parentForm.serialize();
 
@@ -306,28 +310,30 @@
                         console.error("AJAX Error: ", xhr.responseText);
                     },
                     complete: function () {
-                    parentForm.find('.filter_count_loader').addClass('d-none');
-                        // // Hide loader after success or error
-                        // $('#fullscreen-loader').addClass('d-none');
+                        parentForm.find('.filter_count_loader').addClass('d-none');
                     }
                 });
             }
 
             window.triggerFilterManually = function (clickedElement) {
+                // Block all change events during reset
+                isCategoryChanging = true;
+                
                 $('#selectedCategoryId').val($(clickedElement).data('id'));
-                filterAds($('#selectedCategoryId'));
-
+                
                 $('.form-data select').each(function () {
                     $(this).prop('selectedIndex', 0);
-                    $('#brand').val('all').trigger('change');
-                    $('#model').val('all').trigger('change');
                 });
+                $('#brand').val('all').trigger('change');
+                $('#model').val('all').trigger('change');
+                
+                // Unblock and trigger ONE filter
+                isCategoryChanging = false;
+                filterAds($('#selectedCategoryId'));
             };
 
         });
-
     </script>
-
 @endpush
 
 

@@ -29,6 +29,25 @@
         <!-- Card -->
         <div class="card">
             <!-- Table -->
+
+            <div class="col-sm-8 col-md-6 col-lg-4 p-3">
+                <!-- Search -->
+                <form action="{{ url()->current() }}" method="GET">
+                    <div class="input-group input-group-merge input-group-custom">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="tio-search"></i>
+                            </div>
+                        </div>
+                        <input id="datatableSearch_" type="search" name="search" class="form-control"
+                            placeholder="{{translate('search_by_Name_or_Email_or_Phone')}}"
+                            aria-label="Search orders" value="{{ $search }}">
+                        <button type="submit" class="btn btn--primary">{{translate('search')}}</button>
+                    </div>
+                </form>
+                <!-- End Search -->
+            </div>
+
             <div class="table-responsive datatable-custom">
                 <table
                     style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
@@ -54,7 +73,7 @@
                                 <td>
                                     {{$promotional_videos->firstItem()+$key}}
                                 </td>
-                                <td class="" >
+                                <td>
                                     @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
                                         <img src="https://image.mux.com/{{$video['playback_id']}}/thumbnail.jpg"
                                         class="rounded" alt="video_image" width="60" >
@@ -212,6 +231,14 @@
             $('#show_video'+$id).show();
             $('#show_video'+$id).modal("show");
         }
+
+        // Stop all videos when any modal is closed
+        $(document).on('hidden.bs.modal', function () {
+            $('mux-player').each(function () {
+                this.pause();              // Pause the video
+                this.currentTime = 0;      // Reset to beginning (optional)
+            });
+        });
 
     </script>
 @endpush

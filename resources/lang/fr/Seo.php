@@ -1,0 +1,2 @@
+'meta_title' => 'EuroBas – Le marché unifié européen pour véhicules et immobilier',
+'meta_description' => 'EuroBas est le marché européen gratuit et unifié pour acheter et vendre des véhicules, des biens immobiliers, des yachts, de l’électronique et bien d’autres produits. Créez votre compte, publiez des annonces illimitées gratuitement et connectez-vous directement avec acheteurs et vendeurs partout en Europe.',

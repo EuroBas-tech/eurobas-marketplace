@@ -61,7 +61,7 @@ class HomeController extends Controller
         $current_date = date('Y-m-d H:i:s');
 
         $home_categories = Cache::rememberForever('categories', function () {
-            return Category::where('home_status', true)->priority()->take(15)->get();
+            return Category::where('home_status', true)->priority()->latest()->take(16)->get();
         });
 
         $locale = session('local') ?? 'en';
@@ -104,7 +104,8 @@ class HomeController extends Controller
                 ->when(session('show_by_country'),
                     fn($query) => $query->country(session('show_by_country')['name'])
                 )
-                ->get();
+                ->latest()
+                ->get();    
 
             // Compute flags for each ad
             $filteredAds->each(function ($ad) use ($now) {
@@ -120,7 +121,7 @@ class HomeController extends Controller
 
             // Sort ads: first by has_first_results DESC, then keep other order
             // Take only 15 ads
-            $sortedAds = $filteredAds->sortByDesc('has_first_results')->take(15)->values();
+            $sortedAds = $filteredAds->sortByDesc('has_first_results')->take(16)->values();
             
             // Set the relation with sorted ads
             $category->setRelation('ads', $sortedAds);
