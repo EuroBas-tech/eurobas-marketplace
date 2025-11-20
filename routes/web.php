@@ -690,8 +690,6 @@ Route::get('clear-cache', function() {
    Multi-language URLs (/en/xxx , /de/xxx , etc)
 ---------------------------------------------- */
 
-use Illuminate\Http\Request;
-
 $languages = [
     'en','nl','de','tr','es','it','ru','fr','ar','el','pl','ro','uk','bg','pt','sr',
     'da','sv','fi','no','hr','hu','cs','sq','bs','lt','sl','sk','zh-Hans','ko','ja'
