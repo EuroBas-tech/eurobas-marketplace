@@ -686,5 +686,59 @@ Route::get('clear-cache', function() {
     Cache::flush();
 });
 
+/* ----------------------------------------------
+   Multi-language URLs (/en/xxx , /de/xxx , etc)
+---------------------------------------------- */
+
+use Illuminate\Http\Request;
+
+$languages = [
+    'en','nl','de','tr','es','it','ru','fr','ar','el','pl','ro','uk','bg','pt','sr',
+    'da','sv','fi','no','hr','hu','cs','sq','bs','lt','sl','sk','zh-Hans','ko','ja'
+];
+
+/* Change Language (stay on same page) */
+Route::get('/change-language/{lang}', function ($lang, Request $request) use ($languages) {
+
+    if (!in_array($lang, $languages)) {
+        abort(404);
+    }
+
+    session(['locale' => $lang]);
+    app()->setLocale($lang);
+
+    return back();
+
+})->name('change-language');
+
+
+/* Handle URLs that start with a language code */
+Route::any('{lang}/{any?}', function ($lang, $any = null, Request $request) use ($languages) {
+
+    if (!in_array($lang, $languages)) {
+        abort(404);
+    }
+
+    session(['locale' => $lang]);
+    app()->setLocale($lang);
+
+    $newPath = '/' . ($any ?? '');
+
+    $newRequest = Request::create(
+        $newPath,
+        $request->method(),
+        $request->all(),
+        $request->cookie(),
+        [],
+        $request->server->all(),
+        $request->getContent()
+    );
+
+    $newRequest->query->add($request->query->all());
+
+    return app()->handle($newRequest);
+
+})->where('any', '.*');
+
 
 
