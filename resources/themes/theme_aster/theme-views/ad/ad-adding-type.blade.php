@@ -124,125 +124,116 @@
 @push('script')
 
     <script>
-        const $brandSelect = $('#brand');
-        const $modelSelect = $('#model');
-        const $categorySelect = $('#category');
+        $(document).ready(function () {
+            const $brandSelect = $('#brand');
+            const $modelSelect = $('#model');
+            const $categorySelect = $('#category'); // only used for value reading
 
-        // Initialize Select2
-        $brandSelect.select2({
-            placeholder: "{{ translate('choose_brand') }}",
-            allowClear: true
-        });
-
-        $modelSelect.select2({
-            placeholder: "{{ translate('choose_model') }}",
-            allowClear: true
-        });
-
-        // Store all model options
-        const allModelOptions = $('#model option').clone();
-
-        // Create the "Other" options once with value="other"
-        const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
-        const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
-
-        addPersistentOptions();
-
-        function addPersistentOptions() {
-            // Add "Other Brand" if it doesn't exist
-            if ($brandSelect.find('option[value="other"]').length === 0) {
-                $brandSelect.append(otherBrandOption);
-            }
-            
-            // Add "Other Model" if it doesn't exist
-            if ($modelSelect.find('option[value="other"]').length === 0) {
-                $modelSelect.append(otherModelOption);
-            }
-        }
-
-        function filterModels() {
-            const selectedBrandId = $brandSelect.val();
-            const selectedCategoryId = $categorySelect.val();
-
-            // Clear models but keep the "Other Model" and default option
-            $modelSelect.find('option').not('[value="other"], [value=""]').remove();
-            
-            // Filter and add matching models
-            allModelOptions.each(function () {
-                const brandId = $(this).data('brand-id');
-                const categoryId = $(this).data('category-id');
-
-                if (
-                    (!brandId || brandId == selectedBrandId) &&
-                    (!categoryId || categoryId == selectedCategoryId)
-                ) {
-                    $modelSelect.append($(this).clone());
-                }
+            // Initialize Select2
+            $brandSelect.select2({
+                placeholder: "{{ translate('choose_brand') }}",
+                allowClear: true
             });
 
-            // Ensure "Other Model" is at the end and only appears once
-            if ($modelSelect.find('option[value="other"]').length > 1) {
-                $modelSelect.find('option[value="other"]').not(':last').remove();
-            }
-            
-            $modelSelect.val(null).trigger('change');
-            
-            // Ensure "Other Brand" exists
-            addPersistentOptions();
-        }
+            $modelSelect.select2({
+                placeholder: "{{ translate('choose_model') }}",
+                allowClear: true
+            });
 
-        $brandSelect.on('change', function () {
-            const selectedBrandId = $brandSelect.val();
-            
-            if (!selectedBrandId || selectedBrandId === '') {
+            $('#color').select2({
+                placeholder: "{{ translate('choose_color') }}",
+                allowClear: true
+            });
+
+            // Store all brand and model options
+            const allBrandOptions = $('#brand option').clone();
+            const allModelOptions = $('#model option').clone();
+
+            // Create the "Other" options once with value="other"
+            const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
+            const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
+
+            addPersistentOptions();
+
+            function addPersistentOptions() {
+                // Add "Other Brand" if it doesn't exist
+                if ($brandSelect.find('option[value="other"]').length === 0) {
+                    $brandSelect.append(otherBrandOption);
+                }
+                // Add "Other Model" if it doesn't exist
+                if ($modelSelect.find('option[value="other"]').length === 0) {
+                    $modelSelect.append(otherModelOption);
+                }
+            }
+
+            // NEW: Filter brands based on selected category
+            function filterBrands() {
+                const selectedCategoryId = $categorySelect.val();
+                $brandSelect.empty().append('<option value=""> -- {{ translate("choose_brand") }} -- </option>');
+
+                allBrandOptions.each(function () {
+                    const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
+                    if (
+                        $(this).val() === "other" ||            // keep "other"
+                        brandCategories.length === 0 ||        // if no restriction
+                        brandCategories.includes(selectedCategoryId)
+                    ) {
+                        $brandSelect.append($(this));
+                    }
+                });
+
+                addPersistentOptions();
+            }
+
+            function filterModels() {
+                const selectedBrandId = $brandSelect.val();
+                const selectedCategoryId = $categorySelect.val();
+
+                $modelSelect.empty().append('<option value=""> -- {{ translate("choose_model") }} -- </option>');
+
+                allModelOptions.each(function () {
+                    const brandId = $(this).data('brand-id');
+                    const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
+
+                    if (
+                        $(this).val() === "other" || // keep "other"
+                        ((!brandId || brandId == selectedBrandId) &&
+                        (modelCategories.length === 0 || modelCategories.includes(selectedCategoryId)))
+                    ) {
+                        $modelSelect.append($(this));
+                    }
+                });
+
                 $modelSelect.val(null).trigger('change');
-                $modelSelect.prop('disabled', true);
-            } else {
+                addPersistentOptions();
+            }
+
+            $brandSelect.on('change', function () {
                 filterModels();
+                if($categorySelect.val() != 491) {
+                    $('#model-box').removeClass('hide-element');
+                }
                 $modelSelect.prop('disabled', false);
-            }
-            
-            addPersistentOptions();
-        });
+                addPersistentOptions();
+            });
 
-        $categorySelect.on('change', function () {
-            $brandSelect.val(null).trigger('change');
-            $modelSelect.val(null).trigger('change');
+            $categorySelect.on('change', function () {
+                var selectedOption = $(this).find('option:selected');
 
-            if($(this).find(':selected').data('is-vehicle') == 1) {
-                $('#year-box').removeClass('d-none');
-                $('#engine-type-box').removeClass('d-none');
-                $('#mileage-box').removeClass('d-none');
-                $('#transmission-type-box').removeClass('d-none');
-                $('#body-type-box').removeClass('d-none');
-                $('#bag-capacity-box').removeClass('d-none');
-                $('#environmental-information-box').removeClass('d-none');
-                $('#ad-options-box').removeClass('d-none');
-                $('#additional-information-box').removeClass('d-none');
-                $('#engine-type-box').removeClass('d-none');
-                $('#engine-size-box').removeClass('d-none');
-                $('#cylinders-box').removeClass('d-none');
-                $('#power-box').removeClass('d-none');
-            } else {
-                $('#year-box').addClass('d-none');
-                $('#engine-type-box').addClass('d-none');
-                $('#mileage-box').addClass('d-none');
-                $('#transmission-type-box').addClass('d-none');
-                $('#body-type-box').addClass('d-none');
-                $('#bag-capacity-box').addClass('d-none');
-                $('#environmental-information-box').addClass('d-none');
-                $('#ad-options-box').addClass('d-none');
-                $('#additional-information-box').addClass('d-none');
-                $('#engine-type-box').addClass('d-none');
-                $('#engine-size-box').addClass('d-none');
-                $('#cylinders-box').addClass('d-none');
-                $('#power-box').addClass('d-none');
-            }
+                if(selectedOption.attr('data-is-vehicle') == 'vehicles') {
+                    $('#brand-box').removeClass('hide-element');
+                } else {
+                    $('#brand-box').addClass('hide-element');
+                    $('#model-box').addClass('hide-element');
+                }
 
-            filterModels();
-            addPersistentOptions();
+                filterBrands();
+                filterModels();
+                addPersistentOptions();
+            });
         });
     </script>
+
 @endpush
 
 
