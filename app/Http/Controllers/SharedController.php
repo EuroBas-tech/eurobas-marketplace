@@ -40,6 +40,8 @@ class SharedController extends Controller
 
         Cache::forget('language');
         Cache::forget('business_setting_language');
+        Cache::forget('home_categories');
+        Cache::forget('categories');
         Cache::flush();
 
         try {
