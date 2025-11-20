@@ -12,7 +12,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex gap-2 align-items-center">
-                <img width="20" src="{{asset('public/assets/back-end/img/accounting.png')}}" alt="">
+                <img width="20" src="{{asset('assets/back-end/img/accounting.png')}}" alt="">
                 {{translate('accounting')}}
             </h2>
         </div>
@@ -27,7 +27,7 @@
                 <h4 class="mb-3">{{translate('filter_Data')}}</h4>
                 <form action="#" id="form-data" method="GET" class="w-100">
                     <div class="row  gx-2 gy-3 align-items-center text-{{Session::get('direction') === "rtl" ? 'right' : 'left'}}">
-                        
+
                         <div class="col-sm-6 col-md-3">
                             <select class="form-control __form-control" name="date_type" id="date_type">
                                 <option value="this_year" {{ $date_type == 'this_year'? 'selected' : '' }}>{{translate('this_Year')}}</option>
@@ -111,7 +111,7 @@
                                     <li>
                                         <a class="dropdown-item"
                                         href="{{ route('admin.accounting.cost-export-excel', ['date_type'=>request('date_type'), 'from'=>request('from'), 'to'=>request('to'), 'search'=>request('search')]) }}"  >
-                                            <img width="14" src="{{asset('public/assets/back-end/img/excel.png')}}" alt="">
+                                            <img width="14" src="{{asset('assets/back-end/img/excel.png')}}" alt="">
                                             {{translate('excel')}}
                                         </a>
                                     </li>
@@ -150,7 +150,7 @@
                                                 <input type="hidden" name="id" value="{{$cost->id}}" >
                                                 <button type="submit" class="btn btn-outline-success square-btn btn-sm">
                                                     <i class="tio-download-to"></i>
-                                                </button> 
+                                                </button>
                                             </form>
                                             <a onclick="edit_cost({{$key+1}})" class="btn btn-outline-info mx-2 square-btn btn-sm">
                                                 <i class="tio-edit"></i>
@@ -160,8 +160,8 @@
                                                 <input  type="hidden" name="id" value="{{$cost->id}}" >
                                                 <button type="submit" class="btn btn-outline-danger square-btn btn-sm">
                                                     <i class="tio-delete"></i>
-                                                </button> 
-                                            </form> 
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
 
@@ -188,7 +188,7 @@
 
                                                                         <input class="form-control"  placeholder="{{ translate('add_a_cost_title') }}" type="text" name="title" value="{{ $cost->title }}" id="title" required>
                                                                     </div>
-                                                                    
+
                                                                     <div class="form-group">
                                                                         <div class="d-flex align-items-center justify-content-between" >
                                                                             <label for="description">{{translate('description')}}</label>
@@ -196,7 +196,7 @@
 
                                                                         <textarea class="form-control" id="description" required placeholder="{{ translate('add_a_cost_description') }}" name="description" id="description">{{ substr($cost->description, 0, 60) }}</textarea>
                                                                     </div>
-                                                                    
+
                                                                     <div class="form-group" >
                                                                         <div class="d-flex align-items-center justify-content-between" >
                                                                             <label for="amount">{{ translate('amount') }}</label>
@@ -219,7 +219,7 @@
                                 @endforeach
                             @else
                                 <td colspan="5" class="text-center">
-                                    <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
+                                    <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
                                     <p class="mb-0">{{translate('no_data_to_show')}}</p>
                                 </td>
                             @endif
@@ -263,7 +263,7 @@
 
                                             <input class="form-control" placeholder="{{ translate('add_a_cost_title') }}" type="text" name="title" value="" id="title" required>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <div class="d-flex align-items-center justify-content-between" >
                                                 <label for="description">{{translate('description')}}</label>
@@ -271,7 +271,7 @@
 
                                             <textarea class="form-control" id="description" required placeholder="{{ translate('add_a_cost_description') }}" name="description" id="description"></textarea>
                                         </div>
-                                        
+
                                         <div class="form-group" >
                                             <div class="d-flex align-items-center justify-content-between" >
                                                 <label for="amount">{{ translate('amount') }}</label>
@@ -299,7 +299,7 @@
 @endsection
 
 @push('script_2')
-  
+
   <script>
         function close_request(route_name) {
             swal({
@@ -325,7 +325,7 @@
             $('#by_third_party_delivery_service_info').show();
             $('#third_party_delivery_service_modal').modal("show");
         }
-        
+
         function edit_cost($id)
         {
             $('.choose_delivery_man').hide();

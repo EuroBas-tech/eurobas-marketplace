@@ -12,7 +12,7 @@
     <!-- Page Title -->
     <div class="mb-4">
         <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-            <img src="{{asset('/public/assets/back-end/img/add-new-seller.png')}}" class="mb-1" alt="">
+            <img src="{{asset('/assets/back-end/img/add-new-seller.png')}}" class="mb-1" alt="">
             {{translate('add_new_seller')}}
         </h2>
     </div>
@@ -24,7 +24,7 @@
             <div class="card-body">
                 <input type="hidden" name="status" value="approved">
                 <h5 class="mb-0 text-capitalize d-flex align-items-center gap-2 border-bottom pb-3 mb-4 pl-4">
-                    <img src="{{asset('/public/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
+                    <img src="{{asset('/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
                     {{translate('seller_information')}}
                 </h5>
                 <div class="row align-items-center">
@@ -67,7 +67,7 @@
             <div class="card-body">
                 <input type="hidden" name="status" value="approved">
                 <h5 class="mb-0 text-capitalize d-flex align-items-center gap-2 border-bottom pb-3 mb-4 pl-4">
-                    <img src="{{asset('/public/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
+                    <img src="{{asset('/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
                     {{translate('account_information')}}
                 </h5>
                 <div class="row">
@@ -91,7 +91,7 @@
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="mb-0 text-capitalize d-flex align-items-center gap-2 border-bottom pb-3 mb-4 pl-4">
-                    <img src="{{asset('/public/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
+                    <img src="{{asset('/assets/back-end/img/seller-information.png')}}" class="mb-1" alt="">
                     {{translate('shop_information')}}
                 </h5>
 

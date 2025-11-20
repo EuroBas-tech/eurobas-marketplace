@@ -25,7 +25,7 @@
                     <div class="row flex-between align-items-center g-2 mb-3">
                         <div class="col-sm-6">
                             <h4 class="d-flex align-items-center text-capitalize gap-10 mb-0">
-                                <img src="{{asset('public/assets/back-end/img/business_analytics.png')}}" alt="">{{translate('business_analytics')}}</h4>
+                                <img src="{{asset('assets/back-end/img/business_analytics.png')}}" alt="">{{translate('business_analytics')}}</h4>
                         </div>
                         <div class="col-sm-6 d-flex justify-content-sm-end">
                             <select class="custom-select w-auto" name="statistics_type"
@@ -61,7 +61,7 @@
                             <div class="row g-2 align-items-center">
                                 <div class="col-md-6">
                                     <h4 class="d-flex align-items-center text-capitalize gap-10 mb-0">
-                                        <img src="{{asset('public/assets/back-end/img/earning_statictics.png')}}" alt="">
+                                        <img src="{{asset('assets/back-end/img/earning_statictics.png')}}" alt="">
                                         {{translate('earning_statistics')}}
                                     </h4>
                                 </div>
@@ -106,7 +106,7 @@
                         </div>
                         <!-- End Card -->
                     </div>
-                    
+
                     <!-- Top Store By Order Received -->
                     <div class="col-md-6 col-xl-4">
                         <div class="card h-100 remove-card-shadow">
@@ -140,10 +140,10 @@
 @endsection
 
 @push('script')
-    <script src="{{asset('public/assets/back-end')}}/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="{{asset('public/assets/back-end')}}/vendor/chart.js.extensions/chartjs-extensions.js"></script>
+    <script src="{{asset('assets/back-end')}}/vendor/chart.js/dist/Chart.min.js"></script>
+    <script src="{{asset('assets/back-end')}}/vendor/chart.js.extensions/chartjs-extensions.js"></script>
     <script
-        src="{{asset('public/assets/back-end')}}/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
+        src="{{asset('assets/back-end')}}/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
 @endpush
 
 @push('script_2')

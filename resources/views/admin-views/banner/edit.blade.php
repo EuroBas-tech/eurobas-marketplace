@@ -107,7 +107,7 @@
                                         </center>
                                         <label for="name" class="title-color text-capitalize">
                                             <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{translate('banner_image_ratio_is_not_same_for_all_sections_in_website').' '.translate('Please_review_the_ratio_before_upload')}}">
-                                                <img width="16" src={{asset('public/assets/back-end/img/info-circle.svg')}} alt="" class="m-1">
+                                                <img width="16" src={{asset('assets/back-end/img/info-circle.svg')}} alt="" class="m-1">
                                             </span>
                                             {{ translate('banner_image')}}
                                         </label>

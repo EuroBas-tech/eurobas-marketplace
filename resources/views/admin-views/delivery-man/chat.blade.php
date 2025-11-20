@@ -7,7 +7,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img src="{{asset('/public/assets/back-end/img/support-ticket.png')}}" alt="">
+                <img src="{{asset('/assets/back-end/img/support-ticket.png')}}" alt="">
                 {{translate('chatting_List')}}
             </h2>
         </div>
@@ -20,7 +20,7 @@
                     <div class="card card-body px-0 h-100">
                         <div class="media align-items-center px-3 gap-3 mb-4">
                             <div class="avatar avatar-sm avatar-circle">
-                                <img class="avatar-img" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'" src="{{cloudfront('admin/')}}/{{auth('admin')->user()->image}}" alt="Image Description">
+                                <img class="avatar-img" onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'" src="{{cloudfront('admin/')}}/{{auth('admin')->user()->image}}" alt="Image Description">
                                 <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                             </div>
                             <div class="media-body">
@@ -50,7 +50,7 @@
                                             <div class="chat_people media gap-10" id="chat_people">
                                                 <div class="chat_img avatar avatar-sm avatar-circle">
                                                     <img src="{{ cloudfront('delivery-man/'.$chatting->image) }}"
-                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                                                         onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                                                          alt="">
                                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                                 </div>
@@ -81,7 +81,7 @@
                             <!-- Profile -->
                             <div class="media align-items-center gap-3">
                                 <div class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" id="profile_image" src="{{ cloudfront('delivery-man/'.$chattings_user[0]->image) }}" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'" alt="Image Description">
+                                    <img class="avatar-img" id="profile_image" src="{{ cloudfront('delivery-man/'.$chattings_user[0]->image) }}" onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'" alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
                                 <div class="media-body">
@@ -117,7 +117,7 @@
                                                                         <div class="col-sm-3 col-md-2 position-relative img_row{{$index}}">
                                                                             <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                                class="aspect-1 overflow-hidden d-block border rounded">
-                                                                                <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                                                                                <img onerror="this.src=' {{asset('assets/back-end/img/image-place-holder.png')}}'"
                                                                                      src="{{cloudfront('chatting/'.$photo)}}"
                                                                                      alt="" class="img-fit">
                                                                             </a>
@@ -147,7 +147,7 @@
                                                                     <div class="col-sm-3 col-md-2 position-relative img_row{{$index}}">
                                                                         <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                            class="aspect-1 overflow-hidden d-block border rounded">
-                                                                            <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                                                                            <img onerror="this.src=' {{asset('assets/back-end/img/image-place-holder.png')}}'"
                                                                                  src="{{cloudfront('chatting/'.$photo)}}"
                                                                                  alt="" class="img-fit">
                                                                         </a>
@@ -165,7 +165,7 @@
 
                                         @if (count($chattings) == 0)
                                             <div class="d-flex flex-column justify-content-center align-items-center vh-100">
-                                                <img src="{{ asset('public/assets/back-end/img/icons/nodata.svg') }}" alt="">
+                                                <img src="{{ asset('assets/back-end/img/icons/nodata.svg') }}" alt="">
                                                 <h4 class="text-muted py-4">{{ translate('Inbox_Empty') }}</h4>
                                             </div>
                                         @endif
@@ -283,7 +283,7 @@
                                     imageContainer += `
                                     <div class="col-sm-3 col-md-2 position-relative img_row${index}">
                                         <a data-lightbox="mygallery" href="${img_path}" class="aspect-1 overflow-hidden d-block border rounded">
-                                            <img onerror="this.src='{{ asset('public/assets/back-end/img/image-place-holder.png') }}'"
+                                            <img onerror="this.src='{{ asset('assets/back-end/img/image-place-holder.png') }}'"
                                                 src="${img_path}" alt="img" class="img-fit">
                                         </a>
                                     </div>`;
@@ -437,7 +437,7 @@
                                     imageContainer += `
                                     <div class="col-sm-3 col-md-2 position-relative img_row${index}">
                                         <a data-lightbox="mygallery" href="${img_path}" class="aspect-1 overflow-hidden d-block border rounded">
-                                            <img onerror="this.src='{{ asset('public/assets/back-end/img/image-place-holder.png') }}'"
+                                            <img onerror="this.src='{{ asset('assets/back-end/img/image-place-holder.png') }}'"
                                                 src="${img_path}" alt="img" class="img-fit">
                                         </a>
                                     </div>`;

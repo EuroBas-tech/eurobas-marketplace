@@ -12,7 +12,7 @@
         <!-- Page Title -->
         <div class="mb-4">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/paid-banner.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/paid-banner.png')}}" alt="">
                 {{translate('paid_banners_list')}}
                 <span class="badge badge-soft-dark radius-50">{{\App\Model\PaidBanner::count()}}</span>
             </h2>
@@ -51,7 +51,7 @@
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
                                     <a class="dropdown-item" href="{{route('admin.paid-banner.export',['search'=>request('search')])}}">
-                                        <img width="14" src="{{asset('/public/assets/back-end/img/excel.png')}}" alt="">
+                                        <img width="14" src="{{asset('/assets/back-end/img/excel.png')}}" alt="">
                                         {{translate('excel')}}
                                     </a>
                                 </li>
@@ -169,7 +169,7 @@
 
             @if(count($paid_banners)==0)
                 <div class="text-center p-4">
-                    <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg"
+                    <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg"
                          alt="Image Description">
                     <p class="mb-0">{{translate('no_data_to_show')}}</p>
                 </div>

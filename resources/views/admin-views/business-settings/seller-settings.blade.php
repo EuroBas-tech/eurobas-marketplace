@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img src="{{asset('/public/assets/back-end/img/business-setup.png')}}" alt="">
+                <img src="{{asset('/assets/back-end/img/business-setup.png')}}" alt="">
                 {{translate('business_Setup')}}
             </h2>
 
@@ -25,7 +25,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right bg-aliceblue border border-color-primary-light p-4 dropdown-w-lg">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img width="20" src="{{asset('/public/assets/back-end/img/note.png')}}" alt="">
+                        <img width="20" src="{{asset('/assets/back-end/img/note.png')}}" alt="">
                         <h5 class="text-primary mb-0">{{translate('note')}}</h5>
                     </div>
                     <p class="title-color font-weight-medium mb-0">{{ translate('please_click_the_Save_button_below_to_save_all_the_changes') }}</p>
@@ -43,7 +43,7 @@
             <div class="card">
                 <div class="border-bottom px-4 py-3">
                     <h5 class="mb-0 text-capitalize d-flex align-items-center gap-2">
-                        <img width="22" src="{{asset('/public/assets/back-end/img/product_setup.png')}}" alt="">
+                        <img width="22" src="{{asset('/assets/back-end/img/product_setup.png')}}" alt="">
                         {{translate('seller_setup')}}
                     </h5>
                 </div>
@@ -54,7 +54,7 @@
                                 <label class="title-color d-flex align-items-center gap-2">
                                     {{translate('default_commission')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('set_the_default_commission_amount_that_will_be_received_from_sellers_on_each_order')}}">
-                                        <img width="16" src="{{asset('/public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('/assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </label>
 
@@ -68,7 +68,7 @@
                                 <span class="title-color">
                                     {{translate('enable_POS_in_Seller_Panel')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('if_enabled_POS_will_be_available_on_the_Seller_Panel')}}">
-                                        <img width="16" src="{{asset('/public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('/assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </span>
 
@@ -87,7 +87,7 @@
                                 <span class="title-color">
                                     {{translate('seller_registration')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('if_enabled_sellers_can_send_registration_requests_to_admin')}}">
-                                        <img width="16" src="{{asset('/public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('/assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </span>
 
@@ -105,7 +105,7 @@
                                 <span class="title-color">
                                     {{translate('set_minimum_order_amount')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('if_enabled_sellers_can_set_minimum_order_amount_for_their_stores_by_themselves')}}">
-                                        <img width="16" src="{{asset('/public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('/assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </span>
 
@@ -135,20 +135,20 @@
                                 <label class="title-color d-flex align-items-center gap-2">
                                     {{translate('minimum_withdraw_value')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('minimum_withdraw_value_title')}}">
-                                        <img width="16" src="{{asset('public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </label>
                                 @php($minimumWithdrawValue=\App\Model\BusinessSetting::where('type','minimum_withdraw_value')->first())
                                 <input type="number" class="form-control" name="minimum_withdraw_value" value="{{isset($minimumWithdrawValue)?$minimumWithdrawValue->value:0}}" placeholder="{{translate('ex: 70')}}" min="0" max="100">
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-4 col-md-6">
                             <div class="d-flex justify-content-between align-items-center gap-10 form-control form-group">
                                 <span class="title-color">
                                     {{translate('enable_automatic_balance_request')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('if_enabled_POS_will_be_available_on_the_Seller_Panel')}}">
-                                        <img width="16" src="{{asset('public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </span>
 
@@ -168,7 +168,7 @@
                                 <label class="title-color d-flex align-items-center gap-2">
                                     {{translate('automatic_balance_request_duration')}}
                                     <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('automatic_balance_request_duration_title')}}">
-                                        <img width="16" src="{{asset('public/assets/back-end/img/info-circle.svg')}}" alt="">
+                                        <img width="16" src="{{asset('assets/back-end/img/info-circle.svg')}}" alt="">
                                     </span>
                                 </label>
 
@@ -177,7 +177,7 @@
                                 <input type="number" class="form-control" name="automatic_balance_request_duration" value="{{isset($automaticBalanceRequestDuration)?$automaticBalanceRequestDuration->value:0}}" placeholder="{{translate('ex: 70')}}" min="0" max="100">
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -185,10 +185,10 @@
             <div class="card mt-3">
                 <div class="border-bottom px-4 py-3">
                     <h5 class="mb-0 text-capitalize d-flex align-items-center gap-2">
-                        <img width="20" src="{{asset('/public/assets/back-end/img/box.png')}}" alt="">
+                        <img width="20" src="{{asset('/assets/back-end/img/box.png')}}" alt="">
                         {{translate('need_product_approval')}}
                         <span class="input-label-secondary cursor-pointer" data-toggle="tooltip" data-placement="right" title="{{translate('set_whether_sellers_need_admin_approval_before_adding_new_products_to_their_shops')}}">
-                            <img width="16" src="{{asset('/public/assets/back-end/img/info-circle.svg')}}" alt="">
+                            <img width="16" src="{{asset('/assets/back-end/img/info-circle.svg')}}" alt="">
                         </span>
                     </h5>
                 </div>

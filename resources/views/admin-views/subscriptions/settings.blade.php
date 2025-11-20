@@ -2,7 +2,7 @@
 @section('title', translate('subscription_settings') . ' - Eurobas.com')
 
 @push('css_or_js')
-    <link href="{{asset('public/assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{asset('assets/back-end')}}/css/select2.min.css" rel="stylesheet"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
@@ -43,7 +43,7 @@
     <!-- Page Title -->
     <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
         <h2 class="h1 mb-0 d-flex align-items-center gap-2">
-            <img width="20" src="{{asset('/public/assets/back-end/img/brand.png')}}" alt="">
+            <img width="20" src="{{asset('/assets/back-end/img/brand.png')}}" alt="">
             {{translate('subscriptions_settings')}}
         </h2>
     </div>
@@ -199,7 +199,7 @@
 @endsection
 
 @push('script')
-    <script src="{{asset('public/assets/back-end')}}/js/select2.min.js"></script>
+    <script src="{{asset('assets/back-end')}}/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function () {

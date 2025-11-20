@@ -12,7 +12,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/support_ticket.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/support_ticket.png')}}" alt="">
                 {{translate('support_ticket')}}
             </h2>
         </div>
@@ -31,7 +31,7 @@
                 <div class="media d-flex gap-3">
                     <img class="rounded-circle avatar"
                         src="{{ isset($userDetails) ? cloudfront('profile/images/'.$userDetails['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}"
-                            onerror="this.src='{{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                            onerror="this.src='{{asset('assets/back-end/img/image-place-holder.png')}}'"
                             alt="{{isset($userDetails)?$userDetails['name']:'not found'}}"/>
                     <div class="media-body">
                         <h6 class="font-size-md mb-1">{{isset($userDetails)?$userDetails['f_name'].' '.$userDetails['l_name']:'not found'}}</h6>
@@ -76,7 +76,7 @@
                                                             <div class="col-6 col-md-2 position-relative img_row{{$index}}">
                                                                 <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                                    class="aspect-1 overflow-hidden d-block border rounded">
-                                                                    <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                                                                    <img onerror="this.src=' {{asset('assets/back-end/img/image-place-holder.png')}}'"
                                                                          src="{{cloudfront('support-ticket/'.$photo)}}"
                                                                          alt="" class="img-fit">
                                                                 </a>
@@ -106,7 +106,7 @@
                                                         <div class="col-6 col-md-2 position-relative img_row{{$index}}">
                                                             <a data-lightbox="mygallery" href="{{cloudfront("chatting/".$photo)}}"
                                                                class="aspect-1 overflow-hidden d-block border rounded">
-                                                                <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                                                                <img onerror="this.src=' {{asset('assets/back-end/img/image-place-holder.png')}}'"
                                                                      src="{{cloudfront('chatting/'.$photo)}}"
                                                                      alt="" class="img-fit">
                                                             </a>
@@ -138,7 +138,7 @@
                                                     <div class="col-6 col-md-2 position-relative img_row{{$index}}">
                                                         <a data-lightbox="mygallery" href="{{cloudfront("support-ticket/".$photo)}}"
                                                            class="aspect-1 overflow-hidden d-block border rounded">
-                                                            <img onerror="this.src=' {{asset('public/assets/back-end/img/image-place-holder.png')}}'"
+                                                            <img onerror="this.src=' {{asset('assets/back-end/img/image-place-holder.png')}}'"
                                                                  src="{{cloudfront('support-ticket/'.$photo)}}"
                                                                  alt="" class="img-fit">
                                                         </a>
@@ -204,12 +204,12 @@
 
 @push('script')
     <!-- Page level plugins -->
-    <script src="{{asset('public/assets/back-end/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('public/assets/back-end/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/back-end/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/back-end/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{asset('public/assets/back-end/js/demo/datatables-demo.js')}}"></script>
-    <script src="{{asset('public/assets/back-end/js/croppie.js')}}"></script>
+    <script src="{{asset('assets/back-end/js/demo/datatables-demo.js')}}"></script>
+    <script src="{{asset('assets/back-end/js/croppie.js')}}"></script>
 
     <script>
         let selectedFiles = [];

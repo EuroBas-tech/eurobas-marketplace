@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 d-flex gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/model.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/model.png')}}" alt="">
                 {{translate('model_List')}}
                 <span class="badge badge-soft-dark radius-50 fz-14">{{ $models->total() }}</span>
             </h2>
@@ -50,7 +50,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('admin.model.export',['search'=>request('search')]) }}">
-                                            <img width="14" src="{{asset('/public/assets/back-end/img/excel.png')}}" alt="">
+                                            <img width="14" src="{{asset('/assets/back-end/img/excel.png')}}" alt="">
                                             {{ translate('excel') }}
                                         </a>
                                     </li>
@@ -86,7 +86,7 @@
                                             <td style="max-width: 250px;" >
                                                 <div class="d-flex align-items-center flex-wrap" >
                                                     @foreach($m['categories']->pluck('name')->toArray() as $category_name)
-                                                        <span>{{$category_name}}</span> @if(!$loop->last) <span class="mx-1" >,</span> @endif 
+                                                        <span>{{$category_name}}</span> @if(!$loop->last) <span class="mx-1" >,</span> @endif
                                                     @endforeach
                                                 </div>
                                             </td>
@@ -126,7 +126,7 @@
                     </div>
                     @if(count($models)==0)
                         <div class="text-center p-4">
-                            <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
+                            <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
                             <p class="mb-0">{{ translate('no_data_to_show')}}</p>
                         </div>
                     @endif

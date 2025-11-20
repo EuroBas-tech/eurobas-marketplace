@@ -3,7 +3,7 @@
     <div class="business-analytics">
         <h5 class="business-analytics__subtitle">{{translate('total_users')}}</h5>
         <h2 class="business-analytics__title">{{ $data['users_count'] }}</h2>
-        <img src="{{asset('/public/assets/back-end/img/total-customer.png')}}" class="business-analytics__img" alt="">
+        <img src="{{asset('/assets/back-end/img/total-customer.png')}}" class="business-analytics__img" alt="">
     </div>
     <!-- End Business Analytics Card -->
 </div>
@@ -12,7 +12,7 @@
     <div class="business-analytics">
         <h5 class="business-analytics__subtitle">{{translate('total_ads')}}</h5>
         <h2 class="business-analytics__title">{{ $data['ads_count'] }}</h2>
-        <img src="{{asset('/public/assets/back-end/img/total-stores.png')}}" class="business-analytics__img" alt="">
+        <img src="{{asset('/assets/back-end/img/total-stores.png')}}" class="business-analytics__img" alt="">
     </div>
     <!-- End Business Analytics Card -->
 </div>
@@ -21,7 +21,7 @@
     <div class="business-analytics">
         <h5 class="business-analytics__subtitle">{{translate('total_categories')}}</h5>
         <h2 class="business-analytics__title">{{ $data['categories_count'] }}</h2>
-        <img src="{{asset('/public/assets/back-end/img/total-product.png')}}" class="business-analytics__img" alt="">
+        <img src="{{asset('/assets/back-end/img/total-product.png')}}" class="business-analytics__img" alt="">
     </div>
     <!-- End Business Analytics Card -->
 </div>
@@ -31,7 +31,7 @@
     <div class="business-analytics">
         <h5 class="business-analytics__subtitle">{{translate('total_paid_banners')}}</h5>
         <h2 class="business-analytics__title">{{ $data['paid_banners_count'] }}</h2>
-        <img src="{{asset('/public/assets/back-end/img/total-sale.png')}}" class="business-analytics__img" alt="">
+        <img src="{{asset('/assets/back-end/img/total-sale.png')}}" class="business-analytics__img" alt="">
     </div>
     <!-- End Business Analytics Card -->
 </div>

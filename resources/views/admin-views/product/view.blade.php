@@ -20,7 +20,7 @@
             <!-- Page Title -->
             <div class="">
                 <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                    <img src="{{asset('/public/assets/back-end/img/inhouse-product-list.png')}}" alt="">
+                    <img src="{{asset('/assets/back-end/img/inhouse-product-list.png')}}" alt="">
                     {{translate('product_details')}}
                 </h2>
             </div>
@@ -38,12 +38,12 @@
                             @if(\Illuminate\Support\Facades\Storage::disk()->exists("product/thumbnail/".$product['thumbnail']))
                                 href="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}"
                             @else
-                                href="{{asset("public/assets/front-end/img/image-place-holder.png")}}"
+                                href="{{asset("assets/front-end/img/image-place-holder.png")}}"
                             @endif
 
 
                             data-lightbox="mygallery">
-                            <img class="avatar avatar-170 rounded-0" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'" src="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}" alt="Image Description">
+                            <img class="avatar avatar-170 rounded-0" onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'" src="{{\App\CPU\ProductManager::product_image_path('thumbnail')}}/{{$product['thumbnail']}}" alt="Image Description">
                         </a>
                         <div class="d-block">
                             <div class="d-flex flex-wrap flex-sm-nowrap align-items-start gap-2 mb-2 min-h-50">
@@ -54,17 +54,17 @@
                                             @if(\Illuminate\Support\Facades\Storage::disk()->exists("product/".$photo->image_name))
                                                 href="{{cloudfront("product/$photo->image_name")}}"
                                             @else
-                                                href="{{cloudfront("public/assets/front-end/img/image-place-holder.png")}}"
+                                                href="{{cloudfront("assets/front-end/img/image-place-holder.png")}}"
                                             @endif data-lightbox="mygallery">
 
-                                            <img width="50" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                                            <img width="50" onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                                             src="{{cloudfront("product/$photo->image_name")}}" alt="Product image">
                                         </a>
                                     @endforeach
                                 @else
                                     @foreach (json_decode($product->images) as $key => $photo)
                                         <a class="aspect-1 float-left overflow-hidden" href="{{cloudfront("product/$photo")}}" data-lightbox="mygallery">
-                                            <img width="50" onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                                            <img width="50" onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                                             src="{{cloudfront("product/$photo")}}" alt="Product image">
                                         </a>
                                     @endforeach
@@ -421,7 +421,7 @@
                                     <div class="avatar rounded">
                                         <img
                                             class="avatar-img"
-                                            onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                                            onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                                             src="{{cloudfront('profile/'.$review->customer->image)}}"
                                             alt="Image Description">
                                     </div>
@@ -447,7 +447,7 @@
                                     @if(json_decode($review->attachment))
                                         @foreach (json_decode($review->attachment) as $img)
                                             <a class="aspect-1 float-left overflow-hidden" href="{{cloudfront('review')}}/{{$img}}" data-lightbox="mygallery">
-                                                <img class="p-2" width="60" height="60" src="{{cloudfront('review')}}/{{$img}}" alt="" onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'">
+                                                <img class="p-2" width="60" height="60" src="{{cloudfront('review')}}/{{$img}}" alt="" onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'">
                                             </a>
                                         @endforeach
                                     @endif
@@ -481,7 +481,7 @@
 
             @if(count($reviews)==0)
                 <div class="text-center p-4">
-                    <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
+                    <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg" alt="Image Description">
                     <p class="mb-0">{{translate('no_data_to_show')}}</p>
                 </div>
             @endif
@@ -516,8 +516,8 @@
 @endsection
 
 @push('script_2')
-    <script src="{{asset('public/assets/back-end')}}/js/tags-input.min.js"></script>
-    <script src="{{ asset('public/assets/select2/js/select2.min.js')}}"></script>
+    <script src="{{asset('assets/back-end')}}/js/tags-input.min.js"></script>
+    <script src="{{ asset('assets/select2/js/select2.min.js')}}"></script>
     <script>
         $('input[name="colors_active"]').on('change', function () {
             if (!$('input[name="colors_active"]').is(':checked')) {

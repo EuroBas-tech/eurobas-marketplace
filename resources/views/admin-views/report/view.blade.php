@@ -12,7 +12,7 @@
         <!-- Page Title -->
         <div class="mb-4">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('/public/assets/back-end/img/report.png')}}" alt="">
+                <img width="20" src="{{asset('/assets/back-end/img/report.png')}}" alt="">
                 {{translate('report_details')}}
             </h2>
         </div>

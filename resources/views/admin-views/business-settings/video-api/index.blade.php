@@ -11,7 +11,7 @@
         <!-- Page Title -->
         <div class="mb-4 pb-2">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img src="{{asset('/public/assets/back-end/img/3rd-party.png')}}" alt="">
+                <img src="{{asset('/assets/back-end/img/3rd-party.png')}}" alt="">
                 {{translate('3rd_party')}}
             </h2>
         </div>
@@ -31,12 +31,12 @@
 
                     <div class="row">
                         <div class="col-xl-4 col-sm-6 mb-4">
-                            <input class="form-control" placeholder="{{translate('mux_api_token')}}" 
+                            <input class="form-control" placeholder="{{translate('mux_api_token')}}"
                             value="{{ $mux_api_token }}" type="text" name="mux_api_token" id="mux_api_token">
                         </div>
-                        
+
                         <div class="col-xl-4 col-sm-6 mb-4">
-                            <input class="form-control" placeholder="{{translate('mux_secret_key')}}" 
+                            <input class="form-control" placeholder="{{translate('mux_secret_key')}}"
                             value="{{ $mux_secret_key }}" type="text" name="mux_secret_key" id="mux_secret_key">
                         </div>
 
@@ -53,5 +53,5 @@
 @endsection
 
 @push('script')
-    
+
 @endpush

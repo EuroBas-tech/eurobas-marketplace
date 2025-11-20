@@ -23,7 +23,7 @@
         <!-- Page Title -->
         <div class="mb-3">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img src="{{asset('/public/assets/back-end/img/add-new-seller.png')}}" alt="">
+                <img src="{{asset('/assets/back-end/img/add-new-seller.png')}}" alt="">
                 {{translate('seller_details')}}
             </h2>
         </div>
@@ -73,7 +73,7 @@
                 <div class="d-flex flex-wrap gap-3 justify-content-between">
                     <div class="media flex-column flex-sm-row gap-3">
                         <img class="avatar avatar-170 rounded-0"
-                            onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
+                            onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'"
                             src="{{cloudfront('shop/'.$seller->shop->image)}}"alt="image">
 
                         <div class="media-body">
@@ -459,7 +459,7 @@
     @foreach ($productImages as $image)
     <div class="flex-item">
         <img class="product-image rounded-0"
-             onerror="this.src='{{ asset('public/assets/front-end/img/image-place-holder.png') }}'"
+             onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
              src="{{ cloudfront('shop/product/' . $image) }}"
              alt="product image">
     </div>
@@ -482,7 +482,7 @@
                     <div class="row justify-content-between align-items-center g-2 mb-3">
                         <div class="col-sm-6">
                             <h4 class="d-flex align-items-center text-capitalize gap-10 mb-0">
-                                <img width="20" class="mb-1" src="{{asset('/public/assets/back-end/img/admin-wallet.png')}}" alt="">
+                                <img width="20" class="mb-1" src="{{asset('/assets/back-end/img/admin-wallet.png')}}" alt="">
                                 {{translate('seller_Wallet')}}
                             </h4>
                         </div>
@@ -493,7 +493,7 @@
                             <!-- Card -->
                             <div class="card h-100 d-flex justify-content-center align-items-center">
                                 <div class="card-body d-flex flex-column gap-10 align-items-center justify-content-center">
-                                    <img width="48" class="mb-2" src="{{asset('/public/assets/back-end/img/withdraw.png')}}" alt="">
+                                    <img width="48" class="mb-2" src="{{asset('/assets/back-end/img/withdraw.png')}}" alt="">
                                     <h3 class="for-card-count mb-0 fz-24">{{ $seller->wallet ? \App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($seller->wallet->total_earning)) : 0 }}</h3>
                                     <div class="font-weight-bold text-capitalize mb-30">
                                         {{translate('withdrawable_balance')}}
@@ -513,7 +513,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('pending_Withdraw')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" class="mb-2" src="{{asset('/public/assets/back-end/img/pw.png')}}" alt="">
+                                                <img width="40" class="mb-2" src="{{asset('/assets/back-end/img/pw.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -526,7 +526,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('total_Commission_given')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" src="{{asset('/public/assets/back-end/img/tcg.png')}}" alt="">
+                                                <img width="40" src="{{asset('/assets/back-end/img/tcg.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -539,7 +539,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('aready_Withdrawn')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" src="{{asset('/public/assets/back-end/img/aw.png')}}" alt="">
+                                                <img width="40" src="{{asset('/assets/back-end/img/aw.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -552,7 +552,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('total_delivery_charge_earned')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" src="{{asset('/public/assets/back-end/img/tdce.png')}}" alt="">
+                                                <img width="40" src="{{asset('/assets/back-end/img/tdce.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -565,7 +565,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('total_tax_given')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" src="{{asset('/public/assets/back-end/img/ttg.png')}}" alt="">
+                                                <img width="40" src="{{asset('/assets/back-end/img/ttg.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -578,7 +578,7 @@
                                                 <div class="text-capitalize mb-0">{{translate('collected_cash')}}</div>
                                             </div>
                                             <div>
-                                                <img width="40" src="{{asset('/public/assets/back-end/img/cc.png')}}" alt="">
+                                                <img width="40" src="{{asset('/assets/back-end/img/cc.png')}}" alt="">
                                             </div>
                                         </div>
                                     </div>

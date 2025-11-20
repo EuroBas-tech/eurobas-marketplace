@@ -8,7 +8,7 @@
                         <div class="text-capitalize mb-0">{{translate('total_platform_revenue')}}</div>
                     </div>
                     <div>
-                        <img width="40" src="{{asset('public/assets/back-end/img/cc.png')}}" alt="">
+                        <img width="40" src="{{asset('assets/back-end/img/cc.png')}}" alt="">
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <div class="text-capitalize mb-0">{{translate('costs_and_expenses')}}</div>
                     </div>
                     <div>
-                        <img width="40" src="{{asset('public/assets/back-end/img/costs.png')}}" alt="">
+                        <img width="40" src="{{asset('assets/back-end/img/costs.png')}}" alt="">
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                         <div class="text-capitalize mb-0">{{translate('total_net_profit')}}</div>
                     </div>
                     <div>
-                        <img width="40" src="{{asset('public/assets/back-end/img/net-profit.png')}}" alt="">
+                        <img width="40" src="{{asset('assets/back-end/img/net-profit.png')}}" alt="">
                     </div>
                 </div>
             </div>

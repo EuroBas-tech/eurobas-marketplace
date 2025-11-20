@@ -7,7 +7,7 @@
         <!-- Page Title -->
         <div class="mb-4">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
-                <img width="20" src="{{asset('public/assets/back-end/img/order_report.png')}}" alt="">
+                <img width="20" src="{{asset('assets/back-end/img/order_report.png')}}" alt="">
                 {{translate('seller_reports')}}
             </h2>
         </div>
@@ -79,7 +79,7 @@
                     <div class="row justify-content-between align-items-center g-2 mb-3">
                         <div class="col-sm-6">
                             <h4 class="d-flex align-items-center text-capitalize gap-10 mb-0">
-                                <img width="20" class="mb-1" src="{{asset('public/assets/back-end/img/admin-wallet.png')}}" alt="">
+                                <img width="20" class="mb-1" src="{{asset('assets/back-end/img/admin-wallet.png')}}" alt="">
                                 {{translate('seller_Wallet')}} : <b>{{ $data['seller_fullname'] }}</b>
                             </h4>
                         </div>
@@ -90,11 +90,11 @@
                 </div>
             </div>
         @endif
-        
+
         <div class="store-report-content mb-2">
             <div class="left-content">
                 <div class="left-content-card">
-                    <img src="{{asset('public/assets/back-end/img/cart.svg')}}" alt="">
+                    <img src="{{asset('assets/back-end/img/cart.svg')}}" alt="">
                     <div class="info">
                         <h4 class="subtitle">{{ $order_data['total_orders'] }}</h4>
                         <h6 class="subtext">{{translate('total_Orders')}}</h6>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="left-content-card">
-                    <img src="{{asset('public/assets/back-end/img/products.svg')}}" alt="">
+                    <img src="{{asset('assets/back-end/img/products.svg')}}" alt="">
                     <div class="coupon__discount w-100 text-right d-flex justify-content-between">
                         <div class="text-center">
                             <strong class="text-primary">{{ $order_data['total_in_house_products'] }}</strong>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="left-content-card">
-                    <img src="{{asset('public/assets/back-end/img/stores.svg')}}" alt="">
+                    <img src="{{asset('assets/back-end/img/stores.svg')}}" alt="">
                     <div class="info">
                         <h4 class="subtitle">{{ $order_data['total_stores'] }}</h4>
                         <h6 class="subtext">{{translate('total_Stores')}}</h6>
@@ -223,7 +223,7 @@
                             <li>
                                 <a class="dropdown-item"
                                    href="{{ route('admin.transaction.order-transaction-export-excel', ['date_type'=>request('date_type'), 'seller_id'=>request('seller_id'), 'customer_id'=>request('customer_id'), 'status'=>request('status'), 'from'=>request('from'), 'to'=>request('to')]) }}"  >
-                                    <img width="14" src="{{asset('public/assets/back-end/img/excel.png')}}" alt="">
+                                    <img width="14" src="{{asset('assets/back-end/img/excel.png')}}" alt="">
                                     {{translate('excel')}}
                                 </a>
                             </li>
@@ -385,7 +385,7 @@
                 </table>
                 @if(count($transactions)==0)
                     <div class="text-center p-4">
-                        <img class="mb-3 w-160" src="{{asset('public/assets/back-end')}}/svg/illustrations/sorry.svg"
+                        <img class="mb-3 w-160" src="{{asset('assets/back-end')}}/svg/illustrations/sorry.svg"
                              alt="Image Description">
                         <p class="mb-0">{{ translate('no_data_to_show')}}</p>
                     </div>
@@ -406,14 +406,14 @@
 
 @push('script')
 <!-- Chart JS -->
-    <script src="{{ asset('public/assets/back-end') }}/js/chart.js/dist/Chart.min.js"></script>
-    <script src="{{ asset('public/assets/back-end') }}/js/chart.js.extensions/chartjs-extensions.js"></script>
-    <script src="{{ asset('public/assets/back-end') }}/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js">
+    <script src="{{ asset('assets/back-end') }}/js/chart.js/dist/Chart.min.js"></script>
+    <script src="{{ asset('assets/back-end') }}/js/chart.js.extensions/chartjs-extensions.js"></script>
+    <script src="{{ asset('assets/back-end') }}/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js">
     </script>
 <!-- Chart JS -->
 
     <!-- Apex Charts -->
-    <script src="{{ asset('public/assets/back-end/js/apexcharts.js') }}"></script>
+    <script src="{{ asset('assets/back-end/js/apexcharts.js') }}"></script>
     <!-- Apex Charts -->
 
     <script>

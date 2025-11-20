@@ -11,7 +11,7 @@
             <img
                 width="200"
                 src="{{cloudfront("company")."/".$web_config['web_logo']->value}}"
-                onerror="this.src='{{ asset('public/assets/back-end/img/900x400/img1.jpg') }}'"
+                onerror="this.src='{{ asset('assets/back-end/img/900x400/img1.jpg') }}'"
                 alt=""
                 class="dark-support"
             />
