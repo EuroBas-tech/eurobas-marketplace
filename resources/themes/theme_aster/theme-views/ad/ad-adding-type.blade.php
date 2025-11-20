@@ -120,7 +120,6 @@
 @endsection
 
 @push('script')
-
     <script>
         $(document).ready(function () {
             const $brandSelect = $('#brand');
@@ -215,13 +214,15 @@
                 const selectedBrandId = $brandSelect.val();
 
                 if (!selectedBrandId || selectedBrandId === '') {
-                    // Disable model when no brand is selected
+                    // Hide and disable model when no brand is selected
                     $modelSelect.val(null).trigger('change');
                     $modelSelect.prop('disabled', true);
+                    $('#model-box').addClass('hide-element');
                 } else {
-                    // Enable model and filter options
+                    // Show, enable model and filter options
                     filterModels();
                     $modelSelect.prop('disabled', false);
+                    $('#model-box').removeClass('hide-element');
                 }
 
                 addPersistentOptions();
@@ -235,14 +236,13 @@
                 $brandSelect.val(null).trigger('change');
                 $modelSelect.val(null).trigger('change');
                 $modelSelect.prop('disabled', true);
+                $('#model-box').addClass('hide-element');
 
-                // Show/hide brand and model boxes based on category type
+                // Show brand box based on category type
                 if(selectedOption.attr('data-is-vehicle') == 'vehicles') {
                     $('#brand-box').removeClass('hide-element');
-                    $('#model-box').removeClass('hide-element');
                 } else {
                     $('#brand-box').addClass('hide-element');
-                    $('#model-box').addClass('hide-element');
                 }
 
                 filterBrands();
@@ -251,5 +251,4 @@
             });
         });
     </script>
-
 @endpush
