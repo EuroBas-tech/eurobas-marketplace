@@ -76,14 +76,13 @@
                                                             @foreach($brands as $brand)
                                                                 <option data-brand-categories="{{ implode(', ', $brand['categories']) }}" {{ $brand['id'] == old('brand_id') ? 'selected' : ''}} value="{{ $brand['id'] }}" >{{ $brand['name'] }}</option>
                                                             @endforeach
-                                                            <option value="other" >{{ translate('other_brand') }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div id="model-box" class="col-sm-4 mb-3 mt-sm-0 mt-3 hide-element">
                                                     <div class="form-group">
                                                         <label for="model">{{ translate('model') }}</label>
-                                                        <select class="form-control" name="model_id" id="model">
+                                                        <select class="form-control" name="model_id" id="model" disabled>
                                                             <option value=""> -- {{ translate('choose_model') }} -- </option>
                                                             @foreach($models as $model)
                                                                 <option
@@ -93,7 +92,6 @@
                                                                 {{ $model['id'] == old('model_id') ? 'selected' : ''}}
                                                                 value="{{ $model['id'] }}">{{ $model['name'] }}</option>
                                                             @endforeach
-                                                            <option value="other" >{{ translate('other_model') }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -127,7 +125,7 @@
         $(document).ready(function () {
             const $brandSelect = $('#brand');
             const $modelSelect = $('#model');
-            const $categorySelect = $('#category'); // only used for value reading
+            const $categorySelect = $('#category');
 
             // Initialize Select2
             $brandSelect.select2({
@@ -137,11 +135,6 @@
 
             $modelSelect.select2({
                 placeholder: "{{ translate('choose_model') }}",
-                allowClear: true
-            });
-
-            $('#color').select2({
-                placeholder: "{{ translate('choose_color') }}",
                 allowClear: true
             });
 
@@ -166,7 +159,7 @@
                 }
             }
 
-            // NEW: Filter brands based on selected category
+            // Filter brands based on selected category
             function filterBrands() {
                 const selectedCategoryId = $categorySelect.val();
                 $brandSelect.empty().append('<option value=""> -- {{ translate("choose_brand") }} -- </option>');
@@ -174,14 +167,16 @@
                 allBrandOptions.each(function () {
                     const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
                     if (
+                        $(this).val() === "" ||                 // keep empty option
                         $(this).val() === "other" ||            // keep "other"
-                        brandCategories.length === 0 ||        // if no restriction
+                        brandCategories.length === 0 ||         // if no restriction
                         brandCategories.includes(selectedCategoryId)
                     ) {
-                        $brandSelect.append($(this));
+                        $brandSelect.append($(this).clone());
                     }
                 });
 
+                $brandSelect.val(null).trigger('change');
                 addPersistentOptions();
             }
 
@@ -189,39 +184,62 @@
                 const selectedBrandId = $brandSelect.val();
                 const selectedCategoryId = $categorySelect.val();
 
-                $modelSelect.empty().append('<option value=""> -- {{ translate("choose_model") }} -- </option>');
+                // Clear models but keep the default option
+                $modelSelect.find('option').not('[value=""]').remove();
 
+                // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
-                    const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
+                    const categoryId = $(this).data('category-id');
 
                     if (
-                        $(this).val() === "other" || // keep "other"
+                        $(this).val() === "" ||  // keep empty option
                         ((!brandId || brandId == selectedBrandId) &&
-                        (modelCategories.length === 0 || modelCategories.includes(selectedCategoryId)))
+                        (!categoryId || categoryId == selectedCategoryId))
                     ) {
-                        $modelSelect.append($(this));
+                        $modelSelect.append($(this).clone());
                     }
                 });
+
+                // Ensure "Other Model" is at the end
+                if ($modelSelect.find('option[value="other"]').length > 1) {
+                    $modelSelect.find('option[value="other"]').not(':last').remove();
+                }
 
                 $modelSelect.val(null).trigger('change');
                 addPersistentOptions();
             }
 
+            // Brand change event
             $brandSelect.on('change', function () {
-                filterModels();
-                if($categorySelect.val() != 491) {
-                    $('#model-box').removeClass('hide-element');
+                const selectedBrandId = $brandSelect.val();
+
+                if (!selectedBrandId || selectedBrandId === '') {
+                    // Disable model when no brand is selected
+                    $modelSelect.val(null).trigger('change');
+                    $modelSelect.prop('disabled', true);
+                } else {
+                    // Enable model and filter options
+                    filterModels();
+                    $modelSelect.prop('disabled', false);
                 }
-                $modelSelect.prop('disabled', false);
+
                 addPersistentOptions();
             });
 
+            // Category change event
             $categorySelect.on('change', function () {
                 var selectedOption = $(this).find('option:selected');
 
+                // Reset brand and model
+                $brandSelect.val(null).trigger('change');
+                $modelSelect.val(null).trigger('change');
+                $modelSelect.prop('disabled', true);
+
+                // Show/hide brand and model boxes based on category type
                 if(selectedOption.attr('data-is-vehicle') == 'vehicles') {
                     $('#brand-box').removeClass('hide-element');
+                    $('#model-box').removeClass('hide-element');
                 } else {
                     $('#brand-box').addClass('hide-element');
                     $('#model-box').addClass('hide-element');
@@ -235,13 +253,3 @@
     </script>
 
 @endpush
-
-
-
-
-
-
-
-
-
-
