@@ -213,6 +213,7 @@ class AdController extends Controller
             'currency.required' => translate("Currency is required") ,
             'country.required' => translate("Country is required") ,
             'city.required' => translate("City is required"),
+            'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
             'image.required' => translate("Image is required"),
         ]);
