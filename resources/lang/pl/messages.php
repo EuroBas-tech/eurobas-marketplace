@@ -7816,4 +7816,5 @@
   'the price field is required' => 'the price field is required',
   'The price field is required' => 'Pole ceny jest wymagane',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Coupe' => 'Coupe',
 );

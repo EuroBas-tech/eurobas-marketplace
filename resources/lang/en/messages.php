@@ -8267,4 +8267,7 @@
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
   'Only JPG  JPEG  PNG  WEBP  AVIF files are acceptable' => 'Only JPG  JPEG  PNG  WEBP  AVIF files are acceptable',
   'jpg  jpeg  png  webp  avif' => 'Jpg  jpeg  png  webp  avif',
+  'CNG' => 'CNG',
+  'AntiqueWhite' => 'AntiqueWhite',
+  'LPG' => 'LPG',
 );

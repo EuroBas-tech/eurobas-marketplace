@@ -7669,4 +7669,6 @@
   'Validation failed' => 'Validation failed',
   'The price field is required' => 'O campo do preço é obrigatório',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Coupe' => 'Coupe',
+  'Plug-in Hybrid (PHEV)' => 'Plug-in Hybrid (PHEV)',
 );

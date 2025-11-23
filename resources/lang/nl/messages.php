@@ -7901,4 +7901,6 @@
   'the price field is required' => 'the price field is required',
   'The price field is required' => 'Het prijsveld is verplicht',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'search_by_Category' => 'Search by Category',
+  'home_garden' => 'Home garden',
 );

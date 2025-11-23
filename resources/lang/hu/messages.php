@@ -7779,4 +7779,10 @@
   'Upload ID not found cannot get video URL' => 'Upload ID not found  cannot get video URL',
   'Validation failed' => 'Validation failed',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Plug-in Hybrid (PHEV)' => 'Plug-in Hybrid (PHEV)',
+  'CNG' => 'CNG',
+  'Coupe' => 'Coupe',
+  'Van' => 'Van',
+  'Hydrogen (FCEV)' => 'Hydrogen (FCEV)',
+  'Station Wagon' => 'Station Wagon',
 );

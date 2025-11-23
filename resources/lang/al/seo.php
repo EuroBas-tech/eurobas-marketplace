@@ -1,2 +1,0 @@
-'meta_title' => 'EuroBas – Tregu i bashkuar evropian për automjete dhe pasuri të paluajtshme',
-'meta_description' => 'EuroBas është tregu falas dhe i bashkuar evropian për blerjen dhe shitjen e automjeteve, pronave, jahteve, elektronikës dhe shumë produkteve të tjera. Krijoni llogarinë tuaj, publikoni shpallje të pakufizuara falas dhe lidheni drejtpërdrejt me blerës dhe shitës në të gjithë Evropën.',

@@ -7827,4 +7827,11 @@
   'The price field is required' => 'Kainos laukas yra privalomas',
   'Validation failed' => 'Validation failed',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Coupe' => 'Coupe',
+  'LPG' => 'LPG',
+  'Plug-in Hybrid (PHEV)' => 'Plug-in Hybrid (PHEV)',
+  'Hydrogen (FCEV)' => 'Hydrogen (FCEV)',
+  'Van' => 'Van',
+  'CNG' => 'CNG',
+  'Station Wagon' => 'Station Wagon',
 );

@@ -7877,4 +7877,10 @@
   'Processing video' => 'Processing video',
   'the price field is required' => 'the price field is required',
   'The price field is required' => 'Поле цены обязательно для заполнения',
+  'Coupe' => 'Coupe',
+  'Hydrogen (FCEV)' => 'Hydrogen (FCEV)',
+  'Station Wagon' => 'Station Wagon',
+  'Van' => 'Van',
+  'CNG' => 'CNG',
+  'LPG' => 'LPG',
 );

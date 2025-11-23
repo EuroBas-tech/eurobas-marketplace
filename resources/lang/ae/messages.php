@@ -7893,4 +7893,5 @@
   'exceeds the limit of' => 'Exceeds the limit of',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
   'Video duration' => 'Video duration',
+  'MB' => 'MB',
 );

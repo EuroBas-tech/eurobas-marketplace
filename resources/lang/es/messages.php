@@ -7895,4 +7895,10 @@
   'the price field is required' => 'the price field is required',
   'The price field is required' => 'El campo de precio es obligatorio',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Coupe' => 'Coupe',
+  'CNG' => 'CNG',
+  'Hydrogen (FCEV)' => 'Hydrogen (FCEV)',
+  'Van' => 'Van',
+  'Station Wagon' => 'Station Wagon',
+  'LPG' => 'LPG',
 );

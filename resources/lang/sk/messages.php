@@ -7827,4 +7827,6 @@
   'exceeds the limit of' => 'Exceeds the limit of',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
   'Validation failed' => 'Validation failed',
+  'Plug-in Hybrid (PHEV)' => 'Plug-in Hybrid (PHEV)',
+  'Coupe' => 'Coupe',
 );

@@ -1,2 +1,0 @@
-'meta_title' => 'EuroBas – Euroopan yhtenäinen markkinapaikka ajoneuvoille ja kiinteistöille',
-'meta_description' => 'EuroBas on Euroopan ilmainen ja yhtenäinen markkinapaikka ajoneuvojen, kiinteistöjen, jahtien, elektroniikan ja monien muiden tuotteiden ostamiseen ja myymiseen. Luo tilisi, julkaise rajattomasti ilmaisia ilmoituksia ja yhdistä suoraan ostajien ja myyjien kanssa ympäri Eurooppaa.',

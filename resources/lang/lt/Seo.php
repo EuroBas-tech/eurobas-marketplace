@@ -1,2 +1,0 @@
-'meta_title' => 'EuroBas – Europos suvienyta transporto priemonių ir nekilnojamojo turto prekyvietė',
-'meta_description' => 'EuroBas yra nemokama ir suvienyta Europos prekyvietė, skirta transporto priemonėms, nekilnojamajam turtui, jachtoms, elektronikai ir daugeliui kitų prekių pirkti ir parduoti. Susikurkite paskyrą, talpinkite neribotus nemokamus skelbimus ir tiesiogiai bendraukite su pirkėjais ir pardavėjais visoje Europoje.',

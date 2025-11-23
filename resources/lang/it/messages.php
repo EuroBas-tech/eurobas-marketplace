@@ -7886,4 +7886,6 @@
   'the price field is required' => 'the price field is required',
   'The price field is required' => 'Il campo del prezzo è obbligatorio',
   'Upload ID not found  cannot get video URL' => 'Upload ID not found  cannot get video URL',
+  'Coupe' => 'Coupe',
+  'Hydrogen (FCEV)' => 'Hydrogen (FCEV)',
 );
