@@ -11,20 +11,19 @@
     <meta property="twitter:url" content="{{env('APP_URL')}}">
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
+    <style>
         @font-face {
             font-family: 'NotoColorEmojiLimited';
             unicode-range: U+1F1E6-1F1FF;
             src: url('https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf') format('truetype');
         }
-
         .emoji-font {
-            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
-            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+            font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
+            'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
-
         .select-category-button {
             display: none;
         }
@@ -39,7 +38,7 @@
             background: rgba(0, 0, 0, 0.5);
             background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
             color: white;
-            width: 205px;
+            width: 205px; 
             height: 55px;
             /* padding: 0 20px; */
             display: flex;
@@ -53,14 +52,6 @@
             text-overflow: ellipsis; /* نقاط للحذف */
             white-space: nowrap; /* منع التفاف النص */
         }
-        /* @media (max-width: 990px) and (min-width: 767px) {
-            .category-name {
-                padding: 7px;
-                font-size: 13px;
-                right: 28px;
-            }
-        } */
-
         .home-banner-swiper {
             width: 100%;
             height: 180px;
@@ -80,29 +71,24 @@
         .secondary-swiper .swiper-slide {
             border: 1px solid #d4d4d4;
         }
-
         .swiper-slide img {
             width: 100%;
             object-fit: cover;
             border-radius: 8px;
         }
-
         .secondary-swiper .swiper-slide img {
             object-fit: fill;
         }
-
         .secondary-swiper .swiper-slide img {
             width: 95px;
             height: 80px;
         }
-
         .select2-container--default .select2-selection--single .select2-selection__placeholder {
                 color: black !important;
             }
         .select2-selection__clear {
             display: none !important;
         }
-
         .select2-container--default .select2-search--dropdown .select2-search__field {
             border: 1px solid gray !important;
             border-radius: 4px !important;
@@ -111,11 +97,9 @@
             border: 1px solid #dbdbdb !important;
             border-radius: 6px !important;
         }
-
         .select2.select2-container {
             display: block !important;
         }
-
         .select2-container .select2-selection--single .select2-selection__rendered {
             border: none !important;
         }
@@ -128,29 +112,53 @@
         .select2-container--default .select2-search--dropdown .select2-search__field {
             height: 36px !important;
         }
-
         .modal-backdrop {
             display: none !important;
         }
-
         /* Add this CSS to fix only the paid banners section */
         .home-banner-swiper {
             overflow: hidden !important;
             max-width: 100vw !important;
         }
-
         .home-banner-swiper .swiper-wrapper {
             max-width: 100% !important;
         }
-
         .home-banner-swiper .swiper-slide {
             max-width: 100% !important;
         }
-
         .home-banner-swiper .swiper-slide img {
             width: 100% !important;
             max-width: 100% !important;
             height: 170 !important;
+        }
+
+        .swiper-slide {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .swiper-slide.animate__animated {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* Lazy load images - performance boost */
+        img {
+            content-visibility: auto;
+        }
+
+        .recommended-product-grid img {
+            loading: lazy;
+            will-change: transform;
+        }
+
+        /* Reduce animation complexity on mobile */
+        @media (max-width: 768px) {
+            .wow {
+                animation-duration: 0.5s !important;
+            }
+            .animate__animated {
+                animation-duration: 0.5s !important;
+            }
         }
 
         @media (min-width: 576px) {
@@ -160,36 +168,30 @@
                 font-size: 16px;
             }
         }
-
         @media (max-width: 575px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 line-height: 36px !important;
                 height: 38px !important;
             }
         }
-
         .hero-background-image {
-            background: url("{{ cloudfront('banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
+            background: url("{{ asset('storage/app/public/banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
             background-size: cover;
         }
-
         .hero-card {
             background-size: cover;
             background-position: 20% 20%;
             height: 200px;
         }
-
         /* For RTL screens */
         :dir(rtl) .hero-card {
             background-position: 75% 20%;
         }
-
         @media (min-width: 768px) {
             .hero-card {
                 height: 280px;
             }
         }
-
     </style>
 
 @endpush
@@ -242,19 +244,18 @@
 
         <!-- Recommended For You -->
         @include('theme-views.partials._recommended-product')
-        <!-- Show System Vehicle Brands -->
-        {{--
-            @include('theme-views.partials._brands')
-        --}}
 
     </main>
 @endsection
 
 @push('script')
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
     <script>
+        // Initialize Swiper FIRST
         const swiper = new Swiper('.home-banner-swiper', {
-            slidesPerView: 1,      // Default (mobile)
+            slidesPerView: 1,
             spaceBetween: 20,
             slidesPerGroup: 1,
             loop: false,
@@ -266,13 +267,26 @@
                 pauseOnMouseEnter: true,
             },
             breakpoints: {
-                // ≥ 768px (medium screens)
                 768: {
                     slidesPerView: 2,
                 },
-                // ≥ 1024px (large screens)
                 1024: {
                     slidesPerView: 3,
+                }
+            },
+            on: {
+                init: function() {
+                    // After Swiper loads, initialize WOW.js
+                    setTimeout(function() {
+                        new WOW({
+                            boxClass: 'wow',
+                            animateClass: 'animate__animated',
+                            offset: 0,
+                            mobile: true,
+                            live: true,
+                            resetAnimation: false
+                        }).init();
+                    }, 100);
                 }
             }
         });
@@ -283,7 +297,6 @@
             let isCategoryChanging = false;
 
             $('.filter-input').on('change', function () {
-                // Skip filtering during category change
                 if (isCategoryChanging) {
                     return;
                 }
@@ -316,7 +329,6 @@
             }
 
             window.triggerFilterManually = function (clickedElement) {
-                // Block all change events during reset
                 isCategoryChanging = true;
                 
                 $('#selectedCategoryId').val($(clickedElement).data('id'));
@@ -327,11 +339,9 @@
                 $('#brand').val('all').trigger('change');
                 $('#model').val('all').trigger('change');
                 
-                // Unblock and trigger ONE filter
                 isCategoryChanging = false;
                 filterAds($('#selectedCategoryId'));
             };
-
         });
     </script>
 @endpush
