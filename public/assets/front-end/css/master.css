@@ -31,3 +31,7 @@ body {
 .aspect-1 {
     aspect-ratio: 1;
 }
+
+.card-body {
+    white-space: pre-line !important;
+}
