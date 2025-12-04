@@ -1,6 +1,4 @@
-<?php
-
 return [
-    'meta_title' => "EuroBas – Le marché européen pour véhicules, immobilier et plus",
-    'meta_description' => "EuroBas est le marché européen pour l’achat et la vente de véhicules, de biens immobiliers, d’électronique, de yachts et de nombreux autres produits. Créez votre compte gratuit, publiez des annonces illimitées et entrez en contact directement avec des acheteurs et des vendeurs dans toute l’Europe.",
+    'meta_title' => 'EuroBas – Le Marché Européen des Véhicules, Immobilier & Plus',
+    'meta_description' => 'EuroBas est la place de marché européenne pour acheter et vendre des véhicules, des biens immobiliers, de l’électronique, des yachts et plus encore — entièrement gratuit et sans commission. Créez votre compte gratuit, publiez des annonces illimitées et entrez en contact directement avec des acheteurs et des vendeurs partout en Europe.',
 ];
