@@ -175,7 +175,7 @@
             }
         }
         .hero-background-image {
-            background: url("{{ asset('storage/app/public/banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
+            background: url("{{ cloudfront('banner') }}/{{ $banner['photo'] ?? '' }}") no-repeat;
             background-size: cover;
         }
         .hero-card {
