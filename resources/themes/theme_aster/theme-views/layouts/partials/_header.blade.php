@@ -886,10 +886,6 @@
                                                     </div>
                                                 </a>
                                             @endforeach
-                                            <div class="d-flex">
-                                                <a href="" class="fw-bold text-primary d-flex justify-content-center">{{ translate('view_all') }}...
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

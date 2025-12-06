@@ -37,6 +37,7 @@
         "league/flysystem-aws-s3-v3": "*",
         "maatwebsite/excel": "^3.1",
         "madnest/madzipper": "^1.1",
+        "mcamara/laravel-localization": "*",
         "mercadopago/dx-php": "^2.4",
         "milon/barcode": "^8.0",
         "mpdf/mpdf": "^8.0",
