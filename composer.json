@@ -39,6 +39,7 @@
         "madnest/madzipper": "^1.1",
         "mcamara/laravel-localization": "*",
         "mercadopago/dx-php": "^2.4",
+        "mcamara/laravel-localization": "^1.8",
         "milon/barcode": "^8.0",
         "mpdf/mpdf": "^8.0",
         "muxinc/mux-php": "^5.0",
