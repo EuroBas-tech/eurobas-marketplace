@@ -514,53 +514,10 @@ Route::get('migrate-by-code', function() {
 
 
 
-Route::get('import-translations-languages', function () {
+Route::get('empty-table', function () {
 
-    // 1. Empty the table first (prevent duplicate IDs)
-    DB::statement('TRUNCATE TABLE languages_translations');
-
-    // 2. Increase limits
-    ini_set('memory_limit', '-1');
-    ini_set('max_execution_time', 0);
-
-    // 3. Load the file
-    $path = database_path('sql/lang.sql');
-    $handle = fopen($path, "r");
-
-    $batch = "";
-    $counter = 0;
-    $batchSize = 1000; // insert 1000 rows per batch
-
-    // 4. Read file line-by-line
-    while (($line = fgets($handle)) !== false) {
-
-        $batch .= $line;
-
-        // Count rows (those ending with ",")
-        if (str_ends_with(trim($line), "),")) {
-            $counter++;
-        }
-
-        // 5. If batch is full → insert it
-        if ($counter >= $batchSize) {
-            DB::unprepared(
-                "INSERT INTO languages_translations VALUES " . rtrim($batch, ",") . ";"
-            );
-            $batch = "";
-            $counter = 0;
-        }
-    }
-
-    // 6. Insert remaining rows
-    if (!empty(trim($batch))) {
-        DB::unprepared(
-            "INSERT INTO languages_translations VALUES " . rtrim($batch, ",") . ";"
-        );
-    }
-
-    fclose($handle);
-
-    return "IMPORT COMPLETED SUCCESSFULLY!";
+    LanguageTranslation::truncate();
+    
 });
 
 
