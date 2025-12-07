@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
@@ -485,5 +486,29 @@ Route::get('supported-locales', function() {
     return $all_locales;
 });
 
+Route::get('migrate-by-code', function() {
+
+    if (!Schema::hasTable('languages_translations')) {
+    
+        $result = Artisan::call('migrate', [
+            '--path' => 'database/migrations/2025_11_23_102959_create_languages_translations_table.php',
+            '--force' => true
+        ]);
+
+        if (Schema::hasTable('languages_translations')) {
+            return 'Migration success';
+        } 
+        
+        else {
+            return 'Migration failed';
+        }
+
+    } 
+    
+    else {
+        return 'Table already exists';
+    }
+
+});
 
 
