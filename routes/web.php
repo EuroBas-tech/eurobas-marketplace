@@ -48,6 +48,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Model\SellerWalletActionHistory;
 use App\Model\SubscriptionPackageFeature;
 use GuzzleHttp\Exception\RequestException;
@@ -56,10 +57,10 @@ use phpseclib3\File\ASN1\Maps\AttributeValue;
 use App\Http\Controllers\Shipping\ShipmentController;
 use App\Http\Controllers\Payment_Methods\PaytmController;
 use App\Http\Controllers\Payment_Methods\LiqPayController;
+
 use App\Http\Controllers\Payment_Methods\PaymobController;
 
 use App\Http\Controllers\Payment_Methods\PayPalController;
-
 use App\Http\Controllers\Payment_Methods\StripeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use App\Http\Controllers\Payment_Methods\PaytabsController;
@@ -685,6 +686,17 @@ Route::get('clear-cache', function() {
 
     Cache::flush();
 });
+
+Route::get('clear-app', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    
+    return "All caches cleared successfully!";
+});
+
+
 
 
 

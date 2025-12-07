@@ -87,6 +87,11 @@ class Kernel extends HttpKernel
         'seller_api_auth' => SellerApiAuthMiddleware::class,
         'guestCheck' => GuestMiddleware::class,
         'apiGuestCheck' => APIGuestMiddleware::class,
+        'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
+
     ];
 
     /**
