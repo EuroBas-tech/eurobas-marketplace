@@ -132,15 +132,6 @@
             height: 170 !important;
         }
 
-        .swiper-slide {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        .swiper-slide.animate__animated {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-
         @media (min-width: 576px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 line-height: 38px !important;
