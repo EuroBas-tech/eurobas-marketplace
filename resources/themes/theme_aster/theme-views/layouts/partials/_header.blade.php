@@ -824,7 +824,7 @@
         <div class="container">
             <div class="d-flex align-items-center w-100 justify-content-between gap-2">
                 <a class="logo" href="{{route('home')}}">
-                    <img src="{{asset("storage/app/public/company")."/".$web_config['web_logo']->value}}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
+                    <img src="{{ cloudfront('company') }}/{{ $web_config['web_logo']->value }}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
                 </a>
                 <div class="desktop-search-container">
                     <div class="d-flex align-items-center gap-3">
