@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\User;
+use App\Model\Ad;
 use Carbon\Carbon;
 use App\Model\Cart;
 use App\Model\Shop;
@@ -18,6 +19,7 @@ use App\Model\Seller;
 use App\Model\Contact;
 use App\Model\Product;
 use App\Model\Setting;
+use App\CPU\SMS_module;
 use App\Model\Category;
 use App\Model\Currency;
 use App\Model\Wishlist;
@@ -28,6 +30,7 @@ use App\CPU\OrderManager;
 use App\Model\OrderDetail;
 use App\Model\Transaction;
 use App\Model\Translation;
+use App\Traits\SmsGateway;
 use Carbon\CarbonInterval;
 use App\CPU\ProductManager;
 use App\Model\CartShipping;
@@ -35,6 +38,7 @@ use App\Model\DealOfTheDay;
 use App\Model\ShippingType;
 use App\Model\ShopFollower;
 use App\Model\Subscription;
+use App\Model\VehicleModel;
 use App\Traits\CommonTrait;
 use Illuminate\Support\Arr;
 use App\CPU\CustomerManager;
@@ -54,15 +58,14 @@ use Gregwar\Captcha\CaptchaBuilder;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Facade\FlareClient\Http\Response;
 use function App\CPU\payment_gateways;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Model\DigitalProductOtpVerification;
-use App\Traits\SmsGateway;
-use App\CPU\SMS_module;
-use Illuminate\Support\Facades\File;
 
 class WebController extends Controller
 {
@@ -148,19 +151,28 @@ class WebController extends Controller
 
     public function all_brands(Request $request)
     {
-        $brand_status = BusinessSetting::where(['type' => 'product_brand'])->value('value');
-        session()->put('product_brand', $brand_status);
-        if($brand_status == 1){
-            $order_by = $request->order_by ?? 'desc';
-            $brands = Brand::active()->withCount('brandProducts')->orderBy('name', $order_by)
-                                    ->when($request->has('search'), function($query) use($request){
-                                    $query->where('name', 'LIKE', '%' . $request->search . '%');
-                                })->latest()->paginate(15)->appends(['order_by'=>$order_by, 'search'=>$request->search]);
+        $query = Brand::query();
 
-            return view(VIEW_FILE_NAMES['all_brands'], compact('brands'));
-        }else{
-            return redirect()->route('home');
+        if ($request->filled('search')) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%');
         }
+
+        $brands = $query->paginate(20)->appends($request->only('search'));
+
+        return view(VIEW_FILE_NAMES['all_brands'], compact('brands'));
+    }
+
+
+    public function brand_details(Brand $brand) {
+        $brand->load('VehicleModels');
+
+        return view(VIEW_FILE_NAMES['brand_details'], compact('brand'));
+    }
+    
+    public function model_ads(VehicleModel $vehicleModel) {
+        $model_ads = Ad::where('model_id', $vehicleModel->id)->get();
+        
+        return view('theme-views.ad.show-by-model', compact('vehicleModel', 'model_ads'));    
     }
 
     public function all_sellers(Request $request)
@@ -564,7 +576,7 @@ class WebController extends Controller
         // }
 
         // Helpers::send_order_notification($request->order_status,'customer',$order);
-
+        
         $order->order_status = 'delivery_confirmed';
 
         $order->save();
@@ -1162,17 +1174,17 @@ class WebController extends Controller
             if($order_details_data){
                 $file_name = '';
                 if( $order_details_data->product->digital_product_type == 'ready_product' && $order_details_data->product->digital_file_ready) {
-                    $file_path = cloudfront('product/digital-product/' .$order_details_data->product->digital_file_ready);
+                    $file_path = asset('storage/app/public/product/digital-product/' .$order_details_data->product->digital_file_ready);
                     $file_name = $order_details_data->product->digital_file_ready;
                 }else{
-                    $file_path = cloudfront('product/digital-product/' . $order_details_data->digital_file_after_sell);
+                    $file_path = asset('storage/app/public/product/digital-product/' . $order_details_data->digital_file_after_sell);
                     $file_name = $order_details_data->digital_file_after_sell;
                 }
             }
 
             DigitalProductOtpVerification::where(['token' => $request->otp, 'order_details_id' => $request->order_details_id])->delete();
 
-            if(Storage::disk()->exists('product/digital-product/'. $file_name)) {
+            if(File::exists(base_path('storage/app/public/product/digital-product/'. $file_name))) {
                 return response()->json([
                     'status' => 1,
                     'file_path' => $file_path ?? '',

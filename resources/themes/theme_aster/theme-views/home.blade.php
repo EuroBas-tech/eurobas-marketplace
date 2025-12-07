@@ -141,26 +141,6 @@
             transform: translateY(0) !important;
         }
 
-        /* Lazy load images - performance boost */
-        img {
-            content-visibility: auto;
-        }
-
-        .recommended-product-grid img {
-            loading: lazy;
-            will-change: transform;
-        }
-
-        /* Reduce animation complexity on mobile */
-        @media (max-width: 768px) {
-            .wow {
-                animation-duration: 0.5s !important;
-            }
-            .animate__animated {
-                animation-duration: 0.5s !important;
-            }
-        }
-
         @media (min-width: 576px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 line-height: 38px !important;
@@ -249,8 +229,6 @@
 @endsection
 
 @push('script')
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 
     <script>
         // Initialize Swiper FIRST

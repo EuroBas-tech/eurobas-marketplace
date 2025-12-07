@@ -15,15 +15,14 @@
         <h1 class="text-center text-white"  style="font-weight: 800;"> {{ translate('Euro Marketn') }}</h1>
         <h2 class="text-center text-white" style="font-weight: 600;">
         {!! trans('messages.marketplace') !!}
-        </h2>
-    </div>
+        </h2>        
+    </div> 
 @endif
 
 @php(
     $categories = Cache::rememberForever('home_categories', function () {
         return \App\Model\Category::homeEnabled()
         ->priority()
-        ->take(11)
         ->get();
     })
 )
@@ -31,7 +30,7 @@
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
         return \App\Model\Brand::active()
-        ->take(14)
+        ->take(15)
         ->get();
     })
 )
@@ -125,7 +124,7 @@
             gap: 10px !important;
             max-height: 500px;
             overflow-y: auto;
-            scrollbar-width: thin;
+            scrollbar-width: thin; 
             scrollbar-color: #888  #f1f1f1;
             scroll-behavior: smooth;
         }
@@ -192,7 +191,7 @@
 
 
         /***************** start voice recording css code  ***********/
-
+        
 /* Simple Voice Search Styles */
 
 /* Make sure button can position the dot */
@@ -284,13 +283,13 @@
                 left: -40px;
                 font-size: 1.2em;
             }
-
+            
             .pointing-hand.right-direction::after {
                 right: -40px;
                 font-size: 1.2em;
             }
         }
-
+    
         /* Modern Menu Css Code Start */
 
         .modern-menu .nav-menu {
@@ -566,33 +565,244 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <ul class="nav justify-content-center w-100 align-items-center gap-4 d-xl-none">
                         <li class="" >
-                            <div class="language-dropdown">
-                                <button type="button" class="border-0 bg-transparent d-flex custom-fs-16 gap-1 align-items-center dropdown-toggle text-dark text-white p-0 text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @php( $local = \App\CPU\Helpers::default_lang())
-                                    @foreach(json_decode($language['value'],true) as $data)
-                                    @if($data['code']==$local)
-                                        <img width="20" src="{{theme_asset('assets/img/flags')}}/{{ strtolower($data['code']).'.svg' }}" class="dark-support" alt="Eng" />
-                                        {{ ucwords($data['name']) }}
-                                    @endif
-                                    @endforeach
-                                </button>
-                                <ul class="dropdown-menu" style="--bs-dropdown-min-width: 10rem;overflow-x: auto;max-height: 500px;">
-                                    @foreach(json_decode($language['value'],true) as $key =>$data)
-                                    @if($data['status']==1)
-                                    <li>
-                                        <a class="d-flex gap-2 align-items-center" href="{{route('lang',[$data['code']])}}">
-                                            <img width="20" src="{{theme_asset('assets/img/flags')}}/{{ strtolower($data['code']).'.svg' }}" loading="lazy" class="dark-support" alt="{{$data['name']}}" />
-                                            {{ ucwords($data['name']) }}
-                                        </a>
-                                    </li>
-                                    @endif
-                                    @endforeach
-                                </ul>
-                            </div>
+                    
+                        <div class="language-dropdown">
+
+                            @php($locale = LaravelLocalization::getCurrentLocale())
+                            @php($flagMap = [
+                                'en' => 'en.svg',
+                                'nl' => 'nl.svg',
+                                'de' => 'de.svg',
+                                'tr' => 'tr.svg',
+                                'es' => 'es.svg',
+                                'it' => 'it.svg',
+                                'ru' => 'ru.svg',
+                                'fr' => 'fr.svg',
+                                'ar' => 'ae.svg',
+                                'el' => 'gr.svg',
+                                'pl' => 'pl.svg',
+                                'ro' => 'ro.svg',
+                                'uk' => 'ua.svg',
+                                'bg' => 'bg.svg',
+                                'pt' => 'pt.svg',
+                                'sr' => 'rs.svg',
+                                'da' => 'dk.svg',
+                                'sv' => 'se.svg',
+                                'fi' => 'fi.svg',
+                                'nn' => 'no.svg',
+                                'hr' => 'hr.svg',
+                                'hu' => 'hu.svg',
+                                'cs' => 'cz.svg',
+                                'sq' => 'al.svg',
+                                'bs' => 'ba.svg',
+                                'lt' => 'lt.svg',
+                                'sl' => 'si.svg',
+                                'sk' => 'sk.svg',
+                                'zh' => 'cn.svg',
+                                'ko' => 'kr.svg',
+                                'ja' => 'jp.svg',
+                            ])
+                            @php($currentFlag = $flagMap[$locale] ?? 'en.svg')
+
+                            <button type="button" class="border-0 bg-transparent d-flex custom-fs-16 gap-1 align-items-center dropdown-toggle text-dark text-white p-0 show" data-bs-toggle="dropdown" aria-expanded="true">
+                                <img width="20"
+                                    src="/resources/themes/theme_aster/public/assets/img/flags/{{ $currentFlag }}"
+                                    class="dark-support" alt="">                                
+                                    {{ LaravelLocalization::getSupportedLocales()[LaravelLocalization::getCurrentLocale()]['native'] ?? 'Language' }}
+                            </button>
+                            <ul class="dropdown-menu" style="--bs-dropdown-min-width: 10rem; overflow-x: auto; max-height: 500px; position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(12px, 37.3333px, 0px);" data-popper-placement="bottom-start">
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/en.svg" loading="lazy" class="dark-support" alt="english">
+                                        English
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('nl') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/nl.svg" loading="lazy" class="dark-support" alt="Nederlands">
+                                        Nederlands
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('de') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/de.svg" loading="lazy" class="dark-support" alt="Deutsch">
+                                        Deutsch
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('tr') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/tr.svg" loading="lazy" class="dark-support" alt="Türkçe">
+                                        Türkçe
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('es') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/es.svg" loading="lazy" class="dark-support" alt="Español">
+                                        Español
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('it') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/it.svg" loading="lazy" class="dark-support" alt="Italiano">
+                                        Italiano
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ru') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ru.svg" loading="lazy" class="dark-support" alt="Русский">
+                                        Русский
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('fr') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/fr.svg" loading="lazy" class="dark-support" alt="Français">
+                                        Français
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ar') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ae.svg" loading="lazy" class="dark-support" alt="العربية">
+                                        العربية
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('el') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/gr.svg" loading="lazy" class="dark-support hb-hide-temp" alt="ελληνικά">
+                                        ελληνικά
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('pl') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/pl.svg" loading="lazy" class="dark-support" alt="Polski">
+                                        Polski
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ro') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ro.svg" loading="lazy" class="dark-support" alt="Română">
+                                        Română
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('uk') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ua.svg" loading="lazy" class="dark-support hb-hide-temp" alt="Украiнська">
+                                        Украiнська
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('bg') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/bg.svg" loading="lazy" class="dark-support" alt="Bulgarski">
+                                        Bulgarski
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('pt') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/pt.svg" loading="lazy" class="dark-support" alt="Português">
+                                        Português
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sr') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/rs.svg" loading="lazy" class="dark-support" alt="Српски">
+                                        Српски
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('da') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/dk.svg" loading="lazy" class="dark-support" alt="Dansk">
+                                        Dansk
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sv') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/se.svg" loading="lazy" class="dark-support" alt="Svenska">
+                                        Svenska
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('fi') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/fi.svg" loading="lazy" class="dark-support" alt="Suomi">
+                                        Suomi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('nn') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/no.svg" loading="lazy" class="dark-support" alt="Norsk">
+                                        Norsk
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('hr') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/hr.svg" loading="lazy" class="dark-support" alt="Hrvatski">
+                                        Hrvatski
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('hu') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/hu.svg" loading="lazy" class="dark-support" alt="Magyar">
+                                        Magyar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('cs') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/cz.svg" loading="lazy" class="dark-support" alt="Čeština">
+                                        Čeština
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sq') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/al.svg" loading="lazy" class="dark-support" alt="Shqip">
+                                        Shqip
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('bs') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ba.svg" loading="lazy" class="dark-support" alt="Bosanski">
+                                        Bosanski
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('lt') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/lt.svg" loading="lazy" class="dark-support" alt="Lietuvių">
+                                        Lietuvių
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sl') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/si.svg" loading="lazy" class="dark-support" alt="Slovenščina">
+                                        Slovenščina
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sk') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/sk.svg" loading="lazy" class="dark-support" alt="Slovenčina">
+                                        Slovenčina
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('zh') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/cn.svg" loading="lazy" class="dark-support" alt="简体中文">
+                                        简体中文
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ko') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/kr.svg" loading="lazy" class="dark-support" alt="한국어">
+                                        한국어
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ja') }}" >
+                                        <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/jp.svg" loading="lazy" class="dark-support" alt="日本語">
+                                        日本語
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                         </li>
                     </ul>
                 </div>
-
+                
                 @if(auth('customer')->check())
                     <a href="{{ route('ads-adding-type') }}" class="btn btn-light text-light bg-orange fw-normal custom-fs-16 border-0 d-flex gap-1 px-2 py-1">
                         <i class="bi bi-plus-circle mx-1"></i>
@@ -614,9 +824,8 @@
         <div class="container">
             <div class="d-flex align-items-center w-100 justify-content-between gap-2">
                 <a class="logo" href="{{route('home')}}">
-                    <img src="{{cloudfront("company")."/".$web_config['web_logo']->value}}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
+                    <img src="{{asset("storage/app/public/company")."/".$web_config['web_logo']->value}}" class="dark-support svg h-45" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" alt="Logo" />
                 </a>
-
                 <div class="desktop-search-container">
                     <div class="d-flex align-items-center gap-3">
                         <div class="search-box position-relative d-flex align-items-center gap-3">
@@ -641,19 +850,18 @@
                         </div>
                     </div>
                 </div>
-
                 <ul class="nav justify-content-center justify-content-sm-end align-items-center">
                     <li>
                         <div class="language-dropdown">
                             @php($country = session('show_by_country') ? session('show_by_country') : SYSTEM_COUNTRIES[0])
-                            <button type="button" class="border-0 emoji-font bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark text-white  p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="border-0 emoji-font bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark text-white  p-0" data-bs-toggle="dropdown" aria-expanded="false">                                   
                                 {{$country['emoji']}} {{$country['name']}}
                             </button>
                             <ul class="dropdown-menu" style="--bs-dropdown-min-width: 10rem
                             ;overflow-x: auto;max-height: 500px;">
                                 @foreach (SYSTEM_COUNTRIES as $key => $data)
                                     <li>
-                                        <a class="d-flex gap-2 emoji-font align-items-center"
+                                        <a class="d-flex gap-2 emoji-font align-items-center" 
                                         href="{{route('show-by-country', ['code' => $data['code'], 'flag' => $data['emoji']])}}">
                                             {{$data['emoji']}} {{ ucwords($data['name']) }}
                                         </a>
@@ -662,31 +870,308 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="large-margin-x" >
-                        <div class="language-dropdown">
-                            <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark text-white  p-0" data-bs-toggle="dropdown" aria-expanded="false">
-                                @php( $local = \App\CPU\Helpers::default_lang())
-                                @foreach(json_decode($language['value'],true) as $data)
-                                @if($data['code']==$local)
-                                <img width="20" src="{{theme_asset('assets/img/flags')}}/{{ $data['code'].'.svg' }}" class="dark-support" alt="Eng" />
-                                {{ ucwords($data['name']) }}
-                                @endif
-                                @endforeach
-                            </button>
-                            <ul class="dropdown-menu grid-dropdown" style="--bs-dropdown-min-width: 10rem">
-                                @foreach(json_decode($language['value'],true) as $key =>$data)
-                                    @if($data['status']==1)
-                                        <li>
-                                            <a class="d-flex gap-2 align-items-center" href="{{route('lang',[$data['code']])}}">
-                                                <img width="20" src="{{theme_asset('assets/img/flags')}}/{{ $data['code'].'.svg' }}" loading="lazy" class="dark-support" alt="{{$data['name']}}" />
-                                                {{ ucwords($data['name']) }}
-                                            </a>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul>
-                        </div>
-                    </li>
+                    <li class="large-margin-x">
+                    
+                    <div class="language-dropdown">
+                    
+                        @php($locale = LaravelLocalization::getCurrentLocale())
+
+                        @php($flagMap = [
+                            'en' => 'en.svg',
+                            'nl' => 'nl.svg',
+                            'de' => 'de.svg',
+                            'tr' => 'tr.svg',
+                            'es' => 'es.svg',
+                            'it' => 'it.svg',
+                            'ru' => 'ru.svg',
+                            'fr' => 'fr.svg',
+                            'ar' => 'ae.svg',
+                            'el' => 'gr.svg',
+                            'pl' => 'pl.svg',
+                            'ro' => 'ro.svg',
+                            'uk' => 'ua.svg',
+                            'bg' => 'bg.svg',
+                            'pt' => 'pt.svg',
+                            'sr' => 'rs.svg',
+                            'da' => 'dk.svg',
+                            'sv' => 'se.svg',
+                            'fi' => 'fi.svg',
+                            'nn' => 'no.svg',
+                            'hr' => 'hr.svg',
+                            'hu' => 'hu.svg',
+                            'cs' => 'cz.svg',
+                            'sq' => 'al.svg',
+                            'bs' => 'ba.svg',
+                            'lt' => 'lt.svg',
+                            'sl' => 'si.svg',
+                            'sk' => 'sk.svg',
+                            'zh' => 'cn.svg',
+                            'ko' => 'kr.svg',
+                            'ja' => 'jp.svg',
+                        ])
+                        @php($currentFlag = $flagMap[$locale] ?? 'en.svg')
+
+                        <button type="button" class="border-0 bg-transparent d-flex custom-fs-16 gap-1 align-items-center dropdown-toggle text-dark text-white p-0 show" data-bs-toggle="dropdown" aria-expanded="true">
+                            <img width="20"
+                                src="/resources/themes/theme_aster/public/assets/img/flags/{{ $currentFlag }}"
+                                class="dark-support" alt="">                                
+                                {{ LaravelLocalization::getSupportedLocales()[LaravelLocalization::getCurrentLocale()]['native'] ?? 'Language' }}
+                        </button>
+
+                        <ul class="dropdown-menu grid-dropdown" style="--bs-dropdown-min-width: 10rem;">
+
+                            <!-- English -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center"
+                                    href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/en.svg" loading="lazy" class="dark-support">
+                                    English 
+                                </a>
+                            </li>
+
+                            <!-- Dutch -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('nl') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/nl.svg" loading="lazy" class="dark-support">
+                                    Nederlands
+                                </a>
+                            </li>
+
+                            <!-- German -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('de') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/de.svg" loading="lazy" class="dark-support">
+                                    Deutsch
+                                </a>
+                            </li>
+
+                            <!-- Turkish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('tr') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/tr.svg" loading="lazy" class="dark-support">
+                                    Türkçe
+                                </a>
+                            </li>
+
+                            <!-- Spanish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('es') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/es.svg" loading="lazy" class="dark-support">
+                                    Español
+                                </a>
+                            </li>
+
+                            <!-- Italian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('it') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/it.svg" loading="lazy" class="dark-support">
+                                    Italiano
+                                </a>
+                            </li>
+
+                            <!-- Russian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ru') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ru.svg" loading="lazy" class="dark-support">
+                                    Русский
+                                </a>
+                            </li>
+
+                            <!-- French -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('fr') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/fr.svg" loading="lazy" class="dark-support">
+                                    Français
+                                </a>
+                            </li>
+
+                            <!-- Arabic -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ar') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ae.svg" loading="lazy" class="dark-support">
+                                    العربية
+                                </a>
+                            </li>
+
+                            <!-- Greek -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('el') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/gr.svg" loading="lazy" class="dark-support">
+                                    ελληνικά
+                                </a>
+                            </li>
+
+                            <!-- Polish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('pl') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/pl.svg" loading="lazy" class="dark-support">
+                                    Polski
+                                </a>
+                            </li>
+
+                            <!-- Romanian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ro') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ro.svg" loading="lazy" class="dark-support">
+                                    Română
+                                </a>
+                            </li>
+
+                            <!-- Ukrainian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('uk') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ua.svg" loading="lazy" class="dark-support">
+                                    Українська
+                                </a>
+                            </li>
+
+                            <!-- Bulgarian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('bg') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/bg.svg" loading="lazy" class="dark-support">
+                                    Bulgarski
+                                </a>
+                            </li>
+
+                            <!-- Portuguese -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('pt') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/pt.svg" loading="lazy" class="dark-support">
+                                    Português
+                                </a>
+                            </li>
+
+                            <!-- Serbian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sr') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/rs.svg" loading="lazy" class="dark-support">
+                                    Српски
+                                </a>
+                            </li>
+
+                            <!-- Danish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('da') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/dk.svg" loading="lazy" class="dark-support">
+                                    Dansk
+                                </a>
+                            </li>
+
+                            <!-- Swedish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sv') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/se.svg" loading="lazy" class="dark-support">
+                                    Svenska
+                                </a>
+                            </li>
+
+                            <!-- Finnish -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('fi') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/fi.svg" loading="lazy" class="dark-support">
+                                    Suomi
+                                </a>
+                            </li>
+
+                            <!-- Norwegian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('nn') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/no.svg" loading="lazy" class="dark-support">
+                                    Norsk
+                                </a>
+                            </li>
+
+                            <!-- Croatian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('hr') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/hr.svg" loading="lazy" class="dark-support">
+                                    Hrvatski
+                                </a>
+                            </li>
+
+                            <!-- Hungarian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('hu') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/hu.svg" loading="lazy" class="dark-support">
+                                    Magyar
+                                </a>
+                            </li>
+
+                            <!-- Czech -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('cs') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/cz.svg" loading="lazy" class="dark-support">
+                                    Čeština
+                                </a>
+                            </li>
+
+                            <!-- Albanian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sq') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/al.svg" loading="lazy" class="dark-support">
+                                    Shqip
+                                </a>
+                            </li>
+
+                            <!-- Bosnian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('bs') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/ba.svg" loading="lazy" class="dark-support">
+                                    Bosanski
+                                </a>
+                            </li>
+
+                            <!-- Lithuanian -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('lt') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/lt.svg" loading="lazy" class="dark-support">
+                                    Lietuvių
+                                </a>
+                            </li>
+
+                            <!-- Slovene -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sl') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/si.svg" loading="lazy" class="dark-support">
+                                    Slovenščina
+                                </a>
+                            </li>
+
+                            <!-- Slovak -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('sk') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/sk.svg" loading="lazy" class="dark-support">
+                                    Slovenčina
+                                </a>
+                            </li>
+
+                            <!-- Chinese -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('zh') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/cn.svg" loading="lazy" class="dark-support">
+                                    简体中文
+                                </a>
+                            </li>
+
+                            <!-- Korean -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ko') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/kr.svg" loading="lazy" class="dark-support">
+                                    한국어
+                                </a>
+                            </li>
+
+                            <!-- Japanese -->
+                            <li>
+                                <a class="d-flex gap-2 align-items-center" href="{{ LaravelLocalization::getLocalizedURL('ja') }}">
+                                    <img width="20" src="/resources/themes/theme_aster/public/assets/img/flags/jp.svg" loading="lazy" class="dark-support">
+                                    日本語
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
                     <li>
                         @if(auth('customer')->check())
                             <a href="{{ route('ads-adding-type') }}" class="btn btn-light text-light bg-orange fw-normal fs-16 border-0 d-flex gap-1 ps-3 py-2">
@@ -694,7 +1179,7 @@
                                 {{ translate('post_your_ad') }}
                             </a>
                         @else
-                            <a href=""
+                            <a href="" 
                             data-bs-toggle="modal" data-bs-target="#loginModal"
                             class="btn btn-light text-light bg-orange fw-normal fs-16 border-0 d-flex gap-1 ps-3 py-2">
                                 <i class="bi bi-plus-circle mx-1"></i>
@@ -716,7 +1201,7 @@
                 <!-- Aside Body -->
                 <div>
                     <div class="aside-body" data-trigger="scrollbar">
-
+                        
                         <div class="mobile-search-container">
                             <div class="d-flex align-items-center gap-3 w-100">
                                 <div class="search-box position-relative d-flex align-items-center gap-3 w-100">
@@ -736,7 +1221,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Nav -->
                         <ul class="main-nav nav">
                             @if(auth('customer')->check() && $sponsorTypes->isNotEmpty())
@@ -750,28 +1234,28 @@
 
                                             @if(isset($sponsorTypes['appearance_in_first_results']) && $sponsorTypes['appearance_in_first_results'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=appearance-in-first-results">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('first_results_appearance') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['urgent_sale_sticker']) && $sponsorTypes['urgent_sale_sticker'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=urgent-sale-sticker">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('urgent_sale_sticker') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_video']) && $sponsorTypes['promotional_video'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.sponsor')}}?type=promotional-video">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_video') }}</span>
                                                 </a>
                                             @endif
 
                                             @if(isset($sponsorTypes['promotional_banner']) && $sponsorTypes['promotional_banner'] == 1)
                                                 <a class="d-flex align-items-center gap-1 p-0 pb-3" href="{{route('create.paid-banners')}}">
-                                                    <img width="40px" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                                    <img width="40px" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                                     <span class="fw-medium text-primary">{{ translate('promotional_banner') }}</span>
                                                 </a>
                                             @endif
@@ -782,37 +1266,40 @@
                             <li>
                                 <a href="{{route('home')}}">{{ translate('home') }}</a>
                             </li>
-                            <li>
-                                <a href="{{route('categories')}}#">{{ translate('categories') }}</a>
-                                <!-- Sub Menu -->
-                                <ul class="sub_menu">
-                                    @foreach($categories as $key => $category)
-                                        <li>
-                                            <a href="javascript:">
+                            <li> 
+                                <a href="{{route('categories')}}#">{{ translate('categories') }}</a> 
+                                <!-- Sub Menu --> 
+                                <ul class="sub_menu"> 
+                                    @foreach($categories as $key => $category) 
+                                        <li> 
+                                            <a href="javascript:"> 
                                                 <span onclick="location.href='{{ url('ads/filter?category_id=' . $category->id) }}'">
                                                     {{ $category->name }}
-                                                </span>
+                                                </span> 
                                             </a>
-                                            <ul class="sub_menu"></ul>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-
-                            @if($web_config['brand_setting'])
-                                <li>
+                                        </li> 
+                                    @endforeach 
+                                </ul> 
+                            </li> 
+                            @if($web_config['brand_setting']) 
+                                <li> 
                                     <a href="javascript:">{{ translate('brands') }}</a>
-                                    <!-- Sub Menu -->
-                                    <ul class="sub_menu">
-                                        @foreach($brands as $brand)
-                                            <li>
-                                                <a href="{{ route('products',['id'=> $brand->id,'data_from'=>'brand','page'=>1]) }}">
+                                    <!-- Sub Menu --> 
+                                    <ul class="sub_menu"> 
+                                        @foreach($brands as $brand) 
+                                            <li> 
+                                                <a href="{{ url('ads/filter?brand_id='.$brand->id) }}">
                                                     {{ $brand->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
+                                                </a> 
+                                            </li> 
+                                        @endforeach 
+                                        <li> 
+                                            <a class="text-primary" href="{{ route('brands') }}">
+                                                {{ translate('view_all') }}
+                                            </a>
+                                        </li> 
                                     </ul>
-                                </li>
+                                </li> 
                             @endif
                         </ul>
                         <!-- End Nav -->
@@ -861,7 +1348,7 @@
                     <div class="nav-wrapper">
                         <div class="d-xl-none">
                             <a class="logo" href="{{route('home')}}">
-                                <img width="" src="{{cloudfront("company/dark-logo.png")}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
+                                <img width="" src="{{asset("storage/app/public/company/dark-logo.png")}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
                             </a>
                         </div>
 
@@ -877,9 +1364,9 @@
                                             @foreach($categories as $key=>$category)
                                                 <a href="{{url('ads/filter?category_id='.$category->id)}}" class="media gap-3 align-items-center border-bottom">
                                                     <div class="avatar rounded-circle" style="--size: 2rem">
-                                                        <img width="50px"
+                                                        <img width="50px" 
                                                         onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                        src="{{ cloudfront('category/'.$category->icon)}}" alt="">
+                                                        src="{{ asset('storage/app/public/category/'.$category->icon)}}" alt="">
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
                                                         {{ $category->name }}
@@ -897,17 +1384,17 @@
                                         <div class="d-flex gap-4">
                                             <div class="column-2">
                                                 @foreach($brands as $brand)
-                                                    <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
-                                                        <div class="avatar" style="--size: 2.25rem">
-                                                            <img
-                                                                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                src="{{ cloudfront('brand/'.$brand->image) }}"
-                                                                loading="lazy" class="dark-support" alt="" width="80px" />
-                                                        </div>
-                                                        <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
-                                                            {{ $brand->name }}
-                                                        </div>
-                                                    </a>
+                                                <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
+                                                    <div class="avatar" style="--size: 2.25rem">
+                                                        <img
+                                                            onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                                                            src="{{ asset('storage/app/public/brand/'.$brand->image) }}"
+                                                            loading="lazy" class="dark-support" alt="" width="80px" />
+                                                    </div>
+                                                    <div class="media-body text-truncate" style="--width: 7rem" title="Brand">
+                                                        {{ $brand->name }}
+                                                    </div>
+                                                </a>
                                                 @endforeach
                                                 <div class="d-flex">
                                                     <a href="{{route('brands')}}" class="fw-bold text-primary d-flex justify-content-center">{{ translate('view_all') }}...
@@ -923,9 +1410,9 @@
                     <!-- End Main Nav -->
                 </div>
 
-                @if(auth('customer')->check() && $sponsorTypes->isNotEmpty())
+                @if(auth('customer')->check() && $sponsorTypes->isNotEmpty()) 
                     <div class="modern-menu" >
-                        <ul class="nav-menu m-0">
+                        <ul class="nav-menu m-0">                        
                             <li class="nav-item">
                                 <a href="#" class="nav-link btn bg-transparent text-primary border-0 p-0 dropdown-btn-font-size w-100">
                                     <span><i class="bi bi-rocket"></i></span>
@@ -934,49 +1421,49 @@
                                 <div class="dropdown">
                                     <div class="dropdown-content">
 
-                                        @if(isset($sponsorTypes['appearance_in_first_results']))
+                                        @if(isset($sponsorTypes['appearance_in_first_results'])) 
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=appearance-in-first-results" class="d-block rounded " role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('first_results_appearance') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/appear-on-first-results.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        @endif 
 
-                                        @if(isset($sponsorTypes['urgent_sale_sticker']))
+                                        @if(isset($sponsorTypes['urgent_sale_sticker'])) 
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=urgent-sale-sticker" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('urgent_sale_sticker') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/urgent-sale-sticker.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        @endif 
 
-                                        @if(isset($sponsorTypes['promotional_video']))
+                                        @if(isset($sponsorTypes['promotional_video'])) 
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.sponsor')}}?type=promotional-video" class="d-block rounded border-0" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_video') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/promotional-video.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/promotional-video.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        @endif 
 
-                                        @if(isset($sponsorTypes['promotional_banner']))
+                                        @if(isset($sponsorTypes['promotional_banner'])) 
                                             <div class="card border border-cool-primary p-3 sponsor-card">
                                                 <a href="{{route('create.paid-banners')}}" class="d-block rounded" role="button" >
                                                     <h5 class="text-center text-primary" >{{ translate('promotional_banner') }}</h5>
                                                     <div>
-                                                        <img class="custom-max-inline-size" src="{{ cloudfront('sponsor/promotional-banner.png') }}" alt="sponsor-image">
+                                                        <img class="custom-max-inline-size" src="{{ env_asset('storage/sponsor/promotional-banner.png') }}" alt="sponsor-image">
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        @endif 
 
                                     </div>
                                 </div>
@@ -984,7 +1471,7 @@
                         </ul>
                     </div>
                 @endif
-
+                    
                 <ul class="list-unstyled list-separator mb-0">
 
                     @if(auth('customer')->check())
@@ -992,7 +1479,7 @@
                             <div class="profile-dropdown">
                                 <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark p-0 user" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="avatar overflow-hidden header-avatar rounded-circle" style="--size: 1.5rem">
-                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? cloudfront('profile/images/'.auth('customer')->user()->image) : theme_asset('assets/img/icons/profile-icon.png') }}"
+                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? env_asset('storage/profile/images/'.auth('customer')->user()->image) : theme_asset('assets/img/icons/profile-icon.png') }}" 
                                         onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
                                     </span>
                                 </button>
@@ -1079,9 +1566,8 @@
             <div id="mySidebar" class="sidebar" >
                 <span role="button" class="closebtn" onclick="closeNav()">
                     <i class="bi bi-x-circle main-text-color exit-btn"></i>
-                </span>
+                </span>                                 
             </div>
-
         </div>
     </div>
 </header>
@@ -1091,7 +1577,7 @@
         document.getElementById("mySidebar").style.transform = "translateX(0)";
         // document.getElementById("main").style.marginLeft = "250px";
     }
-
+    
     function closeNav() {
         document.getElementById("mySidebar").style.transform = "translateX(-335px)";
         // document.getElementById("main").style.marginLeft= "0";
@@ -1107,42 +1593,42 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const navItems = document.querySelectorAll('.modern-menu .nav-item');
-
-    navItems.forEach(item => {
-        const dropdown = item.querySelector('.dropdown');
-        let hoverTimeout;
-
-        if (dropdown) {
-            item.addEventListener('mouseenter', function() {
-                clearTimeout(hoverTimeout);
-                dropdown.style.display = 'block';
-            });
-
-            item.addEventListener('mouseleave', function() {
-                hoverTimeout = setTimeout(() => {
-                    dropdown.style.display = '';
-                }, 100); // Small delay to prevent flickering
-            });
-        }
-
+document.addEventListener('DOMContentLoaded', function() { 
+    const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
+    
+    navItems.forEach(item => { 
+        const dropdown = item.querySelector('.dropdown'); 
+        let hoverTimeout; 
+        
+        if (dropdown) { 
+            item.addEventListener('mouseenter', function() { 
+                clearTimeout(hoverTimeout); 
+                dropdown.style.display = 'block'; 
+            }); 
+            
+            item.addEventListener('mouseleave', function() { 
+                hoverTimeout = setTimeout(() => { 
+                    dropdown.style.display = ''; 
+                }, 100); // Small delay to prevent flickering 
+            }); 
+        } 
+        
         // Add click animation for the anchor tags directly
-        const cardLinks = item.querySelectorAll('.modern-menu .card a');
-        cardLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+        const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
+        cardLinks.forEach(link => { 
+            link.addEventListener('click', function(e) { 
                 // Add subtle click animation to the parent card
                 const card = this.closest('.card');
                 if (card) {
-                    card.style.transform = 'translateY(-8px) scale(0.98)';
-                    setTimeout(() => {
-                        card.style.transform = '';
-                    }, 150);
+                    card.style.transform = 'translateY(-8px) scale(0.98)'; 
+                    setTimeout(() => { 
+                        card.style.transform = ''; 
+                    }, 150); 
                 }
                 // Let the link navigate naturally - don't prevent default
-            });
-        });
-    });
+            }); 
+        }); 
+    }); 
 });
 </script>
 
