@@ -64,8 +64,8 @@
                                     <div class="col-md-2 col-sm-4 col-6">
                                         <a href="{{url('ads/filter?brand_id='.$brand->id)}}">
                                             <div class="card text-center">
-                                                <div style="height: 130px;" class="card-body d-flex align-items-center justify-content-center">
-                                                    <img width="100px" src="{{ cloudfront('brand') }}/{{ $brand['image'] }}"
+                                                <div style="height: 115px;" class="card-body d-flex align-items-center justify-content-center">
+                                                    <img width="85px" src="{{ cloudfront('brand') }}/{{ $brand['image'] }}"
                                                     onerror="this.src='https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png'"
                                                     alt="Brand_image">
                                                 </div>

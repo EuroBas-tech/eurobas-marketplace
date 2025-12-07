@@ -204,10 +204,10 @@
             <div class="home-banner-swiper">
                 <div class="swiper-wrapper">
                     @foreach($paid_banners as $banner)
-                    <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                        <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
-                        alt="banner_image">
-                    </div>
+                        <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
+                            <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
+                            alt="banner_image">
+                        </div>
                     @endforeach
                 </div>
             </div>
