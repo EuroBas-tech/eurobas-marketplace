@@ -27,7 +27,7 @@
 
 @section('content')
     <!-- Main Content -->
-    <main class="main-content d-flex flex-column gap-3 py-3 mb-30 vh-100">
+    <main class="main-content d-flex flex-column gap-3 py-3 mb-30">
         <div class="container">
             <div class="card mb-3">
                 <div class="card-body">
@@ -61,11 +61,11 @@
                         <div class="col-md-12">
                             <div class="row g-4">
                                 @foreach($brands as $brand)
-                                    <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="col-md-2 col-sm-4 col-6">
                                         <a href="{{url('ads/filter?brand_id='.$brand->id)}}">
                                             <div class="card text-center">
-                                                <div style="height: 170px;" class="card-body d-flex align-items-center justify-content-center">
-                                                    <img width="150px" src="{{ cloudfront('brand') }}/{{ $brand['image'] }}"
+                                                <div style="height: 130px;" class="card-body d-flex align-items-center justify-content-center">
+                                                    <img width="100px" src="{{ cloudfront('brand') }}/{{ $brand['image'] }}"
                                                     onerror="this.src='https://www.pngkey.com/png/detail/233-2332677_image-500580-placeholder-transparent.png'"
                                                     alt="Brand_image">
                                                 </div>
