@@ -514,6 +514,9 @@ Route::get('migrate-by-code', function() {
 
 Route::get('import-translations-languages', function () {
 
+    // Empty the table first
+    DB::statement('TRUNCATE TABLE languages_translations');
+
     ini_set('memory_limit', '-1');
     ini_set('max_execution_time', 0);
 
