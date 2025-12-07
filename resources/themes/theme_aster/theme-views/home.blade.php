@@ -274,21 +274,6 @@
                     slidesPerView: 3,
                 }
             },
-            on: {
-                init: function() {
-                    // After Swiper loads, initialize WOW.js
-                    setTimeout(function() {
-                        new WOW({
-                            boxClass: 'wow',
-                            animateClass: 'animate__animated',
-                            offset: 0,
-                            mobile: true,
-                            live: true,
-                            resetAnimation: false
-                        }).init();
-                    }, 100);
-                }
-            }
         });
     </script>
 
