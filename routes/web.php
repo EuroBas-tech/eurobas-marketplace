@@ -5,6 +5,7 @@ ini_set('max_execution_time', 1000);
 use App\Model\Cart;
 use App\CPU\Helpers;
 use App\Model\LanguageTranslation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
@@ -489,7 +490,7 @@ Route::get('supported-locales', function() {
 Route::get('migrate-by-code', function() {
 
     if (!Schema::hasTable('languages_translations')) {
-    
+
         $result = Artisan::call('migrate', [
             '--path' => 'database/migrations/2025_11_23_102959_create_languages_translations_table.php',
             '--force' => true
@@ -510,5 +511,45 @@ Route::get('migrate-by-code', function() {
     }
 
 });
+
+Route::get('import-translations-languages', function () {
+
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', 0);
+
+    $path = database_path('sql/lang.sql');
+    $handle = fopen($path, "r");
+
+    $batch = "";
+    $counter = 0;
+    $batchSize = 1000; // insert 1000 rows per batch
+
+    while (($line = fgets($handle)) !== false) {
+
+        $batch .= $line;
+
+        // Check if line ends with "),
+        if (str_ends_with(trim($line), "),")) {
+            $counter++;
+        }
+
+        // When batch hits 1000 rows → run insert
+        if ($counter >= $batchSize) {
+            DB::unprepared("INSERT INTO languages_translations VALUES " . trim($batch, ","));
+            $batch = "";
+            $counter = 0;
+        }
+    }
+
+    // Run remaining lines
+    if (!empty(trim($batch))) {
+        DB::unprepared("INSERT INTO languages_translations VALUES " . trim($batch, ","));
+    }
+
+    fclose($handle);
+
+    return "IMPORT COMPLETED SUCCESSFULLY!";
+});
+
 
 
