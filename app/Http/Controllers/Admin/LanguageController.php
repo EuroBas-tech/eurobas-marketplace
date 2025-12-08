@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Model\BusinessSetting;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
@@ -218,18 +220,14 @@ class LanguageController extends Controller
     public function translate_list($lang)
     {
         $data = [];
-        $path = base_path('resources/lang/' . $lang . '/messages.php');
-        if (File::exists($path)) {
-            $lang_data = include(base_path('resources/lang/' . $lang . '/messages.php'));
-            ksort($lang_data);
-            foreach ($lang_data as $key => $value) {
-                $data[] = [
-                    'key'=>$key,
-                    'value'=>$value
-                ];
-            };
-        }
+
+        $data = LanguageTranslation::where('locale', $lang)
+        ->orderBy('key')
+        ->get(['id', 'key', 'value'])
+        ->toArray();
+
         return response()->json($data);
+
     }
 
     public function translate_key_remove(Request $request, $lang)
@@ -242,20 +240,10 @@ class LanguageController extends Controller
 
     public function translate_submit(Request $request, $lang)
     {
-        $full_data = include(base_path('resources/lang/' . $lang . '/messages.php'));
+        LanguageTranslation::where('id', $request['id'])
+        ->update(['value' => $request['value']]);
         
-        // Remove any existing duplicate of this key first
-        foreach ($full_data as $key => $data) {
-            if ($key === $request['key']) {
-                unset($full_data[$key]);
-            }
-        }
-        
-        // Now add the key with new value (this ensures no duplicates)
-        $full_data[$request['key']] = $request['value'];
-        
-        $str = "<?php return " . var_export($full_data, true) . ";";
-        file_put_contents(base_path('resources/lang/' . $lang . '/messages.php'), $str);
+        Cache::forget("translations_{$lang}");
     }
 
     public function auto_translate(Request $request, $lang): \Illuminate\Http\JsonResponse
@@ -347,4 +335,54 @@ class LanguageController extends Controller
         Toastr::success(translate('Removed_Successfully'));
         return back();
     }
+
+    public function updateCacheTranslations() {
+        try {
+            $locales = array_keys(config('laravellocalization.supportedLocales'));
+            
+            // // Apply mapping
+            // foreach ($locales as &$locale) {
+            //     $locale = config("laravellocalization.localesMapping.{$locale}", $locale);
+            // }
+            
+            $cachedLocales = [];
+            
+            foreach ($locales as $localeCode) {
+                $cacheKey = "translations_{$localeCode}";
+                
+                // Load and cache translations for this locale
+                $translations = LanguageTranslation::where('locale', $localeCode)
+                    ->pluck('value', 'key')
+                    ->toArray();
+                
+                Cache::forever($cacheKey, $translations);
+                
+                $cachedLocales[] = $localeCode;
+            }
+            
+            Toastr::success(translate('Translation_cache_updated_successfully'));
+            return back();
+            
+        } catch (\Exception $e) {
+
+            Log::debug([
+                'success' => false,
+                'message' => 'Error caching translations',
+                'error' => $e->getMessage()
+            ]);
+
+            Toastr::error(translate('something_went_wrong_try_again'));
+            return back();
+            
+        }
+    }
+
+    public function clearAllCache() {
+        Cache::flush();
+
+        Toastr::success(translate('System_cache_cleared_successfully'));
+        return back();
+
+    }
+
 }

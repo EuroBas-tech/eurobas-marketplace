@@ -512,13 +512,71 @@ Route::get('migrate-by-code', function() {
 
 });
 
+Route::get('store-translations/{locale}', function($locale) {
 
+    $messagesFile = resource_path("lang/{$locale}/messages.php");
 
-Route::get('empty-table', function () {
+    if (File::exists($messagesFile)) {
+        $words = include $messagesFile;
+        
+        if (is_array($words)) {
+            foreach ($words as $key => $value) {
+                LanguageTranslation::create([
+                    'key' => $key,
+                    'value' => $value,
+                    'locale' => $locale,
+                ]);
+            }
+            echo "Processed language: {$locale}\n";
+        }
+    } else {
+        echo "Messages file not found for locale: {$locale}\n";
+    }
 
-    LanguageTranslation::truncate();
-    
 });
+
+Route::get('cache-translations', function () {
+    try {
+        $locales = array_keys(config('laravellocalization.supportedLocales'));
+        
+        // Apply mapping
+        foreach ($locales as &$locale) {
+            $locale = config("laravellocalization.localesMapping.{$locale}", $locale);
+        }
+        
+        $cachedLocales = [];
+        
+        foreach ($locales as $localeCode) {
+            $cacheKey = "translations_{$localeCode}";
+            
+            // Load and cache translations for this locale
+            $translations = LanguageTranslation::where('locale', $localeCode)
+                ->pluck('value', 'key')
+                ->toArray();
+            
+            Cache::forever($cacheKey, $translations);
+            
+            $cachedLocales[] = $localeCode;
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Translations cached successfully',
+            'locales' => $cachedLocales,
+            'total_locales' => count($cachedLocales)
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error caching translations',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+
+
 
 
 
