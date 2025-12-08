@@ -397,12 +397,11 @@ Route::group(
     }
 );
 
-
 Route::get('store-translations', function() {
 
     $locale = 'nn';
 
-    $messagesFile = resource_path("lang/{$locale}/messages.php");
+    $messagesFile = resource_path("lang2/{$locale}/messages.php");
 
     if (File::exists($messagesFile)) {
         $words = include $messagesFile;
@@ -514,7 +513,7 @@ Route::get('migrate-by-code', function() {
 
 Route::get('store-translations/{locale}', function($locale) {
 
-    $messagesFile = resource_path("lang/{$locale}/messages.php");
+    $messagesFile = resource_path("lang2/{$locale}/messages.php");
 
     if (File::exists($messagesFile)) {
         $words = include $messagesFile;
