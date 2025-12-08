@@ -513,6 +513,8 @@ Route::get('migrate-by-code', function() {
 
 Route::get('store-translations/{locale}', function($locale) {
 
+    LanguageTranslation::where('locale', $locale)->delete();
+
     $messagesFile = resource_path("lang2/{$locale}/messages.php");
 
     if (File::exists($messagesFile)) {
