@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class HomeController extends Controller
 {
@@ -64,7 +65,7 @@ class HomeController extends Controller
             return Category::where('home_status', true)->priority()->latest()->take(16)->get();
         });
 
-        $locale = session('local') ?? 'en';
+        $locale = LaravelLocalization::getCurrentLocale();
 
         $isBannerLocaleExist = $this->banner->where('lang', $locale)->exists();
 
