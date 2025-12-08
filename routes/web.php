@@ -535,6 +535,14 @@ Route::get('store-translations/{locale}', function($locale) {
 
 });
 
+Route::get('show-translations/{locale}', function($locale) {
+
+    $translations = LanguageTranslation::where('locale', $locale)->count();
+
+    return $translations;
+
+});
+
 Route::get('cache-translations', function () {
     try {
         $locales = array_keys(config('laravellocalization.supportedLocales'));
