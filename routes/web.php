@@ -543,6 +543,14 @@ Route::get('show-translations/{locale}', function($locale) {
 
 });
 
+Route::get('delete-translations/{locale}', function($locale) {
+
+    $translations = LanguageTranslation::where('locale', $locale)->delete();
+
+    return $translations;
+
+});
+
 Route::get('cache-translations', function () {
     try {
         $locales = array_keys(config('laravellocalization.supportedLocales'));
