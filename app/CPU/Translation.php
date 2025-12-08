@@ -10,7 +10,7 @@ if(!function_exists('translate')) {
     {
         $locale = LaravelLocalization::getCurrentLocale();
 
-        try {
+        // try {
             // $cacheKey = "translations_{$locale}";
             
             // // Get all translations for locale from cache, or load from DB
@@ -38,11 +38,11 @@ if(!function_exists('translate')) {
             // } else {
             //     $result = $translations[$key];
             // }
-        } catch (\Exception $exception) {
-            $result = $key;
-        }
+        // } catch (\Exception $exception) {
+        //     $result = $key;
+        // }
 
-        return $result;
+        return $key;
     }
 }
 
