@@ -7,7 +7,6 @@
 
     <title>@yield('title')</title>
 
-    <!-- CSRF Token -->
     <meta name="base-url" content="{{ url('/') }}">
 
     <!-- Meta Data -->
@@ -16,8 +15,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="_token" content="{{csrf_token()}}">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Dynamic Hreflang Tags -->
+    <link rel="alternate" hreflang="en" href="{{ url('/') }}" >
+
+    @foreach(LaravelLocalization::getSupportedLocales() as $lang => $props)
+        @php
+            $url = LaravelLocalization::getLocalizedURL($lang);
+            $parts = explode('/', $url);
+            $prefix = end($parts);
+        @endphp
+        <link rel="alternate" hreflang="{{ $prefix }}" href="{{ url($prefix) }}">
+    @endforeach
+
+    <link rel="canonical" href="{{ url()->current() }}" />
+
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
+    <link rel="shortcut icon" href="{{ cloudfront('company') }}/{{ $web_config['fav_icon']->value }}"/>
 
     <!-- Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

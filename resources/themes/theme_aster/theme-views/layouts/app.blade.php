@@ -16,6 +16,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="_token" content="{{csrf_token()}}">
 
+    <!-- Dynamic Hreflang Tags -->
+    <link rel="alternate" hreflang="en" href="{{ url('/') }}" >
+
+    @foreach(LaravelLocalization::getSupportedLocales() as $lang => $props)
+        @php
+            $url = LaravelLocalization::getLocalizedURL($lang);
+            $parts = explode('/', $url);
+            $prefix = end($parts);
+        @endphp
+        <link rel="alternate" hreflang="{{ $prefix }}" href="{{ url($prefix) }}">
+    @endforeach
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{cloudfront('company')}}/{{$web_config['fav_icon']->value}}"/>
 

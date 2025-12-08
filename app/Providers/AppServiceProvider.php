@@ -46,9 +46,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
-            $this->app->register(\Amirami\Localizator\ServiceProvider::class);
-        }
+        
     }
 
     /**
@@ -59,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        app()->setLocale(LaravelLocalization::getCurrentLocale());
+
         Paginator::useBootstrap();
         URL::forceScheme('https');
 
