@@ -543,9 +543,25 @@ Route::get('show-translations/{locale}', function($locale) {
 
 });
 
+Route::get('show-all-translations', function() {
+
+    $translations = LanguageTranslation::get();
+
+    return $translations;
+
+});
+
 Route::get('delete-translations/{locale}', function($locale) {
 
     $translations = LanguageTranslation::where('locale', $locale)->delete();
+
+    return $translations;
+
+});
+
+Route::get('delete-all-translations', function() {
+
+    $translations = LanguageTranslation::query()->delete();
 
     return $translations;
 
