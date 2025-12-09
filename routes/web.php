@@ -4,6 +4,9 @@ ini_set('max_execution_time', 1000);
 
 use App\Model\Cart;
 use App\CPU\Helpers;
+use App\Model\Category;
+use App\Model\Translation;
+use App\Model\BusinessSetting;
 use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -16,7 +19,6 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Payment_Methods\MultiplePaymentController;
-use App\Model\BusinessSetting;
 
 Route::group(
     [
@@ -621,8 +623,20 @@ Route::get('fix-languages', function() {
 
 });
 
+Route::get('update-translations-locales', function () {
 
-// [{"id":"1","name":"english","direction":"ltr","code":"en","status":1,"default":true,"flag":"🇬🇧"},{"id":2,"name":"Nederlands","direction":"ltr","code":"nl","status":1,"default":false,"flag":"🇳🇱"},{"id":3,"name":"Deutsch","direction":"ltr","code":"de","status":1,"default":false,"flag":"🇩🇪"},{"id":4,"name":"Türkçe","direction":"ltr","code":"tr","status":1,"default":false,"flag":"🇹🇷"},{"id":5,"name":"Español","direction":"ltr","code":"es","status":1,"default":false,"flag":"🇪🇸"},{"id":6,"name":"Italiano","direction":"ltr","code":"it","status":1,"default":false,"flag":"🇮🇹"},{"id":7,"name":"Русский","direction":"ltr","code":"ru","status":1,"default":false,"flag":"🇷🇺"},{"id":8,"name":"Français","direction":"ltr","code":"fr","status":1,"default":false,"flag":"🇫🇷"},{"id":9,"name":"العربية","direction":"rtl","code":"ar","status":1,"default":false,"flag":"🇦🇪"},{"id":10,"name":"ελληνικά","direction":"ltr","code":"el","status":1,"default":false,"flag":"🇬🇷"},{"id":11,"name":"Polski","direction":"ltr","code":"pl","status":1,"default":false,"flag":"🇵🇱"},{"id":12,"name":"Română","direction":"ltr","code":"ro","status":1,"default":false,"flag":"🇷🇴"},{"id":13,"name":"Украiнська","direction":"ltr","code":"uk","status":1,"default":false,"flag":"🇺🇦"},{"id":14,"name":"Bulgarski","direction":"ltr","code":"bg","status":1,"default":false,"flag":"🇧🇬"},{"id":15,"name":"Português","direction":"ltr","code":"pt","status":1,"default":false,"flag":"🇵🇹"},{"id":16,"name":"Српски","direction":"ltr","code":"sr","status":1,"default":false,"flag":"🇷🇸"},{"id":17,"name":"Dansk","direction":"ltr","code":"da","status":1,"default":false,"flag":"🇩🇰"},{"id":18,"name":"Svenska","direction":"ltr","code":"sv","status":1,"default":false,"flag":"🇸🇪"},{"id":19,"name":"Suomi","direction":"ltr","code":"fi","status":1,"default":false,"flag":"🇫🇮"},{"id":20,"name":"Norsk","direction":"ltr","code":"nn","status":1,"default":false,"flag":"🇳🇴"},{"id":21,"name":"Hrvatski","direction":"ltr","code":"hr","status":1,"default":false,"flag":"🇭🇷"},{"id":22,"name":"Magyar","direction":"ltr","code":"hu","status":1,"default":false,"flag":"🇭🇺"},{"id":23,"name":"Čeština","direction":"ltr","code":"cs","status":1,"default":false,"flag":"🇨🇿"},{"id":24,"name":"Shqip","direction":"ltr","code":"sq","status":1,"default":false,"flag":"🇦🇱"},{"id":25,"name":"Bosanski","direction":"ltr","code":"bs","status":1,"default":false,"flag":"🇧🇦"},{"id":26,"name":"Lietuvių","direction":"ltr","code":"lt","status":1,"default":false,"flag":"🇱🇹"},{"id":27,"name":"Slovenščina","direction":"ltr","code":"sl","status":1,"default":false,"flag":"🇸🇮"},{"id":28,"name":"Slovenčina","direction":"ltr","code":"sk","status":1,"default":false,"flag":"🇸🇰"},{"id":29,"name":"简体中文","direction":"ltr","code":"zh","status":1,"default":false,"flag":"🇨🇳"},{"id":30,"name":"한국어","direction":"ltr","code":"ko","status":1,"default":false,"flag":"🇰🇷"},{"id":32,"name":"日本語","direction":"ltr","code":"ja","status":1,"default":false,"flag":"🇯🇵"}]
+    // return Translation::where('translationable_type', 'App\\Model\\Category')
+    // ->where('locale', 'rs')
+    // ->get();
 
+    Translation::where('locale', 'cn')->update(['locale' => 'zh']);
+    Translation::where('locale', 'cz')->update(['locale' => 'cs']);
+    Translation::where('locale', 'se')->update(['locale' => 'sv']);
+    Translation::where('locale', 'kr')->update(['locale' => 'ko']);
+    Translation::where('locale', 'jp')->update(['locale' => 'ja']);
+    Translation::where('locale', 'dk')->update(['locale' => 'da']);
+    Translation::where('locale', 'no')->update(['locale' => 'nn']);
+    Translation::where('locale', 'bo')->update(['locale' => 'bs']);
+    Translation::where('locale', 'rs')->update(['locale' => 'sr']);
 
-
+});
