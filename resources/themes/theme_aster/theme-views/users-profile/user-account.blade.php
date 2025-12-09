@@ -168,7 +168,7 @@
                                             <div class="form-group">
                                                 <label for="confirm_password2">{{translate('Confirm_Password')}}</label>
                                                 <div class="input-inner-end-ele">
-                                                    <input type="password" minlength="6" id="confirm_password" name="confirm_password" class="form-control input-height" placeholder="{{translate('Ex:_7+_character')}}">
+                                                    <input type="password" minlength="6" id="confirm_password" name="password_confirmation" class="form-control input-height" placeholder="{{translate('Ex:_7+_character')}}">
                                                     <i class="bi bi-eye-slash-fill togglePassword custom-inset-block-end"></i>
                                                 </div>
                                             </div>
