@@ -101,7 +101,9 @@
                                             @endif
                                         </div>
                                         <div>
-                                            <a target="_blank" href="{{ route('show-profile', [$user->id, $user->name]) }}?tap=ads" class="btn btn-outline-primary btn-sm px-2 d-flex align-items-center gap-1">
+                                            <a target="_blank" 
+                                                href="{{ $user ? route('show-profile', [$user->id, $user->name]) . '?tap=ads' : '#' }}" 
+                                                class="btn btn-outline-primary btn-sm px-2 d-flex align-items-center gap-1">
                                                 <i class="bi bi-person-circle"></i>
                                                 {{ translate('show_profile') }}
                                             </a>
