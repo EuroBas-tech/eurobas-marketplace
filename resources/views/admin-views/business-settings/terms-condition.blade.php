@@ -48,11 +48,10 @@
 
 @push('script')
     {{--ck editor--}}
-    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('vendor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
     <script>
         $('#editor').ckeditor({
-            contentsLangDirection : '{{Session::get('direction')}}',
+            contentsLangDirection : "{{ LaravelLocalization::getCurrentLocale() == 'ar' ? 'rtl' : 'ltr' }}",
         });
     </script>
     {{--ck editor--}}
