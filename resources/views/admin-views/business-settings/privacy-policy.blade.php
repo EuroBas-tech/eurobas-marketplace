@@ -65,6 +65,11 @@
         $('#editor').ckeditor({
             contentsLangDirection : "{{ LaravelLocalization::getCurrentLocale() == 'ar' ? 'rtl' : 'ltr' }}",
         });
+
+        CKEDITOR.on('instanceReady', function() {
+            // Remove notification area
+            $('.cke_notifications_area').hide();
+        });
     </script>
 @endpush
 
