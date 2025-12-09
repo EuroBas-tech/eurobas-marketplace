@@ -1,5 +1,17 @@
 @extends('layouts.back-end.app')
+
 @section('title', translate('about_us'))
+
+@push('css_or_js')
+
+<style>
+    #cke_notifications_area_description {
+        display: none !important;
+    }
+</style>
+
+@endpush
+
 @section('content')
 <div class="content container-fluid">
     <!-- Page Title -->
@@ -41,13 +53,18 @@
 @endsection
 
 @push('script')
-    {{--ck editor--}}
-    <script src="{{asset('/')}}vendor/ckeditor/ckeditor/ckeditor.js"></script>
-    <script src="{{asset('/')}}vendor/ckeditor/ckeditor/adapters/jquery.js"></script>
+    {{-- jQuery --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {{-- CKEditor --}}
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+
+    {{-- jQuery adapter (required for $("#editor").ckeditor()) --}}
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/adapters/jquery.js"></script>
+
     <script>
         $('#editor').ckeditor({
-            contentsLangDirection : '{{Session::get('direction')}}',
+            contentsLangDirection : "{{ LaravelLocalization::getCurrentLocale() == 'ar' ? 'rtl' : 'ltr' }}",
         });
     </script>
-    {{--ck editor--}}
 @endpush

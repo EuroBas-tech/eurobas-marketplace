@@ -4,6 +4,12 @@
 
 @push('css_or_js')
 
+<style>
+    #cke_notifications_area_description {
+        display: none !important;
+    }
+</style>
+
 @endpush
 
 @section('content')

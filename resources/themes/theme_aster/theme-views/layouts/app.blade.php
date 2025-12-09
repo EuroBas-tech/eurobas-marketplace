@@ -263,7 +263,6 @@
 
 <span class="cannot_use_zero" data-text="{{ translate('cannot_Use_0_only') }}"></span>
 
-
 <!-- ======= BEGIN GLOBAL MANDATORY SCRIPTS ======= -->
 <script src="{{ theme_asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ theme_asset('assets/js/bootstrap.bundle.min.js') }}"></script>
