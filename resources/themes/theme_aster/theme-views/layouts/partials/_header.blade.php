@@ -1479,7 +1479,7 @@
                             <div class="profile-dropdown">
                                 <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark p-0 user" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="avatar overflow-hidden header-avatar rounded-circle" style="--size: 1.5rem">
-                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? {{ cloudfront('profile/images/' . auth('customer')->user()->image) }} : theme_asset('assets/img/icons/profile-icon.png') }}" 
+                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? cloudfront('profile/images/' . auth('customer')->user()->image) }} : theme_asset('assets/img/icons/profile-icon.png') }}" 
                                         onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
                                     </span>
                                 </button>
