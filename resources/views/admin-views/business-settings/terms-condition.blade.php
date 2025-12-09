@@ -47,12 +47,18 @@
 @endsection
 
 @push('script')
-    {{--ck editor--}}
+    {{-- jQuery --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {{-- CKEditor --}}
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+
+    {{-- jQuery adapter (required for $("#editor").ckeditor()) --}}
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/adapters/jquery.js"></script>
+
     <script>
         $('#editor').ckeditor({
             contentsLangDirection : "{{ LaravelLocalization::getCurrentLocale() == 'ar' ? 'rtl' : 'ltr' }}",
         });
     </script>
-    {{--ck editor--}}
 @endpush
