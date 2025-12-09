@@ -273,60 +273,59 @@
                             </thead>
                             @foreach($banners as $key=>$banner)
                                 <tbody>
-                                <tr id="data-{{$banner->id}}">
-                                    <td class="pl-xl-5">{{$banner->id}}</td>
-                                    <td class="pl-xl-5">{{$banner->priority}}</td>
-                                    <td>
-                                        <img class="ratio-4:1" width="80"
-                                             onerror="this.src='{{asset('assets/front-end/img/placeholder.png')}}'"
-                                             src="{{cloudfront('banner')}}/{{$banner['photo']}}">
-                                    </td>
-                                    <td>{{translate(str_replace('_',' ',$banner->banner_type))}}</td>
+                                    <tr id="data-{{$banner->id}}">
+                                        <td class="pl-xl-5">{{$banner->id}}</td>
+                                        <td class="pl-xl-5">{{$banner->priority}}</td>
+                                        <td>
+                                            <img class="ratio-4:1" width="80"
+                                                onerror="this.src='{{asset('assets/front-end/img/placeholder.png')}}'"
+                                                src="{{cloudfront('banner')}}/{{$banner['photo']}}">
+                                        </td>
+                                        <td>{{translate(str_replace('_',' ',$banner->banner_type))}}</td>
+
+                                        <td>{{$banner->lang}}</td>
+                                        <td>@switch($banner->for_mobile)
+                                            @case(0)
+                                            Desktop
+                                            @break
+                                            @case(1)
+                                            Mobile
+                                            @break
+                                            @case(2)
+                                            Both
+                                            @break
+                                            @case(null)
+                                            null
+                                            @break
 
 
-                                    <td>{{translate($banner->lang)}}</td>
-                                    <td>@switch($banner->for_mobile)
-                                        @case(0)
-                                        Desktop
-                                        @break
-                                        @case(1)
-                                        Mobile
-                                        @break
-                                        @case(2)
-                                        Both
-                                        @break
-                                        @case(null)
-                                        null
-                                        @break
 
-
-
-                                    @endswitch</td>
-                                    <td>
-                                        <form action="{{route('admin.banner.status')}}" method="post" id="banner_status{{$banner['id']}}_form" class="banner_status_form">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$banner['id']}}">
-                                            <label class="switcher">
-                                                <input type="checkbox" class="switcher_input" id="banner_status{{$banner['id']}}" name="status" value="1" {{ $banner['published'] == 1 ? 'checked':'' }} onclick="toogleStatusModal(event,'banner_status{{$banner['id']}}','banner-status-on.png','banner-status-off.png','{{translate('Want_to_Turn_ON')}} {{translate(str_replace('_',' ',$banner->banner_type))}} {{translate('status')}}','{{translate('Want_to_Turn_OFF')}} {{translate(str_replace('_',' ',$banner->banner_type))}} {{translate('status')}}',`<p>{{translate('if_enabled_this_banner_will_be_available_on_the_website_and_customer_app')}}</p>`,`<p>{{translate('if_disabled_this_banner_will_be_hidden_from_the_website_and_customer_app')}}</p>`)">
-                                                <span class="switcher_control"></span>
-                                            </label>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex gap-10 justify-content-center">
-                                            <a class="btn btn-outline--primary btn-sm cursor-pointer edit"
-                                               title="{{ translate('edit')}}"
-                                               href="{{route('admin.banner.edit',[$banner['id']])}}">
-                                                <i class="tio-edit"></i>
-                                            </a>
-                                            <a class="btn btn-outline-danger btn-sm cursor-pointer delete"
-                                               title="{{ translate('delete')}}"
-                                               id="{{$banner['id']}}">
-                                                <i class="tio-delete"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        @endswitch</td>
+                                        <td>
+                                            <form action="{{route('admin.banner.status')}}" method="post" id="banner_status{{$banner['id']}}_form" class="banner_status_form">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$banner['id']}}">
+                                                <label class="switcher">
+                                                    <input type="checkbox" class="switcher_input" id="banner_status{{$banner['id']}}" name="status" value="1" {{ $banner['published'] == 1 ? 'checked':'' }} onclick="toogleStatusModal(event,'banner_status{{$banner['id']}}','banner-status-on.png','banner-status-off.png','{{translate('Want_to_Turn_ON')}} {{translate(str_replace('_',' ',$banner->banner_type))}} {{translate('status')}}','{{translate('Want_to_Turn_OFF')}} {{translate(str_replace('_',' ',$banner->banner_type))}} {{translate('status')}}',`<p>{{translate('if_enabled_this_banner_will_be_available_on_the_website_and_customer_app')}}</p>`,`<p>{{translate('if_disabled_this_banner_will_be_hidden_from_the_website_and_customer_app')}}</p>`)">
+                                                    <span class="switcher_control"></span>
+                                                </label>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-10 justify-content-center">
+                                                <a class="btn btn-outline--primary btn-sm cursor-pointer edit"
+                                                title="{{ translate('edit')}}"
+                                                href="{{route('admin.banner.edit',[$banner['id']])}}">
+                                                    <i class="tio-edit"></i>
+                                                </a>
+                                                <a class="btn btn-outline-danger btn-sm cursor-pointer delete"
+                                                title="{{ translate('delete')}}"
+                                                id="{{$banner['id']}}">
+                                                    <i class="tio-delete"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             @endforeach
                         </table>

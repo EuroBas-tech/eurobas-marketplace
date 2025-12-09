@@ -54,7 +54,7 @@ class BannerController extends Controller
         }
 
         $banners = $banners
-        ->where('theme', theme_root_path())
+        ->where('theme', 'theme_aster')
         ->whereIn('banner_type', $banner_types)
         ->orderBy('priority', 'asc')
         ->paginate(Helpers::pagination_limit(), ['*'], 'page')
