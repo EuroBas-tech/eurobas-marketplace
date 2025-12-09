@@ -625,18 +625,8 @@ Route::get('fix-languages', function() {
 
 Route::get('update-translations-locales', function () {
 
-    // return Translation::where('translationable_type', 'App\\Model\\Category')
-    // ->where('locale', 'rs')
-    // ->get();
-
-    Translation::where('locale', 'cn')->update(['locale' => 'zh']);
-    Translation::where('locale', 'cz')->update(['locale' => 'cs']);
-    Translation::where('locale', 'se')->update(['locale' => 'sv']);
-    Translation::where('locale', 'kr')->update(['locale' => 'ko']);
-    Translation::where('locale', 'jp')->update(['locale' => 'ja']);
-    Translation::where('locale', 'dk')->update(['locale' => 'da']);
-    Translation::where('locale', 'no')->update(['locale' => 'nn']);
-    Translation::where('locale', 'bo')->update(['locale' => 'bs']);
-    Translation::where('locale', 'rs')->update(['locale' => 'sr']);
+    Translation::where('locale', 'ba')->update(['locale' => 'bs']);
+    Translation::where('locale', 'ae')->update(['locale' => 'ar']);
+    Translation::where('locale', 'ua')->update(['locale' => 'uk']);
 
 });
