@@ -125,9 +125,10 @@ class UserProfileController extends Controller
                             $fail(translate('the_password_must_contain_at_least_one_number'));
                         }
                     },
-                    'password_confirmation' => 'required|same:password',
-                ]
+                ],
 
+                // MUST BE OUTSIDE
+                'password_confirmation' => 'required|same:password',
             ]);
         }
 
