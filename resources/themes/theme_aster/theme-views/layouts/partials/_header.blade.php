@@ -1348,7 +1348,7 @@
                     <div class="nav-wrapper">
                         <div class="d-xl-none">
                             <a class="logo" href="{{route('home')}}">
-                                <img width="" src="{{asset("storage/app/public/company/dark-logo.png")}}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
+                                <img width="" src="{{ cloudfront("company/dark-logo.png") }}" onerror="this.src='{{theme_asset('assets/img/image-place-holder-2_1.png')}}'" class="dark-support mobile-logo-cs" alt="Logo" />
                             </a>
                         </div>
 
@@ -1479,7 +1479,7 @@
                             <div class="profile-dropdown">
                                 <button type="button" class="border-0 bg-transparent d-flex gap-2 align-items-center dropdown-toggle text-dark p-0 user" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="avatar overflow-hidden header-avatar rounded-circle" style="--size: 1.5rem">
-                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? env_asset('storage/profile/images/'.auth('customer')->user()->image) : theme_asset('assets/img/icons/profile-icon.png') }}" 
+                                        <img loading="lazy" src="{{auth('customer')->user()->image != 'def-image.jpg' ? {{ cloudfront('profile/images/' . auth('customer')->user()->image) }} : theme_asset('assets/img/icons/profile-icon.png') }}" 
                                         onerror="this.src='{{theme_asset('assets/img/icons/profile-icon.png')}}'" class="img-fit" alt="" />
                                     </span>
                                 </button>
@@ -1593,43 +1593,43 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() { 
-    const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
-    
-    navItems.forEach(item => { 
-        const dropdown = item.querySelector('.dropdown'); 
-        let hoverTimeout; 
+    document.addEventListener('DOMContentLoaded', function() { 
+        const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
         
-        if (dropdown) { 
-            item.addEventListener('mouseenter', function() { 
-                clearTimeout(hoverTimeout); 
-                dropdown.style.display = 'block'; 
-            }); 
+        navItems.forEach(item => { 
+            const dropdown = item.querySelector('.dropdown'); 
+            let hoverTimeout; 
             
-            item.addEventListener('mouseleave', function() { 
-                hoverTimeout = setTimeout(() => { 
-                    dropdown.style.display = ''; 
-                }, 100); // Small delay to prevent flickering 
-            }); 
-        } 
-        
-        // Add click animation for the anchor tags directly
-        const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
-        cardLinks.forEach(link => { 
-            link.addEventListener('click', function(e) { 
-                // Add subtle click animation to the parent card
-                const card = this.closest('.card');
-                if (card) {
-                    card.style.transform = 'translateY(-8px) scale(0.98)'; 
-                    setTimeout(() => { 
-                        card.style.transform = ''; 
-                    }, 150); 
-                }
-                // Let the link navigate naturally - don't prevent default
+            if (dropdown) { 
+                item.addEventListener('mouseenter', function() { 
+                    clearTimeout(hoverTimeout); 
+                    dropdown.style.display = 'block'; 
+                }); 
+                
+                item.addEventListener('mouseleave', function() { 
+                    hoverTimeout = setTimeout(() => { 
+                        dropdown.style.display = ''; 
+                    }, 100); // Small delay to prevent flickering 
+                }); 
+            } 
+            
+            // Add click animation for the anchor tags directly
+            const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
+            cardLinks.forEach(link => { 
+                link.addEventListener('click', function(e) { 
+                    // Add subtle click animation to the parent card
+                    const card = this.closest('.card');
+                    if (card) {
+                        card.style.transform = 'translateY(-8px) scale(0.98)'; 
+                        setTimeout(() => { 
+                            card.style.transform = ''; 
+                        }, 150); 
+                    }
+                    // Let the link navigate naturally - don't prevent default
+                }); 
             }); 
         }); 
-    }); 
-});
+    });
 </script>
 
 <script>
