@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Category extends Model
 {
@@ -74,12 +75,9 @@ class Category extends Model
         parent::boot();
         static::addGlobalScope('translate', function (Builder $builder) {
             $builder->with(['translations' => function ($query) {
-                if (strpos(url()->current(), '/api')) {
-                    return $query->where('locale', App::getLocale());
-                } else {
-                    return $query->where('locale', Helpers::default_lang());
-                }
+                return $query->where('locale', LaravelLocalization::getCurrentLocale());
             }]);
         });
     }
+
 }

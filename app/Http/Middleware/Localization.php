@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Localization
 {
@@ -16,9 +17,12 @@ class Localization
      */
     public function handle($request, Closure $next)
     {
-        if (session()->has('locale')) {
-            App::setLocale(session()->get('locale'));
-        }
+        $locale = LaravelLocalization::getCurrentLocale();
+
+        App::setLocale($locale);
+
+        session()->put('locale', $locale);
+
         return $next($request);
     }
 }
