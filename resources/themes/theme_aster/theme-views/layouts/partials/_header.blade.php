@@ -21,9 +21,23 @@
 
 @php(
     $categories = Cache::rememberForever('home_categories', function () {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         return \App\Model\Category::homeEnabled()
         ->priority()
-        ->get();
+        ->with(['translations' => function ($q) use ($locale) {
+            if ($locale != 'en') {
+                $q->where('locale', $locale);
+            }
+        }])
+        ->get()
+        ->map(function ($cat) use ($locale) {
+            // Only get name from translations table if locale is NOT 'en'
+            if ($locale != 'en') {
+                $cat->name = $cat->translations->first()->value ?? $cat->name;
+            }
+            return $cat;
+        });
     })
 )
 
@@ -41,510 +55,507 @@
     })
 )
 
-    <style>
-
-        .complete-profile-bar {
-            background-color: #7280FD;
-            color: #fff;
-        }
-
-        .text-orange {
-            color: #c65919;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 300px;
-            transform: translateX(-335px);
-            position: fixed;
-            z-index: 99999;
-            top: 0;
-            left: 0;
-            background: #fff;
-            overflow-x: hidden;
-            transition: 0.4s;
-            padding: 60px 18px;
-        }
-
-        .sidebar a {
-            padding: 8px 0 8px 32px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #001E61;
-            display: block;
-            transition: 0.3s;
-            /* text-align: right; */
-        }
-
-        .sidebar a:hover {
-            opacity: 70%;
-        }
-
-        .sidebar .closebtn {
-            position: absolute;
-            top: 15px;
-            right: 18px;
-        }
-
-        /* Style the scrollbar for the specific div */
-        #mySidebar::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        #mySidebar::-webkit-scrollbar-track {
-            background: #f0f0f0; /* Light gray background */
-            border-radius: 10px;
-        }
-
-        #mySidebar::-webkit-scrollbar-thumb {
-            background: #6c757d;
-            border-radius: 7px;
-        }
-
-        #mySidebar::-webkit-scrollbar-thumb:hover {
-            background: darkgray;
-        }
-
-        .openbtn {
-            /* font-size: 20px; */
-            cursor: pointer;
-            /* background-color: #111; */
-            padding: 10px 15px;
-            border: none;
-        }
-
-        #main {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-
-        .dropdown-menu.show.grid-dropdown {
-            display: grid !important;
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
-            max-height: 500px;
-            overflow-y: auto;
-            scrollbar-width: thin; 
-            scrollbar-color: #888  #f1f1f1;
-            scroll-behavior: smooth;
-        }
-
-        /* Custom scrollbar for WebKit browsers */
-        .dropdown-menu.show.grid-dropdown::-webkit-scrollbar {
-            width: 8px; /* Adjust width */
-        }
-
-        .custom-vertical-padding {
-            padding: 6.5px 0px;
-        }
-
-        /* CSS Code - Add this to your stylesheet */
-        .pointing-hand {
-            position: relative;
-            display: inline-block;
-        }
-
-        .pointing-hand::after {
-            content: '👉';
-            position: absolute;
-            top: 50%;
-            font-size: 1.3em;
-            color: #FFD700;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
-            transform: translateY(-50%);
-        }
-
-        /* Left to Right (LTR) - Hand points from left to the element */
-        .pointing-hand.left-direction::after {
-            left: -60px;
-            animation: pointRight 2s infinite;
-        }
-
-        .dropdown-btn-font-size {
-            font-size: 0.88rem;
-        }
-
-        .sponsor-dropdown-list:hover , .sponsor-dropdown-item:hover {
-            background-color: #fff !important;
-        }
-
-        .modal-content.sponsor-modal {
-            width: max-content !important;
-            min-width: 900px !important;
-            margin: auto !important;
-        }
-
-        .border-cool-primary {
-            border-color: #0f407d86 !important;
-        }
-
-        .sponsor-card:hover {
-            transition: .2s;
-            border-width: 2px;
-            background-color: #e7e7e795 !important;
-        }
-
-        .voice-search-icon {
-            font-size: 16px;
-            color: #666666ff;
-        }
-
-
-        /***************** start voice recording css code  ***********/
-        
-/* Simple Voice Search Styles */
-
-/* Make sure button can position the dot */
-.search_voice {
-    position: relative !important;
-}
-
-/* Recording pulse indicator - small blinking red dot over icon */
-.recording-pulse {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    width: 8px;
-    height: 8px;
-    background-color: #ff4444;
-    border-radius: 50%;
-    z-index: 1000;
-    pointer-events: none;
-    opacity: 0; /* Hidden by default */
-}
-
-/* Show and blink the dot when recording */
-.search_voice.recording .recording-pulse {
-    opacity: 1;
-    animation: blink 0.8s ease-in-out infinite;
-}
-
-/* Simple blinking animation - show/hide */
-@keyframes blink {
-    0%, 50% {
-        opacity: 1;
+<style>
+    .complete-profile-bar {
+        background-color: #7280FD;
+        color: #fff;
     }
-    51%, 100% {
-        opacity: 0;
+
+    .text-orange {
+        color: #c65919;
     }
-}
 
-/* Voice search icon styles */
-.voice-search-icon {
-    transition: color 0.3s ease;
-}
+    .sidebar {
+        height: 100%;
+        width: 300px;
+        transform: translateX(-335px);
+        position: fixed;
+        z-index: 99999;
+        top: 0;
+        left: 0;
+        background: #fff;
+        overflow-x: hidden;
+        transition: 0.4s;
+        padding: 60px 18px;
+    }
 
-/* Hover effect for voice button */
-.search_voice:hover:not(.recording) {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-}
+    .sidebar a {
+        padding: 8px 0 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #001E61;
+        display: block;
+        transition: 0.3s;
+        /* text-align: right; */
+    }
 
-.search_voice:hover:not(.recording) .voice-search-icon {
-    color: #007bff;
-}
+    .sidebar a:hover {
+        opacity: 70%;
+    }
 
-/* Recording state icon - red color */
-.search_voice.recording .voice-search-icon {
-    color: #ff4444 !important;
-}
+    .sidebar .closebtn {
+        position: absolute;
+        top: 15px;
+        right: 18px;
+    }
 
-        /***************** end voice recording css code  ***********/
+    /* Style the scrollbar for the specific div */
+    #mySidebar::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    #mySidebar::-webkit-scrollbar-track {
+        background: #f0f0f0; /* Light gray background */
+        border-radius: 10px;
+    }
+
+    #mySidebar::-webkit-scrollbar-thumb {
+        background: #6c757d;
+        border-radius: 7px;
+    }
+
+    #mySidebar::-webkit-scrollbar-thumb:hover {
+        background: darkgray;
+    }
+
+    .openbtn {
+        /* font-size: 20px; */
+        cursor: pointer;
+        /* background-color: #111; */
+        padding: 10px 15px;
+        border: none;
+    }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    .dropdown-menu.show.grid-dropdown {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        max-height: 500px;
+        overflow-y: auto;
+        scrollbar-width: thin; 
+        scrollbar-color: #888  #f1f1f1;
+        scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar for WebKit browsers */
+    .dropdown-menu.show.grid-dropdown::-webkit-scrollbar {
+        width: 8px; /* Adjust width */
+    }
+
+    .custom-vertical-padding {
+        padding: 6.5px 0px;
+    }
+
+    /* CSS Code - Add this to your stylesheet */
+    .pointing-hand {
+        position: relative;
+        display: inline-block;
+    }
+
+    .pointing-hand::after {
+        content: '👉';
+        position: absolute;
+        top: 50%;
+        font-size: 1.3em;
+        color: #FFD700;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        transform: translateY(-50%);
+    }
+
+    /* Left to Right (LTR) - Hand points from left to the element */
+    .pointing-hand.left-direction::after {
+        left: -60px;
+        animation: pointRight 2s infinite;
+    }
+
+    .dropdown-btn-font-size {
+        font-size: 0.88rem;
+    }
+
+    .sponsor-dropdown-list:hover , .sponsor-dropdown-item:hover {
+        background-color: #fff !important;
+    }
+
+    .modal-content.sponsor-modal {
+        width: max-content !important;
+        min-width: 900px !important;
+        margin: auto !important;
+    }
+
+    .border-cool-primary {
+        border-color: #0f407d86 !important;
+    }
+
+    .sponsor-card:hover {
+        transition: .2s;
+        border-width: 2px;
+        background-color: #e7e7e795 !important;
+    }
+
+    .voice-search-icon {
+        font-size: 16px;
+        color: #666666ff;
+    }
 
 
-        @keyframes pointRight {
-            0%, 100% {
-                transform: translateY(-50%) translateX(0);
-            }
-            50% {
-                transform: translateY(-50%) translateX(15px);
-            }
-        }
-
-        /* Right to Left (RTL) - Hand points from right to the element */
-        .pointing-hand.right-direction::after {
-            content: '👈';
-            right: -60px;
-            animation: pointLeft 2s infinite;
-        }
-
-        @keyframes pointLeft {
-            0%, 100% {
-                transform: translateY(-50%) translateX(0);
-            }
-            50% {
-                transform: translateY(-50%) translateX(-15px);
-            }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .pointing-hand.left-direction::after {
-                left: -40px;
-                font-size: 1.2em;
-            }
-            
-            .pointing-hand.right-direction::after {
-                right: -40px;
-                font-size: 1.2em;
-            }
-        }
+    /***************** start voice recording css code  ***********/
     
-        /* Modern Menu Css Code Start */
+    /* Simple Voice Search Styles */
+
+    /* Make sure button can position the dot */
+    .search_voice {
+        position: relative !important;
+    }
+
+    /* Recording pulse indicator - small blinking red dot over icon */
+    .recording-pulse {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        width: 8px;
+        height: 8px;
+        background-color: #ff4444;
+        border-radius: 50%;
+        z-index: 1000;
+        pointer-events: none;
+        opacity: 0; /* Hidden by default */
+    }
+
+    /* Show and blink the dot when recording */
+    .search_voice.recording .recording-pulse {
+        opacity: 1;
+        animation: blink 0.8s ease-in-out infinite;
+    }
+
+    /* Simple blinking animation - show/hide */
+    @keyframes blink {
+        0%, 50% {
+            opacity: 1;
+        }
+        51%, 100% {
+            opacity: 0;
+        }
+    }
+
+    /* Voice search icon styles */
+    .voice-search-icon {
+        transition: color 0.3s ease;
+    }
+
+    /* Hover effect for voice button */
+    .search_voice:hover:not(.recording) {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
+
+    .search_voice:hover:not(.recording) .voice-search-icon {
+        color: #007bff;
+    }
+
+    /* Recording state icon - red color */
+    .search_voice.recording .voice-search-icon {
+        color: #ff4444 !important;
+    }
+
+    /***************** end voice recording css code  ***********/
+
+
+    @keyframes pointRight {
+        0%, 100% {
+            transform: translateY(-50%) translateX(0);
+        }
+        50% {
+            transform: translateY(-50%) translateX(15px);
+        }
+    }
+
+    /* Right to Left (RTL) - Hand points from right to the element */
+    .pointing-hand.right-direction::after {
+        content: '👈';
+        right: -60px;
+        animation: pointLeft 2s infinite;
+    }
+
+    @keyframes pointLeft {
+        0%, 100% {
+            transform: translateY(-50%) translateX(0);
+        }
+        50% {
+            transform: translateY(-50%) translateX(-15px);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        .pointing-hand.left-direction::after {
+            left: -40px;
+            font-size: 1.2em;
+        }
+        
+        .pointing-hand.right-direction::after {
+            right: -40px;
+            font-size: 1.2em;
+        }
+    }
+
+    /* Modern Menu Css Code Start */
+
+    .modern-menu .nav-menu {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .modern-menu .nav-item {
+        position: relative;
+        display: inline-block;
+    }
+
+    .modern-menu .nav-link {
+        display: block;
+        padding: 18px 30px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    /* Dropdown Container */
+    .modern-menu .dropdown {
+        position: absolute;
+        top: 100%;
+        width: max-content;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 9999999999999 !important;
+        /* min-width: 1030px; */
+        margin-top: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-menu .dropdown::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid white;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .dropdown::after {
+        content: '';
+        position: absolute;
+        top: -9px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-bottom: 9px solid rgba(0, 0, 0, 0.1);
+        z-index: 9999999999998 !important;
+    }
+
+    /* Horizontal dropdown content */
+    .modern-menu .dropdown-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        gap: 20px;
+        justify-content: center;
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    /* Card styling similar to Bootstrap cards */
+    .modern-menu .card {
+        background: white;
+        border: 1px solid #e3e6f0;
+        border-radius: 12px;
+        padding: 24px;
+        width: 230px;
+        text-align: center;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        transform: translateY(10px);
+        opacity: 1;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
+        border-color: #667eea;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card a {
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+        display: block;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 12px;
+        margin-top: 0;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card-text {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        margin-top: 0;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .card-btn {
+        display: inline-block;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    /* Show dropdown on hover */
+    .modern-menu .nav-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .nav-item:hover .card {
+        transform: translateY(0);
+        z-index: 9999999999999 !important;
+    }
+
+    .modern-menu .nav-item:hover .card:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .modern-menu .nav-item:hover .card:nth-child(2) {
+        transition-delay: 0.2s;
+    }
+
+    .modern-menu .nav-item:hover .card:nth-child(3) {
+        transition-delay: 0.3s;
+    }
+
+    .modern-menu .nav-item:hover .card:nth-child(4) {
+        transition-delay: 0.4s;
+    }
+
+    .modern-menu .custom-max-inline-size {
+        max-inline-size: 82%;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    /* Force everything inside modern-menu to highest z-index */
+    .modern-menu .dropdown * {
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+
+        .modern-menu {
+            display: none;
+        }
 
         .modern-menu .nav-menu {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            padding: 0;
-            overflow: visible;
+            flex-direction: column;
+            align-items: center;
+            z-index: 9999999999999 !important;
         }
 
-        .modern-menu .nav-item {
-            position: relative;
-            display: inline-block;
-        }
-
-        .modern-menu .nav-link {
-            display: block;
-            padding: 18px 30px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            border-radius: 12px;
-            white-space: nowrap;
-            position: relative;
-        }
-
-        /* Dropdown Container */
         .modern-menu .dropdown {
-            position: absolute;
-            top: 100%;
-            width: max-content;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999999999999 !important;
-            /* min-width: 1030px; */
-            margin-top: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .modern-menu .dropdown::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 8px solid white;
+            min-width: 300px;
             z-index: 9999999999999 !important;
         }
 
-        .modern-menu .dropdown::after {
-            content: '';
-            position: absolute;
-            top: -9px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
-            border-bottom: 9px solid rgba(0, 0, 0, 0.1);
-            z-index: 9999999999998 !important;
-        }
-
-        /* Horizontal dropdown content */
         .modern-menu .dropdown-content {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-            gap: 20px;
-            justify-content: center;
-            transition: all 0.4s ease;
-            position: relative;
+            flex-direction: column;
+            align-items: center;
             z-index: 9999999999999 !important;
         }
 
-        /* Card styling similar to Bootstrap cards */
         .modern-menu .card {
-            background: white;
-            border: 1px solid #e3e6f0;
-            border-radius: 12px;
-            padding: 24px;
-            width: 230px;
-            text-align: center;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            transform: translateY(10px);
-            opacity: 1;
-            position: relative;
+            width: 100%;
+            max-width: 280px;
             z-index: 9999999999999 !important;
         }
+    }
 
-        .modern-menu .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
-            border-color: #667eea;
-            z-index: 9999999999999 !important;
-        }
+    /* Demo title */
+    .modern-menu .demo-title {
+        text-align: center;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
 
-        .modern-menu .card a {
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            display: block;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 12px;
-            margin-top: 0;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .card-text {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            margin-top: 0;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .card-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        /* Show dropdown on hover */
-        .modern-menu .nav-item:hover .dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .nav-item:hover .card {
-            transform: translateY(0);
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .nav-item:hover .card:nth-child(1) {
-            transition-delay: 0.1s;
-        }
-
-        .modern-menu .nav-item:hover .card:nth-child(2) {
-            transition-delay: 0.2s;
-        }
-
-        .modern-menu .nav-item:hover .card:nth-child(3) {
-            transition-delay: 0.3s;
-        }
-
-        .modern-menu .nav-item:hover .card:nth-child(4) {
-            transition-delay: 0.4s;
-        }
-
-        .modern-menu .custom-max-inline-size {
-            max-inline-size: 82%;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        /* Force everything inside modern-menu to highest z-index */
-        .modern-menu .dropdown * {
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-
-            .modern-menu {
-                display: none;
-            }
-
-            .modern-menu .nav-menu {
-                flex-direction: column;
-                align-items: center;
-                z-index: 9999999999999 !important;
-            }
-
-            .modern-menu .dropdown {
-                min-width: 300px;
-                z-index: 9999999999999 !important;
-            }
-
-            .modern-menu .dropdown-content {
-                flex-direction: column;
-                align-items: center;
-                z-index: 9999999999999 !important;
-            }
-
-            .modern-menu .card {
-                width: 100%;
-                max-width: 280px;
-                z-index: 9999999999999 !important;
-            }
-        }
-
-        /* Demo title */
-        .modern-menu .demo-title {
-            text-align: center;
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-        .modern-menu .demo-description {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            z-index: 9999999999999 !important;
-        }
-
-    /* Modern Menu Css Code End */
+    .modern-menu .demo-description {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 9999999999999 !important;
+    }
 
 </style>
 
@@ -1593,43 +1604,43 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() { 
-    const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
-    
-    navItems.forEach(item => { 
-        const dropdown = item.querySelector('.dropdown'); 
-        let hoverTimeout; 
+    document.addEventListener('DOMContentLoaded', function() { 
+        const navItems = document.querySelectorAll('.modern-menu .nav-item'); 
         
-        if (dropdown) { 
-            item.addEventListener('mouseenter', function() { 
-                clearTimeout(hoverTimeout); 
-                dropdown.style.display = 'block'; 
-            }); 
+        navItems.forEach(item => { 
+            const dropdown = item.querySelector('.dropdown'); 
+            let hoverTimeout; 
             
-            item.addEventListener('mouseleave', function() { 
-                hoverTimeout = setTimeout(() => { 
-                    dropdown.style.display = ''; 
-                }, 100); // Small delay to prevent flickering 
-            }); 
-        } 
-        
-        // Add click animation for the anchor tags directly
-        const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
-        cardLinks.forEach(link => { 
-            link.addEventListener('click', function(e) { 
-                // Add subtle click animation to the parent card
-                const card = this.closest('.card');
-                if (card) {
-                    card.style.transform = 'translateY(-8px) scale(0.98)'; 
-                    setTimeout(() => { 
-                        card.style.transform = ''; 
-                    }, 150); 
-                }
-                // Let the link navigate naturally - don't prevent default
+            if (dropdown) { 
+                item.addEventListener('mouseenter', function() { 
+                    clearTimeout(hoverTimeout); 
+                    dropdown.style.display = 'block'; 
+                }); 
+                
+                item.addEventListener('mouseleave', function() { 
+                    hoverTimeout = setTimeout(() => { 
+                        dropdown.style.display = ''; 
+                    }, 100); // Small delay to prevent flickering 
+                }); 
+            } 
+            
+            // Add click animation for the anchor tags directly
+            const cardLinks = item.querySelectorAll('.modern-menu .card a'); 
+            cardLinks.forEach(link => { 
+                link.addEventListener('click', function(e) { 
+                    // Add subtle click animation to the parent card
+                    const card = this.closest('.card');
+                    if (card) {
+                        card.style.transform = 'translateY(-8px) scale(0.98)'; 
+                        setTimeout(() => { 
+                            card.style.transform = ''; 
+                        }, 150); 
+                    }
+                    // Let the link navigate naturally - don't prevent default
+                }); 
             }); 
         }); 
-    }); 
-});
+    });
 </script>
 
 <script>
