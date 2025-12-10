@@ -631,9 +631,5 @@ Route::get('update-translations-locales', function () {
   
 });
 
-Route::get('/clear-laravel-cache-987654321', function () {
-    \Artisan::call('optimize:clear');
-    return 'Laravel cache cleared successfully!';
-});
-
+ 
 
