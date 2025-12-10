@@ -86,15 +86,15 @@ class AdController extends Controller
         if($request->title && $request->category_id) {
 
             $selected_category = Category::find($request->category_id);
-    
+
             $selected_data = [];
-    
+
             $selected_data['title'] = $request->title;
             $selected_data['category_id'] = $request->category_id;
             $selected_data['category_name'] = $selected_category->name;
             $selected_data['brand_id'] = $request->brand_id;
             $selected_data['model_id'] = $request->model_id;
-    
+
             session(['selected_data' => $selected_data]);
         } else {
             $selected_category = Category::find(session('selected_data')['category_id']);
@@ -105,13 +105,21 @@ class AdController extends Controller
         $selected_type = $selected_category->category_type;
 
         $categories = Category::where('position', 1)->where('category_type', $selected_type)->get();
-    
+
         $brands = Cache::rememberForever('adding_brands', function () {
             return Brand::orderBy('name', 'ASC')->get();
         });
 
         $models = Cache::rememberForever('adding_models', function () {
-            return VehicleModel::select('id', 'name', 'brand_id', 'status')->get();
+            return VehicleModel::with('categories:id')->select('id', 'name', 'brand_id', 'status')->get()->map(function ($model) {
+                return [
+                    'id' => $model->id,
+                    'name' => $model->name,
+                    'brand_id' => $model->brand_id,
+                    'status' => $model->status,
+                    'categories' => $model->categories->pluck('id')->toArray(),
+                ];
+            });
         });
 
         $list_values = Cache::rememberForever('list_values', function () {
@@ -127,8 +135,6 @@ class AdController extends Controller
                 });
         });
         
-        // return Cache::get('business_settings');
-
         $urgent_sale_sticker_price = BusinessSetting::where('type', 'urgent_sale_sticker_price')->value('value');
         $urgent_sale_sticker_duration = BusinessSetting::where('type', 'urgent_sale_sticker_duration_in_days')->value('value');
 

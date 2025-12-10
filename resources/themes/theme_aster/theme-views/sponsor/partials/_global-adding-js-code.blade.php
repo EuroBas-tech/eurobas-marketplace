@@ -459,12 +459,16 @@
         // Filter and add matching models
         allModelOptions.each(function () {
             const brandId = $(this).data('brand-id');
-            const categoryId = $(this).data('category-id');
+            const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
 
-            if (
-                (!brandId || brandId == selectedBrandId) &&
-                (!categoryId || categoryId == selectedCategoryId)
+            if ($(this).val() === "") {
+                // keep empty option
+                $modelSelect.append($(this).clone());
+            } else if (
+                (selectedBrandId && brandId == selectedBrandId) &&
+                (modelCategories.length === 0 || modelCategories.includes(selectedCategoryId))
             ) {
+                // Model matches the selected brand AND (has no category restrictions OR includes selected category)
                 $modelSelect.append($(this).clone());
             }
         });
