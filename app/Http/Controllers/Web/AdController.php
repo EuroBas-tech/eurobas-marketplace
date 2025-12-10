@@ -70,6 +70,9 @@ class AdController extends Controller
         return view(VIEW_FILE_NAMES['adding_type'], compact('categories', 'brands', 'models'));
     }
 
+
+
+
     public function add(Request $request) {
 
         $is_profile_uncompleted = Helpers::prevent_if_profile_incomplete();
@@ -111,15 +114,7 @@ class AdController extends Controller
         });
 
         $models = Cache::rememberForever('adding_models', function () {
-            return VehicleModel::with('categories:id')->select('id', 'name', 'brand_id', 'status')->get()->map(function ($model) {
-                return [
-                    'id' => $model->id,
-                    'name' => $model->name,
-                    'brand_id' => $model->brand_id,
-                    'status' => $model->status,
-                    'categories' => $model->categories->pluck('id')->toArray(),
-                ];
-            });
+            return VehicleModel::with('categories:id')->select('id', 'name', 'brand_id', 'status')->get();
         });
 
         $list_values = Cache::rememberForever('list_values', function () {
@@ -135,6 +130,8 @@ class AdController extends Controller
                 });
         });
         
+        // return Cache::get('business_settings');
+
         $urgent_sale_sticker_price = BusinessSetting::where('type', 'urgent_sale_sticker_price')->value('value');
         $urgent_sale_sticker_duration = BusinessSetting::where('type', 'urgent_sale_sticker_duration_in_days')->value('value');
 
