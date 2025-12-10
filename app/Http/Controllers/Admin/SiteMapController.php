@@ -9,13 +9,13 @@ use Spatie\Sitemap\Tags\Url;
 
 class SiteMapController extends Controller
 {
-    // اللغات المتوفرة في الموقع
+    // جميع اللغات + '' للإنجليزية بدون رمز
     private $locales = [
-        '',        // English (default, without prefix)
-        'nl', 'de', 'tr', 'es', 'it', 'ru', 'fr', 'ar',
-        'el', 'pl', 'ro', 'uk', 'bg', 'pt', 'sr', 'da',
-        'sv', 'fi', 'no', 'hr', 'hu', 'cs', 'sq', 'bs',
-        'lt', 'sl', 'sk', 'zh-Hans', 'ko', 'ja'
+        '',        // English (default, no prefix)
+        'nl','de','tr','es','it','ru','fr','ar',
+        'el','pl','ro','uk','bg','pt','sr','da',
+        'sv','fi','no','hr','hu','cs','sq','bs',
+        'lt','sl','sk','zh-Hans','ko','ja'
     ];
 
     public function index()
@@ -25,46 +25,47 @@ class SiteMapController extends Controller
 
     public function download()
     {
+        // إنشاء خريطة جديدة
         $sitemap = Sitemap::create();
 
-        // جميع المسارات المسجلة في laravel
+        // جميع مسارات Laravel
         foreach (Route::getRoutes() as $route) {
 
             $uri = $route->uri();
 
-            // تجاهل مسارات لوحة التحكم + api + debug
+            // حذف مسارات غير مهمة مثل api + debug
             if (
-                str_starts_with($uri, 'admin') ||
                 str_starts_with($uri, 'api') ||
-                str_contains($uri, 'logout') ||
-                str_contains($uri, '_debugbar')
+                str_contains($uri, '_ignition') ||
+                str_contains($uri, 'telescope') ||
+                str_contains($uri, 'sanctum')
             ) {
                 continue;
             }
 
+            // لكل لغة
             foreach ($this->locales as $locale) {
 
-                $prefix = $locale === '' ? '' : "/$locale";
-
-                $fullUrl = url($prefix . '/' . ltrim($uri, '/'));
-
-                $tag = Url::create($fullUrl)
-                    ->setLastModificationDate(now())
-                    ->setPriority(0.8);
-
-                // إضافة hreflang لكل لغة
-                foreach ($this->locales as $altLocale) {
-                    $altPrefix = $altLocale === '' ? '' : "/$altLocale";
-                    $tag->addAlternate(url($altPrefix . '/' . ltrim($uri, '/')), $altLocale ?: 'en');
+                // الإنكليزية بدون رمز
+                if ($locale === '') {
+                    $fullUrl = url($uri);
+                } else {
+                    $fullUrl = url("$locale/$uri");
                 }
 
-                $sitemap->add($tag);
+                // إضافة الرابط إلى الخريطة
+                $sitemap->add(
+                    Url::create($fullUrl)
+                        ->setPriority(0.8)
+                        ->setChangeFrequency('daily')
+                );
             }
         }
 
-        // حفظ الملف
+        // حفظ الخريطة
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
+        // تنزيل الملف
         return response()->download(public_path('sitemap.xml'));
     }
 }
