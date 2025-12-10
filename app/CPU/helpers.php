@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use App\Model\ShippingMethod;
 use App\Model\BusinessSetting;
 use App\Model\OrderStatusHistory;
+use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
 use App\Models\NotificationMessage;
 use Illuminate\Support\Facades\App;
@@ -26,6 +27,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Model\AddFundBonusCategories;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Helpers
 {
@@ -1075,25 +1077,38 @@ if (!function_exists('format_price')) {
 
 function translate($key)
 {
-
-    $local = Helpers::default_lang();
-
-    App::setLocale($local);
+    $locale = LaravelLocalization::getCurrentLocale();
 
     try {
-        $lang_array = include(base_path('resources/lang/' . $local . '/messages.php'));
-        $processed_key = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
+        $cacheKey = "translations_{$locale}";
+        
+        // Get all translations for locale from cache, or load from DB
+        $translations = Cache::rememberForever($cacheKey, function () use ($locale) {
+            return LanguageTranslation::where('locale', $locale)
+            ->pluck('value', 'key')
+            ->toArray();
+        });
+
+        $processedKey = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
         $key = Helpers::remove_invalid_charcaters($key);
-        if (!array_key_exists($key, $lang_array)) {
-            $lang_array[$key] = $processed_key;
-            $str = "<?php return " . var_export($lang_array, true) . ";";
-            file_put_contents(base_path('resources/lang/' . $local . '/messages.php'), $str);
-            $result = $processed_key;
+        
+        // If key doesn't exist, create it
+        if (!isset($translations[$key])) {
+            LanguageTranslation::create([
+                'key' => $key,
+                'value' => $processedKey,
+                'locale' => $locale
+            ]);
+            
+            // Clear cache to refresh
+            Cache::forget($cacheKey);
+            
+            $result = $processedKey;
         } else {
-            $result = __('messages.' . $key);
+            $result = $translations[$key];
         }
     } catch (\Exception $exception) {
-        $result = __('messages.' . $key);
+        $result = $key;
     }
 
     return $result;
