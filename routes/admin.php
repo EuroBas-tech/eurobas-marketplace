@@ -552,10 +552,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
                 Route::get('environment-setup', 'EnvironmentSettingsController@environment_index')->name('environment-setup');
                 Route::post('update-environment', 'EnvironmentSettingsController@environment_setup')->name('update-environment');
 
-                //sitemap generate
-                Route::get('mysitemap','SiteMapController@index')->name('mysitemap');
-                Route::get('mysitemap-download','SiteMapController@download')->name('mysitemap-download');
-
+                 
                 Route::group(['prefix' => 'theme', 'as' => 'theme.'], function () {
                     Route::get('setup', 'ThemeController@theme_index')->name('setup');
                     Route::post('setup', 'ThemeController@theme_setup');
