@@ -1136,35 +1136,6 @@ function specificTranslate($key, $lang)
     return $result;
 }
 
-function sellerTranslate($key)
-{
-
-    $local = session('seller_prefered_language');
-    App::setLocale($local);
-
-    \Log::debug('im here!!');
-
-    try {
-        $lang_array = include(base_path('resources/lang/' . $local . '/messages.php'));
-        $processed_key = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
-        $key = Helpers::remove_invalid_charcaters($key);
-        if (!array_key_exists($key, $lang_array)) {
-            $lang_array[$key] = $processed_key;
-            $str = "<?php return " . var_export($lang_array, true) . ";";
-            file_put_contents(base_path('resources/lang/' . $local . '/messages.php'), $str);
-            $result = $processed_key;
-            \Log::debug('if : '.$result);
-        } else {
-            $result = __('messages.' . $key);
-            \Log::debug('if : '.$result);
-        }
-    } catch (\Exception $exception) {
-        $result = __('messages.' . $key);
-    }
-
-    return $result;
-}
-
 function auto_translator($q, $sl, $tl)
 {
     $res = file_get_contents("https://translate.googleapis.com/translate_a/single?client=gtx&ie=UTF-8&oe=UTF-8&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&sl=" . $sl . "&tl=" . $tl . "&hl=hl&q=" . urlencode($q), $_SERVER['DOCUMENT_ROOT'] . "/transes.html");
