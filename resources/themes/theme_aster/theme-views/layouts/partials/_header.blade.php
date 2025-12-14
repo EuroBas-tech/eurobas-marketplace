@@ -845,7 +845,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div style="overflow-y: auto;max-height: 462px;scrollbar-width: thin;" class="card large-screen-aside-shadow search-card __inline-13 position-absolute z-99 w-100 bg-white start-0 search-result-box d--none"></div>
+                                <div style="overflow-y: auto;max-height: 462px;scrollbar-width: thin;background: transparent;border: none;" class="card large-screen-aside-shadow search-card __inline-13 position-absolute z-99 w-100 bg-white start-0 search-result-box d--none"></div>
                             </form>
                         </div>
                     </div>
