@@ -628,5 +628,8 @@ Route::get('update-translations-locales', function () {
     Translation::where('locale', 'ba')->update(['locale' => 'bs']);
     Translation::where('locale', 'ae')->update(['locale' => 'ar']);
     Translation::where('locale', 'ua')->update(['locale' => 'uk']);
-
+  
 });
+
+ 
+

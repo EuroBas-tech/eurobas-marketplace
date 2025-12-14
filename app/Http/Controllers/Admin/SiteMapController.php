@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Sitemap\SitemapGenerator;
 use Illuminate\Support\Facades\Route;
-use Brian2694\Toastr\Facades\Toastr;
-use function App\CPU\translate;
 use Illuminate\Support\Facades\Storage;
 
 class SiteMapController extends Controller
@@ -17,8 +15,9 @@ class SiteMapController extends Controller
         return view('admin-views.site-map.view');
     }
 
-    public function download(){
-        SitemapGenerator::create(url('/'))->writeToFile('public/sitemap.xml');
+    public function download()
+    {
+        SitemapGenerator::create(url('/'))->writeToFile(public_path('sitemap.xml'));
         return response()->download(public_path('sitemap.xml'));
     }
 }
