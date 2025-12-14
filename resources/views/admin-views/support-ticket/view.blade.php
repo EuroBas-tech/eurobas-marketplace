@@ -72,7 +72,7 @@
                                     class="card-body align-items-center d-flex flex-wrap justify-content-between gap-3 border-bottom">
                                     <div class="media gap-3">
                                         <img class="avatar avatar-lg"
-                                             src="{{ $ticket->customer->image ? cloudfront('profile/images/'.$ticket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
+                                             src="{{ $ticket->customer?->image ? cloudfront('profile/images/'.$ticket->customer->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                              onerror="this.src='{{asset('assets/back-end/img/image-place-holder.png')}}'"
                                              alt="">
                                         <div class="media-body">

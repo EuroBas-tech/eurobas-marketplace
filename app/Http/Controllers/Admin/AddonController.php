@@ -185,17 +185,31 @@ class AddonController extends Controller
         }
     }
 
-    //helper functions
     function getDirectories(string $path): array
     {
+        if (!is_dir($path) || !is_readable($path)) {
+            return [];
+        }
+
         $directories = [];
         $items = scandir($path);
-        foreach ($items as $item) {
-            if ($item == '..' || $item == '.')
-                continue;
-            if (is_dir($path . '/' . $item))
-                $directories[] = $item;
+
+        if ($items === false) {
+            return [];
         }
+
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+
+            if (is_dir($path . DIRECTORY_SEPARATOR . $item)) {
+                $directories[] = $item;
+            }
+        }
+
         return $directories;
     }
+
+    
 }
