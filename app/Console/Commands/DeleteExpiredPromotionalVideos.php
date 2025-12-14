@@ -11,80 +11,89 @@ use Illuminate\Support\Facades\Http;
 
 class DeleteExpiredPromotionalVideos extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'PromotionalVideos:AutoDelete';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'automatic delete expired promotional videos';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
     public function handle()
     {
-
         $promotional_videos = SponsoredAd::where('type', 'promotional_video')
             ->where('expiration_date', '<', Carbon::now()->toDateString())
             ->where('is_video_deleted', 0)
             ->get();
 
-        $apiKey = BusinessSetting::where('type', 'bunny_api_key')->value('value');
-        $libraryId = BusinessSetting::where('type', 'bunny_library_id')->value('value');
-        
-        if($promotional_videos->count() > 0) {
-            foreach($promotional_videos as $video) {
+        $muxTokenId     = BusinessSetting::where('type', 'mux_api_token')->value('value');
+        $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
+
+        if ($promotional_videos->count() > 0) {
+            foreach ($promotional_videos as $video) {
+
                 if ($video->playback_id) {
                     try {
-                        // Delete video from Bunny Stream
-                        $response = Http::withHeaders([
-                            'AccessKey' => $apiKey
-                        ])->delete("https://video.bunnycdn.com/library/{$libraryId}/videos/{$video->playback_id}");
+                        /**
+                         * 1️⃣ Get asset by playback_id
+                         */
+                        $assetResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                            ->get('https://api.mux.com/video/v1/assets', [
+                                'playback_id' => $video->playback_id
+                            ]);
 
-                        if ($response->successful()) {                            
+                        if (!$assetResponse->successful() || empty($assetResponse['data'][0]['id'])) {
+                            Log::debug([
+                                'success' => false,
+                                'error' => 'Asset not found for playback ID',
+                                'playback_id' => $video->playback_id,
+                                'at' => now()
+                            ]);
+                            continue;
+                        }
+
+                        $assetId = $assetResponse['data'][0]['id'];
+
+                        /**
+                         * 2️⃣ Delete asset from Mux
+                         */
+                        $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                            ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+
+                        if ($deleteResponse->successful()) {
+
                             Log::debug([
                                 'success' => true,
-                                'message' => 'Video deleted successfully',
+                                'message' => 'Video deleted successfully from Mux',
+                                'asset_id' => $assetId,
                                 'at' => now()
                             ]);
 
                             $video->is_video_deleted = 1;
                             $video->save();
-                            
+
+                            Log::debug($video);
+
                         } else {
                             Log::debug([
                                 'success' => false,
-                                'error' => 'Failed to delete video : ' . $response->body(),
+                                'error' => 'Failed to delete video from Mux: ' . $deleteResponse->body(),
                                 'at' => now()
-                            ], 500);
+                            ]);
                         }
+
                     } catch (\Exception $e) {
-                        Log::debug(response()->json([
+                        Log::debug([
                             'success' => false,
-                            'error' => $e->getMessage()
-                        ], 500));
+                            'error' => $e->getMessage(),
+                            'at' => now()
+                        ]);
                     }
                 }
             }
         }
+
     }
+    
 }

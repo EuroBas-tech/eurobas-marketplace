@@ -70,9 +70,6 @@ class AdController extends Controller
         return view(VIEW_FILE_NAMES['adding_type'], compact('categories', 'brands', 'models'));
     }
 
-
-
-
     public function add(Request $request) {
 
         $is_profile_uncompleted = Helpers::prevent_if_profile_incomplete();
