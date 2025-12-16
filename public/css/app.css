@@ -10899,54 +10899,5 @@ a.text-dark:focus {
   }
 }
 
-/* ===== Gallery fix like AutoScout24 ===== */
-
-.swiper-main img {
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
-    transform: none !important;
-    transition: none !important;
-}
-
-.swiper-main .swiper-button-next,
-.swiper-main .swiper-button-prev {
-    width: 44px;
-    height: 44px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.15);
-}
-
-.swiper-main .swiper-button-next::after,
-.swiper-main .swiper-button-prev::after {
-    font-size: 16px;
-    color: #333;
-}
-
-.swiper-thumbs img {
-    object-fit: cover;
-    cursor: pointer;
-}
-
-.swiper-slide-thumb-active {
-    border: 2px solid #0d6efd;
-    border-radius: 6px;
-}
-
-@media (max-width: 768px) {
-    .swiper-thumbs {
-        display: none !important;
-    }
-
-    .swiper-main img {
-        max-height: 60vh;
-    }
-
-    .swiper-main .swiper-button-next,
-    .swiper-main .swiper-button-prev {
-        display: none;
-    }
-}
+ 
 
