@@ -24,6 +24,7 @@ class DeleteExpiredPromotionalVideos extends Command
     
     public function handle()
     {
+        
         // Get expired videos
         $videos = SponsoredAd::where('type', 'promotional_video')
             ->where('expiration_date', '<=', now())
