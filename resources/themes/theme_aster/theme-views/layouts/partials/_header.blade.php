@@ -42,7 +42,6 @@
 )
 
     <style>
-
         .complete-profile-bar {
             background-color: #7280FD;
             color: #fff;
@@ -192,62 +191,62 @@
 
         /***************** start voice recording css code  ***********/
         
-/* Simple Voice Search Styles */
+        /* Simple Voice Search Styles */
 
-/* Make sure button can position the dot */
-.search_voice {
-    position: relative !important;
-}
+        /* Make sure button can position the dot */
+        .search_voice {
+            position: relative !important;
+        }
 
-/* Recording pulse indicator - small blinking red dot over icon */
-.recording-pulse {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    width: 8px;
-    height: 8px;
-    background-color: #ff4444;
-    border-radius: 50%;
-    z-index: 1000;
-    pointer-events: none;
-    opacity: 0; /* Hidden by default */
-}
+        /* Recording pulse indicator - small blinking red dot over icon */
+        .recording-pulse {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: #ff4444;
+            border-radius: 50%;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0; /* Hidden by default */
+        }
 
-/* Show and blink the dot when recording */
-.search_voice.recording .recording-pulse {
-    opacity: 1;
-    animation: blink 0.8s ease-in-out infinite;
-}
+        /* Show and blink the dot when recording */
+        .search_voice.recording .recording-pulse {
+            opacity: 1;
+            animation: blink 0.8s ease-in-out infinite;
+        }
 
-/* Simple blinking animation - show/hide */
-@keyframes blink {
-    0%, 50% {
-        opacity: 1;
-    }
-    51%, 100% {
-        opacity: 0;
-    }
-}
+        /* Simple blinking animation - show/hide */
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
 
-/* Voice search icon styles */
-.voice-search-icon {
-    transition: color 0.3s ease;
-}
+        /* Voice search icon styles */
+        .voice-search-icon {
+            transition: color 0.3s ease;
+        }
 
-/* Hover effect for voice button */
-.search_voice:hover:not(.recording) {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-}
+        /* Hover effect for voice button */
+        .search_voice:hover:not(.recording) {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
 
-.search_voice:hover:not(.recording) .voice-search-icon {
-    color: #007bff;
-}
+        .search_voice:hover:not(.recording) .voice-search-icon {
+            color: #007bff;
+        }
 
-/* Recording state icon - red color */
-.search_voice.recording .voice-search-icon {
-    color: #ff4444 !important;
-}
+        /* Recording state icon - red color */
+        .search_voice.recording .voice-search-icon {
+            color: #ff4444 !important;
+        }
 
         /***************** end voice recording css code  ***********/
 
@@ -543,10 +542,7 @@
             position: relative;
             z-index: 9999999999999 !important;
         }
-
-    /* Modern Menu Css Code End */
-
-</style>
+    </style>
 
 <!-- Header -->
 <header class="header" style="height: 135px;" >
