@@ -5,6 +5,7 @@ ini_set('max_execution_time', 1000);
 use App\Model\Cart;
 use App\CPU\Helpers;
 use App\Model\Category;
+use App\Model\SponsoredAd;
 use App\Model\Translation;
 use App\Model\BusinessSetting;
 use App\Model\LanguageTranslation;
@@ -623,11 +624,9 @@ Route::get('fix-languages', function() {
 
 });
 
-Route::get('update-translations-locales', function () {
+Route::get('see-videos', function () {
 
-    Translation::where('locale', 'ba')->update(['locale' => 'bs']);
-    Translation::where('locale', 'ae')->update(['locale' => 'ar']);
-    Translation::where('locale', 'ua')->update(['locale' => 'uk']);
+    return SponsoredAd::get();
   
 });
 
