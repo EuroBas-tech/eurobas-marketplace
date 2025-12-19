@@ -22,6 +22,7 @@ class DeleteExpiredPromotionalVideos extends Command
         parent::__construct();
     }
     
+    
     public function handle()
     {
         

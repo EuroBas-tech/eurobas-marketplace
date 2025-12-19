@@ -416,7 +416,7 @@ class AdController extends Controller
                 'package_id' => $urgent_sale_sticker_package->id,
                 'duration_in_days' => $urgent_sale_sticker_package->duration_in_days,
                 'is_paid' => 1,
-                'expiration_date' => now()->addDays($urgent_sale_sticker_package->duration_in_days),
+                'expiration_date' => now()->addHours($urgent_sale_sticker_package->duration_in_days * 24),
                 'payment_transaction_id' => null,
             ]);
         }
@@ -429,7 +429,7 @@ class AdController extends Controller
                 'package_id' => $appear_on_first_results_package->id,
                 'duration_in_days' => $appear_on_first_results_package->duration_in_days,
                 'is_paid' => 1,
-                'expiration_date' => now()->addDays($appear_on_first_results_package->duration_in_days),
+                'expiration_date' => now()->addHours($appear_on_first_results_package->duration_in_days * 24),
                 'payment_transaction_id' => null,
             ]);
         }
@@ -444,7 +444,7 @@ class AdController extends Controller
                 'video_url' => session('video_player_url'),
                 'duration_in_days' => $promotional_video_package->duration_in_days,
                 'is_paid' => 1,
-                'expiration_date' => now()->addDays($promotional_video_package->duration_in_days),
+                'expiration_date' => now()->addHours($promotional_video_package->duration_in_days * 24),
                 'payment_transaction_id' => null,
             ]);
 

@@ -625,9 +625,7 @@ Route::get('fix-languages', function() {
 });
 
 Route::get('see-videos', function () {
-
     return SponsoredAd::get();
-  
 });
 
  
