@@ -238,15 +238,6 @@ class AdController extends Controller
             }
         }
 
-        // Validate city is in the specified country
-        if (!$this->validateCityInCountry($request->city, $request->country)) {
-            return response()->json([
-                'success' => false,
-                'message' => translate('city country validity error'),
-                'errors' => [translate('there is no city with name'). ':' . $request->city . translate('in country') . ':'. $request->country]
-            ], 422);
-        }
-
         $ad = new Ad();
         $ad->user_id = auth('customer')->user()->id;
         $ad->title = $request->title;
