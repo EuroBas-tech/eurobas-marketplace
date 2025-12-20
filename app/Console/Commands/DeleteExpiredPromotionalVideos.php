@@ -25,15 +25,12 @@ class DeleteExpiredPromotionalVideos extends Command
     
     public function handle()
     {
-        
-        // Get expired videos
         $videos = SponsoredAd::where('type', 'promotional_video')
             ->where('expiration_date', '<=', now())
             ->where('is_video_deleted', 0)
             ->whereNotNull('playback_id')
             ->get();
 
-        // Get Mux credentials
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
@@ -41,29 +38,58 @@ class DeleteExpiredPromotionalVideos extends Command
             return;
         }
 
-        // Delete each video
         foreach ($videos as $video) {
             try {
-                // Extract asset ID from video_url
-                // URL format: https://stream.mux.com/ASSET_ID
-                preg_match('/stream\.mux\.com\/([^\/\?]+)/', $video->video_url, $matches);
-                $assetId = $matches[1] ?? null;
 
-                if ($assetId) {
-                    // Delete from Mux
-                    Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                        ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+                // 1️⃣ Get asset_id from playback_id
+                $response = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                    ->get("https://api.mux.com/video/v1/playback-ids/{$video->playback_id}");
+
+                if (!$response->successful()) {
+                    Log::error("Failed to get asset_id for video {$video->id}", [
+                        'status' => $response->status(),
+                        'response' => $response->body()
+                    ]);
+                    continue;
                 }
 
-                // Mark as deleted in database
-                $video->update(['is_video_deleted' => 1]);
+                // Try different possible paths for asset_id
+                $responseData = $response->json();
+                $assetId = $responseData['data']['asset_id'] ?? 
+                          $responseData['data']['object']['id'] ?? 
+                          null;
 
-                Log::debug($video);
+                if (!$assetId) {
+                    Log::error("Asset ID not found for video {$video->id}", [
+                        'response_data' => $responseData
+                    ]);
+                    continue;
+                }
+
+                // 2️⃣ Delete asset from Mux
+                $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                    ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+
+                if (!$deleteResponse->successful()) {
+                    Log::error("Failed to delete asset {$assetId} for video {$video->id}", [
+                        'status' => $deleteResponse->status(),
+                        'response' => $deleteResponse->body()
+                    ]);
+                    continue;
+                }
+
+                // 3️⃣ Mark as deleted locally
+                $video->update([
+                    'is_video_deleted' => 1,
+                ]);
+
+                Log::info("Successfully deleted video {$video->id} with asset {$assetId}");
 
             } catch (\Exception $e) {
                 Log::error("Error deleting video {$video->id}: " . $e->getMessage());
             }
         }
     }
+
 
 }
