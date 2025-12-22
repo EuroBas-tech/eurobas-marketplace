@@ -55,17 +55,9 @@ class HomeController extends Controller
         };
     }
 
-     public function theme_aster()
+    public function theme_aster()
 {
-    $now = now();
-    $locale = session('local') ?? 'en';
-
-    /**
-     * ------------------------------------------------
-     * Home Categories (Top section)
-     * ------------------------------------------------
-     */
-    $home_categories = Cache::rememberForever('home_categories', function () {
+    $home_categories = Cache::rememberForever('categories', function () {
         return Category::where('home_status', true)
             ->priority()
             ->latest()
@@ -73,78 +65,66 @@ class HomeController extends Controller
             ->get();
     });
 
-    /**
-     * ------------------------------------------------
-     * Banner
-     * ------------------------------------------------
-     */
-    $banner = Cache::rememberForever("main_banner_{$locale}", function () use ($locale) {
+    $locale = session('local') ?? 'en';
+    $isBannerLocaleExist = $this->banner->where('lang', $locale)->exists();
+
+    $banners = Cache::rememberForever('main_banners', function () {
         return Banner::where('banner_type', 'Main Banner')
             ->where('published', 1)
-            ->whereIn('lang', [$locale, 'Both'])
-            ->orderByRaw("lang = '{$locale}' DESC")
-            ->first();
-    });
-
-    /**
-     * ------------------------------------------------
-     * Paid Banners
-     * ------------------------------------------------
-     */
-    $paid_banners = Cache::remember('paid_banners', 300, function () {
-        return PaidBanner::with('package.features')
-            ->whereHas('package.features', function ($q) {
-                $q->where('name', 'show_on_home_page');
-            })
-            ->where('status', 1)
-            ->where('expiration_date', '>', now())
             ->get();
     });
 
-    /**
-     * ------------------------------------------------
-     * Categories + Ads (OPTIMIZED 🔥)
-     * ------------------------------------------------
-     */
-    $categories = Cache::remember('home_categories_ads', 300, function () use ($now) {
+    $banner = $banners->firstWhere('lang', $isBannerLocaleExist ? $locale : 'Both');
 
-        return Category::homeEnabled()
-            ->with(['ads' => function ($q) use ($now) {
+    $paid_banners = PaidBanner::with('package.features')
+        ->whereHas('package.features', fn ($q) =>
+            $q->where('name', 'show_on_home_page')
+        )
+        ->where('status', 1)
+        ->where('expiration_date', '>', now())
+        ->get();
 
-                $q->active()
-                  ->when(session('show_by_country'), function ($qq) {
-                      $qq->country(session('show_by_country')['name']);
-                  })
-                  ->with([
-                      'brand:id,name',
-                      'wish_list',
-                      'sponsor' => function ($sq) use ($now) {
-                          $sq->where('expiration_date', '>', $now);
-                      }
-                  ])
-                  ->withExists([
-                      'sponsor as has_first_results' => function ($sq) use ($now) {
-                          $sq->where('type', 'appearance_in_first_results')
-                             ->where('expiration_date', '>', $now);
-                      },
-                      'sponsor as has_urgent_sale_sticker' => function ($sq) use ($now) {
-                          $sq->where('type', 'urgent_sale_sticker')
-                             ->where('expiration_date', '>', $now);
-                      },
-                  ])
-                  ->orderByDesc('has_first_results')
-                  ->latest()
-                  ->limit(16);
+    $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
+    $user = Helpers::get_customer();
 
-            }])
-            ->get();
+    $now = now();
+
+    /** ✅ تحميل الإعلانات بدون limit */
+    $categories = Category::homeEnabled()
+        ->with(['ads' => function ($q) use ($now) {
+            $q->active()
+              ->when(session('show_by_country'),
+                  fn ($qq) => $qq->country(session('show_by_country')['name'])
+              )
+              ->with(['brand', 'sponsor', 'wish_list'])
+              ->latest();
+        }])
+        ->get();
+
+    /** ✅ هنا نتحكم بالعدد والترتيب بدون كسر eager loading */
+    $categories->each(function ($category) use ($now) {
+
+        $ads = $category->ads->map(function ($ad) use ($now) {
+
+            $ad->has_first_results = $ad->sponsor
+                ->where('type', 'appearance_in_first_results')
+                ->where('expiration_date', '>', $now)
+                ->isNotEmpty() ? 1 : 0;
+
+            $ad->has_urgent_sale_sticker = $ad->sponsor
+                ->where('type', 'urgent_sale_sticker')
+                ->where('expiration_date', '>', $now)
+                ->isNotEmpty() ? 1 : 0;
+
+            return $ad;
+        });
+
+        $category->setRelation(
+            'ads',
+            $ads->sortByDesc('has_first_results')->take( 20)->values()
+        );
     });
 
-    /**
-     * ------------------------------------------------
-     * Brands
-     * ------------------------------------------------
-     */
     $brands = Cache::rememberForever('brands', function () {
         return Brand::with('categories:id')
             ->orderBy('name')
@@ -157,30 +137,18 @@ class HomeController extends Controller
             ]);
     });
 
-    /**
-     * ------------------------------------------------
-     * Vehicle Models
-     * ------------------------------------------------
-     */
-    $models = Cache::rememberForever('vehicle_models', function () {
+    $models = Cache::rememberForever('models', function () {
         return VehicleModel::with('categories:id')
-            ->where('status', 1)
             ->get()
             ->map(fn ($model) => [
                 'id' => $model->id,
                 'name' => $model->name,
                 'brand_id' => $model->brand_id,
                 'category_id' => $model->category_id,
+                'status' => $model->status,
                 'categories' => $model->categories->pluck('id')->toArray(),
             ]);
     });
-
-    /**
-     * ------------------------------------------------
-     * Settings
-     * ------------------------------------------------
-     */
-    $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
 
     return view(
         VIEW_FILE_NAMES['home'],
@@ -195,6 +163,7 @@ class HomeController extends Controller
         )
     );
 }
+
 
     public function loadBrands()
     {
