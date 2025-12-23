@@ -22,30 +22,35 @@ class SocialAuthController extends Controller
     }
 
     public function handleProviderCallback($service)
-    {
+{
+    try {
+        // إضافة stateless() ضرورية جداً لتجنب مشاكل الجلسات خلف HTTPS
         $user_data = Socialite::driver($service)->stateless()->user();
 
         $user = User::where('email', $user_data->getEmail())->first();
 
-        $name = explode(' ', $user_data['name']);
+        // تصحيح طريقة الوصول للاسم: نستخدم getName() بدلاً من المصفوفة
+        $full_name = $user_data->getName();
+        $name = explode(' ', $full_name);
+        
         if (count($name) > 1) {
             $fast_name = implode(" ", array_slice($name, 0, -1));
             $last_name = end($name);
         } else {
-            $fast_name = implode(" ", $name);
+            $fast_name = $full_name;
             $last_name = '';
         }
 
-        if (isset($user) == false) {
+        if (!$user) {
             $user = User::create([
                 'f_name' => $fast_name,
                 'l_name' => $last_name,
                 'email' => $user_data->getEmail(),
                 'phone' => '',
-                'password' => bcrypt($user_data->id),
+                'password' => bcrypt($user_data->getId()), // getId() بدلاً من id
                 'is_active' => 1,
                 'login_medium' => $service,
-                'social_id' => $user_data->id,
+                'social_id' => $user_data->getId(),
                 'is_phone_verified' => 0,
                 'is_email_verified' => 1,
                 'temporary_token' => Str::random(40)
@@ -55,15 +60,16 @@ class SocialAuthController extends Controller
             $user->save();
         }
 
-        /*if ($user->phone == '') {
-            return redirect()->route('customer.auth.update-phone', $user->id);
-        }*/
-        //redirect if website user
-        $message = self::login_process($user, $user_data->getEmail(), $user_data->id);
+        $message = self::login_process($user, $user_data->getEmail(), $user_data->getId());
         Toastr::info($message);
         return redirect()->route('home');
-    }
 
+    } catch (\Exception $e) {
+        // في حال حدوث خطأ، يتم توجيه المستخدم لصفحة الدخول مع رسالة توضيحية
+        Toastr::error('حدث خطأ أثناء الاتصال بجوجل، يرجى المحاولة مرة أخرى');
+        return redirect()->route('customer.auth.login');
+    }
+}
     public function editPhone($id)
     {
         $user = User::find($id);
