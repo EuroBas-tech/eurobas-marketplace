@@ -21,7 +21,24 @@
           "protocol": "tcp"
         }
       ],
-      "environment": [],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "production"
+        },
+        {
+          "name": "APP_DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "DEBUGBAR_ENABLED",
+          "value": "false"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "error"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
