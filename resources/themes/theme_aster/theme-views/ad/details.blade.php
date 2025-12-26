@@ -125,7 +125,7 @@
         }
 
         .custom-img-object {
-            object-fit: fill !important;
+            object-fit: contain !important;
         }
 
         .profile-image {
