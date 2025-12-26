@@ -628,14 +628,5 @@ Route::get('see-videos', function () {
     return SponsoredAd::get();
 });
 
- use Illuminate\Support\Facades\DB;
-
-Route::get('/debug-temporary-videos', function () {
-    return [
-        'table_exists' => DB::getSchemaBuilder()->hasTable('temporary_videos'),
-        'count' => DB::table('temporary_videos')->count(),
-        'latest' => DB::table('temporary_videos')->latest()->first(),
-    ];
-});
-
+ 
 
