@@ -628,5 +628,15 @@ Route::get('see-videos', function () {
     return SponsoredAd::get();
 });
 
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/check-db', function () {
+    if (Schema::hasTable('temporary_videos')) {
+        return "✅ الجدول موجود ومفعل في قاعدة البيانات!";
+    } else {
+        return "❌ الجدول غير موجود.. تأكد من تشغيل الـ Migrations.";
+    }
+});
  
 
