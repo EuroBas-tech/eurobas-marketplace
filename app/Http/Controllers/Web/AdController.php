@@ -1221,6 +1221,45 @@ class AdController extends Controller
 
         $ad = Ad::active()->where('user_id', auth('customer')->id())->findOrFail($id);
 
+        if ($video = $ad->sponsoredAd()
+        ->where('type', 'promotional_video')
+        ->where('expiration_date', '>', now())
+        ->where('is_video_deleted', 0)
+        ->whereNotNull('playback_id')
+        ->first()) 
+        {
+            $muxTokenId     = BusinessSetting::where('type', 'mux_api_token')->value('value');
+            $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
+
+            if ($muxTokenId && $muxTokenSecret) {
+
+                $response = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                    ->get("https://api.mux.com/video/v1/playback-ids/{$video->playback_id}");
+
+                if ($response->successful()) {
+
+                    $responseData = $response->json();
+
+                    $assetId = $responseData['data']['asset_id']
+                        ?? $responseData['data']['object']['id']
+                        ?? null;
+
+                    if ($assetId) {
+                        $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                        ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+
+                        if ($deleteResponse->successful()) {
+                            $video->update([
+                                'is_video_deleted' => 1,
+                            ]);
+                        }
+
+                    }
+                }
+            }
+
+        }
+
         $ad->delete();
 
         Toastr::success(translate('ad_deleted_successfully'));
