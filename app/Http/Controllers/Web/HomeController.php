@@ -65,16 +65,16 @@ class HomeController extends Controller
             ->get();
     });
 
-    $locale = session('local') ?? 'en';
-    $isBannerLocaleExist = $this->banner->where('lang', $locale)->exists();
+    $locale = app()->getLocale();
 
-    $banners = Cache::rememberForever('main_banners', function () {
-        return Banner::where('banner_type', 'Main Banner')
-            ->where('published', 1)
-            ->get();
-    });
+$banners = Cache::rememberForever('main_banners', function () {
+    return Banner::where('banner_type', 'Main Banner')
+        ->where('published', 1)
+        ->get();
+});
 
-    $banner = $banners->firstWhere('lang', $isBannerLocaleExist ? $locale : 'Both');
+$banner = $banners->firstWhere('lang', $locale)
+    ?? $banners->firstWhere('lang', 'Both');
 
     $paid_banners = PaidBanner::with('package.features')
         ->whereHas('package.features', fn ($q) =>
