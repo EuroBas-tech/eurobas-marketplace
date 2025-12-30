@@ -444,7 +444,7 @@ class AdController extends Controller
 
         }
 
-        $ad->status = 1;
+        $ad->status = 1;    
 
         $ad->save();
 
