@@ -26,7 +26,7 @@ class SocialLoginServiceProvider extends ServiceProvider
     public function boot()
     {
         try {
-            $socialLoginServices =  Helpers::get_business_settings('social_login');
+            $socialLoginServices = Helpers::get_business_settings('social_login');
 
             if ($socialLoginServices) {
                 foreach ($socialLoginServices as $socialLoginService) {
@@ -34,19 +34,23 @@ class SocialLoginServiceProvider extends ServiceProvider
                         $google_config = array(
                             'client_id' => $socialLoginService['client_id'],
                             'client_secret' => $socialLoginService['client_secret'],
-                            'redirect' => url('customer/auth/login/google/callback'),
+                            // تم التغيير هنا لضمان استخدام الرابط الآمن https
+                            'redirect' => secure_url('customer/auth/login/google/callback'),
                         );
                         Config::set('services.google', $google_config);
                     } elseif ($socialLoginService['status'] == true && $socialLoginService['login_medium'] == 'facebook') {
                         $facebook_config = array(
                             'client_id' => $socialLoginService['client_id'],
                             'client_secret' => $socialLoginService['client_secret'],
-                            'redirect' => url('customer/auth/login/facebook/callback'),
+                            // تم التغيير هنا أيضاً لفيسبوك
+                            'redirect' => secure_url('customer/auth/login/facebook/callback'),
                         );
                         Config::set('services.facebook', $facebook_config);
                     }
                 }
             }
-        }catch(\Exception $exception){}
+        } catch (\Exception $exception) {
+            //
+        }
     }
 }

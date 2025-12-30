@@ -628,5 +628,4 @@ Route::get('see-videos', function () {
     return SponsoredAd::get();
 });
 
- 
 
