@@ -1506,13 +1506,16 @@
 
                                                             @endphp
 
-                                                            @foreach($options as $option)
+                                                             @foreach(($options ?? []) as $option)
+
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                                                                     <div class="card shadow-none">
                                                                         <div class="d-flex align-items-center gap-2" >
                                                                             <div>
                                                                                 <span>
-                                                                                    <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-'.$ad_options[$option].'.png') }}" alt="">
+                                                                                  @if(isset($ad_options) && isset($ad_options[$option]))  
+                                                                                     <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-' . $ad_options[$option] . '.png') }}" alt="">
+                                                                                    @endif
                                                                                 </span>
                                                                             </div>
                                                                             <div>
