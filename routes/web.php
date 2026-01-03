@@ -624,8 +624,21 @@ Route::get('fix-languages', function() {
 
 });
 
-Route::get('see-videos', function () {
-    return SponsoredAd::get();
+Route::get('update-old-locale-codes', function () {
+    
+    $translations = Translation::where('locale', 'al')->update([
+        'locale' => 'sq'
+    ]);
+    
+    $translations = Translation::where('locale', 'gr')->update([
+        'locale' => 'el'
+    ]);
+    
+    $translations = Translation::where('locale', 'si')->update([
+        'locale' => 'sl'
+    ]);
+
 });
+
 
 
