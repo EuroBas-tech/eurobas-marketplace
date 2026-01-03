@@ -60,7 +60,7 @@ class DeleteExpiredPromotionalVideos extends Command
                 // Try different possible paths for asset_id
                 $responseData = $response->json();
                 $assetId = $responseData['data']['asset_id'] ?? 
-                $responseData['data']['object']['id'] ?? 
+                    $responseData['data']['object']['id'] ?? 
                 null;
 
                 if (!$assetId) {
@@ -72,7 +72,7 @@ class DeleteExpiredPromotionalVideos extends Command
 
                 // 2️⃣ Delete asset from Mux
                 $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                    ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+                ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
 
                 if (!$deleteResponse->successful()) {
                     Log::error("Failed to delete asset {$assetId} for video {$video->id}", [
@@ -81,7 +81,6 @@ class DeleteExpiredPromotionalVideos extends Command
                     ]);
                     continue;
                 }
-
                 // 3️⃣ Mark as deleted locally
                 $video->update([
                     'is_video_deleted' => 1,
