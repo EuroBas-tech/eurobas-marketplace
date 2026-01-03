@@ -586,7 +586,7 @@
 
                                                         @endphp
 
-                                                        @foreach($options as $option)
+                                                       @foreach($options ?? [] as $option)
 
                                                             @php($true_or_false = $ad_options[$option] == true ? 'true' : 'false')
 
@@ -595,7 +595,9 @@
                                                                     <div class="d-flex align-items-center gap-2" >
                                                                         <div>
                                                                             <span>
-                                                                                <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-'.$ad_options[$option].'.png') }}" alt="">
+                                                                                 @if(isset($ad_options) && is_array($ad_options) && isset($ad_options[$option]))
+                                                                                <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-' . $ad_options[$option] . '.png') }}" alt="">
+                                                                                @endif
                                                                             </span>
                                                                         </div>
                                                                         <div>

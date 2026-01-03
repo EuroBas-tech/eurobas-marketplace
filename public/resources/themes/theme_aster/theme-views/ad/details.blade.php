@@ -818,7 +818,8 @@
                                                                         <div class="d-flex align-items-center gap-2" >
                                                                             <div>
                                                                                 <span>
-                                                                                    <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-'.$ad_options[$option].'.png') }}" alt="">
+                                                                                   @if(isset($ad_options) && is_array($ad_options) && isset($ad_options[$option]))
+                                                                                   <img width="20px" src="{{ theme_asset('assets/img/svg/checkbox-' . $ad_options[$option] . '.png') }}" alt=""> 
                                                                                 </span>
                                                                             </div>
                                                                             <div>
