@@ -1221,7 +1221,7 @@ class AdController extends Controller
 
         $ad = Ad::active()->where('user_id', auth('customer')->id())->findOrFail($id);
 
-        if ($video = $ad->sponsoredAd()
+        if ($video = $ad->sponsor()
         ->where('type', 'promotional_video')
         ->where('expiration_date', '>', now())
         ->where('is_video_deleted', 0)
