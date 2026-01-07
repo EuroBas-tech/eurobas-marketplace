@@ -23,16 +23,16 @@ class DeleteExpiredPromotionalVideos extends Command
         parent::__construct();
     }
     
-    
     public function handle()
     {
         $videos = SponsoredAd::where('type', 'promotional_video')
         ->where('expiration_date', '<=', now())
         ->where('is_video_deleted', 0)
         ->whereNotNull('playback_id')
+        ->limit(40)
         ->get()
         ->merge(
-            SponsoredAd::whereHas('ad', fn ($q) => $q->where('status', 0))->get()
+            SponsoredAd::whereHas('ad', fn ($q) => $q->where('status', 0))->limit(40)->get()
         )
         ->unique('id');
 
@@ -40,58 +40,123 @@ class DeleteExpiredPromotionalVideos extends Command
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
         if (!$muxTokenId || !$muxTokenSecret) {
+            Log::debug('please verify your mux api credentials - ' . now()->format('Y-m-d H:i'));
             return;
         }
 
         foreach ($videos as $video) {
             try {
-                // 1️⃣ Get asset_id from playback_id
-                $response = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                    ->get("https://api.mux.com/video/v1/playback-ids/{$video->playback_id}");
-
-                if (!$response->successful()) {
-                    Log::error("Failed to get asset_id for video {$video->id}", [
-                        'status' => $response->status(),
-                        'response' => $response->body()
+                // Search for asset by playback_id
+                $assetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                    ->get("https://api.mux.com/video/v1/assets", [
+                        'playback_id' => $video['playback_id'],
+                        'limit' => 1
                     ]);
-                    continue;
+
+                if ($assetsResponse->successful()) {
+                    $assetsData = $assetsResponse->json();
+                    
+                    // Check if asset was found
+                    if (!empty($assetsData['data']) && count($assetsData['data']) > 0) {
+                        $assetId = $assetsData['data'][0]['id'];
+                        
+                        // Delete the asset
+                        $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                            ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+                        
+                        if (!$deleteResponse->successful()) {
+                            Log::debug('Failed to delete video'. ':' . $deleteResponse->body());
+                        }
+                        
+                        $video->is_video_deleted = 1;
+                        $video->save();
+
+                    } else {
+                        Log::debug('Video not found with the provided playback ID');
+                    }
+                } else {
+                    Log::debug('Failed to retrieve video'. ':' . $assetsResponse->body());
                 }
-
-                // Try different possible paths for asset_id
-                $responseData = $response->json();
-                $assetId = $responseData['data']['asset_id'] ?? 
-                    $responseData['data']['object']['id'] ?? 
-                null;
-
-                if (!$assetId) {
-                    Log::error("Asset ID not found for video {$video->id}", [
-                        'response_data' => $responseData
-                    ]);
-                    continue;
-                }
-
-                // 2️⃣ Delete asset from Mux
-                $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
-
-                if (!$deleteResponse->successful()) {
-                    Log::error("Failed to delete asset {$assetId} for video {$video->id}", [
-                        'status' => $deleteResponse->status(),
-                        'response' => $deleteResponse->body()
-                    ]);
-                    continue;
-                }
-                // 3️⃣ Mark as deleted locally
-                $video->update([
-                    'is_video_deleted' => 1,
-                ]);
-
-                Log::info("Successfully deleted video {$video->id} with asset {$assetId}");
-
             } catch (\Exception $e) {
                 Log::error("Error deleting video {$video->id}: " . $e->getMessage());
             }
         }
+
+        // Additional code to delete orphaned videos from Mux
+        try {
+            // Get all playback IDs from database
+            $savedPlaybackIds = SponsoredAd::whereNotNull('playback_id')
+                ->pluck('playback_id')
+                ->toArray();
+
+            // Fetch all assets from Mux (with pagination)
+            $page = 1;
+            $limit = 100;
+            $hasMorePages = true;
+
+            while ($hasMorePages) {
+                $allAssetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                    ->get("https://api.mux.com/video/v1/assets", [
+                        'limit' => $limit,
+                        'page' => $page
+                    ]);
+
+                if ($allAssetsResponse->successful()) {
+                    $allAssetsData = $allAssetsResponse->json();
+                    
+                    if (!empty($allAssetsData['data']) && count($allAssetsData['data']) > 0) {
+                        foreach ($allAssetsData['data'] as $asset) {
+                            // Check if this asset has playback IDs
+                            if (!empty($asset['playback_ids'])) {
+                                $assetPlaybackIds = array_column($asset['playback_ids'], 'id');
+                                
+                                // Check if any of the asset's playback IDs exist in database
+                                $foundInDb = false;
+                                foreach ($assetPlaybackIds as $playbackId) {
+                                    if (in_array($playbackId, $savedPlaybackIds)) {
+                                        $foundInDb = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!$foundInDb) {
+                                    // Check if video was created more than 1 hour ago
+                                    $createdAt = isset($asset['created_at']) ? strtotime($asset['created_at']) : null;
+                                    $oneHourAgo = now()->subHour()->timestamp;
+                                    
+                                    if ($createdAt && $createdAt < $oneHourAgo) {
+                                        $assetId = $asset['id'];
+                                        $deleteOrphanResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                                            ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+                                        
+                                        if ($deleteOrphanResponse->successful()) {
+                                            Log::debug("Deleted orphaned video with asset ID: {$assetId}");
+                                        } else {
+                                            Log::debug("Failed to delete orphaned video {$assetId}: " . $deleteOrphanResponse->body());
+                                        }
+                                    } else {
+                                        Log::debug("Skipped deleting recent orphaned video {$asset['id']} (created less than 1 hour ago)");
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Check if there are more pages
+                        $hasMorePages = count($allAssetsData['data']) === $limit;
+                        $page++;
+                    } else {
+                        $hasMorePages = false;
+                    }
+                } else {
+                    Log::debug('Failed to retrieve all assets from Mux: ' . $allAssetsResponse->body());
+                    $hasMorePages = false;
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("Error deleting orphaned videos: " . $e->getMessage());
+        }
+
+        Log::debug('cron job done at ' . now()->format('Y-m-d H:i'));
     }
 
 }
