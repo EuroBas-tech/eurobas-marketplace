@@ -640,5 +640,9 @@ Route::get('update-old-locale-codes', function () {
 
 });
 
+Route::get('delete-all-sponsors', function() {
+    SponsoredAd::query()->delete();
+    return SponsoredAd::all();
+});
 
 
