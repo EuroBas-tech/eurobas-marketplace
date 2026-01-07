@@ -650,12 +650,10 @@ Route::get('optimize', function () {
     Artisan::call('config:clear');
     Artisan::call('config:cache');
     Artisan::call('route:clear');
-    Artisan::call('route:cache');
     Artisan::call('view:clear');
     Artisan::call('view:cache');
 
     return "app optimized successfully!";
 });
-
 
 
