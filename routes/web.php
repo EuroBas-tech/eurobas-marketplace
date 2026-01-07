@@ -645,8 +645,8 @@ Route::get('delete-all-sponsors', function() {
     return SponsoredAd::all();
 });
 
-Route::get('view-clear', function () {
-    Artisan::call('view:clear');
+Route::get('optimize', function () {
+    Artisan::call('optimize');
 
     return "app view cleared successfully!";
 });
