@@ -646,9 +646,15 @@ Route::get('delete-all-sponsors', function() {
 });
 
 Route::get('optimize', function () {
-    Artisan::call('optimize');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    Artisan::call('view:clear');
+    Artisan::call('view:cache');
 
-    return "app view cleared successfully!";
+    return "app optimized successfully!";
 });
 
 
