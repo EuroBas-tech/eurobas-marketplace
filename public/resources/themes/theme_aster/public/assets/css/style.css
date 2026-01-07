@@ -698,8 +698,6 @@ a,
 .count,
 .btn-circle,
 .eye-btn,
-.swiper-button-next,
-.swiper-button-prev,
 .back-to-top,
 #timeline .state ul li .badge,
 .wizard .steps .number,
@@ -2332,17 +2330,17 @@ input:-webkit-autofill:active {
 
 .swiper-button-next,
 .swiper-button-prev {
-    --size: 2.1875rem;
-    inline-size: var(--size);
-    block-size: var(--size);
-    background-color: rgba(var(--bs-primary-rgb), 0.8);
-    color: var(--absolute-white);
+    width: 30px;
+    height: 50px;
+    background-color: #0F407D;
+    color: #fff;
     -webkit-margin-before: 0;
     margin-block-start: 0;
     padding: 0.3125rem;
     position: absolute;
     z-index: 2;
     inset-block-start: 50%;
+    --size: 2rem !important;
 }
 
 .swiper-button-next:not(.position-static),
@@ -2360,13 +2358,6 @@ input:-webkit-autofill:active {
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
     background-color: rgba(var(--bs-primary-rgb), 1);
-}
-
-@media only screen and (max-width: 767px) {
-    .swiper-button-next,
-    .swiper-button-prev {
-        --size: 1.5rem;
-    }
 }
 
 .swiper-button-next {

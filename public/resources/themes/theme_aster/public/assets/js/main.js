@@ -489,47 +489,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         });
     });
 
-    /*==================================
-    18: Increase/Decrease Product Quantity
-    ====================================*/
-    /* 18.1: Increase */
-    // $('.quantity__plus').on('click', function () {
-    //     var $qty = $(this).parent().find('input');
-    //     var currentVal = parseInt($qty.val());
-    //     if (!isNaN(currentVal)) {
-    //         $qty.val(currentVal + 1);
-    //     }
-    //     if(currentVal >= $qty.attr('max') -1){
-    //         $(this).attr('disabled', true);
-    //     }
-    //     quantityListener();
-    // });
-    //
-    // /* 18.2: Decrease */
-    // $('.quantity__minus').on('click', function () {
-    //     var $qty = $(this).parent().find('input');
-    //     var currentVal = parseInt($qty.val());
-    //     if (!isNaN(currentVal) && currentVal > 1) {
-    //         $qty.val(currentVal - 1);
-    //     }
-    //     if (currentVal < $qty.attr('max')) {
-    //         $('.quantity__plus').removeAttr('disabled', true);
-    //     }
-    //     quantityListener();
-    // });
-
-    /* 18.3: show hide delete icon */
-    // function quantityListener() {
-    //     $('.quantity__qty').each(function () {
-    //         var qty = $(this);
-    //         if (qty.val() == 1) {
-    //             qty.siblings('.quantity__minus').html('<i class="bi bi-trash3-fill text-danger fs-10"></i>')
-    //         } else {
-    //             qty.siblings('.quantity__minus').html('<i class="bi bi-dash"></i>')
-    //         }
-    //     });
-    // }
-    // quantityListener();
 
     /*==================================
     19: Changing svg color
@@ -595,6 +554,7 @@ We may release future updates so it will overwrite this file. it's better and sa
             prevEl: ".swiper-quickview-button-prev",
         },
     });
+
     var quickviewSlider = new Swiper(".quickviewSlider", {
         // spaceBetween: 10,
         autoplay: {
@@ -666,301 +626,76 @@ We may release future updates so it will overwrite this file. it's better and sa
     });
 
 
-var quickviewSlider2 = new Swiper(".quickviewSlider2", {
-    // spaceBetween: 10,
-    autoplay: {
-        delay: 23165422,
-        disableOnInteraction: false,
-    },
-    speed: 500, // transition speed in ms (default is 300)
-    thumbs: {
-        swiper: quickviewSliderThumb2,
-    },
-});
-
-// Global variable to track video state
-let isVideoPlaying = false;
-let videoCheckInterval = null;
-
-// Stop autoplay function
-function quickviewSlider2_stop() {
-    quickviewSlider2.autoplay.stop();
-}
-
-// Start autoplay function
-function quickviewSlider2_start() {
-    if (!isVideoPlaying) {
-        quickviewSlider2.autoplay.start();
-    }
-}
-
-// Mouse hover controls
-$(".quickviewSlider2").on("mouseenter", function () {
-    quickviewSlider2_stop();
-});
-
-$(".quickviewSlider2").on("mouseleave", function () {
-    quickviewSlider2_start();
-});
-
-// Function to check if video is playing
-function checkVideoPlayState() {
-    const activeSlide = quickviewSlider2.slides[quickviewSlider2.activeIndex];
-    const iframe = activeSlide ? activeSlide.querySelector('iframe') : null;
-    
-    if (iframe) {
-        // Method 1: Try to detect if iframe is focused/being interacted with
-        const iframeFocused = document.activeElement === iframe;
-        
-        // Method 2: Check if user is hovering over the video area
-        const iframeRect = iframe.getBoundingClientRect();
-        const mouseOverVideo = (
-            event.clientX >= iframeRect.left &&
-            event.clientX <= iframeRect.right &&
-            event.clientY >= iframeRect.top &&
-            event.clientY <= iframeRect.bottom
-        );
-        
-        return iframeFocused;
-    }
-    return false;
-}
-
-// Enhanced approach using multiple detection methods
-$(document).ready(function() {
-    
-    // Method 1: Stop autoplay when slide changes to video slide
-    quickviewSlider2.on('slideChange', function() {
-        const activeSlide = quickviewSlider2.slides[quickviewSlider2.activeIndex];
-        const hasVideo = activeSlide.querySelector('iframe');
-        
-        if (hasVideo) {
-            quickviewSlider2_stop();
-            isVideoPlaying = true;
-            
-            // Start monitoring for video end
-            startVideoMonitoring();
-        } else {
-            isVideoPlaying = false;
-            stopVideoMonitoring();
-            quickviewSlider2_start();
-        }
-    });
-    
-    // Method 2: Monitor iframe interactions
-    function setupVideoInteractionDetection() {
-        $(document).on('click', '.quickviewSlider2 iframe', function() {
-            isVideoPlaying = true;
-            quickviewSlider2_stop();
-            startVideoMonitoring();
-        });
-        
-        // Detect when user clicks on video thumbnail to start video
-        $(document).on('click', '.quickviewSlider2 .swiper-slide', function() {
-            const iframe = $(this).find('iframe');
-            if (iframe.length > 0) {
-                setTimeout(function() {
-                    isVideoPlaying = true;
-                    quickviewSlider2_stop();
-                    startVideoMonitoring();
-                }, 500); // Small delay to allow video to start
-            }
-        });
-    }
-    
-    // Method 3: Use postMessage API for Bunny.net
-    function setupBunnyVideoAPI() {
-        window.addEventListener('message', function(event) {
-            if (event.origin.includes('mediadelivery.net') || event.origin.includes('bunnycdn')) {
-                const data = event.data;
-                
-                if (typeof data === 'string') {
-                    try {
-                        const parsedData = JSON.parse(data);
-                        handleVideoEvent(parsedData);
-                    } catch (e) {
-                        // Handle non-JSON messages
-                        if (data.includes('play')) {
-                            isVideoPlaying = true;
-                            quickviewSlider2_stop();
-                        } else if (data.includes('pause') || data.includes('end')) {
-                            isVideoPlaying = false;
-                            quickviewSlider2_start();
-                        }
-                    }
-                } else if (typeof data === 'object') {
-                    handleVideoEvent(data);
-                }
-            }
-        });
-    }
-    
-    function handleVideoEvent(data) {
-        // Handle different possible event formats
-        const eventType = data.event || data.type || data.action;
-        
-        if (eventType && (
-            eventType.includes('play') || 
-            eventType.includes('playing') ||
-            eventType === 'start'
-        )) {
-            isVideoPlaying = true;
-            quickviewSlider2_stop();
-        } else if (eventType && (
-            eventType.includes('end') ||
-            eventType === 'finished'
-        )) {
-            // When video ends, restart it (infinite loop)
-            const activeSlide = quickviewSlider2.slides[quickviewSlider2.activeIndex];
-            const iframe = activeSlide ? activeSlide.querySelector('iframe') : null;
-            
-            if (iframe) {
-                try {
-                    // Restart the video
-                    iframe.contentWindow.postMessage({
-                        'event': 'play',
-                        'currentTime': 0
-                    }, '*');
-                } catch (e) {
-                    // Fallback: reload iframe src to restart
-                    const currentSrc = iframe.src;
-                    iframe.src = currentSrc;
-                }
-            }
-            // Keep video playing state and slider stopped
-            isVideoPlaying = true;
-            quickviewSlider2_stop();
-        }
-    }
-    
-    // Method 4: Keyboard detection (spacebar for play/pause)
-    $(document).on('keydown', function(e) {
-        if (e.code === 'Space' || e.keyCode === 32) {
-            const activeSlide = quickviewSlider2.slides[quickviewSlider2.activeIndex];
-            const hasVideo = activeSlide && activeSlide.querySelector('iframe');
-            
-            if (hasVideo && document.activeElement.tagName === 'IFRAME') {
-                // Toggle video state
-                isVideoPlaying = !isVideoPlaying;
-                if (isVideoPlaying) {
-                    quickviewSlider2_stop();
-                    startVideoMonitoring();
-                } else {
-                    quickviewSlider2_start();
-                }
-            }
-        }
-    });
-    
-    // Method 5: Time-based monitoring for video slides
-    function startVideoMonitoring() {
-        stopVideoMonitoring(); // Clear any existing interval
-        
-        videoCheckInterval = setInterval(function() {
-            const activeSlide = quickviewSlider2.slides[quickviewSlider2.activeIndex];
-            const hasVideo = activeSlide && activeSlide.querySelector('iframe');
-            
-            if (!hasVideo) {
-                // No video in current slide, stop monitoring
-                isVideoPlaying = false;
-                stopVideoMonitoring();
-                quickviewSlider2_start();
-                return;
-            }
-            
-            // Keep autoplay stopped while on video slide
-            quickviewSlider2_stop();
-            
-        }, 1000); // Check every second
-        
-        // Auto-resume after 5 minutes (fallback)
-        setTimeout(function() {
-            if (isVideoPlaying) {
-                isVideoPlaying = false;
-                stopVideoMonitoring();
-                quickviewSlider2_start();
-            }
-        }, 300000); // 5 minutes
-    }
-    
-    function stopVideoMonitoring() {
-        if (videoCheckInterval) {
-            clearInterval(videoCheckInterval);
-            videoCheckInterval = null;
-        }
-    }
-    
-    // Method 6: Visual focus detection
-    function setupFocusDetection() {
-        $(document).on('focusin', '.quickviewSlider2 iframe', function() {
-            isVideoPlaying = true;
-            quickviewSlider2_stop();
-            startVideoMonitoring();
-        });
-        
-        $(document).on('focusout', '.quickviewSlider2 iframe', function() {
-            // Delay to check if focus moved to another element
-            setTimeout(function() {
-                if (!$('.quickviewSlider2 iframe').is(':focus')) {
-                    isVideoPlaying = false;
-                    quickviewSlider2_start();
-                    stopVideoMonitoring();
-                }
-            }, 100);
-        });
-    }
-    
-    // Initialize all detection methods
-    setupVideoInteractionDetection();
-    setupBunnyVideoAPI();
-    setupFocusDetection();
-    
-    // Send initialization message to all video iframes
-    setTimeout(function() {
-        $('.quickviewSlider2 iframe').each(function() {
-            if (this.contentWindow) {
-                try {
-                    this.contentWindow.postMessage({
-                        'event': 'listening',
-                        'data': 'init'
-                    }, '*');
-                } catch (e) {
-                    console.log('Could not send message to iframe');
-                }
-            }
-        });
-    }, 2000);
-});
-
-// Manual controls for external use
-window.forceStopSlider = function() {
-    isVideoPlaying = true;
-    quickviewSlider2_stop();
-};
-
-window.forceStartSlider = function() {
-    isVideoPlaying = false;
-    quickviewSlider2_start();
-};
-
-
-
-
-    $(".quickviewSliderThumb2").on("mouseenter", function () {
-        quickviewSlider2_stop();
-    });
-    $(".quickviewSliderThumb2").on("mouseleave", function () {
-        quickviewSlider2_start();
+    var quickviewSlider2 = new Swiper(".quickviewSlider2", {
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        speed: 500,
+        navigation: {
+            nextEl: ".swiper-quickview-button-next",
+            prevEl: ".swiper-quickview-button-prev",
+        },
+        thumbs: {
+            swiper: quickviewSliderThumb2,
+        },
     });
 
-    function quickviewSlider2_stop(){
+    // Global variable to track video state
+    let isVideoPlaying = false;
+
+    // Stop autoplay function
+    function quickviewSlider2_stop() {
         quickviewSlider2.autoplay.stop();
         quickviewSliderThumb2.autoplay.stop();
     }
 
-    function quickviewSlider2_start(){
-        quickviewSlider2.autoplay.start();
-        quickviewSliderThumb2.autoplay.start();
+    // Start autoplay function
+    function quickviewSlider2_start() {
+        if (!isVideoPlaying) {
+            quickviewSlider2.autoplay.start();
+            quickviewSliderThumb2.autoplay.start();
+        }
+    }
+
+    // Mouse hover controls
+    $(".quickviewSlider2").on("mouseenter", function () {
+        quickviewSlider2_stop();
+    });
+
+    $(".quickviewSlider2").on("mouseleave", function () {
+        quickviewSlider2_start();
+    });
+
+    $(".quickviewSliderThumb2").on("mouseenter", function () {
+        quickviewSlider2_stop();
+    });
+
+    $(".quickviewSliderThumb2").on("mouseleave", function () {
+        quickviewSlider2_start();
+    });
+
+    // Video control - Stop slider when video plays
+    const muxPlayer = document.querySelector('.quickviewSlider2 mux-player');
+
+    if (muxPlayer) {
+        // When video starts playing
+        muxPlayer.addEventListener('play', function() {
+            isVideoPlaying = true;
+            quickviewSlider2_stop();
+        });
+        
+        // When video is paused
+        muxPlayer.addEventListener('pause', function() {
+            isVideoPlaying = false;
+            quickviewSlider2_start();
+        });
+        
+        // When video ends
+        muxPlayer.addEventListener('ended', function() {
+            isVideoPlaying = false;
+            quickviewSlider2_start();
+        });
     }
 
     /*==================================

@@ -319,7 +319,7 @@
                                                             </div>
                                                         @endif
                                                         <div class="swiper-slide image-slide position-relative w-100">
-                                                            <div class="easyzoom easyzoom--overlay h-100 width-100-sm">
+                                                            <div class="h-100 width-100-sm">
                                                                 <a class="w-100" href="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}">
                                                                     <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                 </a>
@@ -327,7 +327,7 @@
                                                         </div>
                                                         @foreach (json_decode($ad->images) as $key => $photo)
                                                             <div class="swiper-slide image-slide position-relative w-100">
-                                                                <div class="easyzoom easyzoom--overlay h-100 width-100-sm">
+                                                                <div class="h-100 width-100-sm">
                                                                     <a class="w-100" href="{{cloudfront("ad/".$photo)}}">
                                                                         <img src="{{cloudfront('ad/'.$photo)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                     </a>
@@ -336,6 +336,10 @@
                                                         @endforeach
                                                     </div>
                                                 @endif
+
+                                                <div class="swiper-button-next swiper-quickview-button-next" style="--size: 1.5rem"></div>
+                                                <div class="swiper-button-prev swiper-quickview-button-prev" style="--size: 1.5rem"></div>
+
                                             </div>
 
                                             <div class="mt-2 user-select-none">
@@ -360,9 +364,6 @@
                                                             @endforeach
                                                         </div>
                                                     @endif
-
-                                                    <div class="swiper-button-next swiper-quickview-button-next" style="--size: 1.5rem"></div>
-                                                    <div class="swiper-button-prev swiper-quickview-button-prev" style="--size: 1.5rem"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -2756,11 +2757,4 @@
 
     <script src="{{ theme_asset('assets/js/lightbox.min.js') }}"></script>
 
-    <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script>
-
-    <script>
-        $(".easyzoom").each(function () {
-            $(this).easyZoom();
-        });
-    </script>
 @endpush
