@@ -270,7 +270,7 @@
 <script src="{{ theme_asset('assets/plugins/sweet_alert/sweetalert2.js') }}"></script>
 <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script>
 <script src="{{ theme_asset('assets/js/toastr.js') }}"></script>
-<script src="{{ theme_asset('assets/js/main.js?v='.time()) }}"></script>
+<script src="{{ theme_asset('assets/js/main2.js?v='.time()) }}"></script>
 <script src="{{ theme_asset('assets/js/custom.js?v='.time()) }}"></script>
 <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
