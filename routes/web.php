@@ -656,4 +656,24 @@ Route::get('optimize', function () {
     return "app optimized successfully!";
 });
 
+/* Empty laravel.log */
+Route::get('log/clear', function () {
+    File::put(storage_path('logs/laravel.log'), '');
+    return 'laravel.log cleared';
+});
+
+/* Show laravel.log content */
+Route::get('log/show', function () {
+    $logPath = storage_path('logs/laravel.log');
+
+    if (!File::exists($logPath)) {
+        return 'laravel.log not found';
+    }
+
+    return response(
+        nl2br(e(File::get($logPath))),
+        200
+    )->header('Content-Type', 'text/html');
+});
+
 
