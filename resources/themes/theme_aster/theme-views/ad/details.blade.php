@@ -133,8 +133,8 @@
             height: 50px !important;
         }
 
-        .swiper-button-next,
-        .swiper-button-prev {
+        .main-slider.swiper-button-next,
+        .main-slider.swiper-button-prev {
             width: 30px !important;
             height: 50px !important;
             background-color: #0F407D !important;
@@ -353,8 +353,8 @@
                                                     </div>
                                                 @endif
 
-                                                <div class="swiper-button-next swiper-quickview-button-next" style="--size: 1.5rem"></div>
-                                                <div class="swiper-button-prev swiper-quickview-button-prev" style="--size: 1.5rem"></div>
+                                                <div class="swiper-button-next main-slider swiper-quickview-button-next"></div>
+                                                <div class="swiper-button-prev main-slider swiper-quickview-button-prev"></div>
 
                                             </div>
 
