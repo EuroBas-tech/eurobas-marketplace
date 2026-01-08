@@ -157,6 +157,12 @@
             pointer-events: auto !important;
         }
         
+        .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
+            opacity: 100% !important;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+        
         /* More than 1200px (≥1200px) */
         @media (min-width: 1200px) {
             .responsive-ad-image {
