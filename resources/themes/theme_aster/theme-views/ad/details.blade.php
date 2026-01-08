@@ -133,6 +133,21 @@
             height: 50px !important;
         }
 
+        .swiper-button-next,
+        .swiper-button-prev {
+            width: 30px;
+            height: 50px;
+            background-color: #0F407D;
+            color: #fff;
+            -webkit-margin-before: 0;
+            margin-block-start: 0;
+            padding: 0.3125rem;
+            position: absolute;
+            z-index: 2;
+            inset-block-start: 50%;
+            --size: 2rem !important;
+        }
+
         /* More than 1200px (≥1200px) */
         @media (min-width: 1200px) {
             .responsive-ad-image {
