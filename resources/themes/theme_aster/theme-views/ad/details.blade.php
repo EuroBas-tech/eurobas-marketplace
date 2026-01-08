@@ -147,8 +147,16 @@
             inset-block-start: 50% !important;
             --size: 2rem !important;
             border-radius: 0 !important;
+            opacity: 100% !important;
         }
 
+        .swiper-button-next:not(.swiper-button-disabled),
+        .swiper-button-prev:not(.swiper-button-disabled) {
+            opacity: 100% !important;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+        
         /* More than 1200px (≥1200px) */
         @media (min-width: 1200px) {
             .responsive-ad-image {
@@ -359,9 +367,9 @@
                                             </div>
 
                                             <div class="mt-2 user-select-none">
-                                                <div class="quickviewSliderThumb2 swiper-container position-relative ">
+                                                <div class="quickviewSliderThumb2 swiper-container">
                                                     @if($ad->images!=null && json_decode($ad->images)>0)
-                                                        <div class="swiper-wrapper auto-item-width justify-content-center" style="--width: 4rem; --bs-border-color: #d6d6d6">
+                                                        <div class="swiper-wrapper auto-item-width justify-content-center d-sm-flex d-none" style="--width: 4rem; --bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
                                                                 <div class="swiper-slide position-relative aspect-1">
                                                                     <img src="https://image.mux.com/{{$ad_promotional_video['playback_id']}}/thumbnail.jpg" class="dark-support rounded" alt="">
