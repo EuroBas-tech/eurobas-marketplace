@@ -135,16 +135,16 @@
 
         .swiper-button-next,
         .swiper-button-prev {
-            width: 30px;
-            height: 50px;
-            background-color: #0F407D;
-            color: #fff;
-            -webkit-margin-before: 0;
-            margin-block-start: 0;
-            padding: 0.3125rem;
-            position: absolute;
-            z-index: 2;
-            inset-block-start: 50%;
+            width: 30px !important;
+            height: 50px !important;
+            background-color: #0F407D !important;
+            color: #fff !important;
+            -webkit-margin-before: 0 !important;
+            margin-block-start: 0 !important;
+            padding: 0.3125rem !important;
+            position: absolute !important;
+            z-index: 2 !important;
+            inset-block-start: 50% !important;
             --size: 2rem !important;
         }
 
