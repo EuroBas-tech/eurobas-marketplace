@@ -146,6 +146,7 @@
             z-index: 2 !important;
             inset-block-start: 50% !important;
             --size: 2rem !important;
+            border-radius: 0 !important;
         }
 
         /* More than 1200px (≥1200px) */
@@ -316,8 +317,8 @@
                                 <div class="row gy-4 d-flex align-items-stretch justify-content-center">
                                     <div class="col-sm-11 col-12 px-sm-2 px-0">
                                         <!-- Product Details Image Wrap -->
-                                        <div class="pd-img-wrap position-relative h-100">
-                                            <div class="swiper-container mobile-responsive-style quickviewSlider2 border rounded aspect-0" style="--bs-border-color: #d6d6d6">
+                                        <div class="pd-img-wrap h-100">
+                                            <div class="swiper-container position-relative mobile-responsive-style quickviewSlider2 border rounded aspect-0" style="--bs-border-color: #d6d6d6">
                                                 @if($ad->images!=null && json_decode($ad->images)>0)
                                                     <div class="swiper-wrapper">
                                                         @if($ad_promotional_video)
