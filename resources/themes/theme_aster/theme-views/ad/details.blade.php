@@ -382,18 +382,18 @@
                                                         <div class="swiper-wrapper auto-item-width d-sm-flex d-none p-1" style="--width: 4rem; --bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
                                                                 <div class="swiper-slide position-relative aspect-1">
-                                                                    <img src="https://image.mux.com/{{$ad_promotional_video['playback_id']}}/thumbnail.jpg" class="dark-support rounded" alt="">
+                                                                    <img style="width:80px !important;height: 80px !important;" src="https://image.mux.com/{{$ad_promotional_video['playback_id']}}/thumbnail.jpg" class="dark-support rounded" alt="">
                                                                     <span class="position-absolute" style="top:50%; right: 50%; transform: translate(50%,-50%)">
                                                                         <i class="bi bi-play-circle text-white fs-28"></i>
                                                                     </span>
                                                                 </div>
                                                             @endif
                                                             <div class="swiper-slide position-relative aspect-1">
-                                                                <img src="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}" class="dark-support rounded" alt="">
+                                                                <img style="width:80px !important;height: 80px !important;" src="{{cloudfront("ad/thumbnail/".$ad['thumbnail'])}}" class="dark-support rounded" alt="">
                                                             </div>
                                                             @foreach (json_decode($ad->images) as $key => $photo)
                                                                 <div class="swiper-slide position-relative aspect-1">
-                                                                    <img src="{{cloudfront("ad/".$photo)}}" class="dark-support rounded" alt="">
+                                                                    <img style="width:80px !important;height: 80px !important;" src="{{cloudfront("ad/".$photo)}}" class="dark-support rounded" alt="">
                                                                 </div>
                                                             @endforeach
                                                         </div>
