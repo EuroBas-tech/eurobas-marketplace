@@ -379,7 +379,7 @@
                                             <div class="mt-2 user-select-none">
                                                 <div style="width: {{ min($gallery_images_number, 7) * 90 }}px;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
                                                     @if($ad->images!=null && json_decode($ad->images)>0)
-                                                        <div class="swiper-wrapper auto-item-width d-sm-flex d-none py-1" style="--width: 4rem; --bs-border-color: #d6d6d6">
+                                                        <div class="swiper-wrapper auto-item-width d-sm-flex d-none p-1" style="--width: 4rem; --bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
                                                                 <div class="swiper-slide position-relative aspect-1">
                                                                     <img src="https://image.mux.com/{{$ad_promotional_video['playback_id']}}/thumbnail.jpg" class="dark-support rounded" alt="">
