@@ -162,6 +162,10 @@
             cursor: pointer !important;
             pointer-events: auto !important;
         }
+
+        .quickviewSliderThumb2 .swiper-slide-thumb-active img {
+            outline: 2.5px solid #0F407D !important;
+        }
         
         /* More than 1200px (≥1200px) */
         @media (min-width: 1200px) {
@@ -373,7 +377,7 @@
                                             </div>
 
                                             <div class="mt-2 user-select-none">
-                                                <div class="quickviewSliderThumb2 swiper-container">
+                                                <div style="width: {{ min($gallery_images_number, 7) * 90 }}px;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
                                                     @if($ad->images!=null && json_decode($ad->images)>0)
                                                         <div class="swiper-wrapper auto-item-width justify-content-center d-sm-flex d-none" style="--width: 4rem; --bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
@@ -2214,6 +2218,31 @@
             })
         }
 
+    </script>
+
+    <script>
+        var quickviewSliderThumb2 = new Swiper(".quickviewSliderThumb2", {
+            spaceBetween: 5,
+            slidesPerView: {{ min($gallery_images_number, 7) }},
+            autoplay: false,
+            centeredSlides: false,
+            loop: false,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            freeMode: true,
+            slideToClickedSlide: true,
+        });
+        var quickviewSlider2 = new Swiper(".quickviewSlider2", {
+            autoplay: false,
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-quickview-button-next",
+                prevEl: ".swiper-quickview-button-prev",
+            },
+            thumbs: {
+                swiper: quickviewSliderThumb2,
+            },
+        });
     </script>
 
     @if(auth('customer')->check() && auth('customer')->user()->id != $ad['user_id'])

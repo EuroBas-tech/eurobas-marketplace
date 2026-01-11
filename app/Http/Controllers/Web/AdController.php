@@ -972,6 +972,10 @@ class AdController extends Controller
             ->where('is_video_deleted', 0)
             ->first();
 
+            $gallery_images_number = count(json_decode($ad->images)) + 1;
+
+            if($ad_promotional_video) { $gallery_images_number++; }
+
             $customer_detail = User::where('id', auth('customer')->id())->first();
 
             $more_ads_from_user = Ad::active()->withCount('reviews')
@@ -1023,6 +1027,7 @@ class AdController extends Controller
                 'relatedAds', 
                 'current_date',
                 'ad_promotional_video',
+                'gallery_images_number',
                 'more_ads_from_user',
                 'paid_banners',
                 'libraryId',
