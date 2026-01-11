@@ -1,57 +1,3 @@
-/*---------------------------------------------
-	Template name:  6valley Grocery
-	Version:        1.0
-	Author:         6amtech
-	Author url:     https://6amtech.com/
-
-NOTE:
-------
-Please DO NOT EDIT THIS JS, you may need to use "custom.js" file for writing your custom js.
-We may release future updates so it will overwrite this file. it's better and safer to use "custom.js".
-
-[Table of Content]
-
-    01: Main Menu
-    02: Sticky Nav
-    03: Mobile Menu
-    04: Background Image
-    05: Check Data
-    06: Preloader
-    07: currentYear
-    08: Dark, Light & RTL Switcher
-    09: Settings Toggle
-    10: Menu Active Page
-    11: File Upload
-    12: Collapse
-    13: togglePassword
-    14: Countdown Timer
-    15: Swiper
-    16: PreventDefault
-    17: Back to top button
-    18: Increase/Decrease Product Quantity
-      18.1: Increase
-      18.2: Decrease
-      18.3: show hide delete icon
-    19: Changing svg color
-    20: Quick View Product Slider
-    21: Multi Range Slider
-    22: Show Initial Modal
-    23: Show Cookie Dialog
-    24: Hide Top Offer Bar
-    25: Handle Input Focus
-    26: Product Details Content Collapse
-    27: Show Hide Billing Address
-    28: Search Dropdown
-    29: List View Grid View Product
-    30: OTP Verification
-    31: Verify Counter
-    32: Toggle Filter Options
-    33: Toggle Billing Address
-    34: Profile Menu Toggle
-    35: On Scroll Element Hide
-    36: Stop propagation
-----------------------------------------------*/
-
 (function ($) {
     "use strict";
 
@@ -64,32 +10,22 @@ We may release future updates so it will overwrite this file. it's better and sa
 
     /* Parent li add class */
     $(".header .nav-wrapper, .aside .main-nav, .common-nav")
-        .find(".sub-menu, .sub_menu")
-        .parents("ul li")
-        .addClass("has-sub-item");
+    .find(".sub-menu, .sub_menu")
+    .parents("ul li")
+    .addClass("has-sub-item");
 
     /* Submenu Opened */
     $(".aside .aside-body, .common-nav")
-        .find(".has-sub-item > a, .has-sub-item > label")
-        .on("click", function (event) {
-            event.preventDefault();
-            $(this).parent(".has-sub-item").toggleClass("sub-menu-opened");
-            if ($(this).siblings("ul").hasClass("open")) {
-                $(this).siblings("ul").removeClass("open").slideUp("200");
-            } else {
-                $(this).siblings("ul").addClass("open").slideDown("200");
-            }
-        });
-
-    /*========================
-    02: Sticky Nav
-    ==========================*/
-    // let headerH = $(".header").outerHeight(),
-    //     headerM = $(".header-main.love-sticky");
-    //
-    // headerM.parent(".header").css({
-    //     height: headerH + "px",
-    // });
+    .find(".has-sub-item > a, .has-sub-item > label")
+    .on("click", function (event) {
+        event.preventDefault();
+        $(this).parent(".has-sub-item").toggleClass("sub-menu-opened");
+        if ($(this).siblings("ul").hasClass("open")) {
+            $(this).siblings("ul").removeClass("open").slideUp("200");
+        } else {
+            $(this).siblings("ul").addClass("open").slideDown("200");
+        }
+    });
 
     $(window).on("scroll", function () {
         var scroll = $(window).scrollTop();
@@ -135,13 +71,6 @@ We may release future updates so it will overwrite this file. it's better and sa
     var checkData = function (data, value) {
         return typeof data === "undefined" ? value : data;
     };
-
-    /*==================================
-    06: Preloader
-    ====================================*/
-    // $(window).on("load", function () {
-    //     $(".preloader").fadeOut(500);
-    // });
 
     /*==================================
     07: currentYear
@@ -221,11 +150,7 @@ We may release future updates so it will overwrite this file. it's better and sa
     });
 
     /* Active Menu Open */
-    $(".aside .aside-body")
-        .find(".sub-menu-opened a")
-        .siblings("ul")
-        .addClass("open")
-        .show();
+    $(".aside .aside-body").find(".sub-menu-opened a").siblings("ul").addClass("open").show();
 
     /*============================================
     11: File Upload
@@ -274,7 +199,6 @@ We may release future updates so it will overwrite this file. it's better and sa
             }
         });
     });
-
 
     // Cover Image Upload Handler
     $(window).on("load", function () {
@@ -402,7 +326,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         var timer = setInterval(countdownTimer, 1000);
     });
 
-
     /*==================================
     15: Swiper
     ====================================*/
@@ -489,7 +412,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         });
     });
 
-
     /*==================================
     19: Changing svg color
     ====================================*/
@@ -536,9 +458,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         );
     });
 
-    /*==================================
-    20: Quick View Product Slider
-    ====================================*/
     var quickviewSliderThumb = new Swiper(".quickviewSliderThumb", {
         spaceBetween: 10,
         slidesPerView: "auto",
@@ -552,17 +471,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         navigation: {
             nextEl: ".swiper-quickview-button-next",
             prevEl: ".swiper-quickview-button-prev",
-        },
-    });
-
-    var quickviewSlider = new Swiper(".quickviewSlider", {
-        // spaceBetween: 10,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        thumbs: {
-            swiper: quickviewSliderThumb,
         },
     });
 
@@ -600,7 +508,7 @@ We may release future updates so it will overwrite this file. it's better and sa
 
     var quickviewSlider = new Swiper(".quickviewSlider", { 
         autoplay: { 
-            delay: 5000, 
+            delay: 5000,
             disableOnInteraction: false, 
         }, 
         thumbs: { 
@@ -608,95 +516,7 @@ We may release future updates so it will overwrite this file. it's better and sa
         }, 
     });
 
-    // Product Quick View Modal
-    var quickviewSliderThumb2 = new Swiper(".quickviewSliderThumb2", {
-        spaceBetween: 10,
-        slidesPerView: "auto",
-        freeMode: true,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        navigation: {
-            nextEl: ".swiper-quickview-button-next",
-            prevEl: ".swiper-quickview-button-prev",
-        },
-    });
-
-
-    var quickviewSlider2 = new Swiper(".quickviewSlider2", {
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        speed: 500,
-        navigation: {
-            nextEl: ".swiper-quickview-button-next",
-            prevEl: ".swiper-quickview-button-prev",
-        },
-        thumbs: {
-            swiper: quickviewSliderThumb2,
-        },
-    });
-
-    // Global variable to track video state
-    let isVideoPlaying = false;
-
-    // Stop autoplay function
-    function quickviewSlider2_stop() {
-        quickviewSlider2.autoplay.stop();
-        quickviewSliderThumb2.autoplay.stop();
-    }
-
-    // Start autoplay function
-    function quickviewSlider2_start() {
-        if (!isVideoPlaying) {
-            quickviewSlider2.autoplay.start();
-            quickviewSliderThumb2.autoplay.start();
-        }
-    }
-
-    // Mouse hover controls
-    $(".quickviewSlider2").on("mouseenter", function () {
-        quickviewSlider2_stop();
-    });
-
-    $(".quickviewSlider2").on("mouseleave", function () {
-        quickviewSlider2_start();
-    });
-
-    $(".quickviewSliderThumb2").on("mouseenter", function () {
-        quickviewSlider2_stop();
-    });
-
-    $(".quickviewSliderThumb2").on("mouseleave", function () {
-        quickviewSlider2_start();
-    });
-
-    // Video control - Stop slider when video plays
-    const muxPlayer = document.querySelector('.quickviewSlider2 mux-player');
-
-    if (muxPlayer) {
-        // When video starts playing
-        muxPlayer.addEventListener('play', function() {
-            isVideoPlaying = true;
-            quickviewSlider2_stop();
-        });
-        
-        // When video is paused
-        muxPlayer.addEventListener('pause', function() {
-            isVideoPlaying = false;
-            quickviewSlider2_start();
-        });
-        
-        // When video ends
-        muxPlayer.addEventListener('ended', function() {
-            isVideoPlaying = false;
-            quickviewSlider2_start();
-        });
-    }
+    // -------------------------------------------
 
     /*==================================
     21: Multi Range Slider
@@ -748,15 +568,6 @@ We may release future updates so it will overwrite this file. it's better and sa
             },
         });
     });
-
-    /*==================================
-    22: Show Initial Modal
-    ====================================*/
-    // $(window).on('load', function () {
-    //   setTimeout(function () {
-    //       $('#initialModal').modal('show');
-    //   }, 1000);
-    // });
 
     /*==================================
     23: Show Cookie Dialog
@@ -921,6 +732,7 @@ We may release future updates so it will overwrite this file. it's better and sa
         $(".aside").removeClass("active");
         $(".filter-toggle-aside .card-body").toggleClass("custom-scrollbar");
     });
+
     $(".filter-aside-close").on("click", function () {
         $(".filter-toggle-aside").removeClass("active");
         $(".filter-toggle-aside .card-body").removeClass("custom-scrollbar");

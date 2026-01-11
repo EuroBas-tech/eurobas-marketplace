@@ -2221,6 +2221,7 @@
     </script>
 
     <script>
+
         var quickviewSliderThumb2 = new Swiper(".quickviewSliderThumb2", {
             spaceBetween: 5,
             slidesPerView: {{ min($gallery_images_number, 7) }},
@@ -2231,7 +2232,8 @@
             watchSlidesProgress: true,
             freeMode: true,
             slideToClickedSlide: true,
-        });
+        }); 
+
         var quickviewSlider2 = new Swiper(".quickviewSlider2", {
             autoplay: false,
             loop: true,
