@@ -23,35 +23,41 @@ class SocialAuthController extends Controller
 
     public function handleProviderCallback($service)
     {
+
         $user_data = Socialite::driver($service)->stateless()->user();
 
-        $user = User::where('email', $user_data->getEmail())->first();
+        $email = $user_data->getEmail();
 
-        $name = implode(' ', explode(' ', $user_data['name']));
+        $user = $email
+        ? User::where('email', $email)->first()
+        : null;
 
-        if (isset($user) == false) {
+        $name = $user_data->getName() ?? 'User';
+
+        if (!isset($user) || ($user_data->id ?? null) != ($user->social_id ?? null)) {
             $user = User::create([
                 'name' => $name,
-                'email' => $user_data->getEmail() ?? null,
+                'email' => $email,
                 'phone' => '',
-                'password' => bcrypt($user_data->id),
+                'password' => null,
                 'is_active' => 1,
                 'login_medium' => $service,
                 'social_id' => $user_data->id,
                 'is_phone_verified' => 0,
-                'is_email_verified' => 1,
-                'temporary_token' => Str::random(40)
+                'is_email_verified' => $email ? 1 : 0,
+                'temporary_token' => Str::random(40),
             ]);
         } else {
             $user->temporary_token = Str::random(40);
             $user->save();
         }
 
-        //redirect if website user
-        $message = self::login_process($user, $user_data->getEmail(), $user_data->id);
+        // redirect if website user
+        $message = self::login_process($user, $email, $user_data->id);
 
         Toastr::info($message);
         return redirect()->route('home');
+
     }
 
     public function editPhone($id)

@@ -612,34 +612,6 @@ Route::get('cache-translations', function () {
     }
 });
 
-Route::get('fix-languages', function() {
-
-    $languages = BusinessSetting::where('type', 'language')->get()->first();
-
-    $languages->update([
-        'value' => '[{"id":"1","name":"english","direction":"ltr","code":"en","status":1,"default":true,"flag":"🇬🇧"},{"id":2,"name":"Nederlands","direction":"ltr","code":"nl","status":1,"default":false,"flag":"🇳🇱"},{"id":3,"name":"Deutsch","direction":"ltr","code":"de","status":1,"default":false,"flag":"🇩🇪"},{"id":4,"name":"Türkçe","direction":"ltr","code":"tr","status":1,"default":false,"flag":"🇹🇷"},{"id":5,"name":"Español","direction":"ltr","code":"es","status":1,"default":false,"flag":"🇪🇸"},{"id":6,"name":"Italiano","direction":"ltr","code":"it","status":1,"default":false,"flag":"🇮🇹"},{"id":7,"name":"Русский","direction":"ltr","code":"ru","status":1,"default":false,"flag":"🇷🇺"},{"id":8,"name":"Français","direction":"ltr","code":"fr","status":1,"default":false,"flag":"🇫🇷"},{"id":9,"name":"العربية","direction":"rtl","code":"ar","status":1,"default":false,"flag":"🇦🇪"},{"id":10,"name":"ελληνικά","direction":"ltr","code":"el","status":1,"default":false,"flag":"🇬🇷"},{"id":11,"name":"Polski","direction":"ltr","code":"pl","status":1,"default":false,"flag":"🇵🇱"},{"id":12,"name":"Română","direction":"ltr","code":"ro","status":1,"default":false,"flag":"🇷🇴"},{"id":13,"name":"Украiнська","direction":"ltr","code":"uk","status":1,"default":false,"flag":"🇺🇦"},{"id":14,"name":"Bulgarski","direction":"ltr","code":"bg","status":1,"default":false,"flag":"🇧🇬"},{"id":15,"name":"Português","direction":"ltr","code":"pt","status":1,"default":false,"flag":"🇵🇹"},{"id":16,"name":"Српски","direction":"ltr","code":"sr","status":1,"default":false,"flag":"🇷🇸"},{"id":17,"name":"Dansk","direction":"ltr","code":"da","status":1,"default":false,"flag":"🇩🇰"},{"id":18,"name":"Svenska","direction":"ltr","code":"sv","status":1,"default":false,"flag":"🇸🇪"},{"id":19,"name":"Suomi","direction":"ltr","code":"fi","status":1,"default":false,"flag":"🇫🇮"},{"id":20,"name":"Norsk","direction":"ltr","code":"nn","status":1,"default":false,"flag":"🇳🇴"},{"id":21,"name":"Hrvatski","direction":"ltr","code":"hr","status":1,"default":false,"flag":"🇭🇷"},{"id":22,"name":"Magyar","direction":"ltr","code":"hu","status":1,"default":false,"flag":"🇭🇺"},{"id":23,"name":"Čeština","direction":"ltr","code":"cs","status":1,"default":false,"flag":"🇨🇿"},{"id":24,"name":"Shqip","direction":"ltr","code":"sq","status":1,"default":false,"flag":"🇦🇱"},{"id":25,"name":"Bosanski","direction":"ltr","code":"bs","status":1,"default":false,"flag":"🇧🇦"},{"id":26,"name":"Lietuvių","direction":"ltr","code":"lt","status":1,"default":false,"flag":"🇱🇹"},{"id":27,"name":"Slovenščina","direction":"ltr","code":"sl","status":1,"default":false,"flag":"🇸🇮"},{"id":28,"name":"Slovenčina","direction":"ltr","code":"sk","status":1,"default":false,"flag":"🇸🇰"},{"id":29,"name":"简体中文","direction":"ltr","code":"zh","status":1,"default":false,"flag":"🇨🇳"},{"id":30,"name":"한국어","direction":"ltr","code":"ko","status":1,"default":false,"flag":"🇰🇷"},{"id":32,"name":"日本語","direction":"ltr","code":"ja","status":1,"default":false,"flag":"🇯🇵"}]'
-    ]);
-
-    return $languages;
-
-});
-
-Route::get('update-old-locale-codes', function () {
-    
-    $translations = Translation::where('locale', 'al')->update([
-        'locale' => 'sq'
-    ]);
-    
-    $translations = Translation::where('locale', 'gr')->update([
-        'locale' => 'el'
-    ]);
-    
-    $translations = Translation::where('locale', 'si')->update([
-        'locale' => 'sl'
-    ]);
-
-});
-
 Route::get('delete-all-sponsors', function() {
     SponsoredAd::query()->delete();
     return SponsoredAd::all();
@@ -676,35 +648,13 @@ Route::get('log/show', function () {
     )->header('Content-Type', 'text/html');
 });
 
-Route::get('/change-env-debug-on', function () {
-
-    $envPath = base_path('.env');
-
-    if (file_exists($envPath)) {
-        file_put_contents(
-            $envPath,
-            preg_replace(
-                '/APP_DEBUG=(true|false)/i',
-                'APP_DEBUG=true',
-                file_get_contents($envPath)
-            )
-        );
-    }
-
-    // // Clear and recache config
-    // Artisan::call('config:clear');
-    // Artisan::call('config:cache');
-
-    return 'Debug mode is now ON';
-});
-
-Route::get('/run-email-nullable-migration', function () {
+Route::get('run-password-nullable-migration', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_12_202805_make_email_nullable_on_users_table.php',
+        '--path' => 'database/migrations/2026_01_12_202999_make_password_nullable_on_users_table.php',
         '--force' => true,
     ]);
 
-    return 'Email nullable migration executed successfully';
+    return 'Password nullable migration executed successfully';
 });
 
 
