@@ -88,11 +88,13 @@ class SocialAuthController extends Controller
         return redirect(route('customer.auth.check', [$user->id]));
     }
 
-    public static function login_process($user, $email, $password)
+    public static function login_process($user, $email, $user_id)
     {
         $company_name = BusinessSetting::where('type', 'company_name')->first();
 
-        if ($user->is_active && auth('customer')->attempt(['email' => $email, 'password' => $password], true)) {
+        $user = User::where('email', $email)->orWhere('social_id', $user_id)->first();
+
+        if ($user && $user->is_active) {
             $wish_list = Wishlist::whereHas('wishlistAd',function($q){
                 return $q;
             })->where('customer_id', $user->id)->pluck('ad_id')->toArray();
@@ -106,4 +108,5 @@ class SocialAuthController extends Controller
 
         return $message;
     }
+    
 }
