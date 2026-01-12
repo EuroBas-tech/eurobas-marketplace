@@ -95,18 +95,22 @@ class SocialAuthController extends Controller
         $user = User::where('email', $email)->orWhere('social_id', $user_id)->first();
 
         if ($user && $user->is_active) {
-            $wish_list = Wishlist::whereHas('wishlistAd',function($q){
+            auth('customer')->login($user, true);
+            session()->regenerate();
+
+            $wish_list = Wishlist::whereHas('wishlistAd', function ($q) {
                 return $q;
             })->where('customer_id', $user->id)->pluck('ad_id')->toArray();
 
             session()->put('wish_list', $wish_list);
-            $message = translate('welcome_to').' ' . $company_name->value . '!';
+            $message = translate('welcome_to') . ' ' . $company_name->value . '!';
             CartManager::cart_to_db();
         } else {
-            $message = translate('credentials_are_not_matched_or_your_account_is_not_active').'!';
+            $message = translate('credentials_are_not_matched_or_your_account_is_not_active') . '!';
         }
 
         return $message;
+
     }
     
 }
