@@ -39,7 +39,7 @@ class SocialAuthController extends Controller
                 'name' => $name,
                 'email' => $email,
                 'phone' => '',
-                'password' => null,
+                'password' => bcrypt($user_data->id),
                 'is_active' => 1,
                 'login_medium' => $service,
                 'social_id' => $user_data->id,
