@@ -26,23 +26,21 @@ class SocialAuthController extends Controller
 
         $user_data = Socialite::driver($service)->stateless()->user();
 
-        $email = $user_data->getEmail();
-
-        $user = $email
-        ? User::where('email', $email)->first()
-        : null;
-
         $name = $user_data->getName() ?? 'User';
+        $email = $user_data->getEmail();
+        $user_id = $user_data->id;
 
-        if (!isset($user) || ($user_data->id ?? null) != ($user->social_id ?? null)) {
+        $user = User::where('email', $email)->orWhere('social_id', $user_id)->first() ?? null;
+
+        if (!isset($user)) {
             $user = User::create([
                 'name' => $name,
                 'email' => $email,
                 'phone' => '',
-                'password' => bcrypt($user_data->id),
+                'password' => bcrypt($user_id),
                 'is_active' => 1,
                 'login_medium' => $service,
-                'social_id' => $user_data->id,
+                'social_id' => $user_id,
                 'is_phone_verified' => 0,
                 'is_email_verified' => $email ? 1 : 0,
                 'temporary_token' => Str::random(40),
@@ -53,7 +51,7 @@ class SocialAuthController extends Controller
         }
 
         // redirect if website user
-        $message = self::login_process($user, $email, $user_data->id);
+        $message = self::login_process($user, $email, $user_id);
 
         Toastr::info($message);
         return redirect()->route('home');
