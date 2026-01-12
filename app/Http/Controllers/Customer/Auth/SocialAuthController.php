@@ -32,7 +32,7 @@ class SocialAuthController extends Controller
         if (isset($user) == false) {
             $user = User::create([
                 'name' => $name,
-                'email' => $user_data->getEmail(),
+                'email' => $user_data->getEmail() ?? null,
                 'phone' => '',
                 'password' => bcrypt($user_data->id),
                 'is_active' => 1,

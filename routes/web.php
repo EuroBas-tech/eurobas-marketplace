@@ -698,4 +698,13 @@ Route::get('/change-env-debug-on', function () {
     return 'Debug mode is now ON';
 });
 
+Route::get('/run-email-nullable-migration', function () {
+    Artisan::call('migrate', [
+        '--path' => 'database/migrations/2026_01_12_202805_make_email_nullable_on_users_table.php',
+        '--force' => true,
+    ]);
+
+    return 'Email nullable migration executed successfully';
+});
+
 
