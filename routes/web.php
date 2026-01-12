@@ -31,7 +31,6 @@ Route::group(
         //for maintenance mode
         Route::get('maintenance-mode', 'Web\WebController@maintenance_mode')->name('maintenance-mode');
 
-
         Route::group(['namespace' => 'Web','middleware'=>['maintenance_mode','guestCheck']], function () {
             Route::get('/', 'HomeController@index')->name('home');
 

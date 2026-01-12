@@ -1269,7 +1269,7 @@
                                     @foreach($categories as $key => $category) 
                                         <li> 
                                             <a href="javascript:"> 
-                                                <span onclick="location.href='{{ url('ads/filter?category_id=' . $category->id) }}'">
+                                                <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'"> >
                                                     {{ $category->name }}
                                                 </span> 
                                             </a>
@@ -1284,7 +1284,7 @@
                                     <ul class="sub_menu"> 
                                         @foreach($brands as $brand) 
                                             <li> 
-                                                <a href="{{ url('ads/filter?brand_id='.$brand->id) }}">
+                                                <a href="{{ route('show-ads-filter', ['brand_id' => $brand->id]) }}" >
                                                     {{ $brand->name }}
                                                 </a> 
                                             </li> 
@@ -1358,7 +1358,7 @@
                                     <div class="d-flex gap-4 flex-column">
                                         <div class="">
                                             @foreach($categories as $key=>$category)
-                                                <a href="{{url('ads/filter?category_id='.$category->id)}}" class="media gap-3 align-items-center border-bottom">
+                                                <a href="{{ route('show-ads-filter', ['category_id' => $category->id]) }}" class="media gap-3 align-items-center border-bottom">
                                                     <div class="avatar rounded-circle" style="--size: 2rem">
                                                         <img width="50px" 
                                                         onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
@@ -1380,7 +1380,7 @@
                                         <div class="d-flex gap-4">
                                             <div class="column-2">
                                                 @foreach($brands as $brand)
-                                                <a href="{{url('ads/filter?brand_id='.$brand->id)}}" class="media gap-3 align-items-center border-bottom">
+                                                <a href="{{ route('show-ads-filter', ['brand_id' => $brand->id]) }}" class="media gap-3 align-items-center border-bottom">
                                                     <div class="avatar" style="--size: 2.25rem">
                                                         <img
                                                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
