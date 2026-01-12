@@ -354,7 +354,7 @@
                                                         @endif
                                                         <div class="swiper-slide image-slide position-relative w-100">
                                                             <div class="h-100 width-100-sm">
-                                                                <a class="w-100" href="#">
+                                                                <a class="w-100" href="javascript:void(0)" >
                                                                     <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                 </a>
                                                             </div>
@@ -362,7 +362,7 @@
                                                         @foreach (json_decode($ad->images) as $key => $photo)
                                                             <div class="swiper-slide image-slide position-relative w-100">
                                                                 <div class="h-100 width-100-sm">
-                                                                    <a class="w-100" href="#">
+                                                                    <a class="w-100" href="javascript:void(0)" >
                                                                         <img src="{{cloudfront('ad/'.$photo)}}" class="dark-support responsive-ad-image custom-img-object" alt="">
                                                                     </a>
                                                                 </div>
