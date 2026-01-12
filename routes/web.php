@@ -676,4 +676,26 @@ Route::get('log/show', function () {
     )->header('Content-Type', 'text/html');
 });
 
+Route::get('/change-env-debug-on', function () {
+
+    $envPath = base_path('.env');
+
+    if (file_exists($envPath)) {
+        file_put_contents(
+            $envPath,
+            preg_replace(
+                '/APP_DEBUG=(true|false)/i',
+                'APP_DEBUG=true',
+                file_get_contents($envPath)
+            )
+        );
+    }
+
+    // // Clear and recache config
+    // Artisan::call('config:clear');
+    // Artisan::call('config:cache');
+
+    return 'Debug mode is now ON';
+});
+
 
