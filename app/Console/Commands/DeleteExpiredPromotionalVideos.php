@@ -89,16 +89,16 @@ class DeleteExpiredPromotionalVideos extends Command
                 ->toArray();
 
             // Fetch all assets from Mux (with pagination)
-            $page = 1;
+            $offset = 0;
             $limit = 100;
             $hasMorePages = true;
 
             while ($hasMorePages) {
                 $allAssetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                    ->get("https://api.mux.com/video/v1/assets", [
-                        'limit' => $limit,
-                        'page' => $page
-                    ]);
+                ->get("https://api.mux.com/video/v1/assets", [
+                    'limit' => $limit,
+                    'offset' => $offset
+                ]);
 
                 if ($allAssetsResponse->successful()) {
                     $allAssetsData = $allAssetsResponse->json();
@@ -118,23 +118,15 @@ class DeleteExpiredPromotionalVideos extends Command
                                     }
                                 }
                                 
-                                if (!$foundInDb) {
-                                    // Check if video was created more than 1 hour ago
-                                    $createdAt = isset($asset['created_at']) ? strtotime($asset['created_at']) : null;
-                                    $oneHourAgo = now()->subHour()->timestamp;
+                                if (!$foundInDb) {                                    
+                                    $assetId = $asset['id'];
+                                    $deleteOrphanResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
+                                    ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
                                     
-                                    if ($createdAt && $createdAt < $oneHourAgo) {
-                                        $assetId = $asset['id'];
-                                        $deleteOrphanResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                                            ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
-                                        
-                                        if ($deleteOrphanResponse->successful()) {
-                                            Log::debug("Deleted orphaned video with asset ID: {$assetId}");
-                                        } else {
-                                            Log::debug("Failed to delete orphaned video {$assetId}: " . $deleteOrphanResponse->body());
-                                        }
+                                    if ($deleteOrphanResponse->successful()) {
+                                        Log::debug("Deleted orphaned video with asset ID: {$assetId}");
                                     } else {
-                                        Log::debug("Skipped deleting recent orphaned video {$asset['id']} (created less than 1 hour ago)");
+                                        Log::debug("Failed to delete orphaned video {$assetId}: " . $deleteOrphanResponse->body());
                                     }
                                 }
                             }
@@ -142,7 +134,7 @@ class DeleteExpiredPromotionalVideos extends Command
                         
                         // Check if there are more pages
                         $hasMorePages = count($allAssetsData['data']) === $limit;
-                        $page++;
+                        $offset += $limit;
                     } else {
                         $hasMorePages = false;
                     }
@@ -156,6 +148,7 @@ class DeleteExpiredPromotionalVideos extends Command
         }
 
         Log::debug('cron job done at ' . now()->format('Y-m-d H:i'));
+        
     }
 
 }
