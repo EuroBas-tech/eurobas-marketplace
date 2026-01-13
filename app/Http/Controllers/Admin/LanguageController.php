@@ -240,12 +240,14 @@ class LanguageController extends Controller
 
     public function translate_submit(Request $request, $lang)
     {
-        LanguageTranslation::where('id', $request['id'])
+        $word = LanguageTranslation::where('id', $request['id'])
         ->update(['value' => $request['value']]);
-        
-        Cache::forget("translations_{$lang}");
 
+        Cache::flush();
+        
         $this->updateCacheTranslations();
+        
+        return $word;
 
     }
 
@@ -342,12 +344,7 @@ class LanguageController extends Controller
     public function updateCacheTranslations() {
         try {
             $locales = array_keys(config('laravellocalization.supportedLocales'));
-            
-            // // Apply mapping
-            // foreach ($locales as &$locale) {
-            //     $locale = config("laravellocalization.localesMapping.{$locale}", $locale);
-            // }
-            
+                        
             $cachedLocales = [];
             
             foreach ($locales as $localeCode) {
