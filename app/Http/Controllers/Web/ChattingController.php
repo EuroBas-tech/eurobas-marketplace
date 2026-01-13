@@ -207,6 +207,34 @@ class ChattingController extends Controller
 
         $ad = Ad::with('auctions', 'askingPrice', 'user')->find($request->ad_id);
 
+        if($request->message_type && $request->message_type == 'make_an_offer') {
+            $last_auction_price = $ad->auctions->count() > 0
+                ? $ad->auctions()->latest()->value('price') 
+            : ($ad->starting_price ? $ad->starting_price : 0);
+    
+            if($ad->auctions->count() && $ad->auctions->contains('user_id', auth('customer')->id())) {
+                return response()->json(['error_message'=>translate('you_already_send_an_offer_to_this_ad')]);
+            }
+    
+            if($request->auction_price <= $last_auction_price) {
+                return response()->json(['error_message'=>translate('the_offer_price_must_be_greater_than_the_starting_price_or_the_last_offer_price')]);
+            }
+        }
+
+        if($request->message_type && $request->message_type == 'asking_price')  {
+            if($ad->askingPrice->count() && $ad->askingPrice->contains('user_id', auth('customer')->id())) {
+                return response()->json(['error_message'=>translate('you_already_send_an_negotiate_price_to_this_ad')]);
+            }
+    
+            $last_asking_price = $ad->askingPrice->count() > 0 
+            ? $ad->askingPrice()->latest()->value('price') 
+            : ($ad->starting_price ? $ad->starting_price : 0);
+    
+            if($request->asking_price < $last_asking_price) {
+                return response()->json(['error_message'=>translate('the_offer_price_must_be_greater_than_the_starting_price_or_the_last_offer_price')]);
+            }
+        }
+        
         $offer_price = $request->message_type == 'make_an_offer' ? $request->auction_price : $request->asking_price;
 
         $seller_profile = User::find($request->seller_id);
@@ -214,6 +242,7 @@ class ChattingController extends Controller
         $message_language = $seller_profile->native_language && auth('customer')->user()->native_language && 
             $seller_profile->native_language == auth('customer')->user()->native_language ?
         auth('customer')->user()->native_language : 'en';
+
 
         $message =
         specificTranslate('dear', $message_language) . ' ' . $ad->user->f_name . ",<br>" .
@@ -240,18 +269,6 @@ class ChattingController extends Controller
 
         if($request->message_type && $request->message_type == 'make_an_offer') {
 
-            $last_auction_price = $ad->auctions->count() > 0
-                ? $ad->auctions()->latest()->value('price') 
-            : ($ad->starting_price ? $ad->starting_price : 0);
-
-            if($ad->auctions->count() && $ad->auctions->contains('user_id', auth('customer')->id())) {
-                return response()->json(['error_message'=>translate('you_already_send_an_offer_to_this_ad')]);
-            }
-
-            if($request->auction_price <= $last_auction_price) {
-                return response()->json(['error_message'=>translate('the_offer_price_must_be_greater_than_the_starting_price_or_the_last_offer_price')]);
-            }
-
             $auction = new AdAuction();
 
             $auction->ad_id = $ad->id;
@@ -262,18 +279,6 @@ class ChattingController extends Controller
         }
 
         if($request->message_type && $request->message_type == 'asking_price') {
-    
-            if($ad->askingPrice->count() && $ad->askingPrice->contains('user_id', auth('customer')->id())) {
-                return response()->json(['error_message'=>translate('you_already_send_an_negotiate_price_to_this_ad')]);
-            }
-    
-            $last_asking_price = $ad->askingPrice->count() > 0 
-            ? $ad->askingPrice()->latest()->value('price') 
-            : ($ad->starting_price ? $ad->starting_price : 0);
-    
-            if($request->asking_price < $last_asking_price) {
-                return response()->json(['error_message'=>translate('the_offer_price_must_be_greater_than_the_starting_price_or_the_last_offer_price')]);
-            } 
     
             $asking_price = new AdAskingPrice();
     
