@@ -657,3 +657,8 @@ Route::get('run-password-nullable-migration', function () {
 });
 
 
+Route::get('social-login', function() {
+    return BusinessSetting::where('type', 'social_login')->get();
+});
+
+
