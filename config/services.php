@@ -51,7 +51,7 @@ return [
     // config/services.php
     'apple' => [
         'client_id'     => "com.eurobas.web.login",
-        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'client_secret' => null,
         'redirect'      => route('home'),
     ],
 
