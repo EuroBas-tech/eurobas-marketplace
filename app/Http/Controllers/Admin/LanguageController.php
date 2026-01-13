@@ -244,6 +244,9 @@ class LanguageController extends Controller
         ->update(['value' => $request['value']]);
         
         Cache::forget("translations_{$lang}");
+
+        $this->updateCacheTranslations();
+
     }
 
     public function auto_translate(Request $request, $lang): \Illuminate\Http\JsonResponse
