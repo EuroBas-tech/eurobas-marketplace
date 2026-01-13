@@ -113,11 +113,11 @@
                     @if (isset($web_config['apple_login'][0]) && $web_config['apple_login'][0]['status']==true)
                         <a href="{{route('customer.auth.service-login', $web_config['apple_login'][0]['login_medium'])}}">
                             <img width="35" alt="" class="dark-support"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCvh-j7HsTHJ8ZckknAoiZMx9VcFmsFkv72g&s" />
+                            src="{{asset('/public/assets/back-end/img/apple.png')}}" />
                         </a>
                     @endif
                 </div>
-                
+
             </div>
         </div>
     </div>
