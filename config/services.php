@@ -48,4 +48,11 @@ return [
         'redirect' => env('TWITTER_SERVICE_CALLBACK'),
     ],
 
+    // config/services.php
+    'apple' => [
+        'client_id'     => "com.eurobas.web.login",
+        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'redirect'      => route('home'),
+    ],
+
 ];

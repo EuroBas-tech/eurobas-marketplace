@@ -100,19 +100,24 @@
                     <p class="text-center text-muted">{{ translate('or_continue_with') }}</p>
                 @endif
 
-                <div class="d-flex justify-content-center gap-3 align-items-center flex-wrap pb-3">
+                <div class="d-flex justify-content-center gap-3 align-items-start flex-wrap pb-3">
                     @foreach ($web_config['socials_login'] as $socialLoginService)
                         @if (isset($socialLoginService) && $socialLoginService['status']==true)
                             <a href="{{route('customer.auth.service-login', $socialLoginService['login_medium'])}}">
-                                <img
-                                    width="35"
-                                    src="{{ theme_asset('assets/img/svg/'.$socialLoginService['login_medium'].'.svg') }}"
-                                    alt=""
-                                    class="dark-support"/>
+                                <img class="dark-support" width="35" alt=""
+                                src="{{ theme_asset('assets/img/svg/'.$socialLoginService['login_medium'].'.svg') }}" />
                             </a>
-                        @endif
+                        @endif 
                     @endforeach
+
+                    @if (isset($web_config['apple_login'][0]) && $web_config['apple_login'][0]['status']==true)
+                        <a href="{{route('customer.auth.service-login', $web_config['apple_login'][0]['login_medium'])}}">
+                            <img width="35" alt="" class="dark-support"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCvh-j7HsTHJ8ZckknAoiZMx9VcFmsFkv72g&s" />
+                        </a>
+                    @endif
                 </div>
+                
             </div>
         </div>
     </div>

@@ -656,7 +656,6 @@ Route::get('run-password-nullable-migration', function () {
     return 'Password nullable migration executed successfully';
 });
 
-
 Route::get('social-login', function() {
     return BusinessSetting::where('type', 'social_login')->get();
 });

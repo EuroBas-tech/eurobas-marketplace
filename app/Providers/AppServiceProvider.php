@@ -105,10 +105,16 @@ class AppServiceProvider extends ServiceProvider
                     $recaptcha = Helpers::get_business_settings('recaptcha');
                     $socials_login = Helpers::get_business_settings('social_login');
                     $social_login_text = false;
+                    $apple_login = Helpers::get_business_settings('apple_login');
+
                     foreach ($socials_login as $socialLoginService) {
                         if (isset($socialLoginService) && $socialLoginService['status'] == true) {
                             $social_login_text = true;
                         }
+                    }
+                            
+                    if(isset($apple_login) && $apple_login[0]['status'] == true) {
+                        $social_login_text = true;
                     }
 
                     $web_config += [
@@ -128,6 +134,7 @@ class AppServiceProvider extends ServiceProvider
                         'discount_product' => Product::with(['reviews'])->active()->where('discount', '!=', 0)->count(),
                         'recaptcha' => $recaptcha,
                         'socials_login' => $socials_login,
+                        'apple_login' => $apple_login,
                         'social_login_text' => $social_login_text,
                     ];
 
