@@ -107,9 +107,8 @@
                                 <img class="dark-support" width="35" alt=""
                                 src="{{ theme_asset('assets/img/svg/'.$socialLoginService['login_medium'].'.svg') }}" />
                             </a>
-                        @endif 
+                        @endif
                     @endforeach
-
                     @if (isset($web_config['apple_login'][0]) && $web_config['apple_login'][0]['status']==true)
                         <a href="{{route('customer.auth.service-login', $web_config['apple_login'][0]['login_medium'])}}">
                             <img width="35" alt="" class="dark-support"
@@ -135,9 +134,7 @@
                 $('#recaptcha_element_customer_login').attr('data-login-id', login_id);
             };
         </script>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit" async
-                defer></script>
-
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit" async defer></script>
     @else
         <script type="text/javascript">
             function re_captcha_customer_login() {

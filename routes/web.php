@@ -394,7 +394,6 @@ Route::group(
             Cache::forget('adding_models');
             Cache::forget('list_values');
             Cache::forget('adding_subscription_packages');
-
             Cache::flush();
         });
     }
