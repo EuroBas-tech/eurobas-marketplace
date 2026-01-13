@@ -108,7 +108,7 @@ class PaidBannerController extends Controller
 
     public function edit($id) {
 
-        $packages = SubscriptionPackage::whereHas('type', function ($query) {
+        $packages = SubscriptionPackage::where('status', 1)->whereHas('type', function ($query) {
             $query->where('name', 'promotional_banner');
         })->get();
 
@@ -117,7 +117,8 @@ class PaidBannerController extends Controller
         
         $package_expiration_date = $paid_banner->expiration_date;
 
-        return view("theme-views.paid-banners.edit", compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads'));
+        return view("theme-views.paid-banners.edit", 
+        compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads'));
     }
 
     public function update(Request $request) {
