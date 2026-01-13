@@ -90,7 +90,7 @@ class PaidBannerController extends Controller
             $paidBanner->banner_image = ImageManager::upload('paid-banners/', 'webp', $request->file('banner_image'), null);
             $paidBanner->price = $package->price;
             $paidBanner->duration_in_days = $package->duration_in_days;
-            $paidBanner->expiration_date = now()->addDays($package->duration_in_days);
+            $paidBanner->expiration_date = now()->addHours($package->duration_in_days * 24);
             $paidBanner->user_id = auth('customer')->user()->id;
             $paidBanner->package_id = $request->package_id;
             $paidBanner->save();
@@ -145,10 +145,10 @@ class PaidBannerController extends Controller
 
         if ($request->filled('package_id')) {
             $package = SubscriptionPackage::with('type')
-                ->where('id', $request->package_id)
-                ->where('status', 1)
-                ->whereHas('type', fn($query) => $query->where('name', 'promotional_banner'))
-                ->first();
+            ->where('id', $request->package_id)
+            ->where('status', 1)
+            ->whereHas('type', fn($query) => $query->where('name', 'promotional_banner'))
+            ->first();
         }
 
         if (optional($paidBanner->expiration_date)->lt(now())) {
@@ -179,7 +179,7 @@ class PaidBannerController extends Controller
             ]);
         }
 
-        $paidBanner->banner_url = route('ads-show',$ad->slug) ?? $paidBanner->banner_url;
+        $paidBanner->banner_url = isset($ad) && $ad->slug ? route('ads-show',$ad->slug) : $paidBanner->banner_url;
 
         if ($request->hasFile('banner_image')) {
             $paidBanner->banner_image = ImageManager::upload(
@@ -195,7 +195,7 @@ class PaidBannerController extends Controller
                 'package_id'        => $request->package_id,
                 'price'             => $package->price,
                 'duration_in_days'  => $package->duration_in_days,
-                'expiration_date'   => now()->addDays($package->duration_in_days),
+                'expiration_date'   => now()->addHours($package->duration_in_days * 24),
             ]);
         }
 
