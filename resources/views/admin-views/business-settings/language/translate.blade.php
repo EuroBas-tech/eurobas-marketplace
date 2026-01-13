@@ -73,7 +73,7 @@
     <script src="{{asset('assets/back-end')}}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <!-- Page level custom scripts -->
     <script>
-        function update_lang(key, value) {
+        function update_lang(id,key, value) {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -83,6 +83,7 @@
                 url: "{{route('admin.business-settings.language.translate-submit',[$lang])}}",
                 method: 'POST',
                 data: {
+                    id: id,
                     key: key,
                     value: value
                 },
@@ -210,7 +211,7 @@
                         "data":null,
                         className: "text-center",
                         render: function (data, type, full, meta) {
-                            return `<button type="button" onclick="update_lang('${data.key}', $('#value-${meta.row + 1}').val())"
+                            return `<button type="button" onclick="update_lang('${data.id}','${data.key}', $('#value-${meta.row + 1}').val())"
                                             class="btn btn--primary btn-block"><i class="tio-save-outlined"></i>
                                     </button>`;
                         },
