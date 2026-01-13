@@ -52,7 +52,7 @@ return [
     'apple' => [
         'client_id'     => "com.eurobas.web.login",
         'client_secret' => null,
-        'redirect'      => route('home'),
+        'redirect'      => url('/'),
     ],
 
 ];
