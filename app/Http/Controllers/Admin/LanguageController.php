@@ -343,8 +343,7 @@ class LanguageController extends Controller
 
     public function updateCacheTranslations() {
         try {
-            $locales = array_keys(config('laravellocalization.supportedLocales'));
-                        
+            $locales = array_keys(config('laravellocalization.supportedLocales'));      
             $cachedLocales = [];
             
             foreach ($locales as $localeCode) {
@@ -358,28 +357,18 @@ class LanguageController extends Controller
                 Cache::forever($cacheKey, $translations);
                 
                 $cachedLocales[] = $localeCode;
-            }
-            
-            Toastr::success(translate('Translation_cache_updated_successfully'));
-            return back();
-            
+            }  
         } catch (\Exception $e) {
-
             Log::debug([
                 'success' => false,
                 'message' => 'Error caching translations',
                 'error' => $e->getMessage()
             ]);
-
-            Toastr::error(translate('something_went_wrong_try_again'));
-            return back();
-            
         }
     }
 
     public function clearAllCache() {
         Cache::flush();
-
         Toastr::success(translate('System_cache_cleared_successfully'));
         return back();
 
