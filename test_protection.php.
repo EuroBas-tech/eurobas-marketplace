@@ -1,0 +1,5 @@
+<?php
+// كود سليم 100%
+return [
+    'test_status' => 'success',
+];
