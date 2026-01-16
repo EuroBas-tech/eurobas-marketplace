@@ -24,9 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('PromotionalVideos:AutoDelete')
-        ->hourly()
-        ->withoutOverlapping();
+        $schedule->command('PromotionalVideos:AutoDelete')->hourly();
+        $schedule->command('PromotionalVideos:DeleteOrphanedVideos')->hourly();
     }
 
     /**

@@ -2,39 +2,58 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Model\SponsoredAd;
+use App\Model\SponsorVideo;
 use App\Model\BusinessSetting;
 use Illuminate\Console\Command;
-use Illuminate\Support\FacadesLog;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
-
-class DeleteExpiredPromotionalVideos extends Command
+class DeleteOrphanedVideos extends Command
 {
-    
-    protected $signature = 'PromotionalVideos:AutoDelete';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'PromotionalVideos:DeleteOrphanedVideos';
 
-    protected $description = 'automatic delete expired promotional videos';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'automatic delete orphaned promotional videos';
 
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct();
     }
-    
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
     public function handle()
     {
-        $sponsors = SponsoredAd::where('type', 'promotional_video')
-        ->where('expiration_date', '<=', now())
-        ->whereHas('video', function ($q) {
-            $q->where('is_video_deleted', 0)
-            ->whereNotNull('playback_id');
+    
+        $sponsorVideos = SponsorVideo::where(function ($q) {
+            $q->whereDoesntHave('sponsor')
+            ->orWhereHas('sponsor', function ($q) {
+                $q->whereDoesntHave('ad')
+                ->orWhereHas('ad', function ($q) {
+                    $q->where('status', 0);
+                });
+            });
         })
         ->with('video')
-        ->limit(50)
         ->get();
-
+        
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
@@ -43,7 +62,7 @@ class DeleteExpiredPromotionalVideos extends Command
             return;
         }
 
-        foreach ($sponsors as $sponsor) {
+        foreach ($sponsorVideos as $sponsor) {
             try {                
                 $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
                 ->delete("https://api.mux.com/video/v1/assets/{$sponsor->video->asset_id}");
@@ -55,13 +74,11 @@ class DeleteExpiredPromotionalVideos extends Command
                 $sponsor->video->is_video_deleted = 1;
                 $sponsor->video->save();
 
-                Log::debug("video {$sponsor->video->id} deleted successfully");
+                Log::debug("orphaned video {$sponsor->video->id} deleted successfully");
             } catch (\Exception $e) {
                 Log::error("Error deleting video {$sponsor->video->id}: " . $e->getMessage());
             }
         }
 
-        Log::debug('cron job done at ' . now()->format('Y-m-d H:i'));
     }
-
 }

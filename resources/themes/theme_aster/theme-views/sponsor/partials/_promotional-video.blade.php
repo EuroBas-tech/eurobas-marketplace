@@ -329,7 +329,7 @@
             toastr.info('{{translate("Preparing upload link")}}...', 'Info');
 
             // Step 1: Get upload URL from backend
-            fetch("{{ route('upload.video.bunny') }}", {
+            fetch("{{ route('mux.upload.video.bunny') }}", {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content
@@ -415,7 +415,7 @@
         function getVideoUrlWithRetry(uploadId, retryCount) {
             const maxRetries = 10; // Increased retries for Mux processing
             
-            fetch("{{ route('get.bunny.video.url') }}", {
+            fetch("{{ route('mux.get.bunny.video.url') }}", {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content,
@@ -485,7 +485,7 @@
             if (confirm('Are you sure you want to delete this video?')) {
                 toastr.info('{{translate("Deleting video")}}...', 'Info');
 
-                fetch("{{ route('delete.bunny.video') }}", {
+                fetch("{{ route('mux.delete.bunny.video') }}", {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content,
@@ -587,7 +587,7 @@
             }
 
             // Clear sessions via AJAX
-            fetch("{{ route('clear.video.session') }}", {
+            fetch("{{ route('mux.clear.video.session') }}", {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content

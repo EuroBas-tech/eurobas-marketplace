@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\MuxApiController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -78,12 +79,6 @@ Route::group(
                     Route::post('auction/delete', 'AdController@delete_auction')->name('ads-delete-auction');
                     Route::post('asking-price/store', 'AdController@store_asking_price')->name('ads-store-asking-price');
                     Route::post('asking-price/delete', 'AdController@delete_asking_price')->name('ads-delete-asking-price');
-
-                    Route::post('upload-url', 'AdController@createUploadUrl')->name('upload.video.bunny');
-                    Route::post('get-video-url', 'AdController@getVideoUrl')->name('get.bunny.video.url');
-                    
-                    Route::post('delete-bunny-video', 'AdController@deleteVideo')->name('delete.bunny.video');
-                    Route::post('clear-video-session', 'AdController@clearVideoSession')->name('clear.video.session');
                     
                 });
                 Route::get('show-by-country/{code}/{flag}', 'AdController@show_by_country')->name('show-by-country');
@@ -130,16 +125,19 @@ Route::group(
 
                     Route::get('data', 'SponsorController@data')->name('data.sponsor');
 
-                    Route::post('upload-url', 'SponsorController@createUploadUrl')->name('upload.video.bunny');
-                    Route::post('get-video-url', 'SponsorController@getVideoUrl')->name('get.bunny.video.url');
-                    
-                    Route::post('delete-bunny-video', 'SponsorController@deleteVideo')->name('delete.bunny.video');
-                    Route::post('clear-video-session', 'SponsorController@clearVideoSession')->name('clear.video.session');
-
                     Route::get('edit/{id}', 'SponsorController@edit')->name('edit.sponsor');
                     Route::post('update', 'SponsorController@update')->name('update.sponsor');
                     Route::get('delete/{id}', 'SponsorController@delete')->name('delete.sponsor');            
                 });        
+            });
+
+            Route::group(['prefix' => 'mux'], function () {
+                Route::group(['middleware' => 'customer'], function () {
+                    Route::post('upload-url', [MuxApiController::class, 'createUploadUrl'])->name('mux.upload.video');
+                    Route::post('get-video-url', [MuxApiController::class, 'getVideoUrl'])->name('mux.get.video.url');
+                    Route::post('delete-video', [MuxApiController::class, 'deleteVideo'])->name('mux.delete.video');
+                    Route::post('clear-video-session', [MuxApiController::class, 'clearVideoSession'])->name('mux.clear.video.session');            
+                });
             });
 
             Route::group(['prefix' => 'payment-checkout', 'middleware' => 'customer'], function () {
@@ -648,11 +646,21 @@ Route::get('log/show', function () {
 
 Route::get('run-password-nullable-migration', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_12_202999_make_password_nullable_on_users_table.php',
+        '--path' => 'database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php',
         '--force' => true,
     ]);
 
-    return 'Password nullable migration executed successfully';
+    Artisan::call('migrate', [
+        '--path' => 'database/migrations/2026_01_14_163503_create_sponsor_videos_table.php',
+        '--force' => true,
+    ]);
+
+    Artisan::call('migrate', [
+        '--path' => 'database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php',
+        '--force' => true,
+    ]);
+
+    return 'migrations successfully uploaded';
 });
 
 Route::get('social-login', function() {

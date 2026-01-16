@@ -138,16 +138,17 @@ class SubscriptionController extends Controller
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
-        $video = SponsoredAd::find($request['id']);
+        $video = SponsoredAd::find($request['id'])?->video;
 
         if ($video->playback_id) {
             try {
                 // Search for asset by playback_id
                 $assetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                    ->get("https://api.mux.com/video/v1/assets", [
-                        'playback_id' => $video['playback_id'],
-                        'limit' => 1
-                    ]);
+                ->get("https://api.mux.com/video/v1/assets", [
+                    'playback_id' => $video['playback_id'],
+                    'limit' => 1
+                ]);
+
                 if ($assetsResponse->successful()) {
                     $assetsData = $assetsResponse->json();
                     
@@ -163,9 +164,6 @@ class SubscriptionController extends Controller
                             Log::debug('Failed to delete video'. ':' . $deleteResponse->body());
                         }
                         
-                        // Clear session data
-                        session()->forget(['playback_id', 'video_player_url', 'asset_id']);
-
                         $video->is_video_deleted = 1;
                         $video->save();
                         
@@ -182,7 +180,6 @@ class SubscriptionController extends Controller
                     Toastr::error(translate('Failed to retrieve video'));
                     return back();
                 }
-
             } catch (\Exception $e) {
                 Log::debug($e->getMessage());
                 Toastr::error($e->getMessage());

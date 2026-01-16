@@ -17,15 +17,11 @@ class SponsoredAd extends Model
         'type',
         'price',
         'duration_in_days',
-        'package_id',
-        'video_url',
-        'playback_id',
         'status',
         'is_paid',
         'payment_transaction_id',
-        'is_video_deleted',
-        'is_video_suspended',
         'expiration_date',
+        'video_id',
     ];
 
     public function type()
@@ -39,6 +35,10 @@ class SponsoredAd extends Model
 
     public function package() {
         return $this->belongsTo(SubscriptionPackage::class, 'package_id');
+    }
+
+    public function video() {
+        return $this->belongsTo(SponsorVideo::class, 'video_id');
     }
 
 }

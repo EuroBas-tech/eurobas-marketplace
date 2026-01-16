@@ -185,9 +185,8 @@ class SponsorController extends Controller
             'duration_in_days' => $package->duration_in_days,
             'is_paid' => 1,
             'expiration_date' => now()->addDays($package->duration_in_days),
-            'video_url' => session('video_player_url'),
-            'playback_id' => session('playback_id'),
             'payment_transaction_id' => null,
+            'video_id' => session('video_id'),
         ]);
 
         Toastr::success(translate('promotional_video_added_successfully'));

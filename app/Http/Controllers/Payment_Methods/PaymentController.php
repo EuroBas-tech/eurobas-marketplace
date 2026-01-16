@@ -135,15 +135,13 @@ class PaymentController extends Controller
             $data['duration_in_days'] = $package->duration_in_days;
 
             if($package->type->name == 'promotional_video') {
-                $data['video_url'] = session('video_player_url');
-                $data['playback_id'] = session('playback_id');
+                $data['video_id'] = session('video_id');
             }
 
             $model = $ad->sponsor()->create($data);
 
             if($package->type->name == 'promotional_video') {
-                session()->forget('playback_id');
-                session()->forget('video_player_url');
+                session()->forget('video_id');
             }
         }
 
