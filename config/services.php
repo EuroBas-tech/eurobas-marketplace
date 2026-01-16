@@ -55,3 +55,5 @@ return [
     ],
 
 ];
+
+'test_error' => route('any_route'),
