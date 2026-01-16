@@ -117,7 +117,7 @@ class SubscriptionController extends Controller
 
     public function status_update(Request $request)
     {
-        $video = SponsoredAd::find($request['id']);
+        $video = SponsorVideo::find($request['id']);
         $video->is_video_suspended = $request['status'] ? 0 : 1;
 
         if($video->save()){
