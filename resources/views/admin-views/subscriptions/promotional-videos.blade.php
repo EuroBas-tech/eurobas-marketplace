@@ -74,43 +74,43 @@
                                     {{$promotional_videos->firstItem()+$key}}
                                 </td>
                                 <td>
-                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
+                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast())
                                         <img src="https://image.mux.com/{{$video['playback_id']}}/thumbnail.jpg"
                                         class="rounded" alt="video_image" width="60" >
                                     @endif
                                 </td>
                                 <td class="mx-5" >
-                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
+                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast())
                                         <button onclick="show_video({{$key+1}})" type="button" class="btn btn-success btn-sm" >
                                             {{translate('show')}}
                                         </button>
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="text-info text-decoration-underline" href="{{route('ads-show', $video->ad->slug)}}">{{translate('visit')}}</a>
+                                    <a class="text-info text-decoration-underline" href="{{route('ads-show', $video->sponsor->ad->slug)}}">{{translate('visit')}}</a>
                                 </td>
                                 <td>
                                     <div>{{$video->created_at->format('d-m-Y')}}</div>
                                     <div>{{$video->created_at->diffForHumans()}}</div>
                                 </td>
-                                <td>{{ $video->duration_in_days }} {{translate('days')}}</td>
+                                <td>{{ $video->sponsor->duration_in_days }} {{translate('days')}}</td>
                                 <td>
-                                    <div>{{ \Carbon\Carbon::parse($video->expiration_date)->format('d-m-Y') }}</div>
-                                    <div>{{ \Carbon\Carbon::parse($video->expiration_date)->diffForHumans() }}</div>
+                                    <div>{{ \Carbon\Carbon::parse($video->sponsor->expiration_date)->format('d-m-Y') }}</div>
+                                    <div>{{ \Carbon\Carbon::parse($video->sponsor->expiration_date)->diffForHumans() }}</div>
                                 </td>
                                 <td>
-                                    @if(!\Carbon\Carbon::parse($video->expiration_date)->isPast() && !$video->is_video_deleted && !$video->is_video_suspended)
+                                    @if(!\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast() && !$video->is_video_deleted && !$video->is_video_suspended)
                                         <span class="badge bg-success text-white">{{translate('valid')}}</span>
-                                    @elseif(\Carbon\Carbon::parse($video->expiration_date)->isPast() && !$video->is_video_deleted)
+                                    @elseif(\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast() && !$video->is_video_deleted)
                                         <span class="badge bg-danger text-white">{{translate('expired')}}</span>
-                                    @elseif(!\Carbon\Carbon::parse($video->expiration_date)->isPast() && !$video->is_video_deleted && $video->is_video_suspended)
+                                    @elseif(!\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast() && !$video->is_video_deleted && $video->is_video_suspended)
                                         <span class="badge bg-danger text-white">{{translate('suspended')}}</span>
-                                    @elseif(!\Carbon\Carbon::parse($video->expiration_date)->isPast() && $video->is_video_deleted)
+                                    @elseif(!\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast() && $video->is_video_deleted)
                                         <span class="badge bg-danger text-white">{{translate('deleted')}}</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
+                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast())
                                         <form action="{{route('admin.subscription.promotional-videos.status-update')}}" method="post" id="video_status{{$video['id']}}_form" class="video_status_form">
                                             @csrf
                                             <input type="hidden" name="id" value="{{$video['id']}}">
@@ -122,7 +122,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
+                                    @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast())
                                         <div class="d-flex justify-content-center gap-2">
                                             @if($video['id'] != '0')
                                                 <a title="{{translate('delete')}}"
@@ -140,7 +140,7 @@
                                 </td>
                             </tr>
 
-                            @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->expiration_date)->isPast())
+                            @if(!$video->is_video_deleted && !\Carbon\Carbon::parse($video->sponsor->expiration_date)->isPast())
                                 <div class="modal" id="show_video{{$key+1}}" role="dialog" tabindex="-1" >
                                     <div class="modal-dialog">
                                         <div class="modal-content">

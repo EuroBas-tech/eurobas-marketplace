@@ -11,6 +11,7 @@ use App\Model\Category;
 use Carbon\CarbonPeriod;
 use App\CPU\BackEndHelper;
 use App\Model\SponsoredAd;
+use App\Model\SponsorVideo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Model\BusinessSetting;
@@ -92,13 +93,13 @@ class SubscriptionController extends Controller
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
-        $query = SponsoredAd::with('ad.user')
+        $query = SponsorVideo::with('sponsor.ad.user')
         ->where('type', 'promotional_video');
 
         if ($search = $request->input('search')) {
             $keywords = explode(' ', $search);
 
-            $query->whereHas('ad', function ($q) use ($keywords) {
+            $query->whereHas('sponsor.ad', function ($q) use ($keywords) {
                 $q->where(function ($sub) use ($keywords) {
                     foreach ($keywords as $word) {
                         $sub->orWhere('title', 'like', "%{$word}%");
@@ -111,9 +112,7 @@ class SubscriptionController extends Controller
 
         $promotional_videos = $query->latest()->paginate(Helpers::pagination_limit());
 
-        Cache::forget('business_settings');
-
-        return view('admin-views.subscriptions.promotional-videos', 
+        return view('admin-views.subscriptions.promotional-videos',
         compact('promotional_videos', 'muxTokenId', 'muxTokenSecret', 'search'));
     }
 
