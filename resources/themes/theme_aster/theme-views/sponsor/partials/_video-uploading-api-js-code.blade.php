@@ -88,7 +88,7 @@
 
                 toastr.info('{{translate("Preparing upload link")}}...', 'Info');
 
-                fetch("{{ route('mux.upload.video.bunny') }}", {
+                fetch("{{ route('mux.upload.video') }}", {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content
@@ -167,7 +167,7 @@
         function getVideoUrlWithRetry(uploadId, retryCount) {
             const maxRetries = 5;
             
-            fetch("{{ route('mux.get.bunny.video.url') }}", {
+            fetch("{{ route('mux.get.video.url') }}", {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content,
@@ -235,7 +235,7 @@
             if (confirm('Are you sure you want to delete this video?')) {
                 toastr.info('{{translate("Deleting video")}}...', 'Info');
 
-                fetch("{{ route('mux.delete.bunny.video') }}", {
+                fetch("{{ route('mux.delete.video') }}", {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="_token"]').content,

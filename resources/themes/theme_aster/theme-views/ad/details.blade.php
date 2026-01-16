@@ -342,9 +342,9 @@
                                                         @if($ad_promotional_video)
                                                             <div class="swiper-slide video-slide position-relative w-100 h-100">
                                                                 <div class="position-relative" style="width:100%;height:100%;aspect-ratio:16/9.45;">
-                                                                    <mux-player
+                                                                     <mux-player
                                                                         stream-type="on-demand"
-                                                                        playback-id="{{$ad_promotional_video->playback_id}}"
+                                                                        playback-id="{{$ad_promotional_video->video->playback_id}}"
                                                                         metadata-video-title="Uploaded Video"
                                                                         accent-color="#0F407D"
                                                                         style="width: 100%; height: 100%;"
@@ -382,7 +382,7 @@
                                                         <div class="swiper-wrapper auto-item-width d-sm-flex d-none py-1" style="--bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
                                                                 <div class="swiper-slide position-relative aspect-1">
-                                                                    <img style="width:80px !important;height: 80px !important;" src="https://image.mux.com/{{$ad_promotional_video['playback_id']}}/thumbnail.jpg" class="dark-support rounded" alt="">
+                                                                    <img style="width:80px !important;height: 80px !important;" src="https://image.mux.com/{{$ad_promotional_video->video->playback_id}}/thumbnail.jpg" class="dark-support rounded" alt="">
                                                                     <span class="position-absolute" style="top:50%; right: 50%; transform: translate(50%,-50%)">
                                                                         <i class="bi bi-play-circle text-white fs-28"></i>
                                                                     </span>

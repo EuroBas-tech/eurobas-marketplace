@@ -456,38 +456,6 @@ class AdController extends Controller
 
     }
 
-    public function validateCityInCountry($city, $country)
-    {
-        $apiKey = Helpers::get_business_settings('map_api_key');
-        
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'address' => "$city, $country",
-            'key' => $apiKey
-        ]);
-        
-        if (!$response->successful()) {
-            return false;
-        }
-        
-        $data = $response->json();
-        
-        // Check if we got any results
-        if ($data['status'] !== 'OK' || empty($data['results'])) {
-            return false;
-        }
-        
-        // Check address components for country match
-        foreach ($data['results'][0]['address_components'] as $component) {
-            if (in_array('country', $component['types'])) {
-                // Compare with expected country (case insensitive)
-                return strtolower($component['long_name']) === strtolower($country) 
-                    || strtolower($component['short_name']) === strtolower($country);
-            }
-        }
-        
-        return false;
-    }
-
     public function getLocationCoordinates($city) {
 
         $apiKey = Helpers::get_business_settings('map_api_key');
@@ -766,7 +734,7 @@ class AdController extends Controller
             ->get();
             
             $current_date = date('Y-m-d H:i:s');
-            
+
             $ad_promotional_video = $ad->sponsor()
             ->where('type', 'promotional_video')
             ->where('expiration_date', '>=', $current_date)
@@ -802,9 +770,6 @@ class AdController extends Controller
             ->where('expiration_date', '>', Carbon::now()) // not expired
             ->get();
 
-            $libraryId = BusinessSetting::where('type', 'bunny_library_id')->value('value');
-            $pullZone = BusinessSetting::where('type', 'bunny_pull_zone')->value('value');
-
             $is_dimensions_and_sizes_empty = !$ad->height && 
                 !$ad->width && 
                 !$ad->length && 
@@ -835,8 +800,6 @@ class AdController extends Controller
                 'gallery_images_number',
                 'more_ads_from_user',
                 'paid_banners',
-                'libraryId',
-                'pullZone',
                 'customer_detail',
                 'ad_views_number',
                 'is_dimensions_and_sizes_empty',
