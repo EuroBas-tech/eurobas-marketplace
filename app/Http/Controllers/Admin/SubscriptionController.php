@@ -95,6 +95,8 @@ class SubscriptionController extends Controller
 
         $query = SponsorVideo::with('sponsor.ad.user');
 
+        return $query->get();
+
         if ($search = $request->input('search')) {
             $keywords = explode(' ', $search);
 
