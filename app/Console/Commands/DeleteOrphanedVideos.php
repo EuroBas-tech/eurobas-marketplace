@@ -71,8 +71,8 @@ class DeleteOrphanedVideos extends Command
                     Log::debug('Failed to delete video'. ':' . $deleteResponse->body());
                 }
                 
-                $sponsor->video->is_video_deleted = 1;
-                $sponsor->video->save();
+                $sponsor->is_video_deleted = 1;
+                $sponsor->save();
 
                 Log::debug("orphaned video {$sponsor->video->id} deleted successfully");
             } catch (\Exception $e) {
