@@ -199,7 +199,6 @@ Route::group(
             Route::post('subscription', 'WebController@subscription')->name('subscription');
             Route::get('search-shop', 'WebController@search_shop')->name('search-shop');
 
-            Route::get('categories', 'WebController@all_categories')->name('categories');
             Route::get('category-ajax/{id}', 'WebController@categories_by_category')->name('category-ajax');
 
             Route::get('brands', 'WebController@all_brands')->name('brands');
