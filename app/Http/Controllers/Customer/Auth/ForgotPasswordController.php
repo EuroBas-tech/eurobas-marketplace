@@ -12,6 +12,7 @@ use App\Model\PasswordReset;
 use Illuminate\Http\Request;
 use function App\CPU\translate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
@@ -71,6 +72,7 @@ class ForgotPasswordController extends Controller
                         }
                         $locale = LaravelLocalization::getCurrentLocale();
                         $reset_url = url($locale . '/customer/auth/reset-password?token=' . $token);
+                        Log::debug($reset_url);
                         Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($reset_url));
 
                         Toastr::success(translate('Check_your_email').' '.translate('Password_reset_url_sent'));
