@@ -54,6 +54,7 @@ class DeleteOrphanedVideos extends Command
                 });
             });
         })
+        ->where('is_video_deleted', '0')
         ->get();
         
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
