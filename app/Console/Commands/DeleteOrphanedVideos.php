@@ -51,7 +51,6 @@ class DeleteOrphanedVideos extends Command
                 });
             });
         })
-        ->with('video')
         ->get();
         
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
@@ -65,7 +64,7 @@ class DeleteOrphanedVideos extends Command
         foreach ($sponsorVideos as $sponsor) {
             try {                
                 $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                ->delete("https://api.mux.com/video/v1/assets/{$sponsor->video->asset_id}");
+                ->delete("https://api.mux.com/video/v1/assets/{$sponsor->asset_id}");
                 
                 if (!$deleteResponse->successful()) {
                     Log::debug('Failed to delete video'. ':' . $deleteResponse->body());
@@ -74,9 +73,9 @@ class DeleteOrphanedVideos extends Command
                 $sponsor->is_video_deleted = 1;
                 $sponsor->save();
 
-                Log::debug("orphaned video {$sponsor->video->id} deleted successfully");
+                Log::debug("orphaned video {$sponsor->id} deleted successfully");
             } catch (\Exception $e) {
-                Log::error("Error deleting video {$sponsor->video->id}: " . $e->getMessage());
+                Log::error("Error deleting video {$sponsor->id}: " . $e->getMessage());
             }
         }
 
