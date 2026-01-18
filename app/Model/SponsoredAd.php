@@ -19,6 +19,7 @@ class SponsoredAd extends Model
         'duration_in_days',
         'status',
         'is_paid',
+        'package_id',
         'payment_transaction_id',
         'expiration_date',
         'video_id',
