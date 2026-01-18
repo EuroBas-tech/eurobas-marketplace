@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Customer\Auth;
 
+use App\User;
+use Carbon\Carbon;
 use App\CPU\Helpers;
 use App\CPU\SMS_module;
-use App\Http\Controllers\Controller;
-use App\Model\PasswordReset;
-use App\User;
-use Brian2694\Toastr\Facades\Toastr;
-use Carbon\Carbon;
 use Carbon\CarbonInterval;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Model\PasswordReset;
+use Illuminate\Http\Request;
 use function App\CPU\translate;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Mail;
 use Modules\Gateways\Traits\SmsGateway;
+use Illuminate\Support\Facades\Validator;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ForgotPasswordController extends Controller
 {
@@ -68,7 +69,8 @@ class ForgotPasswordController extends Controller
                             $reset_data->updated_at = now();
                             $reset_data->save();
                         }
-                        $reset_url = url('/') . '/customer/auth/reset-password?token=' . $token;
+                        $locale = LaravelLocalization::getCurrentLocale();
+                        $reset_url = url($locale . '/customer/auth/reset-password?token=' . $token);
                         Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($reset_url));
 
                         Toastr::success(translate('Check_your_email').' '.translate('Password_reset_url_sent'));
