@@ -7,6 +7,7 @@ use App\CPU\Helpers;
 use App\Model\Category;
 use App\Model\SponsoredAd;
 use App\Model\Translation;
+use App\Model\SponsorVideo;
 use App\Model\BusinessSetting;
 use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
@@ -610,6 +611,7 @@ Route::get('cache-translations', function () {
 
 Route::get('delete-all-sponsors', function() {
     SponsoredAd::query()->delete();
+    SponsorVideo::query()->delete();
     return SponsoredAd::all();
 });
 
