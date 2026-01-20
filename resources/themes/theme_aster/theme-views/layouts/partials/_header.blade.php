@@ -825,7 +825,7 @@
                 <div class="desktop-search-container">
                     <div class="d-flex align-items-center gap-3">
                         <div class="search-box position-relative d-flex align-items-center gap-3">
-                            <form class="m-0" action="{{route('products')}}">
+                            <form class="m-0" action="">
                                 <div class="d-flex">
                                     <div class="search-bar search_dropdown">
                                         <input type="search" name="name" class="form-control search-bar-input-mobile" autocomplete="off" placeholder="{{ translate('Search_for_items') }}...">
@@ -1201,7 +1201,7 @@
                         <div class="mobile-search-container">
                             <div class="d-flex align-items-center gap-3 w-100">
                                 <div class="search-box position-relative d-flex align-items-center gap-3 w-100">
-                                    <form class="m-0 w-100" action="{{route('products')}}">
+                                    <form class="m-0 w-100" action="">
                                         <div class="d-flex w-100">
                                             <div class="search-bar search_dropdown w-100">
                                                 <input type="search" name="name" class="form-control search-bar-input-mobile" autocomplete="off" placeholder="{{ translate('Search_for_items') }}...">
@@ -1331,14 +1331,6 @@
             </aside>
 
             <div style="padding: 12px 0;" class="d-flex justify-content-between gap-3 align-items-center position-relative">
-                <ul class="dropdown-menu dropdown--menu">
-                    <li>
-                        <a href="{{route('products',['data_from'=>'latest'])}}" class="btn-link text-primary">
-                            {{ translate('view_all') }}
-                        </a>
-                    </li>
-                </ul>
-
                 <div class="d-flex align-items-center ">
                     <!-- Main Nav -->
                     <div class="nav-wrapper">
