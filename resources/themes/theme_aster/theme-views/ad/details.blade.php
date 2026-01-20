@@ -1616,7 +1616,7 @@
                                             alt="user-image">
                                         </div>
                                         <div>
-                                            <h5 class="mb-1">{{$ad->user->name}}</h5>
+                                            <h5 class="mb-1">{{$ad->user?->name}}</h5>
                                             <p class="fs-12 m-0">{{translate('Joined')}} {{date('M, Y',strtotime($ad->user->created_at))}}</p>
                                             @php
                                                 $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();

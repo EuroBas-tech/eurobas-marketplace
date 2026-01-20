@@ -140,7 +140,7 @@ class SubscriptionController extends Controller
 
         $video = SponsoredAd::find($request['id'])?->video;
 
-        if ($video->playback_id) {
+        if ($video?->playback_id) {
             try {
                 // Search for asset by playback_id
                 $assetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
