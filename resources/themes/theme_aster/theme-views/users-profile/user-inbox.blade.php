@@ -49,7 +49,7 @@
                                                     @php($username = $shop->$senderOrReceiver->name ?? null)
                                                     <div
                                                         onclick="location.href='{{route('chat', ['type' => $type])}}/?id={{$correspondent_id}}'"
-                                                        class="chat_list chat-list-item @if(!request()->id && $loop->first) active @elseif(request()->id && request()->id == $correspondent_id) active @endif media gap-2 align-items-center"
+                                                        class="chat_list  chat-list-item @if(!request()->id && $loop->first) active @elseif(request()->id && request()->id == $correspondent_id) active @endif media gap-2 align-items-center"
                                                         id="user_{{$unique_id}}">
                                                         <div class="avatar rounded-circle ">
                                                             <img width="40px" height="35px"
@@ -57,7 +57,7 @@
                                                                 src="{{ cloudfront('profile/images/' . ($shop->$senderOrReceiver?->image ?? 'default.png')) }}"
                                                                 loading="lazy" class="img-fit rounded-circle dark-support" alt="">
                                                         </div>
-                                                        <div class="media-body">
+                                                        <div class="media-body width-fill-available">
                                                             <div class="d-flex justify-content-between gap-2 align-items-center mb-1">
                                                                 <div
                                                                     class="w-75 d-flex align-items-center gap-1">

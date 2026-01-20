@@ -5679,3 +5679,7 @@ input[type="checkbox"]:checked::after {
     transform: translateX(0);
     opacity: 1;
 }
+
+.width-fill-available {
+    width: -webkit-fill-available;
+}
