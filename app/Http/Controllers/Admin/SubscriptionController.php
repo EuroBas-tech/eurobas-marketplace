@@ -138,9 +138,9 @@ class SubscriptionController extends Controller
         $muxTokenId = BusinessSetting::where('type', 'mux_api_token')->value('value');
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
-        $video = SponsoredAd::find($request['id'])?->video;
+        $video = SponsorVideo::find($request['id']);
 
-        if ($video?->playback_id) {
+        if ($video->playback_id) {
             try {
                 // Search for asset by playback_id
                 $assetsResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
@@ -158,7 +158,7 @@ class SubscriptionController extends Controller
                         
                         // Delete the asset
                         $deleteResponse = Http::withBasicAuth($muxTokenId, $muxTokenSecret)
-                            ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
+                        ->delete("https://api.mux.com/video/v1/assets/{$assetId}");
                         
                         if (!$deleteResponse->successful()) {
                             Log::debug('Failed to delete video'. ':' . $deleteResponse->body());

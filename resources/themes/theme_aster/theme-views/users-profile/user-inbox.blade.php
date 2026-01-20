@@ -9,6 +9,9 @@
             height: 80px;
             object-fit: cover;
         }
+        .width-fill-available {
+            width: -webkit-fill-available;
+        }
     </style>
 @endpush
 
