@@ -20,7 +20,7 @@
                             </div>
                             <div class="media-body">
                                 <h6 class="rounded text-center text-primary p-2 border">
-                                    <img src="{{ cloudfront("category/2025-05-08-681bddf0b7a73.svg") }}" alt="" style="width: 25px; height: 25px;">
+                                    <img src="{{ cloudfront('category') }}/{{ $ad->category->icon }}" alt="" style="width: 25px; height: 25px;">
                                     {{ $ad->category ? $ad->category['name'] : '' }}
                                 </h6>
                             </div>
