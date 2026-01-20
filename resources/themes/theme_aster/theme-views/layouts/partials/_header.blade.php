@@ -1263,13 +1263,13 @@
                                 <a href="{{route('home')}}">{{ translate('home') }}</a>
                             </li>
                             <li> 
-                                <a href="{{route('categories')}}#">{{ translate('categories') }}</a> 
+                                <a href="#">{{ translate('categories') }}</a> 
                                 <!-- Sub Menu --> 
                                 <ul class="sub_menu"> 
                                     @foreach($categories as $key => $category) 
                                         <li> 
                                             <a href="javascript:"> 
-                                                <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'"> >
+                                                <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'">
                                                     {{ $category->name }}
                                                 </span> 
                                             </a>

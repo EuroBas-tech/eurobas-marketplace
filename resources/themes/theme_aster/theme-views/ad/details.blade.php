@@ -1612,7 +1612,7 @@
                                     <div class="d-flex align-items-center mb-3 gap-2" >
                                         <div>
                                             <img class="rounded profile-image"
-                                            src="{{ $ad->user->image ? cloudfront('profile/images/'.$ad->user->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
+                                            src="{{ $ad->user?->image ? cloudfront('profile/images/'.$ad->user->image) : theme_asset('assets/img/avatar/def-image.jpg') }}"
                                             alt="user-image">
                                         </div>
                                         <div>
