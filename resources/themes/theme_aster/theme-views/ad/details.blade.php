@@ -1617,15 +1617,15 @@
                                         </div>
                                         <div>
                                             <h5 class="mb-1">{{$ad->user?->name}}</h5>
-                                            <p class="fs-12 m-0">{{translate('Joined')}} {{date('M, Y',strtotime($ad->user->created_at))}}</p>
+                                            <p class="fs-12 m-0">{{translate('Joined')}} {{date('M, Y',strtotime($ad->user?->created_at))}}</p>
                                             @php
                                                 $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();
                                             @endphp
-                                            <p class="fs-12">({{$ad->user->created_at->locale($locale)->diffForHumans()}})</p>
+                                            <p class="fs-12">({{$ad->user?->created_at->locale($locale)->diffForHumans()}})</p>
                                         </div>
                                     </div>
                                     <div>
-                                        <a href="{{ route('show-profile', [$ad->user->id, $ad->user->name]) }}?tap=ads" class="btn btn-primary btn-sm px-2 fs-12" >
+                                        <a href="{{ route('show-profile', [$ad->user?->id, $ad->user?->name]) }}?tap=ads" class="btn btn-primary btn-sm px-2 fs-12" >
                                             <i class="bi bi-person-circle"></i>
                                             {{ translate('profile') }}
                                         </a>
@@ -1633,12 +1633,12 @@
                                 </div>
 
                                 <div>
-                                    <a href="{{ route('show-profile', [$ad->user->id, $ad->user->name]) }}?tap=ads" style="text-decoration: underline;">
+                                    <a href="{{ route('show-profile', [$ad->user?->id, $ad->user?->name]) }}?tap=ads" style="text-decoration: underline;">
                                         <h6 class="mb-3" style="font-weight: 500;" >{{ translate('show_all_ads_of_this_user') }}</h6>
                                     </a>
 
                                     <p class="p-2 text-light seller-card" >
-                                        {{$ad->user->account_type == 'company' ? translate('this_seller_is_a_business_account') : translate('this_seller_is_an_individual_and_does_not_represent_any_private_ad_sales_company')}}.
+                                        {{$ad->user?->account_type == 'company' ? translate('this_seller_is_a_business_account') : translate('this_seller_is_an_individual_and_does_not_represent_any_private_ad_sales_company')}}.
                                     </p>
                                 </div>
 
@@ -1647,7 +1647,7 @@
                                     @php($guest_checkout=\App\CPU\Helpers::get_business_settings('guest_checkout'))
                                         @if($ad->show_email_address == 1)
                                             <button style="background: #0d6efd;font-size: 15px;margin-bottom: 11px;"
-                                                onclick="get_email_address('{{$ad->user->email}}', this)"
+                                                onclick="get_email_address('{{$ad->user?->email}}', this)"
                                                 class="btn buy-now-btn-hover py-3 px-2 w-100 text-white" >
                                                 <i class="bi bi-envelope-fill me-1"></i>
                                                 {{translate('Email_address')}}

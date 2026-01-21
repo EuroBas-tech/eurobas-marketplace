@@ -26,10 +26,6 @@ class SharedController extends Controller
             }
         }
 
-        $get_previous_page = explode('/', parse_url(url()->previous(), PHP_URL_PATH));
-        $user_type = $get_previous_page[1];
-
-
         session()->forget('language_settings');
         Helpers::language_load();
         session()->put('local', $local);

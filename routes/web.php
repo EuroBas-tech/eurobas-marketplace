@@ -221,11 +221,6 @@ Route::group(
             Route::get('contacts', 'PageController@contacts')->name('contacts');
             Route::get('about-us', 'PageController@about_us')->name('about-us');
 
-            Route::post('ajax-filter-products', 'ShopViewController@ajax_filter_products')->name('ajax-filter-products'); // Theme fashion, ALl purpose
-            Route::get('orderDetails', 'WebController@orderdetails')->name('orderdetails');
-            Route::get('discounted-products', 'WebController@discounted_products')->name('discounted-products');
-            Route::post('/products-view-style', 'WebController@product_view_style')->name('product_view_style');
-
             Route::post('review-list-product','WebController@review_list_product')->name('review-list-product');
             Route::post('review-list-shop','WebController@review_list_shop')->name('review-list-shop'); // theme fashion
             //Chat with seller from product details
@@ -309,12 +304,6 @@ Route::group(
                 Route::any('result', 'UserProfileController@track_order_result')->name('result');
                 Route::get('order-wise-result-view', 'UserProfileController@track_order_wise_result')->name('order-wise-result-view');
             });
-
-            //sellerShop
-            Route::get('shopView/{id}', 'ShopViewController@seller_shop')->name('shopView');
-            Route::get('ajax-shop-vacation-check', 'ShopViewController@ajax_shop_vacation_check')->name('ajax-shop-vacation-check');//theme fashion
-            Route::post('shopView/{id}', 'WebController@seller_shop_product');
-            Route::post('shop-follow', 'ShopFollowerController@shop_follow')->name('shop_follow');
 
             //top Rated
             Route::get('top-rated', 'WebController@top_rated')->name('topRated');
