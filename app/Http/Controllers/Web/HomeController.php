@@ -69,7 +69,7 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('expiration_date', '>', now())
             ->where('is_paid', 1)
-            ->get();
+            ->limit(5);
 
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
         $user = Helpers::get_customer();

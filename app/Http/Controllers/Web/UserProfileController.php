@@ -222,7 +222,7 @@ class UserProfileController extends Controller
         ->where('status', 1)
         ->where('expiration_date', '>', Carbon::now()) // not expired
         ->where('is_paid', 1)
-        ->get();
+        ->limit(5);
 
         $models = $models->map(function ($model) {
             return [
