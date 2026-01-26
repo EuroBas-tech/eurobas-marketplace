@@ -603,9 +603,12 @@ Route::get('delete-all-sponsors', function() {
 });
 
 Route::get('make-all-banners-paid', function() {
-    PaidBanner::query()->update([
+    $paidBanners = PaidBanner::query()->update([
         'is_paid' => 1
     ]);
+
+    return $paidBanners;
+
 });
 
 Route::get('optimize', function () {
