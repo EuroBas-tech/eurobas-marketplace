@@ -38,28 +38,24 @@ class HomeController extends Controller
 
     public function index()
     {
-        return self::theme_aster();
-    }
+    
+        $home_categories = Cache::rememberForever('categories', function () {
+            return Category::where('home_status', true)
+            ->priority()
+            ->latest()
+            ->take(16)
+            ->get();
+        });
 
-    public function theme_aster()
-{
-    $home_categories = Cache::rememberForever('categories', function () {
-        return Category::where('home_status', true)
-        ->priority()
-        ->latest()
-        ->take(16)
-        ->get();
-    });
+        $locale = app()->getLocale();
 
-    $locale = app()->getLocale();
+        $banners = Cache::rememberForever('main_banners', function () {
+            return Banner::where('banner_type', 'Main Banner')
+            ->where('published', 1)
+            ->get();
+        });
 
-    $banners = Cache::rememberForever('main_banners', function () {
-        return Banner::where('banner_type', 'Main Banner')
-        ->where('published', 1)
-        ->get();
-    });
-
-    $banner = $banners->firstWhere('lang', $locale)
+        $banner = $banners->firstWhere('lang', $locale)
         ?? $banners->firstWhere('lang', 'Both');
 
         $paid_banners = PaidBanner::with('package.features')
@@ -69,8 +65,8 @@ class HomeController extends Controller
             ->where('status', 1)
             ->where('expiration_date', '>', now())
             ->where('is_paid', 1)
-            ->limit(5);
-
+            ->get();
+        
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
         $user = Helpers::get_customer();
 
@@ -151,38 +147,7 @@ class HomeController extends Controller
                 'paid_banners'
             )
         );
+
     }
-
-
-    public function loadBrands()
-    {
-        // Check if request is AJAX
-        if (!request()->ajax()) {
-            abort(404);
-        }
-
-        try {
-            // Cache all brands already mapped
-            $brands = Cache::rememberForever('brands', function () {
-                return Brand::with('categories:id')->orderBy('name')->get()->map(function ($brand) {
-                    return [
-                        'id' => $brand->id,
-                        'name' => $brand->name,
-                        'image' => $brand->image,
-                        'categories' => $brand->categories->pluck('id')->toArray(),
-                    ];
-                });
-            });
-
-            // Return the brands section as HTML
-            return view('theme-views.partials._brands', compact('brands'))->render();
-            
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to load brands'], 500);
-        }
-    }
-
-
-
 
 }
