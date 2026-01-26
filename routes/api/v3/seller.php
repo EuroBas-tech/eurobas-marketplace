@@ -174,6 +174,5 @@ Route::group(['namespace' => 'api\v3\seller', 'prefix' => 'v3/seller', 'middlewa
     Route::group(['prefix' => 'products'], function () {
         Route::get('{seller_id}/all-products', 'ProductController@get_seller_all_products');
     });
-    Route::post('ls-lib-update', 'LsLibController@lib_update');
 });
 

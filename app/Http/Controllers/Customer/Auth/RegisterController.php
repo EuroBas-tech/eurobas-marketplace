@@ -57,7 +57,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'account_type' => 'required',
+            'account_type' => 'required|in:individual,company',
             'agree' => 'required',
         ], [
             'name.required' => translate('name_is_required'),
@@ -112,99 +112,6 @@ class RegisterController extends Controller
             'message' => translate('your_account_has_been_created_successfully'),
             'redirect_url' => route('home')
         ]);
-
-        // if($request->ajax()) {
-        //     if ($phone_verification && !$user->is_phone_verified) {
-        //         self::varificaton_check($user->id);
-        //         return response()->json([
-        //             'redirect_url'=>route('customer.auth.check', [$user->id]),
-        //         ]);
-        //     }
-        //     if ($email_verification && !$user->is_email_verified) {
-        //         self::varificaton_check($user->id);
-        //         return response()->json([
-        //             'redirect_url'=>route('customer.auth.check', [$user->id]),
-        //         ]);
-        //     }
-        //     self::varificaton_check($user->id);
-        //     return response()->json([
-        //         'redirect_url'=>'',
-        //     ]);
-
-        // }else {
-        //     if ($phone_verification && !$user->is_phone_verified) {
-        //         self::varificaton_check($user->id);
-        //         return redirect(route('customer.auth.check', [$user->id]));
-        //     }
-        //     if ($email_verification && !$user->is_email_verified) {
-        //         self::varificaton_check($user->id);
-        //         return redirect(route('customer.auth.check', [$user->id]));
-        //     }
-        //     self::varificaton_check($user->id);
-        //     Toastr::success(translate('registration_success_login_now'));
-        // }
-
-    }
-
-    public function validateCityInCountry($city, $country)
-    {
-        $apiKey = \App\CPU\Helpers::get_business_settings('map_api_key');
-        
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'address' => "$city, $country",
-            'key' => $apiKey
-        ]);
-        
-        if (!$response->successful()) {
-            return false;
-        }
-        
-        $data = $response->json();
-        
-        // Check if we got any results
-        if ($data['status'] !== 'OK' || empty($data['results'])) {
-            return false;
-        }
-        
-        // Check address components for country match
-        foreach ($data['results'][0]['address_components'] as $component) {
-            if (in_array('country', $component['types'])) {
-                // Compare with expected country (case insensitive)
-                return strtolower($component['long_name']) === strtolower($country) 
-                    || strtolower($component['short_name']) === strtolower($country);
-            }
-        }
-        
-        return false;
-    }
-
-    public function getLocationCoordinates($city) {
-
-        $apiKey = \App\CPU\Helpers::get_business_settings('map_api_key');
-
-        $address = $city;
-
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'address' => $address,
-            'key' => $apiKey
-        ]);
-
-        if (!$response->successful()) {
-            return null;
-        }
-
-        $data = $response->json();
-
-        if ($data['status'] !== 'OK' || empty($data['results'])) {
-            return null;
-        }
-
-        $location = $data['results'][0]['geometry']['location'];
-
-        return [
-            'latitude' => $location['lat'],
-            'longitude' => $location['lng'],
-        ];
 
     }
 

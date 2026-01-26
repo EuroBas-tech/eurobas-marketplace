@@ -10,7 +10,6 @@ use App\Model\ProductCompare;
 use App\Model\Wishlist;
 use App\User;
 use Brian2694\Toastr\Facades\Toastr;
-
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;

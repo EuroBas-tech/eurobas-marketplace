@@ -5,6 +5,7 @@ ini_set('max_execution_time', 1000);
 use App\Model\Cart;
 use App\CPU\Helpers;
 use App\Model\Category;
+use App\Model\PaidBanner;
 use App\Model\SponsoredAd;
 use App\Model\Translation;
 use App\Model\SponsorVideo;
@@ -599,6 +600,12 @@ Route::get('delete-all-sponsors', function() {
     SponsoredAd::query()->delete();
     SponsorVideo::query()->delete();
     return SponsoredAd::all();
+});
+
+Route::get('make-all-banners-paid', function() {
+    PaidBanner::query()->update([
+        'is_paid' => 1
+    ]);
 });
 
 Route::get('optimize', function () {
