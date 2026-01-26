@@ -59,13 +59,13 @@ class HomeController extends Controller
         ?? $banners->firstWhere('lang', 'Both');
 
         $paid_banners = PaidBanner::with('package.features')
-            ->whereHas('package.features', fn ($q) =>
-                $q->where('name', 'show_on_home_page')
-            )
-            ->where('status', 1)
-            ->where('expiration_date', '>', now())
-            ->where('is_paid', 1)
-            ->get();
+        ->whereHas('package.features', fn ($q) => 
+            $q->where('name', 'show_on_home_page')
+        )
+        ->where('status', 1)
+        ->where('is_paid', 1)
+        ->where('expiration_date', '>', now()->utc()) // use UTC
+        ->get();
         
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
         $user = Helpers::get_customer();
