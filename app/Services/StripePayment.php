@@ -97,18 +97,14 @@ class StripePayment
             $session = Session::retrieve($sessionId);
 
             if ($session->payment_status === 'paid') {
-                $expirationDate = Carbon::now()->addDays($model->duration_in_days);
-
                 $model->update([
                     'is_paid' => 1,
                     'payment_transaction_id' => $session->payment_intent,
-                    'expiration_date' => $expirationDate,
                 ]);
 
                 Log::info('Stripe payment completed successfully', [
                     'sponsor_id' => $model->id,
                     'transaction_id' => $session->payment_intent,
-                    'expiration_date' => $expirationDate
                 ]);
 
                 return true;

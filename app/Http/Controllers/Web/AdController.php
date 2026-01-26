@@ -738,6 +738,7 @@ class AdController extends Controller
             $ad_promotional_video = $ad->sponsor()
             ->where('type', 'promotional_video')
             ->where('expiration_date', '>=', $current_date)
+            ->where('is_paid', 1)
             ->whereHas('video', function ($q) {
                 $q->where('is_video_suspended', 0)
                 ->where('is_video_deleted', 0);
@@ -1072,6 +1073,7 @@ class AdController extends Controller
             })
             ->where('status', 1)
             ->where('expiration_date', '>', Carbon::now()) // not expired
+            ->where('is_paid', 1)
             ->get();
 
         return view(VIEW_FILE_NAMES['products_view_page'], compact('filter_data', 'ads', 'categories', 'paid_banners' ,

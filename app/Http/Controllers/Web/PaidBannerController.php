@@ -91,6 +91,7 @@ class PaidBannerController extends Controller
             $paidBanner->price = $package->price;
             $paidBanner->duration_in_days = $package->duration_in_days;
             $paidBanner->expiration_date = now()->addHours($package->duration_in_days * 24);
+            $paidBanner->is_paid = 1;
             $paidBanner->user_id = auth('customer')->user()->id;
             $paidBanner->package_id = $request->package_id;
             $paidBanner->save();

@@ -440,7 +440,11 @@
                         </h6>
                     </div>
                     <div class="d-flex align-items-end gap-2" >
-                        @if($ad->sponsor()->where('type', 'urgent_sale_sticker')->where('expiration_date', '>', now())->exists())
+                        @if($ad->sponsor()->where('type', 'urgent_sale_sticker')
+                            ->where('expiration_date', '>', now())
+                            ->where('is_paid', 1)
+                            ->exists()
+                        )
                             <div>
                                 <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">
                                     {{translate('urgent_sale')}}

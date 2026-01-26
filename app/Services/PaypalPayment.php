@@ -159,21 +159,16 @@ class PaypalPayment
                 $transaction = $transactions[0];
                 $relatedResources = $transaction->getRelatedResources();
                 $sale = $relatedResources[0]->getSale();
-                
-                // Calculate expiration date
-                $expirationDate = Carbon::now()->addDays($model->duration_in_days);
-                
+                                
                 // Update sponsor with payment details
                 $model->update([
                     'is_paid' => 1,
-                    'expiration_date' => $expirationDate,
                     'payment_transaction_id' => $sale->getId(),
                 ]);
 
                 Log::info('Payment completed successfully', [
                     'sponsor_id' => $model->id,
                     'transaction_id' => $sale->getId(),
-                    'expiration_date' => $expirationDate
                 ]);
 
                 return true;

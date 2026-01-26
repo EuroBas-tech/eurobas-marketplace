@@ -82,7 +82,11 @@
                                 <h6 class="no-hover fw-medium" >
                                     {{ $ad['created_at']->toDateString() }} ({{$ad['created_at']->diffForHumans()}})
                                 </h6>
-                                @if($ad->sponsor()->where('type', 'urgent_sale_sticker')->where('expiration_date', '>', now())->exists())
+                                @if($ad->sponsor()->where('type', 'urgent_sale_sticker')
+                                    ->where('expiration_date', '>', now())
+                                    ->where('is_paid', 1)
+                                    ->exists()
+                                )
                                     <span class="text-white fw-bold p-1 torn-paper-sticker urgent-sale-sticker-text">
                                         {{translate('urgent_sale')}}
                                     </span>

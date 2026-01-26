@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use Exception;
-use Carbon\Carbon;
 use PayPal\Api\Payer;
 use App\Model\Setting;
 use PayPal\Api\Amount;
 use PayPal\Api\Payment;
-use App\Model\SponsoredAd;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use PayPal\Api\RedirectUrls;
@@ -16,7 +14,6 @@ use PayPal\Api\PaymentExecution;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use PayPal\Auth\OAuthTokenCredential;
-use Illuminate\Database\Eloquent\Model;
 
 class MultiplePaypalPayment
 {
@@ -164,18 +161,14 @@ class MultiplePaypalPayment
                 
                 // Update all models with payment details
                 foreach ($models as $model) {
-                    $expirationDate = Carbon::now()->addDays($model->duration_in_days);
-
                     $model->update([
                         'is_paid' => 1,
-                        'expiration_date' => $expirationDate,
                         'payment_transaction_id' => $sale->getId(),
                     ]);
 
                     Log::info('Payment completed successfully', [
                         'sponsor_id' => $model->id,
                         'transaction_id' => $sale->getId(),
-                        'expiration_date' => $expirationDate
                     ]);
                 }
 

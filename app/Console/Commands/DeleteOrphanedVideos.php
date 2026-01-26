@@ -46,7 +46,7 @@ class DeleteOrphanedVideos extends Command
             $q->whereDoesntHave('sponsor')
             ->orWhereHas('sponsor', function ($q) {
                 $q->where('is_paid', 0)
-                ->where(function ($q) {
+                ->orWhere(function ($q) {
                     $q->whereDoesntHave('ad')
                     ->orWhereHas('ad', function ($q) {
                         $q->where('status', 0);

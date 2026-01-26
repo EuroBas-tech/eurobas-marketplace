@@ -3,13 +3,10 @@
 namespace App\Services;
 
 use Exception;
-use Carbon\Carbon;
 use Stripe\Stripe;
 use App\Model\Setting;
-use App\Model\SponsoredAd;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
 
 class MultipleStripePayment
 {
@@ -85,18 +82,14 @@ class MultipleStripePayment
 
             if ($session->payment_status === 'paid') {
                 foreach ($models as $model) {
-                    $expirationDate = Carbon::now()->addDays($model->duration_in_days);
-
                     $model->update([
                         'is_paid' => 1,
                         'payment_transaction_id' => $session->payment_intent,
-                        'expiration_date' => $expirationDate,
                     ]);
 
                     Log::info('Stripe payment completed successfully', [
                         'sponsor_id' => $model->id,
                         'transaction_id' => $session->payment_intent,
-                        'expiration_date' => $expirationDate
                     ]);
                 }
 

@@ -70,6 +70,7 @@ class MultiplePaymentController extends Controller
             $data['price'] = $package->price;
             $data['package_id'] = $package->id;
             $data['duration_in_days'] = $package->duration_in_days;
+            $data['expiration_date'] = now()->addHours($package->duration_in_days * 24);
 
             if($package->type->name == 'promotional_video') {
                 $data['video_id'] = session('video_id');
