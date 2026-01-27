@@ -94,8 +94,10 @@ class SubscriptionController extends Controller
         $muxTokenSecret = BusinessSetting::where('type', 'mux_secret_key')->value('value');
 
         $query = SponsorVideo::with('sponsor.ad.user')
-        ->has('sponsor')
-        ->has('sponsor.ad');
+        ->whereHas('sponsor', function ($q) {
+            $q->where('is_paid', 1);
+        })
+        ->whereHas('sponsor.ad');
 
         if ($search = $request->input('search')) {
             $keywords = explode(' ', $search);
