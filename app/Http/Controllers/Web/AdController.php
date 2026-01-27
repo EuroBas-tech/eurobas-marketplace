@@ -768,8 +768,9 @@ class AdController extends Controller
                 });
             })
             ->where('status', 1)
-            ->where('expiration_date', '>', Carbon::now()) // not expired
-            ->limit(5);
+            ->where('expiration_date', '>', Carbon::now())
+            ->limit(5)
+            ->get();
 
             $is_dimensions_and_sizes_empty = !$ad->height && 
                 !$ad->width && 
@@ -1072,7 +1073,7 @@ class AdController extends Controller
                 });
             })
             ->where('status', 1)
-            ->where('expiration_date', '>', Carbon::now())
+            ->where('expiration_date', '>', now())
             ->where('is_paid', 1)
             ->limit(5)
             ->get();
