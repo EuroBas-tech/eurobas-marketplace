@@ -661,4 +661,11 @@ Route::get('social-login', function() {
     return BusinessSetting::where('type', 'social_login')->get();
 });
 
+Route::get('/debug-timezone', function () {
+    echo 'Laravel app timezone: ' . config('app.timezone') . '<br>';
+    echo 'PHP default timezone: ' . date_default_timezone_get() . '<br>';
+    echo 'Carbon timezone name: ' . now()->timezoneName . '<br>';
+    echo 'Carbon full datetime: ' . now() . '<br>';
+});
+
 

@@ -1072,7 +1072,7 @@ class AdController extends Controller
                 });
             })
             ->where('status', 1)
-            ->where('expiration_date', '>', Carbon::now()->utc())
+            ->where('expiration_date', '>', Carbon::now())
             ->where('is_paid', 1)
             ->limit(5);
 
