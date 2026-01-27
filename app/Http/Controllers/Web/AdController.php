@@ -1074,7 +1074,8 @@ class AdController extends Controller
             ->where('status', 1)
             ->where('expiration_date', '>', Carbon::now())
             ->where('is_paid', 1)
-            ->limit(5);
+            ->limit(5)
+            ->get();
 
         return view(VIEW_FILE_NAMES['products_view_page'], compact('filter_data', 'ads', 'categories', 'paid_banners' ,
         'is_selected_category_vehicle', 'brands', 'models', 'max_price', 'min_construction_year', 'initial_filter_count'));
