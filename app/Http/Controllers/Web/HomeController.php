@@ -64,8 +64,7 @@ class HomeController extends Controller
         )
         ->where('status', 1)
         ->where('is_paid', 1)
-        ->where('expiration_date', '>', now()) // UTC
-        ->limit(5)
+        ->where('expiration_date', '>', now())
         ->get();
         
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
