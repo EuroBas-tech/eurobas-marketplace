@@ -117,6 +117,7 @@ class PaymentController extends Controller
             $model->duration_in_days = $package->duration_in_days;
             $model->expiration_date = now()->addHours($package->duration_in_days * 24);
             $model->user_id = auth('customer')->id();
+            $model->category_id = $request->category_id;
             $model->package_id = $package->id;
 
             $model->save();

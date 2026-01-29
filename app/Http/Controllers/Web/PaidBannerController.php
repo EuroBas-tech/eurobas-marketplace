@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Model\Ad;
 use App\Models\User;
+use App\Model\Category;
 use App\CPU\ImageManager;
 use App\Model\PaidBanner;
 use Illuminate\Http\Request;
@@ -33,7 +34,9 @@ class PaidBannerController extends Controller
 
         $user_ads = Ad::where('user_id', auth('customer')->id())->get();
 
-        return view("theme-views.paid-banners.create", compact('packages', 'user_ads'));
+        $categories = Category::get();
+
+        return view("theme-views.paid-banners.create", compact('packages', 'user_ads', 'categories'));
     }
 
     public function store(Request $request) {
@@ -93,6 +96,7 @@ class PaidBannerController extends Controller
             $paidBanner->expiration_date = now()->addHours($package->duration_in_days * 24);
             $paidBanner->is_paid = 1;
             $paidBanner->user_id = auth('customer')->user()->id;
+            $paidBanner->category_id = $request->category_id;
             $paidBanner->package_id = $request->package_id;
             $paidBanner->save();
         } else {
@@ -118,8 +122,10 @@ class PaidBannerController extends Controller
         
         $package_expiration_date = $paid_banner->expiration_date;
 
-        return view("theme-views.paid-banners.edit", 
-        compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads'));
+        $categories = Category::get();
+
+        return view("theme-views.paid-banners.edit",
+        compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads', 'categories'));
     }
 
     public function update(Request $request) {
@@ -182,6 +188,7 @@ class PaidBannerController extends Controller
         }
 
         $paidBanner->banner_url = isset($ad) && $ad->slug ? route('ads-show',$ad->slug) : $paidBanner->banner_url;
+        $paidBanner->category_id = $request->category_id;
 
         if ($request->hasFile('banner_image')) {
             $paidBanner->banner_image = ImageManager::upload(

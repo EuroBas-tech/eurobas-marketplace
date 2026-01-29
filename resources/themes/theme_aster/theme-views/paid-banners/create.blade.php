@@ -245,6 +245,19 @@
 
                             <div class="col-12 mb-sm-4 mb-5">
                                 <div class="form-group">
+                                    <label for="category_id">{{translate('category')}}</label>
+                                    <select name="category_id" id="category_id" class="form-control" required>
+                                        <option value="">{{translate('select_category')}}</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                        <option value="">{{ translate('Other') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-sm-4 mb-5">
+                                <div class="form-group">
                                     <label >{{translate('banner_image')}}</label>
                                     <div class="d-flex flex-column gap-2">
                                         <div class="row">
