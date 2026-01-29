@@ -639,23 +639,13 @@ Route::get('log/show', function () {
     )->header('Content-Type', 'text/html');
 });
 
-Route::get('run-password-nullable-migration', function () {
+Route::get('add-relationship-paid-banners-categories', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php',
+        '--path' => 'database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php',
         '--force' => true,
     ]);
 
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_14_163503_create_sponsor_videos_table.php',
-        '--force' => true,
-    ]);
-
-    Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php',
-        '--force' => true,
-    ]);
-
-    return 'migrations successfully uploaded';
+    return 'migration successfully uploaded';
 });
 
 Route::get('social-login', function() {
