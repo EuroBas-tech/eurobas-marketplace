@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserIdToPaidBannersTable extends Migration
+class AddCategoryIdToPaidBannersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class AddUserIdToPaidBannersTable extends Migration
     public function up()
     {
         Schema::table('paid_banners', function (Blueprint $table) {
-            $table->foreignId('user_id')
+            $table->foreignId('category_id')
             ->nullable()
-            ->constrained('users')
-            ->cascadeOnDelete(); // if user deleted, user_id becomes null
+            ->constrained('categories')
+            ->cascadeOnDelete();
         });
     }
 
