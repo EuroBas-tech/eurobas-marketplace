@@ -37,6 +37,11 @@ class Category extends Model
         return $this->morphMany('App\Model\Translation', 'translationable');
     }
 
+    public function paid_banners()
+    {
+        return $this->hasMany(PaidBanner::class, 'category_id');
+    }
+
     public function getNameAttribute($name)
     {
         if (strpos(url()->current(), '/admin') || strpos(url()->current(), '/seller')) {

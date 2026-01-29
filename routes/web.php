@@ -4,6 +4,7 @@ ini_set('max_execution_time', 1000);
 
 use App\Model\Cart;
 use App\CPU\Helpers;
+use App\Models\User;
 use App\Model\Category;
 use App\Model\PaidBanner;
 use App\Model\SponsoredAd;
@@ -664,5 +665,4 @@ Route::get('social-login', function() {
 Route::get('delete-all-paid-banners', function() {
     return PaidBanner::query()->delete();
 });
-
 
