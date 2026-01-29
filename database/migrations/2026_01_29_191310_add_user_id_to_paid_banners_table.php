@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakePasswordNullableOnUsersTable extends Migration
+class AddUserIdToPaidBannersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class MakePasswordNullableOnUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('password')->nullable()->change();
+        Schema::table('paid_banners', function (Blueprint $table) {
+            $table->foreignId('user_id')
+            ->nullable()
+            ->constrained('users')
+            ->cascadeOnDelete(); // if user deleted, user_id becomes null
         });
     }
 
@@ -25,8 +28,8 @@ class MakePasswordNullableOnUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('password')->nullable(false)->change();
+        Schema::table('paid_banners', function (Blueprint $table) {
+            //
         });
     }
 }
