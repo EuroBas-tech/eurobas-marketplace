@@ -198,18 +198,20 @@
             @endif
         </div>
 
-        <div class="container" >
-            <div class="home-banner-swiper">
-                <div class="swiper-wrapper">
-                    @foreach($paid_banners as $banner)
-                        <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                            <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
-                            alt="banner_image">
-                        </div>
-                    @endforeach
+        @if($paid_banners->count() > 0)
+            <div class="container" >
+                <div class="home-banner-swiper">
+                    <div class="swiper-wrapper">
+                        @foreach($paid_banners as $banner)
+                            <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
+                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
+                                alt="banner_image">
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         <!-- Recommended For You -->
         @include('theme-views.partials._recommended-product')
