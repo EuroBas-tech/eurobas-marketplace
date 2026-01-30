@@ -1056,7 +1056,7 @@ class Helpers
 
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
-        $userId  = auth('customer')->id();
+        $userId  = auth('customer')->user()->id;
         $guestId = session()->getId();
 
         Log::debug($userId);
@@ -1075,7 +1075,6 @@ class Helpers
     }
 
 }
-
 
 if (!function_exists('currency_symbol')) {
     function currency_symbol()
