@@ -1057,7 +1057,7 @@ class Helpers
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
         $userId = auth('customer')->user()?->id;
-        $guestId = session()->getId();
+        $guestId = self::deviceId();
 
         Log::debug($userId);
         
@@ -1074,6 +1074,14 @@ class Helpers
 
         Log::debug($userInterest);
 
+    }
+
+    public static function deviceId(): string
+    {
+        return cookie()->get('device_id') ?? 
+            tap(Str::uuid()->toString(), function ($id) {
+                cookie()->queue('device_id', $id, 60 * 24 * 365); // 1 year
+            });
     }
 
 }
