@@ -1079,26 +1079,18 @@ class Helpers
 
     public static function deviceId(): string
     {
-        // Get cookie directly using Cookie facade
-        $deviceId = Cookie::get('device_id');
+        // Try to get existing device_id from cookie
+        $deviceId = $_COOKIE['device_id'] ?? null;
         
         if ($deviceId) {
             return $deviceId;
         }
         
-        // Check if we already generated one in this request
-        if (session()->has('temp_device_id')) {
-            return session('temp_device_id');
-        }
-        
         // Generate new UUID
         $newDeviceId = Str::uuid()->toString();
         
-        // Store temporarily in session for this request
-        session(['temp_device_id' => $newDeviceId]);
-        
-        // Queue cookie for next request (5 years)
-        Cookie::queue('device_id', $newDeviceId, 60 * 24 * 365);
+        // Set cookie DIRECTLY (available immediately)
+        setcookie('device_id', $newDeviceId, time() + (60 * 60 * 24 * 365 * 5), '/');
         
         return $newDeviceId;
     }
