@@ -1083,22 +1083,31 @@ class Helpers
 
     public static function deviceId(): string
     {
-        // Try to get existing device_id from plain cookie
+        // Check session first (works immediately)
+        if (session()->has('guest_device_id')) {
+            return session('guest_device_id');
+        }
+        
+        // Check cookie from previous requests
         $deviceId = $_COOKIE['guest_device_id'] ?? null;
         
         if ($deviceId) {
+            // Found in cookie, store in session for this request
+            session(['guest_device_id' => $deviceId]);
             return $deviceId;
         }
         
-        // Generate shorter unique ID (not UUID)
-        $newDeviceId = uniqid('guest_', true);
+        // Generate new ID only once
+        $newDeviceId = 'guest_' . uniqid() . rand(1000, 9999);
         
-        // Set cookie DIRECTLY with plain value (5 years, httponly for security)
+        // Store in SESSION immediately (works now!)
+        session(['guest_device_id' => $newDeviceId]);
+        
+        // Also store in cookie for next visit (5 years)
         setcookie('guest_device_id', $newDeviceId, time() + (60 * 60 * 24 * 365 * 5), '/', '', false, true);
         
         return $newDeviceId;
     }
-
 
 
 }
