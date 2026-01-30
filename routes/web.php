@@ -24,6 +24,7 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Payment_Methods\MultiplePaymentController;
+use App\Model\UserCategoryInterest;
 
 Route::group(
     [
@@ -639,9 +640,9 @@ Route::get('log/show', function () {
     )->header('Content-Type', 'text/html');
 });
 
-Route::get('add-relationship-paid-banners-categories', function () {
+Route::get('upload-migrations', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php',
+        '--path' => 'database/migrations/2026_01_29_222026_create_user_category_interests_table.php',
         '--force' => true,
     ]);
 
@@ -656,3 +657,6 @@ Route::get('delete-all-paid-banners', function() {
     return PaidBanner::query()->delete();
 });
 
+Route::get('test-helper-function', function() {
+    Helpers::trackUserCategoryInterest(476);
+});

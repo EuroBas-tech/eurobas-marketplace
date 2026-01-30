@@ -13,6 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 class Category extends Model
 {
     protected $guarded = [];
+
     protected $casts = [
         'category_type' => 'string',
         'position' => 'integer',
@@ -73,6 +74,11 @@ class Category extends Model
 
     public function ads() {
         return $this->hasMany(Ad::class, 'category_id');
+    }
+
+    public function category_interests()
+    {
+        return $this->hasMany(UserCategoryInterest::class, 'category_id');
     }
 
     protected static function boot()

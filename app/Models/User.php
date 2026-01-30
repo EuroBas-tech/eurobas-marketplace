@@ -12,6 +12,7 @@ use App\Model\PaidBanner;
 use App\Model\AdAskingPrice;
 use App\Model\ProductCompare;
 use App\Model\ShippingAddress;
+use App\Model\UserCategoryInterest;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -104,6 +105,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chatting::class, 'sender_id');
     }
+
+    public function category_interests()
+    {
+        return $this->hasMany(UserCategoryInterest::class, 'user_id');
+    }
+
 
 
 }

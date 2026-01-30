@@ -21,6 +21,7 @@ use App\Model\BusinessSetting;
 use App\Model\OrderStatusHistory;
 use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
+use App\Model\UserCategoryInterest;
 use App\Models\NotificationMessage;
 use Illuminate\Support\Facades\App;
 use Brian2694\Toastr\Facades\Toastr;
@@ -1051,6 +1052,24 @@ class Helpers
 
         return $bonuses->max('applied_bonus_amount') ?? 0;
     }
+
+    public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
+    {
+        $userId  = auth('customer')->id();
+        $guestId = session()->getId();
+
+        UserCategoryInterest::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'guest_id' => $userId ? null : $guestId,
+                'category_id' => $categoryId,
+            ],
+            [
+                'score' => DB::raw('score + ' . $points),
+            ]
+        );
+    }
+
 }
 
 
@@ -1495,5 +1514,6 @@ if (!function_exists('cloudfront')) {
         return "{$cdnUrl}/{$path}";
     }
 }
+
 
 

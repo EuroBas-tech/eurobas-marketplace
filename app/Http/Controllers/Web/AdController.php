@@ -671,6 +671,10 @@ class AdController extends Controller
     public function show_by_category($cat_id) {
         $category = Category::with('ads')->find($cat_id);
 
+        if($category) {
+            Helpers::trackUserCategoryInterest($category->id);
+        }
+
         $category_name = $category->name;
 
         $ads = $category->ads('sponsor')
@@ -703,24 +707,26 @@ class AdController extends Controller
             ->with(['category','brand','model','sponsor'])
             ->where('slug', $slug)
             ->firstOrFail();
-        
-        $ip = request()->ip();
-        $user_agent = request()->header('User-Agent');
-
-        $is_already_viewed = AdView::where('ad_id', $ad->id)
-        ->where('ip_address', $ip)
-        ->where('user_agent', $user_agent)
-        ->exists();
-
-        if (!$is_already_viewed) {
-            $view = new AdView;
-            $view->ad_id = $ad->id;
-            $view->ip_address = $ip;
-            $view->user_agent = $user_agent;
-            $view->save();
-        }
 
         if ($ad != null) {
+
+            $ip = request()->ip();
+            $user_agent = request()->header('User-Agent');
+
+            $is_already_viewed = AdView::where('ad_id', $ad->id)
+            ->where('ip_address', $ip)
+            ->where('user_agent', $user_agent)
+            ->exists();
+
+            if (!$is_already_viewed) {
+                $view = new AdView;
+                $view->ad_id = $ad->id;
+                $view->ip_address = $ip;
+                $view->user_agent = $user_agent;
+                $view->save();
+            }
+
+            Helpers::trackUserCategoryInterest($ad->category_id);
             
             $countWishlist = Wishlist::where('ad_id', $ad->id)->count();
             $wishlist_status = Wishlist::where(['ad_id'=>$ad->id, 'customer_id'=>auth('customer')->id()])->count();
@@ -1009,6 +1015,10 @@ class AdController extends Controller
 
         $is_selected_category_vehicle = $request->category_id == 0 || Category::find($request->category_id)->category_type == 'vehicles';
         
+        if($request->category_id) {
+            Helpers::trackUserCategoryInterest($request->category_id);
+        }
+
         $ad_data = Ad::active()->with('sponsor','wish_list');
 
         $max_price = $request->price_range;

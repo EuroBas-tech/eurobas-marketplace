@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Login;
+use App\Listeners\MergeGuestCategoryInterest;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -14,9 +16,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        // \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-        //     'SocialiteProviders\\Apple\\AppleExtendSocialite@handle',
-        // ],
+        Login::class => [
+            MergeGuestCategoryInterest::class,
+        ],
     ];
 
     public function boot()
