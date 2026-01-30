@@ -1063,37 +1063,43 @@ class Helpers
         Log::debug('User ID: ' . $userId);
         Log::debug('Guest ID: ' . $guestId);
         
-        $userInterest = UserCategoryInterest::updateOrCreate(
-            [
-                'user_id' => $userId,
-                'guest_id' => $guestId,
-                'category_id' => $categoryId,
-            ],
-            [
-                'score' => DB::raw('score + ' . $points),
-            ]
-        );
+        try {
+            $userInterest = UserCategoryInterest::updateOrCreate(
+                [
+                    'user_id' => $userId,
+                    'guest_id' => $guestId,
+                    'category_id' => $categoryId,
+                ],
+                [
+                    'score' => DB::raw('score + ' . $points),
+                ]
+            );
 
-        Log::debug($userInterest);
+            Log::debug($userInterest);
+        } catch (\Exception $e) {
+            Log::error('Error tracking category interest: ' . $e->getMessage());
+        }
     }
 
     public static function deviceId(): string
     {
-        // Try to get existing device_id from cookie
-        $deviceId = $_COOKIE['device_id'] ?? null;
+        // Try to get existing device_id from plain cookie
+        $deviceId = $_COOKIE['guest_device_id'] ?? null;
         
         if ($deviceId) {
             return $deviceId;
         }
         
-        // Generate new UUID
-        $newDeviceId = Str::uuid()->toString();
+        // Generate shorter unique ID (not UUID)
+        $newDeviceId = uniqid('guest_', true);
         
-        // Set cookie DIRECTLY (available immediately)
-        setcookie('device_id', $newDeviceId, time() + (60 * 60 * 24 * 365 * 5), '/');
+        // Set cookie DIRECTLY with plain value (5 years, httponly for security)
+        setcookie('guest_device_id', $newDeviceId, time() + (60 * 60 * 24 * 365 * 5), '/', '', false, true);
         
         return $newDeviceId;
     }
+
+
 
 }
 
