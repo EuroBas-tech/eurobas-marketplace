@@ -1058,14 +1058,15 @@ class Helpers
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
         $userId = auth('customer')->user()?->id;
-        $guestId = self::deviceId();
+        $guestId = $userId ? null : self::deviceId();
 
-        Log::debug($userId);
+        Log::debug('User ID: ' . $userId);
+        Log::debug('Guest ID: ' . $guestId);
         
         $userInterest = UserCategoryInterest::updateOrCreate(
             [
                 'user_id' => $userId,
-                'guest_id' => $userId ? null : $guestId,
+                'guest_id' => $guestId,
                 'category_id' => $categoryId,
             ],
             [
@@ -1074,15 +1075,32 @@ class Helpers
         );
 
         Log::debug($userInterest);
-
     }
 
     public static function deviceId(): string
     {
-        return request()->cookie('device_id')
-            ?? tap(Str::uuid()->toString(), function ($id) {
-                Cookie::queue('device_id', $id, 60 * 24 * 365);
-            });
+        // Get cookie directly using Cookie facade
+        $deviceId = Cookie::get('device_id');
+        
+        if ($deviceId) {
+            return $deviceId;
+        }
+        
+        // Check if we already generated one in this request
+        if (session()->has('temp_device_id')) {
+            return session('temp_device_id');
+        }
+        
+        // Generate new UUID
+        $newDeviceId = Str::uuid()->toString();
+        
+        // Store temporarily in session for this request
+        session(['temp_device_id' => $newDeviceId]);
+        
+        // Queue cookie for next request (5 years)
+        Cookie::queue('device_id', $newDeviceId, 60 * 24 * 365);
+        
+        return $newDeviceId;
     }
 
 }
