@@ -1071,7 +1071,9 @@ class Helpers
                 'score' => DB::raw('score + ' . $points),
             ]
         );
+
         Log::debug($userInterest);
+        
     }
 
 }

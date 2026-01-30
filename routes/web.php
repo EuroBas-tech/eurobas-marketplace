@@ -653,8 +653,8 @@ Route::get('social-login', function() {
     return BusinessSetting::where('type', 'social_login')->get();
 });
 
-Route::get('delete-all-paid-banners', function() {
-    return PaidBanner::query()->delete();
+Route::get('delete-all-interests', function() {
+    return UserCategoryInterest::query()->delete();
 });
 
 Route::get('test-helper-function', function() {
