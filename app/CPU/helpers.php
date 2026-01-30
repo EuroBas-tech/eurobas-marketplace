@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use App\Model\UserCategoryInterest;
 use App\Models\NotificationMessage;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Model\AddFundBonusCategories;
 use Illuminate\Support\Facades\Cache;
@@ -1058,7 +1059,9 @@ class Helpers
         $userId  = auth('customer')->id();
         $guestId = session()->getId();
 
-        UserCategoryInterest::updateOrCreate(
+        Log::debug($userId);
+        
+        $userInterest = UserCategoryInterest::updateOrCreate(
             [
                 'user_id' => $userId,
                 'guest_id' => $userId ? null : $guestId,
@@ -1068,6 +1071,7 @@ class Helpers
                 'score' => DB::raw('score + ' . $points),
             ]
         );
+        Log::debug($userInterest);
     }
 
 }
