@@ -660,3 +660,7 @@ Route::get('delete-all-paid-banners', function() {
 Route::get('test-helper-function', function() {
     Helpers::trackUserCategoryInterest(476);
 });
+
+Route::get('interests-table', function() {
+    return UserCategoryInterest::get();
+});
