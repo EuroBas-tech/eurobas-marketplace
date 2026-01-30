@@ -1056,7 +1056,7 @@ class Helpers
 
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
-        $userId  = auth('customer')->user()->id;
+        $userId = auth('customer')->user()?->id;
         $guestId = session()->getId();
 
         Log::debug($userId);
@@ -1073,7 +1073,7 @@ class Helpers
         );
 
         Log::debug($userInterest);
-        
+
     }
 
 }
