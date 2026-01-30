@@ -193,6 +193,8 @@ class UserProfileController extends Controller
         ->where('name', $name)
         ->first();
 
+        return $user_profile;
+
         // If user not found, redirect or show 404
         if (!$user_profile) {
             abort(404, 'User not found');
