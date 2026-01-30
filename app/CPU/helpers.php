@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Log;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Model\AddFundBonusCategories;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -1078,9 +1079,9 @@ class Helpers
 
     public static function deviceId(): string
     {
-        return cookie()->get('device_id') ?? 
-            tap(Str::uuid()->toString(), function ($id) {
-                cookie()->queue('device_id', $id, 60 * 24 * 365); // 1 year
+        return request()->cookie('device_id')
+            ?? tap(Str::uuid()->toString(), function ($id) {
+                Cookie::queue('device_id', $id, 60 * 24 * 365);
             });
     }
 
