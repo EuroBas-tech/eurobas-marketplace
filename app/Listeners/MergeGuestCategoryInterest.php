@@ -3,10 +3,11 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 use App\Model\UserCategoryInterest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MergeGuestCategoryInterest
 {
@@ -15,7 +16,11 @@ class MergeGuestCategoryInterest
         $user    = $event->user;
         $guestId = session()->getId();
 
+        Log::debug($guestId);
+
         $records = UserCategoryInterest::where('guest_id', $guestId)->get();
+
+        Log::debug($records);
 
         foreach ($records as $record) {
             UserCategoryInterest::updateOrCreate(
@@ -28,6 +33,8 @@ class MergeGuestCategoryInterest
                 ]
             );
         }
+
+        Log::debug('done');
 
         UserCategoryInterest::where('guest_id', $guestId)->delete();
     }
