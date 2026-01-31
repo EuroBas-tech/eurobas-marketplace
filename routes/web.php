@@ -2,6 +2,7 @@
 
 ini_set('max_execution_time', 1000);
 
+use App\Model\Ad;
 use App\Model\Cart;
 use App\CPU\Helpers;
 use App\Models\User;
@@ -13,6 +14,7 @@ use App\Model\SponsorVideo;
 use App\Model\BusinessSetting;
 use App\Model\LanguageTranslation;
 use Illuminate\Support\Facades\DB;
+use App\Model\UserCategoryInterest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
@@ -24,7 +26,6 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Payment_Methods\MultiplePaymentController;
-use App\Model\UserCategoryInterest;
 
 Route::group(
     [
@@ -663,4 +664,8 @@ Route::get('test-helper-function', function() {
 
 Route::get('interests-table', function() {
     return UserCategoryInterest::get();
+});
+
+Route::get('show-ads-for-debug', function() {
+    return Ad::where('slug', 'hkugjfds-NLGfg4')->get()->first();
 });
