@@ -667,6 +667,6 @@ Route::get('interests-table', function() {
 });
 
 Route::get('show-ads-for-debug', function() {
-    $ad = Ad::where('slug', 'hkugjfds-NLGfg4')->get()->first();
+    $ad = Ad::with('user')->where('slug', 'hkugjfds-NLGfg4')->get()->first();
     return $ad;
 });
