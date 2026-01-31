@@ -1090,6 +1090,8 @@ class Helpers
         $ip = request()->ip();
         $userAgent = request()->userAgent();
         $deviceId = md5($ip . $userAgent);
+
+        Log::debug('user ip and device = ' . $ip . $userAgent);
         
         session(['guest_device_id' => $deviceId]);
         
