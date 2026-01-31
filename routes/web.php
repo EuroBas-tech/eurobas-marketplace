@@ -669,3 +669,7 @@ Route::get('interests-table', function() {
 // Route::get('show-ads-for-debug', function() {
 //     return Ad::whereDoesntHave('user')->delete();
 // });
+
+Route::get('apple-login', function() {
+    return BusinessSetting::where('type', 'apple_login')->get();
+});
