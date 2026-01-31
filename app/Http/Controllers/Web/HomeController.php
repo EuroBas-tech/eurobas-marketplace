@@ -27,6 +27,7 @@ use Illuminate\Http\Request;
 use App\Model\PaymentRequest;
 use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\DB;
+use App\Model\UserCategoryInterest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -58,15 +59,33 @@ class HomeController extends Controller
         $banner = $banners->firstWhere('lang', $locale)
         ?? $banners->firstWhere('lang', 'Both');
 
-        $paid_banners = PaidBanner::with('package.features')
+        $userInterests = Cache::remember('user_category_interests', 60, function () {
+            return UserCategoryInterest::all();
+        });
+
+        $favCategoryId = $userInterests
+        ->where(
+            auth('customer')->check() ? 'user_id' : 'guest_id',
+            auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId()
+        )
+        ->sortByDesc('score')
+        ->first()?->category_id;
+
+        $paid_banners = PaidBanner::with('package.features', 'category')
         ->whereHas('package.features', fn ($q) =>
             $q->where('name', 'show_on_home_page')
         )
         ->where('status', 1)
         ->where('is_paid', 1)
         ->where('expiration_date', '>', now())
+        ->orderByRaw(
+            $favCategoryId
+                ? "category_id = {$favCategoryId} DESC"
+                : '1'
+        )
+        ->limit(15)
         ->get();
-        
+
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
         $user = Helpers::get_customer();
 

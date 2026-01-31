@@ -666,6 +666,6 @@ Route::get('interests-table', function() {
     return UserCategoryInterest::get();
 });
 
-Route::get('show-ads-for-debug', function() {
-    return Ad::whereDoesntHave('user')->delete();
-});
+// Route::get('show-ads-for-debug', function() {
+//     return Ad::whereDoesntHave('user')->delete();
+// });
