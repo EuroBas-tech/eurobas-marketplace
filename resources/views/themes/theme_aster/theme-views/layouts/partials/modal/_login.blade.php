@@ -109,8 +109,7 @@
                             </a>
                         @endif
                     @endforeach
-                    @php(\Log::debug($web_config['apple_login'][0]))
-                    @if (isset($web_config['apple_login'][0]) && $web_config['apple_login'][0]['status']==true)
+                    @if ($web_config['apple_login'] && $web_config['apple_login'][0]['status']==true)
                         <a href="{{route('customer.auth.service-login', $web_config['apple_login'][0]['login_medium'])}}">
                             <img width="35" alt="" class="dark-support"
                             src="{{asset('/public/assets/back-end/img/apple.png')}}" />

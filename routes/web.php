@@ -671,5 +671,6 @@ Route::get('interests-table', function() {
 // });
 
 Route::get('apple-login', function() {
-    return BusinessSetting::where('type', 'apple_login')->get();
+    $apple = Helpers::get_business_settings('apple_login');
+    return $apple[0]['status'] == true;
 });

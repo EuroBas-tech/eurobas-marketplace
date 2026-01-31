@@ -28,6 +28,7 @@ use App\Model\PaymentRequest;
 use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\DB;
 use App\Model\UserCategoryInterest;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
