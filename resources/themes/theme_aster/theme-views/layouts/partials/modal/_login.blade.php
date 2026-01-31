@@ -83,14 +83,18 @@
                     @foreach ($web_config['socials_login'] as $socialLoginService)
                         @if (isset($socialLoginService) && $socialLoginService['status']==true)
                             <a href="{{route('customer.auth.service-login', $socialLoginService['login_medium'])}}">
-                                <img
-                                    width="35"
-                                    src="{{ theme_asset('assets/img/svg/'.$socialLoginService['login_medium'].'.svg') }}"
-                                    alt=""
-                                    class="dark-support"/>
+                                <img width="35" src="{{ theme_asset('assets/img/svg/'.$socialLoginService['login_medium'].'.svg') }}"
+                                alt="" class="dark-support"/>
                             </a>
                         @endif
                     @endforeach
+                    
+                    @if (isset($web_config['apple_login']) && $web_config['apple_login'][0]['status']==true)
+                        <a href="{{route('customer.auth.service-login', $web_config['apple_login'][0]['login_medium'])}}">
+                            <img width="35" alt="" class="dark-support"
+                            src="{{asset('/public/assets/back-end/img/apple.png')}}" />
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
