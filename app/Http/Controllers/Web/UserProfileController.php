@@ -35,9 +35,11 @@ use App\Model\SellerWalletAction;
 use App\Model\DeliveryCountryCode;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
+use App\Model\UserCategoryInterest;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -215,15 +217,28 @@ class UserProfileController extends Controller
         $brands = Brand::with('categories:id')->orderBY('name', 'ASC')->get();
         $models = VehicleModel::with('categories:id')->select('id', 'name', 'brand_id', 'status')->get();
 
-        $paid_banners = PaidBanner::with('package.features')
+        $userInterests = Cache::remember('user_category_interests', 0, function () { 
+            return UserCategoryInterest::all();
+        });
+
+        $favCategoryId = $userInterests
+        ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
+                auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
+        ->sortByDesc('score')
+        ->first()?->category_id;
+
+        $paid_banners = PaidBanner::with('package.features', 'category')
         ->whereHas('package', function ($q) {
             $q->whereHas('features', function ($q2) {
                 $q2->where('name', 'show_on_filter_and_ad_page');
             });
         })
         ->where('status', 1)
-        ->where('expiration_date', '>', Carbon::now()) // not expired
         ->where('is_paid', 1)
+        ->where('expiration_date', '>', now())
+        ->orderByRaw(
+            $favCategoryId ? "category_id = {$favCategoryId} DESC" : '1'
+        )
         ->limit(5)
         ->get();
 

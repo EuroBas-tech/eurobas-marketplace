@@ -59,7 +59,7 @@ class HomeController extends Controller
         $banner = $banners->firstWhere('lang', $locale)
         ?? $banners->firstWhere('lang', 'Both');
 
-        $userInterests = Cache::remember('user_category_interests', 60, function () {
+        $userInterests = Cache::remember('user_category_interests', 60 * 24, function () {
             return UserCategoryInterest::all();
         });
 

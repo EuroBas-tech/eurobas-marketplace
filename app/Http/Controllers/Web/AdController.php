@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use App\Model\BusinessSetting;
 use App\Model\SubscriptionPackage;
 use Illuminate\Support\Facades\DB;
+use App\Model\UserCategoryInterest;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
@@ -767,14 +768,28 @@ class AdController extends Controller
 
             $ad_ids = Ad::active()->where('user_id', $ad->user_id)->pluck('id');
 
-            $paid_banners = PaidBanner::with('package.features')
+            $userInterests = Cache::remember('user_category_interests', 0, function () { 
+                return UserCategoryInterest::all();
+            }); 
+
+            $favCategoryId = $userInterests
+            ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
+                    auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
+            ->sortByDesc('score')
+            ->first()?->category_id;
+
+            $paid_banners = PaidBanner::with('package.features', 'category')
             ->whereHas('package', function ($q) {
                 $q->whereHas('features', function ($q2) {
                     $q2->where('name', 'show_on_filter_and_ad_page');
                 });
             })
             ->where('status', 1)
-            ->where('expiration_date', '>', Carbon::now())
+            ->where('is_paid', 1)
+            ->where('expiration_date', '>', now())
+            ->orderByRaw(
+                $favCategoryId ? "category_id = {$favCategoryId} DESC" : '1'
+            )
             ->limit(5)
             ->get();
 
@@ -1076,17 +1091,30 @@ class AdController extends Controller
             ];
         });
 
-        $paid_banners = PaidBanner::with('package.features')
-            ->whereHas('package', function ($q) {
-                $q->whereHas('features', function ($q2) {
-                    $q2->where('name', 'show_on_filter_and_ad_page');
-                });
-            })
-            ->where('status', 1)
-            ->where('expiration_date', '>', now())
-            ->where('is_paid', 1)
-            ->limit(5)
-            ->get();
+        $userInterests = Cache::remember('user_category_interests', 0, function () { 
+            return UserCategoryInterest::all();
+        }); 
+
+        $favCategoryId = $userInterests
+        ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
+                auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
+        ->sortByDesc('score')
+        ->first()?->category_id;
+
+        $paid_banners = PaidBanner::with('package.features', 'category')
+        ->whereHas('package', function ($q) {
+            $q->whereHas('features', function ($q2) {
+                $q2->where('name', 'show_on_filter_and_ad_page');
+            });
+        })
+        ->where('status', 1)
+        ->where('is_paid', 1)
+        ->where('expiration_date', '>', now())
+        ->orderByRaw(
+            $favCategoryId ? "category_id = {$favCategoryId} DESC" : '1'
+        )
+        ->limit(5)
+        ->get();
 
         return view(VIEW_FILE_NAMES['products_view_page'], compact('filter_data', 'ads', 'categories', 'paid_banners' ,
         'is_selected_category_vehicle', 'brands', 'models', 'max_price', 'min_construction_year', 'initial_filter_count'));
