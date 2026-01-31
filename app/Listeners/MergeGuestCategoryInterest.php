@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
+use App\CPU\Helpers;
 use Illuminate\Support\Facades\DB;
 use App\Model\UserCategoryInterest;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,7 @@ class MergeGuestCategoryInterest
     public function handle($event)
     {
         $user    = $event->user;
-        $guestId = session()->getId();
+        $guestId = Helpers::deviceId();
 
         Log::debug($guestId);
 
