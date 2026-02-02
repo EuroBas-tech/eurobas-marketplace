@@ -11,13 +11,16 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
         Login::class => [
             MergeGuestCategoryInterest::class,
+        ],
+         
+        \Laravel\Socialite\Events\SocialiteWasCalled::class => [
+            \SocialiteProviders\Apple\AppleExtendSocialite::class . '@handle',
         ],
     ];
 
