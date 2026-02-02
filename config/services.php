@@ -50,8 +50,10 @@ return [
 
     'apple' => [
         'client_id'     => "com.eurobas.web.login",
-        'client_secret' => null,
-        'redirect'      => "https://eurobas.com",
+        'client_secret' => null, //  
+        'team_id'       => "975WJJG233",
+        'key_id'        => "3K94UW8UQW",
+        'redirect'      => "https://eurobas.com/customer/auth/login/apple/callback",
     ],
 
 ];
