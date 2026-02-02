@@ -49,11 +49,10 @@ return [
     ],
 
     'apple' => [
-        'client_id'     => "com.eurobas.web.login",
-        'client_secret' => null, //  
-        'team_id'       => "975WJJG233",
-        'key_id'        => "3K94UW8UQW",
-        'redirect'      => "https://eurobas.com/customer/auth/login/apple/callback",
-    ],
-
+        'client_id'     => env('APPLE_CLIENT_ID'),
+        'team_id'       => env('APPLE_TEAM_ID'),
+        'key_id'        => env('APPLE_KEY_ID'),
+        'redirect'      => env('APPLE_REDIRECT_URI'),
+        'client_secret' => null,
+    ], 
 ];
