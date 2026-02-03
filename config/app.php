@@ -165,10 +165,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\SocialLoginServiceProvider::class,
-<<<<<<< HEAD
-=======
+
         SocialiteProviders\Manager\ServiceProvider::class,
->>>>>>> 527d3d99e1f9e0963d4045669098ac5b40e6d6b7
+        
         Madnest\Madzipper\MadzipperServiceProvider::class,
 
         /*

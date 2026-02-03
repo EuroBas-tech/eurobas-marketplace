@@ -19,8 +19,8 @@ class EventServiceProvider extends ServiceProvider
             MergeGuestCategoryInterest::class,
         ],
     
-         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            \SocialiteProviders\Apple\AppleExtendSocialite::class . '@handle',
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        \SocialiteProviders\Apple\AppleExtendSocialite::class . '@handle',
         
         ],
     ];
