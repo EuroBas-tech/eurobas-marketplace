@@ -61,14 +61,7 @@ return [
         'team_id' => env('APPLE_TEAM_ID'),
         'key_id' => env('APPLE_KEY_ID'),
 
-        'key_file' => cloudfront('apple-login') . (
-            collect(
-                json_decode(
-                    BusinessSetting::where('type', 'apple_login')->value('value'),
-                    true
-                )
-            )->firstWhere('login_medium', 'apple')['service_file'] ?? ''
-        ),
+        'key_file' => '',
 
         'redirect' => env('APPLE_REDIRECT_URI'),
     ],

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Customer\Auth;
 
-use App\CPU\CartManager;
-use App\CPU\Helpers;
-use App\Http\Controllers\Controller;
-use App\Model\BusinessSetting;
-use App\Model\Wishlist;
-use App\User;
-use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Laravel\Socialite\Facades\Socialite;
 use Session;
+use App\User;
+use App\CPU\Helpers;
+use App\Model\Wishlist;
+use App\CPU\CartManager;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Model\BusinessSetting;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
@@ -23,39 +24,57 @@ class SocialAuthController extends Controller
 
     public function handleProviderCallback($service)
     {
+        try {
+            if ($service === 'apple') {
+                $user_data = Socialite::driver('apple')->stateless()->user();
+                
+                // Apple doesn't always return name/email after first login
+                $name = $user_data->name ?? $user_data->getName() ?? 'Apple User';
+                $email = $user_data->email ?? $user_data->getEmail();
+                $user_id = $user_data->id ?? $user_data->getId();
+                
+            } else {
+                $user_data = Socialite::driver($service)->stateless()->user();
+                $name = $user_data->getName() ?? 'User';
+                $email = $user_data->getEmail();
+                $user_id = $user_data->id;
+            }
 
-        $user_data = Socialite::driver($service)->stateless()->user();
+            if (!$email) {
+                Toastr::error(translate('email_not_provided_by') . ' ' . ucfirst($service));
+                return redirect()->route('customer.auth.login');
+            }
 
-        $name = $user_data->getName() ?? 'User';
-        $email = $user_data->getEmail();
-        $user_id = $user_data->id;
+            $user = User::where('email', $email)->orWhere('social_id', $user_id)->first() ?? null;
 
-        $user = User::where('email', $email)->orWhere('social_id', $user_id)->first() ?? null;
+            if (!isset($user)) {
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => '',
+                    'password' => bcrypt($user_id),
+                    'is_active' => 1,
+                    'login_medium' => $service,
+                    'social_id' => $user_id,
+                    'is_phone_verified' => 0,
+                    'is_email_verified' => $email ? 1 : 0,
+                    'temporary_token' => Str::random(40),
+                ]);
+            } else {
+                $user->temporary_token = Str::random(40);
+                $user->save();
+            }
 
-        if (!isset($user)) {
-            $user = User::create([
-                'name' => $name,
-                'email' => $email,
-                'phone' => '',
-                'password' => bcrypt($user_id),
-                'is_active' => 1,
-                'login_medium' => $service,
-                'social_id' => $user_id,
-                'is_phone_verified' => 0,
-                'is_email_verified' => $email ? 1 : 0,
-                'temporary_token' => Str::random(40),
-            ]);
-        } else {
-            $user->temporary_token = Str::random(40);
-            $user->save();
+            $message = self::login_process($user, $email, $user_id);
+
+            Toastr::info($message);
+            return redirect()->route('home');
+            
+        } catch (\Exception $e) {
+            Log::error('Social login error: ' . $e->getMessage());
+            Toastr::error(translate('something_went_wrong'));
+            return redirect()->route('customer.auth.login');
         }
-
-        // redirect if website user
-        $message = self::login_process($user, $email, $user_id);
-
-        Toastr::info($message);
-        return redirect()->route('home');
-
     }
 
     public function editPhone($id)
