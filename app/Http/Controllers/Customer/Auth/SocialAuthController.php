@@ -13,12 +13,39 @@ use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use SocialiteProviders\Manager\Config;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
+    
     public function redirectToProvider(Request $request, $service)
     {
+        if ($service === 'apple') {
+            $apple_config = BusinessSetting::where('type', 'apple_login')->first();
+            
+            if (!$apple_config || !isset($apple_config->value)) {
+                Toastr::error(translate('apple_login_not_configured'));
+                return redirect()->route('customer.auth.login');
+            }
+            
+            $config_data = json_decode($apple_config->value, true);
+            $config_data = $config_data[0]; // Get first array item
+            
+            $config = new \SocialiteProviders\Manager\Config(
+                $config_data['client_id'],
+                $config_data['client_secret'],
+                $config_data['redirect_url'],
+                [
+                    'team_id' => $config_data['team_id'],
+                    'key_id' => $config_data['key_id'],
+                    'private_key' => cloudfront('paid-banners') . $config_data['service_file'],
+                ]
+            );
+            
+            return Socialite::driver('apple')->setConfig($config)->redirect();
+        }
+        
         return Socialite::driver($service)->redirect();
     }
 
