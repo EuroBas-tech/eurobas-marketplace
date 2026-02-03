@@ -55,9 +55,18 @@ return [
     // ],
 
     'apple' => [
+<<<<<<< HEAD
         'client_id' => "com.eurobas.web.login",
         'client_secret' => env('APPLE_CLIENT_SECRET'),
         'redirect' => "https://eurobas.com",
     ],
 
+=======
+        'client_id'     => env('APPLE_CLIENT_ID'),
+        'team_id'       => env('APPLE_TEAM_ID'),
+        'key_id'        => env('APPLE_KEY_ID'),
+        'redirect'      => env('APPLE_REDIRECT_URI'),
+        'client_secret' => null,
+    ], 
+>>>>>>> 527d3d99e1f9e0963d4045669098ac5b40e6d6b7
 ];
