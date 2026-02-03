@@ -107,6 +107,18 @@ class AppServiceProvider extends ServiceProvider
                     $social_login_text = false;
                     $apple_login = Helpers::get_business_settings('apple_login');
 
+                    if ($apple_login && isset($apple_login[0])) {
+                        config([
+                            'services.apple' => [
+                                'client_id' => $apple_login[0]['client_id'] ?? '',
+                                'team_id' => $apple_login[0]['team_id'] ?? '',
+                                'key_id' => $apple_login[0]['key_id'] ?? '',
+                                'redirect' => $apple_login[0]['redirect_url'] ?? '',
+                                'key_file' => cloudfront('paid-banners') . $apple_login[0]['service_file'],
+                            ]
+                        ]);
+                    }
+
                     foreach ($socials_login as $socialLoginService) {
                         if (isset($socialLoginService) && $socialLoginService['status'] == true) {
                             $social_login_text = true;
@@ -198,7 +210,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-    if (!session()->has('country_shipping')) {
+        if (!session()->has('country_shipping')) {
             session(['country_shipping' => 'All']);
         }
     }

@@ -50,19 +50,7 @@ return [
         'redirect' => env('TWITTER_SERVICE_CALLBACK'),
     ],
 
-    // 'apple' => [
-    //     'client_id'     => "com.eurobas.web.login",
-    //     'client_secret' => null,
-    //     'redirect'      => "https://eurobas.com",
-    // ],
-
-    'apple' => [
-        'client_id' => env('APPLE_CLIENT_ID'),
-        'team_id' => env('APPLE_TEAM_ID'),
-        'key_id' => env('APPLE_KEY_ID'),
-
-        'key_file' => '',
-
-        'redirect' => env('APPLE_REDIRECT_URI'),
-    ],
+    // Apple credentials are not defined here because they are fetched from the database.
+    // Therefore, they are loaded through the AppServiceProvider.
+    
 ];
