@@ -48,10 +48,16 @@ return [
         'redirect' => env('TWITTER_SERVICE_CALLBACK'),
     ],
 
+    // 'apple' => [
+    //     'client_id'     => "com.eurobas.web.login",
+    //     'client_secret' => null,
+    //     'redirect'      => "https://eurobas.com",
+    // ],
+
     'apple' => [
-        'client_id'     => "com.eurobas.web.login",
-        'client_secret' => null,
-        'redirect'      => "https://eurobas.com",
+        'client_id' => "com.eurobas.web.login",
+        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'redirect' => "https://eurobas.com",
     ],
 
 ];

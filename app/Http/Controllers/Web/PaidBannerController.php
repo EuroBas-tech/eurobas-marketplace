@@ -70,10 +70,9 @@ class PaidBannerController extends Controller
             if ($request->hasFile('banner_image')) {
                 $image = $request->file('banner_image');
 
-                // Store temporarily in storage/app/tmp/
-                $path = $image->store('tmp');
+                // Store in persistent directory
+                $path = $image->store('pending-banners');
 
-                // Save meta info in session
                 session([
                     'banner_image_path' => $path,
                     'banner_image_name' => $image->getClientOriginalName(),

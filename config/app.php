@@ -1,5 +1,8 @@
 <?php
 
+use SocialiteProviders\Apple\AppleExtendSocialite;
+
+
 return [
 
     /*
@@ -162,7 +165,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\SocialLoginServiceProvider::class,
-        // SocialiteProviders\Manager\ServiceProvider::class,
         Madnest\Madzipper\MadzipperServiceProvider::class,
 
         /*

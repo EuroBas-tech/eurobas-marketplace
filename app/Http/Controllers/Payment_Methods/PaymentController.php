@@ -76,6 +76,14 @@ class PaymentController extends Controller
             $uploadedFile = null;
             $path = session('banner_image_path'); // (1) get stored path
 
+            // ADD THIS DEBUG:
+            \Log::info('Banner path debug', [
+                'path' => $path,
+                'exists' => $path ? Storage::exists($path) : false,
+                'full_path' => $path ? storage_path('app/' . $path) : null,
+                'file_exists' => $path ? file_exists(storage_path('app/' . $path)) : false
+            ]);
+
             if (!session('banner_id')) {
 
                 if (!$path || !Storage::exists($path)) {
