@@ -42,6 +42,16 @@ class SocialAuthController extends Controller
                     'private_key' => cloudfront('paid-banners') . $config_data['service_file'],
                 ]
             );
+
+            Log::info('Apple Config Debug', [
+                'client_id' => $config_data['client_id'],
+                'redirect_url' => $config_data['redirect_url'],
+                'team_id' => $config_data['team_id'],
+                'key_id' => $config_data['key_id'],
+                'private_key_path' => cloudfront('paid-banners') . $config_data['service_file'],
+                'private_key_exists' => file_exists(cloudfront('paid-banners') . $config_data['service_file']),
+                'all_config_data' => $config_data
+            ]);
             
             return Socialite::driver('apple')->setConfig($config)->redirect();
         }
