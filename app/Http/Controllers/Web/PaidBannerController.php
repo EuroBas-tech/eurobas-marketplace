@@ -70,8 +70,9 @@ class PaidBannerController extends Controller
             if ($request->hasFile('banner_image')) {
                 $image = $request->file('banner_image');
 
-                // Store in persistent directory
-                $path = $image->store('pending-banners');
+                // Store with original extension, NOT webp
+                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('pending-banners', $filename);
 
                 session([
                     'banner_image_path' => $path,
