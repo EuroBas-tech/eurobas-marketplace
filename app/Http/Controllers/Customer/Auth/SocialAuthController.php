@@ -30,11 +30,11 @@ class SocialAuthController extends Controller
             }
             
             $config_data = json_decode($apple_config->value, true);
-            $config_data = $config_data[0]; // Get first array item
+            $config_data = $config_data[0];
             
             $config = new \SocialiteProviders\Manager\Config(
                 $config_data['client_id'],
-                $config_data['client_secret'],
+                null,
                 $config_data['redirect_url'],
                 [
                     'team_id' => $config_data['team_id'],
@@ -63,9 +63,23 @@ class SocialAuthController extends Controller
     {
         try {
             if ($service === 'apple') {
-                $user_data = Socialite::driver('apple')->stateless()->user();
+                $apple_config = BusinessSetting::where('type', 'apple_login')->first();
+                $config_data = json_decode($apple_config->value, true);
+                $config_data = $config_data[0];
                 
-                // Apple doesn't always return name/email after first login
+                $config = new \SocialiteProviders\Manager\Config(
+                    $config_data['client_id'],
+                    null,  // ✅ Apple doesn't use client_secret
+                    $config_data['redirect_url'],
+                    [
+                        'team_id' => $config_data['team_id'],
+                        'key_id' => $config_data['key_id'],
+                        'private_key' => storage_path('app/' . $config_data['service_file']),
+                    ]
+                );
+                
+                $user_data = Socialite::driver('apple')->setConfig($config)->stateless()->user();
+                
                 $name = $user_data->name ?? $user_data->getName() ?? 'Apple User';
                 $email = $user_data->email ?? $user_data->getEmail();
                 $user_id = $user_data->id ?? $user_data->getId();
