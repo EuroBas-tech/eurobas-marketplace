@@ -706,9 +706,11 @@ class BusinessSettingsController extends Controller
     {
         $appleLogin = BusinessSetting::where('type', 'apple_login')->first();
         $credential_array = [];
+
         if ($request->hasfile('service_file')) {
-            $fileName = ImageManager::file_upload('apple-login/', 'p8', $request->file('service_file'));
+            $fileName = ImageManager::file_upload('apple-login/', 'p8', $request->file('service_file'));   
         }
+        
         foreach (json_decode($appleLogin['value'], true) as $key => $data) {
             if ($data['login_medium'] == $service) {
                 $cred = [

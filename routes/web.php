@@ -674,3 +674,17 @@ Route::get('apple-login', function() {
     $apple = Helpers::get_business_settings('apple_login');
     return $apple[0]['status'] == true;
 });
+
+Route::get('show-apple-file', function () {
+    $apple = cloudfront('apple-login') . (
+        collect(
+            json_decode(
+                BusinessSetting::where('type', 'apple_login')->value('value'),
+                true
+            )
+        )->firstWhere('login_medium', 'apple')['service_file'] ?? ''
+    );
+
+    return $apple;
+
+});
