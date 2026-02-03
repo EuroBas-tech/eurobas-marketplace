@@ -68,17 +68,8 @@ class PaidBannerController extends Controller
             $data['ad_id'] = $ad->id ?? null;
 
             if ($request->hasFile('banner_image')) {
-                $image = $request->file('banner_image');
-
-                // Store with original extension, NOT webp
-                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                $path = $image->storeAs('pending-banners', $filename);
-
-                session([
-                    'banner_image_path' => $path,
-                    'banner_image_name' => $image->getClientOriginalName(),
-                    'banner_image_mime' => $image->getMimeType(),
-                ]);
+                $banner_image_name = ImageManager::upload('paid-banners/', 'webp', $request->file('banner_image'), null);
+                session(['banner_image_name' => $banner_image_name]);
             }
 
             return response()->view('theme-views.sponsor.partials.redirect-payment-post', [

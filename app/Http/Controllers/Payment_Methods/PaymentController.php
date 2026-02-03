@@ -71,68 +71,25 @@ class PaymentController extends Controller
         
         $ad = Ad::find($ad_id);
         
-        if ($package->type->name == 'promotional_banner') {            
+        if ($package->type->name == 'promotional_banner') {           
             
-            $uploadedFile = null;
-            $path = session('banner_image_path'); // (1) get stored path
-
-            // ADD THIS DEBUG:
-            \Log::info('Banner path debug', [
-                'path' => $path,
-                'exists' => $path ? Storage::exists($path) : false,
-                'full_path' => $path ? storage_path('app/' . $path) : null,
-                'file_exists' => $path ? file_exists(storage_path('app/' . $path)) : false
-            ]);
-
-            if (!session('banner_id')) {
-
-                if (!$path || !Storage::exists($path)) {
-                    throw new \RuntimeException('Temporary banner image not found.'); // (2) fail fast if missing
-                }
-
-                $fullPath = storage_path('app/' . $path); // (3) absolute file path
-
-                $uploadedFile = new \Symfony\Component\HttpFoundation\File\UploadedFile(
-                    $fullPath,
-                    session('banner_image_name') ?? basename($fullPath),
-                    session('banner_image_mime') ?? mime_content_type($fullPath),
-                    null,
-                    true
-                ); // (4) rebuild UploadedFile from real temp file
-            } else {
-                if ($path && Storage::exists($path)) {   // ✅ fixed: should be AND, not OR
-                    $fullPath = storage_path('app/' . $path); // (3) absolute file path
-
-                    $uploadedFile = new \Symfony\Component\HttpFoundation\File\UploadedFile(
-                        $fullPath,
-                        session('banner_image_name') ?? basename($fullPath),
-                        session('banner_image_mime') ?? mime_content_type($fullPath),
-                        null,
-                        true
-                    ); // (4) rebuild UploadedFile from real temp file
-                }
-            }
+            $banner_image_name = session('banner_image_name');
 
             $model = session('banner_id') ? PaidBanner::find(session('banner_id')) : new PaidBanner;
 
             $model->banner_url = isset($ad->slug) ? route('ads-show', $ad->slug) : null;
-            
-            if($uploadedFile) {
-                $model->banner_image = ImageManager::upload('paid-banners/', 'webp', $uploadedFile, null);
-            }
 
             $model->price = $package->price;
             $model->duration_in_days = $package->duration_in_days;
             $model->expiration_date = now()->addHours($package->duration_in_days * 24);
             $model->user_id = auth('customer')->id();
             $model->category_id = $request->category_id;
+            $model->banner_image = $banner_image_name;
             $model->package_id = $package->id;
-
             $model->save();
 
-            // cleanup: remove temp file and clear session keys
-            Storage::delete($path); // (5) delete temporary file
-            session()->forget(['banner_image_path', 'banner_image_name', 'banner_image_mime']); // (6) clear session
+            session()->forget('banner_image_name');
+
         }else {
             $data['ad_id'] = $ad->id;
             $data['type'] = $package->type->name;
