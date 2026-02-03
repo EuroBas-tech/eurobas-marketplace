@@ -18,9 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [
             MergeGuestCategoryInterest::class,
         ],
-         
-        \Laravel\Socialite\Events\SocialiteWasCalled::class => [
+    
+         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             \SocialiteProviders\Apple\AppleExtendSocialite::class . '@handle',
+        
         ],
     ];
 
