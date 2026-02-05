@@ -672,7 +672,7 @@ Route::get('interests-table', function() {
 
 Route::get('apple-login', function() {
     $apple = Helpers::get_business_settings('apple_login');
-    return $apple[0]['status'] == true;
+    return $apple;
 });
 
 Route::get('show-apple-file', function () {
