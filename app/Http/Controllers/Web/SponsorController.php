@@ -199,7 +199,7 @@ class SponsorController extends Controller
         $user_ads_sponsor = Ad::with('sponsor')
         ->where('user_id', auth('customer')->id())
         ->whereHas('sponsor', function ($query) {
-            $query->where('paid', 1);
+            $query->where('is_paid', 1);
         })
         ->get();
 
