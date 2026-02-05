@@ -197,7 +197,9 @@ class SponsorController extends Controller
     public function data() {
 
         $user_ads_sponsor = Ad::with('sponsor')->whereHas('sponsor')
-        ->where('user_id', auth('customer')->id())->get();
+        ->where('user_id', auth('customer')->id())
+        ->where('is_paid', 1)
+        ->get();
 
         return view('theme-views.sponsor.data', compact('user_ads_sponsor'));
     }
