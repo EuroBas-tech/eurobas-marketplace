@@ -20,6 +20,7 @@ class PaidBannerController extends Controller
     public function index() {
 
         $user_banners = PaidBanner::where('user_id', auth('customer')->user()->id)
+        ->where('is_paid', 1)
         ->orderBy('created_at', 'desc')
         ->paginate(15);
 
