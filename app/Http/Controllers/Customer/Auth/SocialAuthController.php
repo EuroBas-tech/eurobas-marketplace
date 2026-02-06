@@ -20,42 +20,7 @@ class SocialAuthController extends Controller
 {
     
     public function redirectToProvider(Request $request, $service)
-    {
-        if ($service === 'apple') {
-            $apple_config = BusinessSetting::where('type', 'apple_login')->first();
-            
-            if (!$apple_config || !isset($apple_config->value)) {
-                Toastr::error(translate('apple_login_not_configured'));
-                return redirect()->route('customer.auth.login');
-            }
-            
-            $config_data = json_decode($apple_config->value, true);
-            $config_data = $config_data[0];
-            
-            $config = new \SocialiteProviders\Manager\Config(
-                $config_data['client_id'],
-                null,
-                $config_data['redirect_url'],
-                [
-                    'team_id' => $config_data['team_id'],
-                    'key_id' => $config_data['key_id'],
-                    'private_key' => cloudfront('paid-banners') . $config_data['service_file'],
-                ]
-            );
-
-            Log::info('Apple Config Debug', [
-                'client_id' => $config_data['client_id'],
-                'redirect_url' => $config_data['redirect_url'],
-                'team_id' => $config_data['team_id'],
-                'key_id' => $config_data['key_id'],
-                'private_key_path' => cloudfront('paid-banners') . $config_data['service_file'],
-                'private_key_exists' => file_exists(cloudfront('paid-banners') . $config_data['service_file']),
-                'all_config_data' => $config_data
-            ]);
-            
-            return Socialite::driver('apple')->setConfig($config)->redirect();
-        }
-        
+    {   
         return Socialite::driver($service)->redirect();
     }
 
@@ -63,22 +28,8 @@ class SocialAuthController extends Controller
     {
         try {
             if ($service === 'apple') {
-                $apple_config = BusinessSetting::where('type', 'apple_login')->first();
-                $config_data = json_decode($apple_config->value, true);
-                $config_data = $config_data[0];
                 
-                $config = new \SocialiteProviders\Manager\Config(
-                    $config_data['client_id'],
-                    null,  // ✅ Apple doesn't use client_secret
-                    $config_data['redirect_url'],
-                    [
-                        'team_id' => $config_data['team_id'],
-                        'key_id' => $config_data['key_id'],
-                        'private_key' => storage_path('app/' . $config_data['service_file']),
-                    ]
-                );
-                
-                $user_data = Socialite::driver('apple')->setConfig($config)->stateless()->user();
+                $user_data = Socialite::driver('apple')->stateless()->user();
                 
                 $name = $user_data->name ?? $user_data->getName() ?? 'Apple User';
                 $email = $user_data->email ?? $user_data->getEmail();
