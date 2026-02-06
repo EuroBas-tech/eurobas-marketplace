@@ -36,7 +36,7 @@ class SocialAuthController extends Controller
                 $user_id = $user_data->id ?? $user_data->getId();
                 
             } else {
-                $user_data = Socialite::driver($service)->stateless()->user();
+                $user_data = Socialite::driver($service)->user();
                 $name = $user_data->getName() ?? 'User';
                 $email = $user_data->getEmail();
                 $user_id = $user_data->id;
