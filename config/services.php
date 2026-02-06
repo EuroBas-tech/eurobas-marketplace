@@ -55,7 +55,8 @@ return [
         'team_id' => '975WJJG233',
         'key_id' => '3K94UW8UQW',
         'private_key' => "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgLndok/+oommuz4HswvitFx1aPex0obcyXmbSv64PTDigCgYIKoZIzj0DAQehRANCAAQDYozC+TMlGhKr8xEI+GLMLdxT5F2xd521DuyekNldGPM9eByN9anaWt71OwWiW1dVwfTt4SlpoLvNZRAsJ2oY\n-----END PRIVATE KEY-----",
+        'client_secret' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjNLOTRVVzhVUVcifQ.eyJpc3MiOiI5NzVXSkpHMjMzIiwiaWF0IjoxNzcwMzczOTUyLCJleHAiOjE3ODU5MjU5NTIsImF1ZCI6Imh0dHBzOi8vYXBwbGVpZC5hcHBsZS5jb20iLCJzdWIiOiJjb20uZXVyb2Jhcy53ZWIubG9naW4ifQ.PXwzbRjAqUJolzWhyAlidzkGoOniIxi2qnBspwAvcNZIZnP5ILnlxPG7UKzqmMR5_rQNBhtQC4cBQJFrX2Y0ug',
         'redirect' => 'https://eurobas.com',
-    ]
+    ],
     
 ];
