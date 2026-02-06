@@ -60,7 +60,7 @@ Route::group(
                 Route::post('update-phone/{id}', 'SocialAuthController@updatePhone');
 
                 Route::get('login/{service}', 'SocialAuthController@redirectToProvider')->name('service-login');
-                Route::get('login/{service}/callback', 'SocialAuthController@handleProviderCallback')->name('service-callback');
+                Route::match(['GET','POST'], 'login/{service}/callback', 'SocialAuthController@handleProviderCallback')->name('service-callback');
 
                 Route::get('recover-password', 'ForgotPasswordController@reset_password')->name('recover-password');
                 Route::post('forgot-password', 'ForgotPasswordController@reset_password_request')->name('forgot-password');
