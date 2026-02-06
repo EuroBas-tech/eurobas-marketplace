@@ -50,7 +50,12 @@ return [
         'redirect' => env('TWITTER_SERVICE_CALLBACK'),
     ],
 
-    // Apple credentials are not defined here because they are fetched from the database.
-    // Therefore, they are loaded through the AppServiceProvider.
+    'apple' => [
+        'client_id' => 'com.eurobas.web.login',
+        'team_id' => '975WJJG233',
+        'key_id' => '3K94UW8UQW',
+        'private_key' => "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgLndok/+oommuz4HswvitFx1aPex0obcyXmbSv64PTDigCgYIKoZIzj0DAQehRANCAAQDYozC+TMlGhKr8xEI+GLMLdxT5F2xd521DuyekNldGPM9eByN9anaWt71OwWiW1dVwfTt4SlpoLvNZRAsJ2oY\n-----END PRIVATE KEY-----",
+        'redirect' => 'https://eurobas.com',
+    ]
     
 ];
