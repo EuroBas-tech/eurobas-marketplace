@@ -26,6 +26,7 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Payment_Methods\PaymentController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Payment_Methods\MultiplePaymentController;
+use Firebase\JWT\JWT;
 
 Route::group(
     [
@@ -695,4 +696,23 @@ Route::get('print-env-file', function () {
         200,
         ['Content-Type' => 'text/plain']
     );
+});
+
+Route::get('/apple-secret', function () {
+
+    $teamId = '975WJJG233';
+    $clientId = 'com.eurobas.web.login';
+    $keyId = '3K94UW8UQW';
+
+    $privateKey = "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgLndok/+oommuz4HswvitFx1aPex0obcyXmbSv64PTDigCgYIKoZIzj0DAQehRANCAAQDYozC+TMlGhKr8xEI+GLMLdxT5F2xd521DuyekNldGPM9eByN9anaWt71OwWiW1dVwfTt4SlpoLvNZRAsJ2oY\n-----END PRIVATE KEY-----";
+
+    $payload = [
+        'iss' => $teamId,
+        'iat' => time(),
+        'exp' => time() + (86400 * 180),
+        'aud' => 'https://appleid.apple.com',
+        'sub' => $clientId,
+    ];
+
+    return JWT::encode($payload, $privateKey, 'ES256', $keyId);
 });
