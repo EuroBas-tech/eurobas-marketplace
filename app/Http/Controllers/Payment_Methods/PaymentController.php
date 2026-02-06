@@ -88,8 +88,6 @@ class PaymentController extends Controller
             $model->package_id = $package->id;
             $model->save();
 
-            session()->forget('banner_image_name');
-
         }else {
             $data['ad_id'] = $ad->id;
             $data['type'] = $package->type->name;
