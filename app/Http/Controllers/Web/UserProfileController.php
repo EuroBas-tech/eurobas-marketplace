@@ -226,21 +226,57 @@ class UserProfileController extends Controller
                 auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
         ->sortByDesc('score')
         ->first()?->category_id;
+        
+        // Get total matching banners count
+        $totalBanners = PaidBanner::with('package.features', 'category')
+            ->whereHas('package', function ($q) {
+                $q->whereHas('features', function ($q2) {
+                    $q2->where('name', 'show_on_filter_and_ad_page');
+                });
+            })
+            ->where('status', 1)
+            ->where('is_paid', 1)
+            ->where('expiration_date', '>', now())
+            ->count();
 
-        $paid_banners = PaidBanner::with('package.features', 'category')
-        ->whereHas('package', function ($q) {
-            $q->whereHas('features', function ($q2) {
-                $q2->where('name', 'show_on_filter_and_ad_page');
-            });
-        })
-        ->where('status', 1)
-        ->where('is_paid', 1)
-        ->where('expiration_date', '>', now())
-        ->orderByRaw(
-            $favCategoryId ? "category_id = {$favCategoryId} DESC" : '1'
-        )
-        ->limit(5)
-        ->get();
+        // If no banners or less than 5, just show what exists
+        if ($totalBanners <= 5) {
+            $paid_banners = PaidBanner::with('package.features', 'category')
+                ->whereHas('package', function ($q) {
+                    $q->whereHas('features', function ($q2) {
+                        $q2->where('name', 'show_on_filter_and_ad_page');
+                    });
+                })
+                ->where('status', 1)
+                ->where('is_paid', 1)
+                ->where('expiration_date', '>', now())
+                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
+                ->get();
+        } else {
+            // Get current offset from session (default 0)
+            $offset = session('banner_offset', 0);
+            
+            // Fetch 5 banners starting from offset
+            $paid_banners = PaidBanner::with('package.features', 'category')
+                ->whereHas('package', function ($q) {
+                    $q->whereHas('features', function ($q2) {
+                        $q2->where('name', 'show_on_filter_and_ad_page');
+                    });
+                })
+                ->where('status', 1)
+                ->where('is_paid', 1)
+                ->where('expiration_date', '>', now())
+                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
+                ->offset($offset)
+                ->limit(5)
+                ->get();
+            
+            // Calculate next offset (rotate when reaching end)
+            $nextOffset = ($offset + 5) % $totalBanners;
+            
+            // Store for next page load
+            session(['banner_offset' => $nextOffset]);
+        }
 
         $models = $models->map(function ($model) {
             return [
