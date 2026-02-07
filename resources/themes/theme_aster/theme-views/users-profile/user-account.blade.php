@@ -32,7 +32,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <form  action="{{route('user-update')}}" method="post" enctype="multipart/form-data">
+                                <form  action="{{route('user-update')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row gy-3">
                                         <div class="col-sm-12">
