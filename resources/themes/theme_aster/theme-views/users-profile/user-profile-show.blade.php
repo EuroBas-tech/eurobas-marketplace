@@ -138,6 +138,8 @@
                                             </div>
                                             <form id="filter-form">
                                                 @csrf
+                                                <input type="hidden" name="profile_id" value="{{$user_profile->id}}" >
+                                                
                                                 <div>
                                                     <h4 class="mb-3" >
                                                         <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
