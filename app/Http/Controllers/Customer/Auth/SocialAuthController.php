@@ -28,18 +28,17 @@ class SocialAuthController extends Controller
     {
         try {
             if ($service === 'apple') {
-                
                 $user_data = Socialite::driver('apple')->stateless()->user();
                 
                 $name = $user_data->name ?? $user_data->getName() ?? 'Apple User';
                 $email = $user_data->email ?? $user_data->getEmail();
                 $user_id = $user_data->id ?? $user_data->getId();
-                
             } else {
                 $user_data = Socialite::driver($service)->user();
+                
                 $name = $user_data->getName() ?? 'User';
                 $email = $user_data->getEmail();
-                $user_id = $user_data->id;
+                $user_id = $user_data->getId(); 
             }
 
             if (!$email) {
