@@ -644,10 +644,10 @@ Route::get('log/show', function () {
 
 Route::get('upload-migrations', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_29_222026_create_user_category_interests_table.php',
+        '--path' => 'database/migrations/2026_01_12_202999_make_password_nullable_on_users_table.php',
         '--force' => true,
     ]);
-
+    
     return 'migration successfully uploaded';
 });
 
