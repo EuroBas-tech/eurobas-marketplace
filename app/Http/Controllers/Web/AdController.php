@@ -1196,6 +1196,10 @@ class AdController extends Controller
     public function ads_filter(Request $request) {
 
         $query = Ad::active()->with('sponsor');
+
+        if ($request->filled('profile_id') && User::where('id', $request->profile_id)->exists()) {
+            $query->where('user_id', $request->profile_id);
+        }
         
         if ($request->color != 'all' && $request->color) {
             $query->where('color', $request->color);
