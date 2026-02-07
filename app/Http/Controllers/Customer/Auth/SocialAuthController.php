@@ -33,11 +33,6 @@ class SocialAuthController extends Controller
             $email = $user_data->getEmail() ?? $user_data->email;
             $user_id = $user_data->getId() ?? $user_data->id;
 
-            if (!$email) {
-                Toastr::error(translate('email_not_provided_by') . ' ' . ucfirst($service));
-                return redirect()->route('customer.auth.login');
-            }
-
             $user = User::where('email', $email)->orWhere('social_id', $user_id)->first() ?? null;
 
             if (!isset($user)) {
