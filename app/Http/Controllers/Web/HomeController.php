@@ -72,20 +72,58 @@ class HomeController extends Controller
         ->sortByDesc('score')
         ->first()?->category_id;
 
-        $paid_banners = PaidBanner::with('package.features', 'category')
-        ->whereHas('package.features', fn ($q) =>
-            $q->where('name', 'show_on_home_page')
-        )
-        ->where('status', 1)
-        ->where('is_paid', 1)
-        ->where('expiration_date', '>', now())
-        ->orderByRaw(
-            $favCategoryId
-                ? "category_id = {$favCategoryId} DESC"
-                : '1'
-        )
-        ->limit(15)
-        ->get();
+        // Get total matching banners count
+        $totalBanners = PaidBanner::with('package.features', 'category')
+            ->whereHas('package.features', fn ($q) =>
+                $q->where('name', 'show_on_home_page')
+            )
+            ->where('status', 1)
+            ->where('is_paid', 1)
+            ->where('expiration_date', '>', now())
+            ->count();
+
+        // If no banners or less than 10, just show what exists
+        if ($totalBanners <= 10) {
+            $paid_banners = PaidBanner::with('package.features', 'category')
+                ->whereHas('package.features', fn ($q) =>
+                    $q->where('name', 'show_on_home_page')
+                )
+                ->where('status', 1)
+                ->where('is_paid', 1)
+                ->where('expiration_date', '>', now())
+                ->orderByRaw(
+                    $favCategoryId
+                        ? "category_id = {$favCategoryId} DESC"
+                        : '1'
+                )
+                ->get();
+        } else {
+            // Get current offset from session (default 0) - separate session key
+            $offset = session('home_slider_offset', 0);
+            
+            // Fetch 10 banners starting from offset
+            $paid_banners = PaidBanner::with('package.features', 'category')
+                ->whereHas('package.features', fn ($q) =>
+                    $q->where('name', 'show_on_home_page')
+                )
+                ->where('status', 1)
+                ->where('is_paid', 1)
+                ->where('expiration_date', '>', now())
+                ->orderByRaw(
+                    $favCategoryId
+                        ? "category_id = {$favCategoryId} DESC"
+                        : '1'
+                )
+                ->offset($offset)
+                ->limit(10)
+                ->get();
+            
+            // Calculate next offset (rotate when reaching end)
+            $nextOffset = ($offset + 10) % $totalBanners;
+            
+            // Store for next page load
+            session(['home_slider_offset' => $nextOffset]);
+        }
 
         $decimal_point_settings = Helpers::get_business_settings('decimal_point_settings') ?? 0;
         $user = Helpers::get_customer();
