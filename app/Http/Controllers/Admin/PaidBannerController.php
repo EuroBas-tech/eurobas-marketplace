@@ -19,7 +19,8 @@ class PaidBannerController extends Controller
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
 
-            $paid_banners = PaidBanner::with(['user'])
+            $paid_banners = PaidBanner::where('status', 1)
+            ->where('is_paid', 1)->with(['user'])
             ->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('duration_in_days', 'like', "%{$value}%")
