@@ -139,7 +139,6 @@
                                             <form id="filter-form">
                                                 @csrf
                                                 <input type="hidden" name="profile_id" value="{{$user_profile->id}}" >
-                                                
                                                 <div>
                                                     <h4 class="mb-3" >
                                                         <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
@@ -977,16 +976,13 @@
             }
         });
 
+        // ================== Filter Logic ==================
         function filterAds() {
             var formData = $('#filter-form').serialize();
-
-            formData += '&user_id=' + user_id;
-
-            // Show full-screen loader
             $('#fullscreen-loader').removeClass('d-none');
 
             $.ajax({
-                url: "{{ route('profile-ads-filter') }}",
+                url: "{{ route('ads-filter') }}",
                 method: "POST",
                 data: formData,
                 headers: {
@@ -997,7 +993,6 @@
                     $('#ads-count-number').text(response.count);
                     offset = 5;
                     if(response.count > 0) {
-
                         is_available_items = true;
                         loading = false;
                         if(response.count <= 5) {
@@ -1006,7 +1001,6 @@
                         }
 
                         shownAdIds = [];
-
                         let newIds = Array.isArray(response.show_ad_ids) ? response.show_ad_ids : Object.values(response.show_ad_ids);
                         shownAdIds = [...newIds];
 
@@ -1022,34 +1016,130 @@
                     console.error("AJAX Error: ", xhr.responseText);
                 },
                 complete: function () {
-                    // Hide loader after success or error
                     $('#fullscreen-loader').addClass('d-none');
                 }
             });
         }
 
-        $(document).ready(function () {
-            // Initialize Select2 when switching to the ads tab, but only for brand and model
-            $('#nav-profile-tab').on('shown.bs.tab', function (e) {
-                // Reinitialize only brand and model selects
-                if ($('#brand').data('select2')) {
-                    $('#brand').select2('destroy');
-                }
-                $('#brand').select2({
-                    placeholder: "{{ translate('choose_brand') }}",
-                    allowClear: true
-                });
+        // ================== Update Active Filters ==================
+        function updateActiveFilters() {
+            const $container = $('#active-filters');
+            $container.html('');
 
-                if ($('#model').data('select2')) {
-                    $('#model').select2('destroy');
+            $('.filter-input').each(function () {
+                const $el = $(this);
+                const label = $el.data('filter-label');
+                const id = $el.data('filter-id');
+                const name = $el.data('filter-name');
+                const value = $el.val();
+                const type = $el.attr('type');
+
+                if (type === 'checkbox' && $el.is(':checked') && name) {
+                    if ($container.find(`.active-filter-item[data-name="${name}"]`).length === 0) {
+                        const filterHtml = `
+                            <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-name="${name}" role="button">
+                                <span>${label}</span>
+                                <span class="ms-1 fs-18">&times;</span>
+                            </span>
+                    `;
+                        $container.append(filterHtml);
+                    }
                 }
-                $('#model').select2({
-                    placeholder: "{{ translate('choose_model') }}",
-                    allowClear: true
-                });
+                else if ($el.is('select')) {
+                    if (value && value !== 'all') {
+                        if ($container.find(`.active-filter-item[data-id="${id}"]`).length === 0) {
+                            const filterHtml = `
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium  mb-1 active-filter-item"
+                                data-id="${id}" role="button">
+                                    <span>${label}</span>
+                                    <span class="ms-1 fs-18">&times;</span>
+                            </span>
+                            `;
+                            $container.append(filterHtml);
+                        }
+                    }
+                }
+                else if ((type === 'text' || type === 'number') && value && id){
+                    if ($container.find(`.active-filter-item[data-id="${name}"]`).length === 0) {
+                        const filterHtml = `
+                            <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-id="${id}" role="button">
+                                <span>${label}</span>
+                                <span class="ms-1 fs-18">&times;</span>
+                            </span>
+                    `;
+                        $container.append(filterHtml);
+                    }
+                }
             });
 
-            let debounceTimer;
+            if ($('#location_country').val() !== 'All Europe') {
+                if ($container.find(`.active-filter-item[data-id="location_country"]`).length === 0) {
+                    const filterHtml = `
+                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-id="location_country" role="button">
+                            <span>Country</span>
+                            <span class="ms-1 fs-15">&times;</span>
+                        </span>
+                `;
+                    $container.append(filterHtml);
+                }
+            }
+
+            if ($('#location_city').val()){
+                if ($container.find(`.active-filter-item[data-id="location_city"]`).length === 0) {
+                    const filterHtml = `
+                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-id="location_city" role="button">
+                            <span>City</span>
+                            <span class="ms-1 fs-15">&times;</span>
+                        </span>
+                `;
+                    $container.append(filterHtml);
+                }
+            }
+
+            if ($('#location_radius').val()){
+                if ($container.find(`.active-filter-item[data-id="location_radius"]`).length === 0) {
+                    const filterHtml = `
+                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium  mb-2 active-filter-item" data-id="location_radius" role="button">
+                            <span>Radius</span>
+                            <span class="ms-1 fs-15">&times;</span>
+                        </span>
+                `;
+                    $container.append(filterHtml);
+                }
+            }
+        }
+
+        // ================== Toggle Category Fields ==================
+        function toggleCategoryFilterFields() {
+            let selectedOption = $('#category').find(':selected');
+            let selectedType = selectedOption.data('category-type');
+            let selectedSlug = selectedOption.data('category-slug');
+
+            $('[data-category-types]').each(function () {
+                let allowedTypes = $(this).data('category-types').split(',').map(type => type.trim());
+                let showItem = allowedTypes.includes(selectedType) || selectedType === 'all' || allowedTypes.includes('all');
+                let isBicycle = $(this).data('is-bicycle');
+
+                if (isBicycle && selectedSlug !== 'bicycles') showItem = false;
+
+                if((selectedSlug == 'spare-parts' || selectedSlug == 'vehicle-accessories') &&
+                    $(this).data('vehicle-equipment') == 0) showItem = false;
+
+                if ($(this).data('is-not-bicycle') !== undefined && selectedSlug == 'bicycles') showItem = false;
+
+                if (showItem) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+
+            });
+        }
+
+        // ================== Document Ready ==================
+        $(document).ready(function () {
+            toggleCategoryFilterFields();
+
             $('.filter-input').on('change', function () {
                 $('#clear-filters').prop('disabled', false);
                 filterAds();
@@ -1065,73 +1155,90 @@
                 }, 2000);
             });
 
+            $('#apply_location_search').on('click', function() {
+                if($('#location_radius').val() != '' && $('#location_city').val() == '') {
+                    toastr.error('{{translate("add_city_before_you_search_by_radius")}} .');
+                    return;
+                }
+
+                filterAds();
+                updateActiveFilters();
+            });
+
+            $('#location_city').on('keyup', function() {
+                const cityValue = $(this).val().trim();
+                const $radiusField = $('#location_radius');
+
+                if (cityValue !== '') {
+                    $radiusField.val('').prop('disabled', false);
+                } else {
+                    $radiusField.prop('disabled', true);
+                }
+            });
 
             $('#clear-filters').on('click', function () {
                 $('.filter-input').each(function () {
                     if ($(this).is(':checkbox')) {
-                        $(this).prop('checked', false); // Uncheck checkboxes
+                        $(this).prop('checked', false);
                     } else if ($(this).is('select')) {
-                        $(this).prop('selectedIndex', 0); // Reset select to first option
+                        $(this).prop('selectedIndex', 0);
                         if ($(this).find('option[value="all"]').length) {
-                            $(this).val('all').trigger('change');
+                            if (!$(this).is('#category')) {
+                                $(this).val('all').trigger('change');
+                            } else {
+                                $(this).val('all');
+                            }
                         }
                     } else {
-                        $(this).val(''); // Clear text inputs
+                        $(this).val('');
                     }
                 });
+
+                $('#location_country').val('All Europe').trigger('change');
+                $('#location_city').val('');
+                $('#location_radius').val('');
 
                 filterAds();
                 $('#clear-filters').prop('disabled', true);
                 updateActiveFilters();
             });
 
+            $('#category').on('change', function () {
+                toggleCategoryFilterFields();
 
-            function updateActiveFilters() {
-                const $container = $('#active-filters');
-                $container.html('');
+                const categoryVal = $(this).val();
 
                 $('.filter-input').each(function () {
-                    const $el = $(this);
-                    const label = $el.data('filter-label');
-                    const id = $el.data('filter-id');
-                    const name = $el.data('filter-name');
-                    const value = $el.val();
-                    const type = $el.attr('type');
-
-                    // Checkbox group (name)
-                    if (type === 'checkbox' && $el.is(':checked') && name) {
-                        if ($container.find(`.active-filter-item[data-name="${name}"]`).length === 0) {
-                            const filterHtml = `
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item" data-name="${name}" role="button">
-                                    <span>${label}</span>
-                                    <span class="ms-1 fs-18">&times;</span>
-                                </span>
-                        `;
-                            $container.append(filterHtml);
-                        }
+                    if ($(this).is('#category') && categoryVal !== 'all') {
+                        return; // skip clearing category if value is not "all"
                     }
 
-                    else if ($el.is('select')) {
-                        if (value && value !== 'all') {
-                            if ($container.find(`.active-filter-item[data-id="${id}"]`).length === 0) {
-                                const filterHtml = `
-                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
-                                    data-id="${id}" role="button">
-                                        <span>${label}</span>
-                                        <span class="ms-1 fs-18">&times;</span>
-                                </span>
-                                `;
-                                $container.append(filterHtml);
+                    if ($(this).is(':checkbox')) {
+                        $(this).prop('checked', false);
+                    } else if ($(this).is('select')) {
+                        $(this).prop('selectedIndex', 0);
+                        if ($(this).find('option[value="all"]').length) {
+                            if (!$(this).is('#category')) {
+                                $(this).val('all').trigger('change');
+                            } else {
+                                $(this).val('all');
                             }
                         }
+                    } else {
+                        $(this).val('');
                     }
-
                 });
 
-            }
+                $('#location_country').val('All Europe').trigger('change');
+                $('#location_city').val('');
+                $('#location_radius').val('');
+
+                filterAds();
+                $('#clear-filters').prop('disabled', true);
+                updateActiveFilters();
+            });
 
             $(document).on('click', '.active-filter-item', function () {
-
                 const id = $(this).data('id');
                 const name = $(this).data('name');
 
@@ -1149,6 +1256,7 @@
                         }
                     }
 
+                    if($elmByDataId.hasClass('location-filter-input')) { filterAds(); }
                 }
 
                 if (name) {
@@ -1164,10 +1272,306 @@
                     $('#clear-filters').prop('disabled', true);
                 }
             });
-
         });
 
     </script>
 
-@endpush
+        <script>
+        let map;
+        let geocoder;
+        let currentCircle;
+        let autocomplete;
+        let currentMarker;
 
+        function initAutocomplete() {
+            // Get initial center and zoom based on selected country
+            const initialMapSettings = getInitialMapSettings();
+
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById("location_map_canvas"), {
+                zoom: initialMapSettings.zoom,
+                center: initialMapSettings.center,
+                mapTypeId: "roadmap",
+                disableDefaultUI: true,
+                draggable: false,
+                zoomControl: false,
+                scrollwheel: false,
+                disableDoubleClickZoom: true,
+                gestureHandling: 'none'
+            });
+
+            // Initialize geocoder
+            geocoder = new google.maps.Geocoder();
+
+            // Listen for country selection changes
+            const countrySelect = document.getElementById("location_country");
+            if (countrySelect) {
+                countrySelect.addEventListener('change', function() {
+                    updateMapForCountry(this.value);
+                });
+            }
+
+            // Initialize autocomplete for city input
+            const cityInput = document.getElementById("location_city");
+            if (cityInput) {
+                autocomplete = new google.maps.places.Autocomplete(cityInput, {
+                    types: ['(cities)'],
+                    fields: ['place_id', 'geometry', 'name', 'formatted_address']
+                });
+
+                // Listen for place selection from autocomplete
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (place.geometry) {
+                        focusOnCity(place.geometry.location, place.name);
+                    }
+                });
+
+                // Listen for manual city input (when user types and presses enter)
+                cityInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchCity(cityInput.value);
+                    }
+                });
+
+                // Listen for city input blur (when user clicks away)
+                cityInput.addEventListener('blur', function() {
+                    if (cityInput.value.trim() !== '') {
+                        searchCity(cityInput.value);
+                    }
+                });
+            }
+
+            // Listen for radius input changes
+            const radiusInput = document.getElementById("location_radius");
+            if (radiusInput) {
+                radiusInput.disabled = false; // Enable the radius input
+
+                radiusInput.addEventListener('input', function() {
+                    updateRadiusCircle();
+                });
+
+                radiusInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        updateRadiusCircle();
+                    }
+                });
+            }
+        }
+
+        function searchCity(cityName) {
+            if (!cityName.trim()) return;
+
+            geocoder.geocode({ address: cityName }, function(results, status) {
+                if (status === 'OK' && results[0]) {
+                    const location = results[0].geometry.location;
+                    const placeName = results[0].formatted_address.split(',')[0];
+                    focusOnCity(location, placeName);
+                } else {
+                }
+            });
+        }
+
+        function focusOnCity(location, cityName) {
+            // Center map on the city
+            map.setCenter(location);
+            map.setZoom(12);
+
+            // Remove existing marker if any
+            if (currentMarker) {
+                currentMarker.setMap(null);
+            }
+
+            // Add marker for the city
+            currentMarker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: cityName,
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                            <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(32, 32),
+                    anchor: new google.maps.Point(16, 32)
+                }
+            });
+
+            // Update radius circle if radius is set
+            updateRadiusCircle();
+        }
+
+        function updateRadiusCircle() {
+            const radiusInput = document.getElementById("location_radius");
+            const radiusValue = parseFloat(radiusInput.value);
+
+            // Remove existing circle
+            if (currentCircle) {
+                currentCircle.setMap(null);
+            }
+
+            // Only draw circle if we have a valid radius and a center point
+            if (radiusValue > 0 && currentMarker) {
+                const center = currentMarker.getPosition();
+
+                currentCircle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.15,
+                    map: map,
+                    center: center,
+                    radius: radiusValue * 1000, // Convert km to meters
+                });
+
+                // Adjust map zoom to fit the circle
+                const bounds = currentCircle.getBounds();
+                map.fitBounds(bounds);
+
+                // Ensure minimum zoom level for better visibility
+                google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+                    if (map.getZoom() > 15) {
+                        map.setZoom(15);
+                    }
+                });
+            }
+        }
+
+        function getInitialMapSettings() {
+            const countrySelect = document.getElementById("location_country");
+            const selectedCountry = countrySelect ? countrySelect.value : '';
+
+            // Country coordinates and zoom levels - matching your SYSTEM_COUNTRIES exactly
+            const countrySettings = {
+                'All Europe': { center: { lat: 54.5260, lng: 15.2551 }, zoom: 4 },
+                'Germany': { center: { lat: 51.1657, lng: 10.4515 }, zoom: 6 },
+                'United Kingdom': { center: { lat: 55.3781, lng: -3.4360 }, zoom: 6 },
+                'France': { center: { lat: 46.2276, lng: 2.2137 }, zoom: 6 },
+                'Italy': { center: { lat: 41.8719, lng: 12.5674 }, zoom: 6 },
+                'Spain': { center: { lat: 40.4637, lng: -3.7492 }, zoom: 6 },
+                'Netherlands': { center: { lat: 52.1326, lng: 5.2913 }, zoom: 7 },
+                'Belgium': { center: { lat: 50.5039, lng: 4.4699 }, zoom: 7 },
+                'Austria': { center: { lat: 47.5162, lng: 14.5501 }, zoom: 7 },
+                'Poland': { center: { lat: 51.9194, lng: 19.1451 }, zoom: 6 },
+                'Denmark': { center: { lat: 56.2639, lng: 9.5018 }, zoom: 7 },
+                'Sweden': { center: { lat: 60.1282, lng: 18.6435 }, zoom: 5 },
+                'Finland': { center: { lat: 61.9241, lng: 25.7482 }, zoom: 5 },
+                'Portugal': { center: { lat: 39.3999, lng: -8.2245 }, zoom: 6 },
+                'Greece': { center: { lat: 39.0742, lng: 21.8243 }, zoom: 6 },
+                'Czech Republic': { center: { lat: 49.8175, lng: 15.4730 }, zoom: 7 },
+                'Hungary': { center: { lat: 47.1625, lng: 19.5033 }, zoom: 7 },
+                'Romania': { center: { lat: 45.9432, lng: 24.9668 }, zoom: 6 },
+                'Bulgaria': { center: { lat: 42.7339, lng: 25.4858 }, zoom: 7 },
+                'Slovakia': { center: { lat: 48.6690, lng: 19.6990 }, zoom: 7 },
+                'Luxembourg': { center: { lat: 49.8153, lng: 6.1096 }, zoom: 9 },
+                'Slovenia': { center: { lat: 46.1512, lng: 14.9955 }, zoom: 8 },
+                'Switzerland': { center: { lat: 46.8182, lng: 8.2275 }, zoom: 7 },
+                'Norway': { center: { lat: 60.4720, lng: 8.4689 }, zoom: 5 },
+                'Iceland': { center: { lat: 64.9631, lng: -19.0208 }, zoom: 6 },
+                'Lithuania': { center: { lat: 55.1694, lng: 23.8813 }, zoom: 7 },
+                'Latvia': { center: { lat: 56.8796, lng: 24.6032 }, zoom: 7 },
+                'Estonia': { center: { lat: 58.5953, lng: 25.0136 }, zoom: 7 },
+                'Croatia': { center: { lat: 45.1000, lng: 15.2000 }, zoom: 7 },
+                'Serbia': { center: { lat: 44.0165, lng: 21.0059 }, zoom: 7 },
+                'Bosnia and Herzegovina': { center: { lat: 43.9159, lng: 17.6791 }, zoom: 7 },
+                'Ireland': { center: { lat: 53.1424, lng: -7.6921 }, zoom: 7 },
+                'Albania': { center: { lat: 41.1533, lng: 20.1683 }, zoom: 7 },
+                'North Macedonia': { center: { lat: 41.6086, lng: 21.7453 }, zoom: 8 },
+                'Moldova': { center: { lat: 47.4116, lng: 28.3699 }, zoom: 7 },
+                'Ukraine': { center: { lat: 48.3794, lng: 31.1656 }, zoom: 5 },
+                'Belarus': { center: { lat: 53.7098, lng: 27.9534 }, zoom: 6 },
+                'Russia': { center: { lat: 61.5240, lng: 105.3188 }, zoom: 3 },
+                'Kosovo': { center: { lat: 42.6026, lng: 20.9030 }, zoom: 8 },
+                'Monaco': { center: { lat: 43.7384, lng: 7.4246 }, zoom: 12 },
+                'Cyprus': { center: { lat: 35.1264, lng: 33.4299 }, zoom: 8 },
+                'Liechtenstein': { center: { lat: 47.1660, lng: 9.5554 }, zoom: 10 },
+                'Malta': { center: { lat: 35.9375, lng: 14.3754 }, zoom: 10 },
+                'Montenegro': { center: { lat: 42.7087, lng: 19.3744 }, zoom: 8 },
+                'United States': { center: { lat: 39.8283, lng: -98.5795 }, zoom: 4 },
+                'Japan': { center: { lat: 36.2048, lng: 138.2529 }, zoom: 6 },
+                'South Korea': { center: { lat: 35.9078, lng: 127.7669 }, zoom: 7 },
+                'China': { center: { lat: 35.8617, lng: 104.1954 }, zoom: 4 }
+            };
+
+            // Return settings for selected country or default to Europe
+            return countrySettings[selectedCountry] || countrySettings['All Europe'];
+        }
+
+        function updateMapForCountry(countryName) {
+            const settings = getInitialMapSettings();
+
+            // Clear existing markers and circles when changing country
+            if (currentMarker) {
+                currentMarker.setMap(null);
+                currentMarker = null;
+            }
+            if (currentCircle) {
+                currentCircle.setMap(null);
+                currentCircle = null;
+            }
+
+            // Clear city input when changing country
+            const cityInput = document.getElementById("location_city");
+            if (cityInput) {
+                cityInput.value = '';
+            }
+
+            // Clear radius input
+            const radiusInput = document.getElementById("location_radius");
+            if (radiusInput) {
+                radiusInput.value = '';
+            }
+
+            // Update map view
+            map.setCenter(settings.center);
+            map.setZoom(settings.zoom);
+        }
+
+        function billingMap() {
+            // Keep your existing billingMap function if needed
+            // or remove this if not used
+        }
+
+        // This is the callback function that Google Maps API calls
+        function mapsShopping() {
+            try {
+                initAutocomplete();
+            } catch (error) {
+                console.error('Error initializing autocomplete:', error);
+            }
+            try {
+                billingMap();
+            } catch (error) {
+                console.error('Error initializing billing map:', error);
+            }
+        }
+
+        // Make sure the callback function is available globally
+        window.mapsShopping = mapsShopping;
+
+        // Optional: Add event listener for apply button
+        document.addEventListener('DOMContentLoaded', function() {
+            const applyButton = document.getElementById('apply_location_search');
+            if (applyButton) {
+                applyButton.addEventListener('click', function() {
+                    const cityValue = document.getElementById('location_city').value;
+                    const radiusValue = document.getElementById('location_radius').value;
+
+                    console.log('Applied filters:', {
+                        city: cityValue,
+                        radius: radiusValue
+                    });
+
+                    // You can add your filter application logic here
+                });
+            }
+        });
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=mapsShopping&libraries=places&v=3.49" defer></script>
+
+@endpush
