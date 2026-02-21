@@ -2285,7 +2285,6 @@
                             adInfoWindow.open(map, adMarker);
                         });
 
-                        // Now geocode the user location
                         geocoder.geocode({ address: userFullAddress }, function(userResults, userStatus) {
                             if (userStatus === "OK") {
                                 const userLatLng = userResults[0].geometry.location;
@@ -2304,7 +2303,7 @@
                                     userInfoWindow.open(map, userMarker);
                                 });
 
-                                const distance = calculateDistance(
+                                const straightLineDistance = calculateDistance(
                                     adLatLng.lat(), adLatLng.lng(),
                                     userLatLng.lat(), userLatLng.lng()
                                 );
@@ -2326,7 +2325,7 @@
                                         <div>
                                             <h3 class="my-3" >{{translate('distance_from_your_location_to_the_seller_location')}}</h3>
                                         </div>
-                                        <div>
+                                        <div id="distance-info-container">
                                             <div class="d-flex align-items-center gap-5 mb-2" >
                                                 <div class="d-flex align-items-center gap-2" >
                                                     <span class="bg-primary p-1 px-2 rounded" ><i style="font-size: 20px;" class="bi bi-car-front-fill text-light"></i></span>
@@ -2352,51 +2351,60 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="impossible-trip-message" style="display:none;">
+                                            <div class="alert alert-warning d-flex align-items-center gap-2 mt-2">
+                                                <i class="bi bi-exclamation-triangle-fill fs-20"></i>
+                                                <span class="fw-medium fs-16">{{translate('trip_to_this_user_not_possible')}}</span>
+                                            </div>
+                                        </div>
                                         <div id="errorInfo" style="color:red;"></div>
                                     </div>
                                 `;
 
-                                directionsService.route(
-                                    {
-                                        origin: adLatLng,
-                                        destination: userLatLng,
-                                        travelMode: google.maps.TravelMode.DRIVING,
-                                    },
-                                    (response, status) => {
-                                        if (status === "OK") {
-                                            directionsRenderer.setDirections(response);
-                                            const route = response.routes[0];
-                                            const leg = route.legs[0];
-
-                                            document.getElementById("carDistance").innerText = leg.distance.text;
-                                            document.getElementById("carTime").innerText = leg.duration.text;
-                                        } else {
-                                            document.getElementById("errorInfo").innerText =
-                                                `Directions request failed due to ${status}`;
-                                        }
-                                    }
-                                );
-
-                                directionsService.route(
-                                    {
-                                        origin: adLatLng,
-                                        destination: userLatLng,
-                                        travelMode: google.maps.TravelMode.BICYCLING,
-                                    },
-                                    (response, status) => {
-                                        if (status === "OK") {
-                                            const route = response.routes[0];
-                                            const leg = route.legs[0];
-                                            document.getElementById("bicycleDistance").innerText = leg.distance.text;
-                                            document.getElementById("bicycleTime").innerText = leg.duration.text;
-                                        } else {
-                                            document.getElementById("bicycleTravelInfo").innerText =
-                                                `Bicycle directions request failed: ${status}`;
-                                        }
-                                    }
-                                );
-
                                 document.getElementById("location-data").insertAdjacentHTML("beforeend", locationData);
+
+                                // If straight-line distance is more than 4000 km, show impossible message
+                                if (straightLineDistance > 4000) {
+                                    document.getElementById("distance-info-container").style.display = "none";
+                                    document.getElementById("impossible-trip-message").style.display = "block";
+                                } else {
+                                    directionsService.route(
+                                        {
+                                            origin: adLatLng,
+                                            destination: userLatLng,
+                                            travelMode: google.maps.TravelMode.DRIVING,
+                                        },
+                                        (response, status) => {
+                                            if (status === "OK") {
+                                                directionsRenderer.setDirections(response);
+                                                const route = response.routes[0];
+                                                const leg = route.legs[0];
+                                                document.getElementById("carDistance").innerText = leg.distance.text;
+                                                document.getElementById("carTime").innerText = leg.duration.text;
+                                            } else {
+                                                // Directions failed (e.g. no road route across sea)
+                                                document.getElementById("distance-info-container").style.display = "none";
+                                                document.getElementById("impossible-trip-message").style.display = "block";
+                                            }
+                                        }
+                                    );
+
+                                    directionsService.route(
+                                        {
+                                            origin: adLatLng,
+                                            destination: userLatLng,
+                                            travelMode: google.maps.TravelMode.BICYCLING,
+                                        },
+                                        (response, status) => {
+                                            if (status === "OK") {
+                                                const route = response.routes[0];
+                                                const leg = route.legs[0];
+                                                document.getElementById("bicycleDistance").innerText = leg.distance.text;
+                                                document.getElementById("bicycleTime").innerText = leg.duration.text;
+                                            }
+                                        }
+                                    );
+                                }
 
                                 const bounds = new google.maps.LatLngBounds();
                                 bounds.extend(adLatLng);
@@ -2464,10 +2472,8 @@
                 });
             }
 
-
-            // Calculate distance between two coordinates using Haversine formula
             function calculateDistance(lat1, lon1, lat2, lon2) {
-                const R = 6371; // Radius of the earth in km
+                const R = 6371;
                 const dLat = deg2rad(lat2 - lat1);
                 const dLon = deg2rad(lon2 - lon1);
                 const a =
@@ -2475,7 +2481,7 @@
                     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
                     Math.sin(dLon/2) * Math.sin(dLon/2);
                 const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                const distance = R * c; // Distance in km
+                const distance = R * c;
                 return distance;
             }
 
@@ -2483,9 +2489,7 @@
                 return deg * (Math.PI/180);
             }
 
-            // Get directions and travel time information
             function getDirections(directionsService, origin, destination, travelMode) {
-                // Only process DRIVING and BICYCLING modes
                 if (travelMode !== "DRIVING" && travelMode !== "BICYCLING") {
                     return;
                 }
@@ -2500,8 +2504,6 @@
                         if (status === "OK" && response) {
                             const route = response.routes[0];
                             const leg = route.legs[0];
-
-                            // Log only distance and duration for car and bicycle
                             console.log(`${travelMode === "DRIVING" ? "Car" : "Bicycle"} travel: ${leg.distance.text}, time: ${leg.duration.text}`);
                         } else {
                             console.log(`${travelMode} directions request failed due to ${status}`);
@@ -2510,7 +2512,6 @@
                 );
             }
 
-            // Keeping original billingMap function intact
             function billingMap() {
                 let myLatLng = { lat: -33.8688, lng: 151.2195 };
                 const map = new google.maps.Map(document.getElementById("billing_location_map_canvas"), {
@@ -2546,31 +2547,28 @@
                     });
                 });
 
-                // Create the search box and link it to the UI element.
                 const input = document.getElementById("pac-input-billing");
-
                 const searchBox = new google.maps.places.SearchBox(input);
-
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-                // Bias the SearchBox results towards current map's viewport.
+
                 map.addListener("bounds_changed", () => {
                     searchBox.setBounds(map.getBounds());
                 });
+
                 let markers = [];
-                // Listen for the event fired when the user selects a prediction and retrieve
-                // more details for that place.
+
                 searchBox.addListener("places_changed", () => {
                     const places = searchBox.getPlaces();
 
                     if (places.length == 0) {
                         return;
                     }
-                    // Clear out the old markers.
+
                     markers.forEach((marker) => {
                         marker.setMap(null);
                     });
                     markers = [];
-                    // For each place, get the icon, name and location.
+
                     const bounds = new google.maps.LatLngBounds();
                     places.forEach((place) => {
                         if (!place.geometry || !place.geometry.location) {
@@ -2586,13 +2584,11 @@
                         google.maps.event.addListener(mrkr, "click", function (event) {
                             document.getElementById('billing_latitude').value = this.position.lat();
                             document.getElementById('billing_longitude').value = this.position.lng();
-
                         });
 
                         markers.push(mrkr);
 
                         if (place.geometry.viewport) {
-                            // Only geocodes have viewport.
                             bounds.union(place.geometry.viewport);
                         } else {
                             bounds.extend(place.geometry.location);
@@ -2602,7 +2598,6 @@
                 });
             }
 
-            // Keeping original mapsShopping function intact
             function mapsShopping() {
                 try {
                     initAutocomplete();
@@ -2616,7 +2611,6 @@
                 }
             }
 
-            // Keep the original event handler
             $(document).on("keydown", "input", function(e) {
                 if (e.which==13) e.preventDefault();
             });
