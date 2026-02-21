@@ -2221,7 +2221,6 @@
     </script>
 
     <script>
-
         var quickviewSliderThumb2 = new Swiper(".quickviewSliderThumb2", {
             spaceBetween: 5,
             slidesPerView: {{ min($gallery_images_number, 7) }},
@@ -2233,7 +2232,7 @@
             freeMode: true,
             slideToClickedSlide: true,
         }); 
-
+        
         var quickviewSlider2 = new Swiper(".quickviewSlider2", {
             autoplay: false,
             loop: true,
@@ -2244,7 +2243,36 @@
             thumbs: {
                 swiper: quickviewSliderThumb2,
             },
+            on: {
+                slideChangeTransitionStart: function() {
+                    document.querySelectorAll('.quickviewSlider2 .video-slide mux-player').forEach(function(player) {
+                        try { player.pause(); } catch(e) {}
+                    });
+                    var nextBtn = document.querySelector('.swiper-quickview-button-next');
+                    var prevBtn = document.querySelector('.swiper-quickview-button-prev');
+                    if (nextBtn) nextBtn.style.pointerEvents = '';
+                    if (prevBtn) prevBtn.style.pointerEvents = '';
+                }
+            }
         });
+
+        document.querySelectorAll('.quickviewSlider2 .video-slide mux-player').forEach(function(player) {
+            var nextBtn = document.querySelector('.swiper-quickview-button-next');
+            var prevBtn = document.querySelector('.swiper-quickview-button-prev');
+            player.addEventListener('play', function() {
+                if (nextBtn) nextBtn.style.pointerEvents = 'none';
+                if (prevBtn) prevBtn.style.pointerEvents = 'none';
+            });
+            player.addEventListener('pause', function() {
+                if (nextBtn) nextBtn.style.pointerEvents = '';
+                if (prevBtn) prevBtn.style.pointerEvents = '';
+            });
+            player.addEventListener('ended', function() {
+                if (nextBtn) nextBtn.style.pointerEvents = '';
+                if (prevBtn) prevBtn.style.pointerEvents = '';
+            });
+        });
+        
     </script>
 
     @if(auth('customer')->check() && auth('customer')->user()->id != $ad['user_id'])
