@@ -10,7 +10,7 @@
 
     <main class="main-content d-flex flex-column gap-3 py-3 py-sm-3 pt-0 mb-4">
         <div class="container">
-            <div class="row g-4">
+            <div class="row g-4 flex-nowrap">
 
                 <!-- Sidebar-->
                 @include('theme-views.partials._profile-aside')
