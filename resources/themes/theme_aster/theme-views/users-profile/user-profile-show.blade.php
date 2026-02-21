@@ -1071,42 +1071,6 @@
                     }
                 }
             });
-
-            if ($('#location_country').val() !== 'All Europe') {
-                if ($container.find(`.active-filter-item[data-id="location_country"]`).length === 0) {
-                    const filterHtml = `
-                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-id="location_country" role="button">
-                            <span>Country</span>
-                            <span class="ms-1 fs-15">&times;</span>
-                        </span>
-                `;
-                    $container.append(filterHtml);
-                }
-            }
-
-            if ($('#location_city').val()){
-                if ($container.find(`.active-filter-item[data-id="location_city"]`).length === 0) {
-                    const filterHtml = `
-                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium mb-2 active-filter-item" data-id="location_city" role="button">
-                            <span>City</span>
-                            <span class="ms-1 fs-15">&times;</span>
-                        </span>
-                `;
-                    $container.append(filterHtml);
-                }
-            }
-
-            if ($('#location_radius').val()){
-                if ($container.find(`.active-filter-item[data-id="location_radius"]`).length === 0) {
-                    const filterHtml = `
-                        <span class="d-flex align-items-center gap-1 bg-primary text-light rounded p-1 px-2 fs-13 fw-medium  mb-2 active-filter-item" data-id="location_radius" role="button">
-                            <span>Radius</span>
-                            <span class="ms-1 fs-15">&times;</span>
-                        </span>
-                `;
-                    $container.append(filterHtml);
-                }
-            }
         }
 
         // ================== Toggle Category Fields ==================
