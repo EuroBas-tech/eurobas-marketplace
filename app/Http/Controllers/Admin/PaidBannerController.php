@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Cache;
 
 class PaidBannerController extends Controller
 {
-    
-    public function list(Request $request) {
+
+        public function list(Request $request) {
         $query_param = [];
         $search = $request['search'];
 
@@ -20,7 +20,8 @@ class PaidBannerController extends Controller
             $key = explode(' ', $request['search']);
 
             $paid_banners = PaidBanner::where('status', 1)
-            ->where('is_paid', 1)->with(['user'])
+            ->where('is_paid', 1)
+            ->with(['user'])
             ->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('duration_in_days', 'like', "%{$value}%")
@@ -33,13 +34,15 @@ class PaidBannerController extends Controller
             
             $query_param = ['search' => $request['search']];
         } else {
-            $paid_banners = PaidBanner::with(['user']);
+            $paid_banners = PaidBanner::with(['user'])
+            ->where('status', 1)
+            ->where('is_paid', 1);
         }
-                
+        
         $paid_banners = $paid_banners->latest()->paginate(Helpers::pagination_limit())->appends($query_param);
         return view('admin-views.paid-banners.list', compact('paid_banners', 'search'));
     }
-
+    
     public function status_update(Request $request)
     {
         PaidBanner::where(['id' => $request['id']])->update([
