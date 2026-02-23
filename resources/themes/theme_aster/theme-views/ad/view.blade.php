@@ -3048,6 +3048,7 @@
         `;
 
         // ================== Scroll Event ==================
+
         $(window).on('scroll', function () {
             if (loading) return;
 
@@ -3057,7 +3058,6 @@
             }
 
             if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500) {
-                console.log('im here');
                 loading = true;
 
                 if(is_available_items) {
@@ -3081,10 +3081,13 @@
                                     let newIds = Array.isArray(response.show_ad_ids) ? response.show_ad_ids : Object.values(response.show_ad_ids);
                                     shownAdIds = [...shownAdIds, ...newIds];
                                 }
-
                                 offset += 5;
                             }
                             if(response.ads_count == 0) {
+
+                                is_available_items = false;
+                                loading = true;
+
                                 let formData = $('#filter-form').serializeArray();
                                 shownAdIds.forEach(id => {
                                     formData.push({ name: 'shown_ad_ids[]', value: id });
@@ -3099,7 +3102,6 @@
                                     },
                                     success: function (related_ads_response) {
                                         if (related_ads_response.related_ads_count > 0) {
-                                            console.log(related_ads_response.related_ads_count);
                                             $('#ajax-products-view').append(`
                                                 <h2 class="pb-4">{{translate('ads_that_may_interest_you')}}</h2>
                                             `);
@@ -3117,8 +3119,6 @@
                                         `);
                                     },
                                 });
-
-                                is_available_items = false;
                             }
                         },
                         complete: function () {
