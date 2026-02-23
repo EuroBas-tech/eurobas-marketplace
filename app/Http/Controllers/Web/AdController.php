@@ -1683,13 +1683,12 @@ class AdController extends Controller
             $query->whereNotIn('id', $request->shown_ad_ids);
         }
 
-        // Apply brand or category filter
-        if ($request->brand_id !== 'all') {
+        if ($request->filled('brand_id') && $request->brand_id !== 'all') {
             $query->where('brand_id', $request->brand_id);
-        } elseif ($request->category_id !== 'all') {
+        } elseif ($request->filled('category_id') && $request->category_id !== 'all') {
             $query->where('category_id', $request->category_id);
         }
-
+        
         // Get ads
         $ads = $query->limit(20)->get();
 
