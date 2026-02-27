@@ -1487,7 +1487,6 @@ class AdController extends Controller
 
     public function getAdsInRadius($query, $radius, $latitude, $longitude)
     {
-        // Step 2: Filter ads within radius
         $query->withinRadius($latitude, $longitude ,$radius);
         return $query;
     }
