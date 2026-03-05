@@ -53,13 +53,8 @@ class PageController extends Controller
 
     public function instructions_for_use()
     {
-        $instructions_for_use = json_decode(BusinessSetting::where('type', 'instructions_for_use')->first()->value);
-        if(!$instructions_for_use->status){
-            return back();
-        }
-        $instructions_for_use = $instructions_for_use->content;
-        $page_title_banner = $this->business_settings->where('type', 'banner_refund_policy')->whereJsonContains('value', ['status' => '1'])->first('value');
-        return view(VIEW_FILE_NAMES['instructions_for_use_page'], compact('refund_policy','page_title_banner'));
+        $instructions_for_use = BusinessSetting::where('type', 'instructions_for_use')->first();
+        return view(VIEW_FILE_NAMES['instructions_for_use_page'], compact('instructions_for_use'));
     }
 
     public function return_policy()
