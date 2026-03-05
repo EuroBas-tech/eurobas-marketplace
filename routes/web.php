@@ -644,10 +644,10 @@ Route::get('log/show', function () {
 
 Route::get('upload-migrations', function () {
     Artisan::call('migrate', [
-        '--path' => 'database/migrations/2026_01_12_202999_make_password_nullable_on_users_table.php',
+        '--path' => 'database/migrations/2026_03_05_121406_modify_expiration_date_in_paid_banners_table.php',
         '--force' => true,
     ]);
-    
+
     return 'migration successfully uploaded';
 });
 
