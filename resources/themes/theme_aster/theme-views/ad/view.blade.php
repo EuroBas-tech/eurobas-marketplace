@@ -1028,7 +1028,7 @@
                                             <select style="height: 38px;" class="form-select filter-input fw-medium"
                                             data-filter-label="{{translate('min_construction_year')}}" data-filter-id="min_construction_year" name="min_construction_year" id="min_construction_year" >
                                                 <option value="{{null}}">{{translate('from')}}</option>
-                                                @for ($year = 2025; $year >= 1940; $year--)
+                                                @for ($year = date('Y'); $year >= 1940; $year--)
                                                     <option {{ $min_construction_year == $year ? 'selected' : '' }} value="{{ $year }}">{{ $year }}</option>
                                                 @endfor
                                             </select>
@@ -1039,7 +1039,7 @@
                                             <select style="height: 38px;" class="form-select filter-input fw-medium" name="max_construction_year"
                                             data-filter-label="{{translate('max_construction_year')}}" data-filter-id="max_construction_year" id="max_construction_year" >
                                                 <option value="{{null}}">{{translate('to')}}</option>
-                                                @for ($year = 2025; $year >= 1940; $year--)
+                                                @for ($year = date('Y'); $year >= 1940; $year--)
                                                     <option value="{{ $year }}">{{ $year }}</option>
                                                 @endfor
                                             </select>

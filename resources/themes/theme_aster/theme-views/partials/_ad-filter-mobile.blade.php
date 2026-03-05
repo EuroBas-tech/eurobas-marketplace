@@ -154,7 +154,7 @@
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="construction_year" id="construction_year_select">
                                                                     <option value="all">{{translate('year_from')}}</option>
-                                                                    @for ($year = 2025; $year >= 1940; $year--)
+                                                                    @for ($year = date('Y'); $year >= 1940; $year--)
                                                                         <option value="{{ $year }}">{{ $year }}</option>
                                                                     @endfor
                                                                 </select>
