@@ -55,7 +55,7 @@ class PageController extends Controller
     {
         $instructions_for_use = BusinessSetting::where('type', 'instructions_for_use')->first();
         $page_title_banner = null;
-        return view(VIEW_FILE_NAMES['instructions_for_use_page'], compact('instructions_for_use', 'page_title_bannerd'));
+        return view(VIEW_FILE_NAMES['instructions_for_use_page'], compact('instructions_for_use', 'page_title_banner'));
     }
 
     public function return_policy()
