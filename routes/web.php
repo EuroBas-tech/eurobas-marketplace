@@ -720,7 +720,7 @@ Route::get('/apple-secret', function () {
 Route::get('create-instructions-for-use', function() {
     $instructions_for_use = BusinessSetting::create([
         'type' => 'instructions_for_use',
-        'value' => null
+        'value' => ''
     ]);
 
     return $instructions_for_use;
