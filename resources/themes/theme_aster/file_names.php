@@ -4,7 +4,7 @@ return [
     'home' => 'theme-views.home',
     'product_search_result' => 'theme-views.partials._search-result',
     'privacy_policy_page' => 'theme-views.pages.privacy-policy',
-    'refund_policy_page' => 'theme-views.pages.refund-policy',
+    'instructions_for_use' => 'theme-views.pages.instructions-for-use',
     'return_policy_page' => 'theme-views.pages.return-policy',
     'terms_conditions_page' => 'theme-views.pages.terms-conditions',
     'cancellation_policy_page' => 'theme-views.pages.cancellation-policy',

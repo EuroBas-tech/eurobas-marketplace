@@ -51,15 +51,15 @@ class PageController extends Controller
         return view(VIEW_FILE_NAMES['privacy_policy_page'], compact('privacy_policy','page_title_banner'));
     }
 
-    public function refund_policy()
+    public function instructions_for_use()
     {
-        $refund_policy = json_decode(BusinessSetting::where('type', 'refund-policy')->first()->value);
-        if(!$refund_policy->status){
+        $instructions_for_use = json_decode(BusinessSetting::where('type', 'instructions-for-use')->first()->value);
+        if(!$instructions_for_use->status){
             return back();
         }
-        $refund_policy = $refund_policy->content;
+        $instructions_for_use = $instructions_for_use->content;
         $page_title_banner = $this->business_settings->where('type', 'banner_refund_policy')->whereJsonContains('value', ['status' => '1'])->first('value');
-        return view(VIEW_FILE_NAMES['refund_policy_page'], compact('refund_policy','page_title_banner'));
+        return view(VIEW_FILE_NAMES['instructions_for_use_page'], compact('refund_policy','page_title_banner'));
     }
 
     public function return_policy()

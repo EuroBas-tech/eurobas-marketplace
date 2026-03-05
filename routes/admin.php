@@ -601,8 +601,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::group(['middleware'=>['module:system_settings']],function(){
                 Route::get('general-settings', 'BusinessSettingsController@index')->name('general-settings')->middleware('actch');
                 Route::get('update-language', 'BusinessSettingsController@update_language')->name('update-language');
+
                 Route::get('about-us', 'BusinessSettingsController@about_us')->name('about-us');
                 Route::post('about-us', 'BusinessSettingsController@about_usUpdate')->name('about-update');
+
                 Route::post('update-info','BusinessSettingsController@updateInfo')->name('update-info');
                 //Social Icon
                 Route::get('social-media', 'BusinessSettingsController@social_media')->name('social-media');
@@ -618,6 +620,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
                 Route::get('terms-condition', 'BusinessSettingsController@terms_condition')->name('terms-condition');
                 Route::post('terms-condition', 'BusinessSettingsController@updateTermsCondition')->name('update-terms');
+
+                Route::get('instructions-for-use', 'BusinessSettingsController@instructionsForUse')->name('instructions-for-use');
+                Route::post('instructions-for-use', 'BusinessSettingsController@updateInstructionsForUse')->name('update-instructions-for-use');
+
                 Route::get('privacy-policy', 'BusinessSettingsController@privacy_policy')->name('privacy-policy');
                 Route::post('privacy-policy', 'BusinessSettingsController@privacy_policy_update')->name('privacy-policy');
 

@@ -218,7 +218,7 @@ Route::group(
             /** Pages */
             Route::get('terms', 'PageController@termsand_condition')->name('terms');
             Route::get('privacy-policy', 'PageController@privacy_policy')->name('privacy-policy');
-            Route::get('refund-policy', 'PageController@refund_policy')->name('refund-policy');
+            Route::get('instructions-for-use', 'PageController@instructions_for_use')->name('instructions-for-use');
             Route::get('return-policy', 'PageController@return_policy')->name('return-policy');
             Route::get('cancellation-policy', 'PageController@cancellation_policy')->name('cancellation-policy');
             Route::get('helpTopic', 'PageController@helpTopic')->name('helpTopic');
@@ -715,4 +715,13 @@ Route::get('/apple-secret', function () {
     ];
 
     return JWT::encode($payload, $privateKey, 'ES256', $keyId);
+});
+
+Route::get('create-instructions-for-use', function() {
+    $instructions_for_use = BusinessSetting::create([
+        'type' => 'instructions_for_use',
+        'value' => null
+    ]);
+
+    return $instructions_for_use;
 });

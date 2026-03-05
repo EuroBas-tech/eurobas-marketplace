@@ -1,45 +1,44 @@
 <!-- Footer -->
 <style>
     /* CSS for desktop view */
-@media (min-width: 768px) {
-    .mobile-view {
-        display: none;
+    @media (min-width: 768px) {
+        .mobile-view {
+            display: none;
+        }
+        .desktop-view {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer-content {
+            display: flex;
+            align-items: center;
+        }
+        .payment-methods {
+            margin-right: 20px; /* Adjust margin as needed */
+        }
     }
-    .desktop-view {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .footer-content {
-        display: flex;
-        align-items: center;
-    }
-    .payment-methods {
-        margin-right: 20px; /* Adjust margin as needed */
-    }
-}
 
-/* CSS for mobile view */
-@media (max-width: 767px) {
-    .desktop-view {
-        display: none;
+    /* CSS for mobile view */
+    @media (max-width: 767px) {
+        .desktop-view {
+            display: none;
+        }
+        .mobile-view {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .payment-methods {
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
     }
-    .mobile-view {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .footer-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .payment-methods {
-        margin-bottom: 10px; /* Adjust margin as needed */
-    }
-}
-
 </style>
 <footer class="footer">
     <div class="footer-bg-img">
@@ -127,6 +126,7 @@
                                         @endif
                                     </li>
                                     <li><a href="{{route('helpTopic')}}">{{translate('FAQ')}}</a></li>
+                                    <li><a href="{{route('instructions_for_use')}}">{{translate('instructions_for_use')}}</a></li>
                                 </ul>
                             </div>
                         </div>

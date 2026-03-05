@@ -197,6 +197,22 @@ class BusinessSettingsController extends Controller
         $validatedData = $data->validate([
             'value' => 'required',
         ]);
+        BusinessSetting::where('type', 'instructions_for_use')->update(['value' => $data->value]);
+        Toastr::success(translate('instructions_for_use_Updated_successfully'));
+        return redirect()->back();
+    }
+
+    public function instructionsForUse()
+    {
+        $instructions_for_use = BusinessSetting::where('type', 'instructions_for_use')->first();
+        return view('admin-views.business-settings.instructions-for-use', compact('instructions_for_use'));
+    }
+
+    public function updateInstructionsForUse(Request $data)
+    {
+        $validatedData = $data->validate([
+            'value' => 'required',
+        ]);
         BusinessSetting::where('type', 'terms_condition')->update(['value' => $data->value]);
         Toastr::success(translate('Terms_and_Condition_Updated_successfully'));
         return redirect()->back();
@@ -782,6 +798,7 @@ class BusinessSettingsController extends Controller
         $config = (array)json_decode(BusinessSetting::where(['type' => 'recaptcha'])->first()->value);
         return view('admin-views.business-settings.recaptcha-index', compact('config'));
     }
+
     public function recaptcha_update(Request $request)
     {
         DB::table('business_settings')->updateOrInsert(['type' => 'recaptcha'], [
@@ -801,6 +818,7 @@ class BusinessSettingsController extends Controller
         Toastr::success(translate('Updated_Successfully'));
         return back();
     }
+
     public function map_api()
     {
         return view('admin-views.business-settings.map-api.index');
@@ -842,6 +860,7 @@ class BusinessSettingsController extends Controller
         Toastr::success(translate('config_data_updated'));
         return back();
     }
+
     public function google_tag_analytics_update(Request $request)
     {
         $request->validate([

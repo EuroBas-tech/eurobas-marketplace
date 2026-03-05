@@ -1,6 +1,6 @@
 @extends('layouts.back-end.app')
 
-@section('title', translate('terms_and_condition'))
+@section('title', translate('instructions_for_use'))
 
 @push('css_or_js')
 
@@ -11,7 +11,7 @@
 </style>
 
 @endpush
-instructions_for_use
+
 @section('content')
     <div class="content container-fluid">
         <!-- Page Title -->
@@ -31,15 +31,15 @@ instructions_for_use
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">{{translate('terms_and_condition')}}</h5>
+                        <h5 class="mb-0">{{translate('instructions_for_use')}}</h5>
                     </div>
 
-                    <form action="{{route('admin.business-settings.update-terms')}}" method="post">
+                    <form action="{{route('admin.business-settings.update-instructions-for-use')}}" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
                                 <textarea class="form-control" id="editor"
-                                    name="value">{{$terms_condition->value}}</textarea>
+                                    name="value">{{$instructions_for_use->value}}</textarea>
                             </div>
                             <div class="form-group">
                                 <input class="form-control btn--primary" type="submit" value="{{translate('submit')}}" name="btn">

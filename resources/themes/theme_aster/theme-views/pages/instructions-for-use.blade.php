@@ -1,6 +1,6 @@
 @extends('theme-views.layouts.app')
 
-@section('title', translate('Refund_Policy').' | '.$web_config['name']->value.' '.translate('ecommerce'))
+@section('title', translate('instructions_for_use').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @section('content')
 
@@ -19,13 +19,13 @@
     @endif
     >
         <div class="container">
-            <h1 class="absolute-white text-center">{{translate('Refund_Policy')}}</h1>
+            <h1 class="absolute-white text-center">{{translate('instructions_for_use')}}</h1>
         </div>
     </div>
     <div class="container">
         <div class="card my-4">
             <div class="card-body p-lg-4 text-dark page-paragraph">
-                {!!$refund_policy!!}
+                {!!$instructions_for_use!!}
             </div>
         </div>
     </div>
