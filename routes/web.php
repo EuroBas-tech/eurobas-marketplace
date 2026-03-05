@@ -725,3 +725,269 @@ Route::get('create-instructions-for-use', function() {
 
     return $instructions_for_use;
 });
+
+Route::get('update-terms-and-conditions', function() {
+    $terms = BusinessSetting::create([
+        'type' => 'instructions_for_use',
+        'value' => '<h1><strong>Introduction and Company Rules&nbsp; &nbsp;</strong><em>Effective Date:04-27-2025</em></h1>
+
+<p>Welcome to EuroBas.com.</p>
+
+<p>&nbsp;Europe&rsquo;s &nbsp;Vehicle Marketplace,&nbsp; unified european vehicles marketplace,&nbsp;Europe&#39;s automotive marketplace</p>
+
+<p>Buy and sell all types of vehicles across Europe with ease. Whether you&rsquo;re listing a used or new car, truck, motorcycle, or commercial vehicle, our platform connects private sellers and dealers with interested buyers in one centralized, easy-to-use marketplace. Post your ad for free and reach a European-wide audience today.</p>
+
+<p>1.By using our platform, you agree to comply with these Terms and Conditions.</p>
+
+<p>Our goal is to provide a safe and reliable environment for buying and selling vehicles, spare parts, and related products across Europe.</p>
+
+<p>EuroBas.com&rdquo; is an open digital marketplace for publishing advertisements related to the sale and purchase of used vehicles and spare parts within the European Union. The platform provides advertising space to users and is not a party to any transaction.</p>
+
+<h3>2. Platform Functionality and Liability Limits</h3>
+
+<ul>
+	<li>
+	<p>The platform operates solely as a classifieds marketplace and is not a financial or commercial intermediary between the buyer and seller.</p>
+	</li>
+	<li>
+	<p>Payments are not made through the platform, and it does not execute or monitor any transaction or agreement.</p>
+	</li>
+	<li>
+	<p>The platform does not receive any commission from sales or purchases, whether directly or indirectly.</p>
+	</li>
+	<li>
+	<p>Users are responsible for posting their own ads, and interested clients contact advertisers directly outside the platform.</p>
+	</li>
+	<li>
+	<p>The platform has no knowledge of whether a transaction is completed and bears no legal or financial responsibility.</p>
+	</li>
+	<li>
+	<p>Users are fully responsible for the accuracy of the ad content, the credibility of other parties, and any resulting obligations.</p>
+	</li>
+	<li>
+	<p>The platform is not subject to the EU DAC7 directive, as it does not facilitate or execute transactions or participate in any payment process.</p>
+	</li>
+	<li>
+	<h2>&nbsp;Posting Ads Policy</h2>
+
+	<h3>2.1 Important Notice Before Posting an Ad</h3>
+
+	<p>To ensure the safety of our community and protect you from fraud, please adhere to the following rules before publishing any advertisement:</p>
+	</li>
+	<li>
+	<p>The vehicle or item listed must be owned by you or you must be authorized to advertise it.</p>
+	</li>
+	<li>
+	<p>Posting false or misleading advertisements is strictly prohibited.</p>
+	</li>
+	<li>
+	<p>It is not allowed to use images taken from the internet or from other ads without explicit permission.</p>
+	</li>
+	<li>
+	<p>Adding external phone numbers or links to other websites for off-platform communication is forbidden.</p>
+	</li>
+	<li>
+	<p>Accounts found posting fraudulent ads will be immediately suspended without prior notice.</p>
+	</li>
+	<li>
+	<p>We work diligently to protect our users by automatically and manually reviewing suspicious advertisements.</p>
+
+	<h3>2.2 Platform and Ads Usage Policy</h3>
+	</li>
+	<li>
+	<p>All advertisements must be genuine and represent an actual vehicle or product available for sale.</p>
+	</li>
+	<li>
+	<p>Publishing fake ads or ads intended to collect users&rsquo; information is strictly prohibited.</p>
+	</li>
+	<li>
+	<p>Reposting the same advertisement multiple times to gain visibility is not allowed.</p>
+	</li>
+	<li>
+	<p>Personal accounts must not be used for organized commercial activities without prior approval from EuroBas.com.</p>
+	</li>
+	<li>
+	<p>EuroBas.com reserves the right to delete or suspend any ad without prior notice if a violation or suspicious activity is suspected.</p>
+	</li>
+	<li>
+	<p>All transactions are conducted directly between users. EuroBas.com is not responsible for any financial dealings between parties but provides tools to help minimize risks.</p>
+	</li>
+	<li>
+	<p>We encourage all users to report any suspicious content or activities to help maintain a safe and professional environment.</p>
+	</li>
+	<li>
+	<p>All rights related to the platform and its content (including text, images, designs, and trademarks) are reserved to EuroBas.com and may not be used without prior written permission.</p>
+
+	<h2>3. Legal Disclaimer</h2>
+
+	<p>EuroBas.com is not responsible for the accuracy or authenticity of ads posted by users.</p>
+	</li>
+	<li>
+	<p>Users are solely responsible for the information they publish and for any damages or losses resulting from their transactions.</p>
+	</li>
+	<li>
+	<h2>4. Amendments to Terms</h2>
+
+	<p>We reserve the right to modify or update these Terms and Conditions at any time. Updates will be announced through the platform, and continued use of the platform constitutes acceptance of the revised terms.</p>
+
+	<h2>5. Intellectual Property Rights.</h2>
+	</li>
+	<li>
+	<p>All rights related to the platform and its content (including text, images, designs, and trademarks) are reserved to EuroBas.com and may not be used without prior written permission.</p>
+	</li>
+</ul>
+
+<h3>6. Tax and Customs Regulations</h3>
+
+<ul>
+	<li>
+	<p>Users must comply with local and EU laws regarding taxes, customs, import, and export.</p>
+	</li>
+	<li>
+	<p>The platform does not offer shipping or customs clearance services and assumes no liability for related processes.</p>
+	</li>
+	<li>
+	<p>Users are solely responsible for identifying and fulfilling any tax or customs obligations related to their transactions.</p>
+	</li>
+</ul>
+
+<h3>7. Paid Ads and Optional Services</h3>
+
+<ul>
+	<li>
+	<p>The platform offers additional paid services, such as:</p>
+
+	<ul>
+		<li>
+		<p>Featuring ads on the homepage.</p>
+		</li>
+		<li>
+		<p>Highlighting ads in search results.</p>
+		</li>
+		<li>
+		<p>Monthly or annual subscription plans with added features.</p>
+		</li>
+	</ul>
+	</li>
+	<li>
+	<p>These services are optional and not mandatory.</p>
+	</li>
+	<li>
+	<p>Users are not entitled to a refund for any paid service, as they are considered fulfilled upon payment.</p>
+	</li>
+</ul>
+
+<h3>8. Prohibited Content</h3>
+
+<ul>
+	<li>
+	<p>It is strictly forbidden to publish or advertise any products or services that violate EU or local laws, including but not limited to:</p>
+
+	<ul>
+		<li>
+		<p>Weapons</p>
+		</li>
+		<li>
+		<p>Controlled substances or drugs</p>
+		</li>
+		<li>
+		<p>Animals (where prohibited by law)</p>
+		</li>
+		<li>
+		<p>Counterfeit or illegal goods</p>
+		</li>
+	</ul>
+	</li>
+	<li>
+	<p>The platform reserves the right to remove any violating content without prior notice. Repeat violations may result in account suspension.</p>
+	</li>
+</ul>
+
+<h3>9. Cooperation with Authorities</h3>
+
+<ul>
+	<li>
+	<p>If tax or legal authorities request user information, the platform will cooperate in accordance with the law and GDPR regulations.</p>
+	</li>
+</ul>
+
+<h3>10.&nbsp;Data Privacy (GDPR)</h3>
+
+<ul>
+	<li>
+	<p>The platform complies with the General Data Protection Regulation (GDPR).</p>
+	</li>
+	<li>
+	<p>Users can modify or delete their data at any time directly through their profile without contacting the administration.</p>
+	</li>
+</ul>
+
+<h3>11. Modifications</h3>
+
+<ul>
+	<li>
+	<p>The platform reserves the right to modify these terms at any time without prior notice.</p>
+	</li>
+	<li>
+	<p>Continued use of the platform after updates constitutes acceptance of the new terms.</p>
+	</li>
+</ul>
+
+<h3>12. Applicable Law</h3>
+
+<ul>
+	<li>
+	<p>These terms are governed by Dutch law.</p>
+	</li>
+	<li>
+	<p>In the event of a dispute, the courts of the Netherlands shall have jurisdiction.</p>
+	</li>
+	<li>
+	<h3>Important Disclaimer on Payments<strong>.</strong></h3>
+	</li>
+	<li>
+	<p>EuroBas.com is a classifieds platform only and does not participate in or monitor any financial transactions between users.</p>
+
+	<p>All users, especially buyers, are strongly advised to exercise extreme caution when engaging in transactions. Please follow these important guidelines:</p>
+	</li>
+	<li>
+	<p>Do not send any money or make advance payments (such as deposits) before verifying the identity and credibility of the seller.</p>
+	</li>
+	<li>
+	<p>Always try to inspect the item in person or use a trusted third party before proceeding with any payment.</p>
+	</li>
+	<li>
+	<p>Prefer to meet in safe, public locations and ensure all transactions are documented.</p>
+	</li>
+	<li>
+	<p>Avoid using untraceable or non-secure payment methods.</p>
+	</li>
+	<li>
+	<p>Any payment, agreement, or transaction is done entirely at the user&rsquo;s own risk.</p>
+	</li>
+	<li>
+	<p>EuroBas.com shall not be held liable for any loss, fraud, or dispute arising from user-to-user transactions. By using the platform, you acknowledge and accept full responsibility for your interactions and payments.</p>
+	</li>
+</ul>
+
+<h1>Your Acceptance of These Terms</h1>
+
+<ol>
+	<li>
+	<p>By using this website, you agree to these Terms &amp; Conditions and the associated policies. If you do not agree, please refrain from using the platform. EuroBas</p>
+	</li>
+</ol>
+
+<p><strong>Contact Us:</strong></p>
+
+<p>If you have any questions or inquiries please contact us via email &nbsp;info@eurobas.com&nbsp;</p>
+
+<p>Last Updated: 04/27/2025</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>'
+]);
+
+    return $terms;
+});
