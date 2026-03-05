@@ -728,7 +728,7 @@ Route::get('create-instructions-for-use', function() {
 
 Route::get('update-terms-and-conditions', function() {
     $terms = BusinessSetting::create([
-        'type' => 'instructions_for_use',
+        'type' => 'terms_condition',
         'value' => '<h1><strong>Introduction and Company Rules&nbsp; &nbsp;</strong><em>Effective Date:04-27-2025</em></h1>
 
 <p>Welcome to EuroBas.com.</p>
