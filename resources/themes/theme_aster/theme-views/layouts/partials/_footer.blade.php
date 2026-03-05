@@ -126,7 +126,7 @@
                                         @endif
                                     </li>
                                     <li><a href="{{route('helpTopic')}}">{{translate('FAQ')}}</a></li>
-                                    <li><a href="{{route('instructions_for_use')}}">{{translate('instructions_for_use')}}</a></li>
+                                    <li><a href="{{route('instructions-for-use')}}">{{translate('instructions_for_use')}}</a></li>
                                 </ul>
                             </div>
                         </div>
