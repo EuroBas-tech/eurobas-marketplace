@@ -53,7 +53,7 @@ class PageController extends Controller
 
     public function instructions_for_use()
     {
-        $instructions_for_use = json_decode(BusinessSetting::where('type', 'instructions-for-use')->first()->value);
+        $instructions_for_use = json_decode(BusinessSetting::where('type', 'instructions_for_use')->first()->value);
         if(!$instructions_for_use->status){
             return back();
         }
