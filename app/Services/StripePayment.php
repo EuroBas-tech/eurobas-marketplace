@@ -30,7 +30,6 @@ class StripePayment
         return $values;
     }
 
-
     /**
      * Create Stripe Checkout Session with all European payment methods
      */
