@@ -213,7 +213,8 @@ class BusinessSettingsController extends Controller
         $validatedData = $data->validate([
             'value' => 'required',
         ]);
-        BusinessSetting::where('type', 'terms_condition')->update(['value' => $data->value]);
+        
+        BusinessSetting::where('type', 'instructions_for_use')->update(['value' => $data->value]);
         Toastr::success(translate('Terms_and_Condition_Updated_successfully'));
         return redirect()->back();
     }
