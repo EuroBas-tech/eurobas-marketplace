@@ -727,6 +727,9 @@ Route::get('create-instructions-for-use', function() {
 });
 
 Route::get('update-terms-and-conditions', function() {
+
+    BusinessSetting::where('type', 'terms_condition')->delete();
+
     $terms = BusinessSetting::create([
         'type' => 'terms_condition',
         'value' => '<h1><strong>Introduction and Company Rules&nbsp; &nbsp;</strong><em>Effective Date:04-27-2025</em></h1>

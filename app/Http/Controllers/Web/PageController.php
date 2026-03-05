@@ -61,9 +61,11 @@ class PageController extends Controller
     public function return_policy()
     {
         $return_policy = json_decode(BusinessSetting::where('type', 'return-policy')->first()->value);
+
         if(!$return_policy->status){
             return back();
         }
+        
         $return_policy = $return_policy->content;
         $page_title_banner = $this->business_settings->where('type', 'banner_return_policy')->whereJsonContains('value', ['status' => '1'])->first('value');
         return view(VIEW_FILE_NAMES['return_policy_page'], compact('return_policy','page_title_banner'));
