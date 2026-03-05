@@ -88,6 +88,8 @@ class PaymentController extends Controller
             $model->package_id = $package->id;
             $model->save();
 
+            Log::debug(['last banner : ' => $model]);
+
         }else {
             $data['ad_id'] = $ad->id;
             $data['type'] = $package->type->name;
