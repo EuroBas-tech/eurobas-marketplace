@@ -97,9 +97,11 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a target="_blank" href="{{$paid_banner['banner_url'] ?? '#'}}">
-                                        {{translate('visit_link')}}
-                                    </a>
+                                    @if($paid_banner['banner_url'])
+                                        <a target="_blank" href="{{$paid_banner['banner_url'] ?? '#'}}">
+                                            {{translate('visit_link')}}
+                                        </a>
+                                    @endif
                                 </td>
                                 <td>
                                     <a target="_blank" href="{{ route('show-profile', [$paid_banner->user->id, $paid_banner->user->name]) }}?tap=ads">
