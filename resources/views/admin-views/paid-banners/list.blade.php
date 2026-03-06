@@ -109,7 +109,7 @@
                                 <td>{{$paid_banner['duration_in_days'] }} {{ translate('days') }}</td>
 
                                 <td>
-                                    <div>{{$paid_banner->created_at->format('d-m-Y')}}</div>
+                                    <div>{{$paid_banner->expiration_date->format('d-m-Y')}}</div>
                                     <div>{{ \Carbon\Carbon::parse($paid_banner->expiration_date)->diffForHumans() }}</div>
                                 </td>
 
