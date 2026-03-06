@@ -100,27 +100,59 @@ class HomeController extends Controller
         } else {
             // Get current offset from session (default 0) - separate session key
             $offset = session('home_slider_offset', 0);
-            
-            // Fetch 10 banners starting from offset
-            $paid_banners = PaidBanner::with('package.features', 'category')
-                ->whereHas('package.features', fn ($q) =>
-                    $q->where('name', 'show_on_home_page')
-                )
-                ->where('status', 1)
-                ->where('is_paid', 1)
-                ->where('expiration_date', '>', now())
-                ->orderByRaw(
-                    $favCategoryId
-                        ? "category_id = {$favCategoryId} DESC"
-                        : '1'
-                )
-                ->offset($offset)
-                ->limit(10)
-                ->get();
-            
+
+            $orderRaw = $favCategoryId ? "category_id = {$favCategoryId} DESC" : '1';
+
+            // How many banners remain from offset to end
+            $remaining = $totalBanners - $offset;
+
+            if ($remaining >= 10) {
+                // Enough banners after offset, fetch normally
+                $paid_banners = PaidBanner::with('package.features', 'category')
+                    ->whereHas('package.features', fn ($q) =>
+                        $q->where('name', 'show_on_home_page')
+                    )
+                    ->where('status', 1)
+                    ->where('is_paid', 1)
+                    ->where('expiration_date', '>', now())
+                    ->orderByRaw($orderRaw)
+                    ->offset($offset)
+                    ->limit(10)
+                    ->get();
+            } else {
+                // Not enough banners remaining — fetch the tail, then wrap around for the rest
+                $tail = PaidBanner::with('package.features', 'category')
+                    ->whereHas('package.features', fn ($q) =>
+                        $q->where('name', 'show_on_home_page')
+                    )
+                    ->where('status', 1)
+                    ->where('is_paid', 1)
+                    ->where('expiration_date', '>', now())
+                    ->orderByRaw($orderRaw)
+                    ->offset($offset)
+                    ->limit($remaining)
+                    ->get();
+
+                $needed = 10 - $remaining;
+
+                $wrap = PaidBanner::with('package.features', 'category')
+                    ->whereHas('package.features', fn ($q) =>
+                        $q->where('name', 'show_on_home_page')
+                    )
+                    ->where('status', 1)
+                    ->where('is_paid', 1)
+                    ->where('expiration_date', '>', now())
+                    ->orderByRaw($orderRaw)
+                    ->offset(0)
+                    ->limit($needed)
+                    ->get();
+
+                $paid_banners = $tail->concat($wrap);
+            }
+
             // Calculate next offset (rotate when reaching end)
             $nextOffset = ($offset + 10) % $totalBanners;
-            
+
             // Store for next page load
             session(['home_slider_offset' => $nextOffset]);
         }
