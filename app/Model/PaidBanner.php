@@ -12,6 +12,10 @@ class PaidBanner extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'expiration_date' => 'datetime'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
