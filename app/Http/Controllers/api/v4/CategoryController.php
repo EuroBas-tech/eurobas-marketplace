@@ -7,16 +7,21 @@ use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
 use App\Model\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
     public function get_categories()
     {
         try {
-            $categories = Category::with(['childes.childes'])->where(['position' => 0])->priority()->get();
+            $categories = Cache::rememberForever('api_home_categories', function () {
+                return Category::homeEnabled()->priority()->get();
+            });
             return response()->json($categories, 200);
+
         } catch (\Exception $e) {
-            return response()->json([], 200);
+            Log::error('Failed to fetch home categories: ' . $e->getMessage());
+            return response()->json(['message' => 'Something went wrong'], 500);    
         }
     }
 

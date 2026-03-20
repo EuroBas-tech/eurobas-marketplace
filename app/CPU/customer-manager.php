@@ -23,7 +23,7 @@ class CustomerManager
         $support->type = $data['type'];
         $support->priority = $data['priority'];
         $support->description = $data['description'];
-        $support->attachment = $data['attachment'];
+        $support->attachment = $data['attachment'] ?? '';
         $support->status = $data['status'];
         $support->save();
 

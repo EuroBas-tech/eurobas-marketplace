@@ -16,45 +16,35 @@ use function App\CPU\translate;
 
 class ChatController extends Controller
 {
-    public function list(Request $request, $type)
+    public function list(Request $request)
     {
+        $userId = $request->user()->id;
 
-        if ($type == 'delivery-man') {
-            $id_param = 'delivery_man_id';
-            $with = 'delivery_man';
-        } elseif ($type == 'seller') {
-            $id_param = 'seller_id';
-            $with = 'seller_info.shops';
-        } else {
-            return response()->json(['message' => translate('Invalid Chatting Type!')], 403);
-        }
-
-        $total_size = Chatting::where(['user_id' => $request->user()->id])
-            ->whereNotNull($id_param)
-            ->select($id_param)
-            ->distinct()
-            ->count();
-
-        $unique_chat_ids = Chatting::where(['user_id' => $request->user()->id])
-            ->whereNotNull($id_param)
-            ->select($id_param)
-            ->distinct()
+        // Get all messages involving the user
+        $allChats = Chatting::where('sender_id', $userId)
+            ->orWhere('receiver_id', $userId)
+            ->whereNotNull(['sender_id', 'receiver_id'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        $chats = array();
-        if ($unique_chat_ids) {
-            foreach ($unique_chat_ids as $unique_chat_id) {
-                $chats[] = Chatting::with([$with])
-                    ->where(['user_id' => $request->user()->id, $id_param => $unique_chat_id->$id_param])
-                    ->whereNotNull($id_param)
-                    ->latest()
-                    ->first();
+        // Filter to keep only the latest message per unique conversation
+        $seenPartners = [];
+        $uniqueChats = [];
+
+        foreach ($allChats as $chat) {
+            // Determine the other person in the conversation
+            $partnerId = ($chat->sender_id == $userId) ? $chat->receiver_id : $chat->sender_id;
+
+            // Only keep the first (latest) message per partner
+            if (!in_array($partnerId, $seenPartners)) {
+                $seenPartners[] = $partnerId;
+                $uniqueChats[] = $chat;
             }
         }
 
-        $data = array();
-        $data['total_size'] = $total_size;
-        $data['chat'] = $chats;
+        $data = [];
+        $data['total_size'] = count($uniqueChats);
+        $data['chat'] = array_values($uniqueChats);
 
         return response()->json($data, 200);
     }
@@ -107,51 +97,38 @@ class ChatController extends Controller
         return response()->json($chats, 200);
     }
 
-    public function get_message(Request $request, $type, $id)
+    public function get_message(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'offset' => 'required',
-            'limit' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        // $validator = Validator::make($request->all(), [
+        //     'offset' => 'required',
+        //     'limit' => 'required',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        // }
+        
+        $messages = Chatting::
+            where(function ($q) use ($id) {
+                $q->where('sender_id', $id)
+                ->orWhere('receiver_id', $id);
+            })
+            ->where(function ($q) use ($request) {
+                $q->where('sender_id', $request->user()->id)
+                ->orWhere('receiver_id', $request->user()->id);
+            })
+            ->latest()
+            ->get();
+
+        if($messages->count() > 0) {
+            return response()->json($messages, 200);
         }
 
-        if ($type == 'delivery-man') {
-            $id_param = 'delivery_man_id';
-            $sent_by = 'sent_by_delivery_man';
-            $with = 'delivery_man';
-        } elseif ($type == 'seller') {
-            $id_param = 'seller_id';
-            $sent_by = 'sent_by_seller';
-            $with = 'seller_info.shops';
-
-        } else {
-            return response()->json(['message' => translate('Invalid Chatting Type!')], 403);
-        }
-
-        $query = Chatting::with($with)->where(['user_id' => $request->user()->id, $id_param => $id])->latest();
-
-        if (!empty($query->get())) {
-            $message = $query->paginate($request->limit, ['*'], 'page', $request->offset);
-            $message->map(function ($conversation) {
-                $conversation->attachment = json_decode($conversation->attachment);
-            });
-
-            $query->where($sent_by, 1)->update(['seen_by_customer' => 1]);
-
-            $data = array();
-            $data['total_size'] = $message->total();
-            $data['limit'] = $request->limit;
-            $data['offset'] = $request->offset;
-            $data['message'] = array_reverse($message->items());
-            return response()->json($data, 200);
-        }
         return response()->json(['message' => translate('no messages found!')], 200);
 
     }
 
-    public function send_message(Request $request, $type)
+    public function send_message(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
@@ -159,38 +136,22 @@ class ChatController extends Controller
         ], [
             'message.required' => translate('type something!')
         ]);
+
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
+
         $message_form = User::find($request->user()->id);
 
         $chatting = new Chatting();
-        $chatting->user_id = $request->user()->id;
+        $chatting->sender_id = $request->user()->id;
+        $chatting->receiver_id = $request->id;
         $chatting->message = $request->message;
-        $chatting->sent_by_customer = 1;
-        $chatting->seen_by_customer = 1;
+        $chatting->seen = 0;
 
-        if ($type == 'seller') {
-            $seller = Seller::with('shop')->find($request->id);
-            $chatting->seller_id = $request->id;
-            $chatting->shop_id = $seller->shop->id;
-            $chatting->seen_by_seller = 0;
+        $chatting->save();
 
-            Helpers::chatting_notification('message_from_customer','seller',$seller,$message_form);
-        } elseif ($type == 'delivery-man') {
-            $chatting->delivery_man_id = $request->id;
-            $chatting->seen_by_delivery_man = 0;
+        return response()->json(['message' => $request->message, 'time' => now()], 200);
 
-            $delivery_man = DeliveryMan::find($request->id);
-            Helpers::chatting_notification('message_from_customer','delivery_man',$delivery_man,$message_form);
-        } else {
-            return response()->json(translate('Invalid Chatting Type!'), 403);
-        }
-
-        if ($chatting->save()) {
-            return response()->json(['message' => $request->message, 'time' => now()], 200);
-        } else {
-            return response()->json(['message' => translate('Message sending failed')], 403);
-        }
     }
 }

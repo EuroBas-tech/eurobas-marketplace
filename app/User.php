@@ -4,10 +4,15 @@ namespace App;
 
 use App\Model\Ad;
 use App\Model\Order;
+use App\Model\AdReport;
 use App\Model\Chatting;
 use App\Model\Wishlist;
+use App\Model\AdAuction;
+use App\Model\PaidBanner;
+use App\Model\AdAskingPrice;
 use App\Model\ProductCompare;
 use App\Model\ShippingAddress;
+use App\Model\UserCategoryInterest;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,27 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'f_name',
-        'l_name',
-        'name',
-        'email',
-        'password',
-        'phone',
-        'image',
-        'cover',
-        'login_medium',
-        'is_active',
-        'social_id',
-        'is_phone_verified',
-        'temporary_token',
-        'referral_code',
-        'referred_by',
-        'street_address',
-        'country',
-        'city',
-        'postal_code',
-        'latitude',
-        'longitude',
+        'name', 'email', 'password', 'phone', 'image', 'login_medium','is_active','social_id','is_phone_verified','temporary_token','referral_code','referred_by'
     ];
 
     /**
@@ -68,15 +53,15 @@ class User extends Authenticatable
         'loyalty_point'=>'float',
         'referred_by'=>'integer',
     ];
-
+    
+    public function ads()
+    {
+        return $this->hasMany(Ad::class, 'user_id');
+    }
+    
     public function wish_list()
     {
         return $this->hasMany(Wishlist::class, 'customer_id');
-    }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class, 'customer_id');
     }
 
     public function customer()
@@ -92,6 +77,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductCompare::class, 'user_id');
     }
+    
+    public function auctions() {
+        return $this->hasMany(AdAuction::class, 'user_id');
+    }
+    
+    public function askingPrice() {
+        return $this->hasMany(AdAskingPrice::class, 'user_id');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(AdReport::class, 'user_id');
+    }
+
+    public function paid_banners()
+    {
+        return $this->hasMany(PaidBanner::class, 'user_id');
+    }
 
     public function chatsAsSender()
     {
@@ -103,10 +106,11 @@ class User extends Authenticatable
         return $this->hasMany(Chatting::class, 'sender_id');
     }
 
-    public function ads()
+    public function category_interests()
     {
-        return $this->hasMany(Ad::class, 'user_id');
+        return $this->hasMany(UserCategoryInterest::class, 'user_id');
     }
+
 
 
 }

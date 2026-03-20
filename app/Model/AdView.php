@@ -9,6 +9,8 @@ class AdView extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public $table = 'ads_views';
 
     public function ad() {

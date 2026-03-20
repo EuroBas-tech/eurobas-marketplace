@@ -18,6 +18,7 @@ class Wishlist extends Model
     {
         return $this->belongsTo(Ad::class, 'ad_id')->active();
     }
+    
     public function vehicle()
     {
         return $this->belongsTo(Ad::class, 'ad_id')->select(['id','slug']);

@@ -32,10 +32,79 @@ class CustomerController extends Controller
     public function __construct(
         private Order $order
     ){}
+
+    public function get_customer_profile(Request $request)
+    {
+        $customer = $request->user()->loadCount(['ads', 'paid_banners']);
+        return response()->json($customer, 200);
+    }
+
+    public function update_profile(Request $request)
+    {
+        $user = $request->user();
+
+        // ✅ Validate incoming request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'bio' => 'nullable|string',
+            'image' => 'nullable|string', // or 'image|mimes:jpeg,png,jpg,gif|max:2048' if uploading file
+            'phone_code' => 'nullable|string|max:10',
+            'phone' => 'nullable|string|max:20',
+            'show_phone_number' => 'nullable|boolean',
+            'show_email_address' => 'nullable|boolean',
+            'native_language' => 'nullable|string|max:50',
+            'street_address_type' => 'nullable|string|max:50',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'country' => 'nullable|string|max:50',
+            'city' => 'nullable|string|max:50',
+            'postal_code' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'show_location_data' => 'nullable|boolean',
+            'password' => 'nullable|string|min:6|confirmed', // confirmed = checks password_confirmation
+        ]);
+
+        // ✅ Directly assign values
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->bio = $request->bio;
+        $user->image = $request->image;
+        $user->phone_code = $request->phone_code;
+        $user->phone = $request->phone;
+        $user->show_phone_number = $request->show_phone_number;
+        $user->show_email_address = $request->show_email_address;
+        $user->native_language = $request->native_language;
+        $user->street_address_type = $request->street_address_type;
+        $user->latitude = $request->latitude;
+        $user->longitude = $request->longitude;
+        $user->country = $request->country;
+        $user->city = $request->city;
+        $user->postal_code = $request->postal_code;
+        $user->address = $request->address;
+        $user->show_location_data = $request->show_location_data;
+
+        // ✅ Update password if provided
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return response()->json($user, 200);
+    }
+
+    public function get_customer_ads(Request $request)
+    {
+        // Get paginated ads for the logged-in user (10 per page)
+        $customer_ads = $request->user()->ads()->paginate(10);
+
+        return response()->json($customer_ads, 200);
+    }
+
     public function info(Request $request)
     {
-        $customer = $request->user();
-        $wishlists = Wishlist::whereHas('wishlistProduct', function ($q) {
+        $wishlists = Wishlist::whereHas('wishlistAd', function ($q) {
             return $q;
         })->where('customer_id', $customer->id)->count();
 
@@ -56,6 +125,7 @@ class CustomerController extends Controller
             'subject' => 'required',
             'type' => 'required',
             'description' => 'required',
+            'priority' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -65,16 +135,8 @@ class CustomerController extends Controller
         $request['customer_id'] = $request->user()->id;
         $request['status'] = 'pending';
 
-        try {
-            CustomerManager::create_support_ticket($request);
-        } catch (\Exception $e) {
-            return response()->json([
-                'errors' => [
-                    'code' => 'failed',
-                    'message' => 'Something went wrong',
-                ],
-            ], 422);
-        }
+        CustomerManager::create_support_ticket($request);
+
         return response()->json(['message' => 'Support ticket created successfully.'], 200);
     }
     public function account_delete(Request $request)
@@ -119,31 +181,34 @@ class CustomerController extends Controller
 
     public function get_support_tickets(Request $request)
     {
-        return response()->json(SupportTicket::where('customer_id', $request->user()->id)->get(), 200);
+        $customer_support_tickets = SupportTicket::where('customer_id', $request->user()->id)->get();
+        return response()->json($customer_support_tickets, 200);
     }
 
     public function get_support_ticket_conv(Request $request, $ticket_id)
     {
-        return response()->json(SupportTicketConv::where('support_ticket_id', $ticket_id)->get(), 200);
-
+        $customer_tickets_convs = SupportTicketConv::where('support_ticket_id', $ticket_id)->get();
+        return response()->json($customer_tickets_convs, 200);
     }
 
     public function add_to_wishlist(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required',
+            'ad_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
-        $wishlist = Wishlist::where('customer_id', $request->user()->id)->where('product_id', $request->product_id)->first();
+        $wishlist = Wishlist::where('customer_id', $request->user()->id)
+        ->where('ad_id', $request->ad_id)
+        ->first();
 
         if (empty($wishlist)) {
             $wishlist = new Wishlist;
             $wishlist->customer_id = $request->user()->id;
-            $wishlist->product_id = $request->product_id;
+            $wishlist->ad_id = $request->ad_id;
             $wishlist->save();
             return response()->json(['message' => translate('successfully added!')], 200);
         }
@@ -154,29 +219,35 @@ class CustomerController extends Controller
     public function remove_from_wishlist(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required',
+            'ad_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
-        $wishlist = Wishlist::where('customer_id', $request->user()->id)->where('product_id', $request->product_id)->first();
+        $wishlist = Wishlist::where('customer_id', $request->user()->id)
+        ->where('ad_id', $request->ad_id)
+        ->first();
 
         if (!empty($wishlist)) {
-            Wishlist::where(['customer_id' => $request->user()->id, 'product_id' => $request->product_id])->delete();
+            Wishlist::where(['customer_id' => $request->user()->id, 'ad_id' => $request->ad_id])->delete();
             return response()->json(['message' => translate('successfully removed!')], 200);
-
         }
+
         return response()->json(['message' => translate('No such data found!')], 404);
+    }
+
+    public function get_customer_paid_banners(Request $request) {
+        $customer_paid_banners = $request->user()->paid_banners()->paginate(10);
+        return response()->json($customer_paid_banners, 200);
     }
 
     public function wish_list(Request $request)
     {
-
-        $wishlist = Wishlist::whereHas('wishlistProduct',function($q){
+        $wishlist = Wishlist::whereHas('wishlistAd',function($q){
             return $q;
-        })->with(['product_full_info'])->where('customer_id', $request->user()->id)->get();
+        })->with(['wishlistAd'])->where('customer_id', $request->user()->id)->get();
 
         return response()->json($wishlist, 200);
     }
@@ -373,48 +444,6 @@ class CustomerController extends Controller
         $order['shipping_address_data'] = json_decode($order['shipping_address_data']);
         $order['billing_address_data'] = json_decode($order['billing_address_data']);
         return response()->json($order, 200);
-    }
-
-    public function update_profile(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'f_name' => 'required',
-            'l_name' => 'required',
-            'phone' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:6000'
-        ], [
-            'f_name.required' => translate('First name is required!'),
-            'l_name.required' => translate('Last name is required!'),
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        }
-
-        if ($request->has('image')) {
-            $imageName = ImageManager::update('profile/', $request->user()->image, 'webp', $request->file('image'));
-        } else {
-            $imageName = $request->user()->image;
-        }
-
-        if ($request['password'] != null && strlen($request['password']) > 5) {
-            $pass = bcrypt($request['password']);
-        } else {
-            $pass = $request->user()->password;
-        }
-
-        $userDetails = [
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            'phone' => $request->phone,
-            'image' => $imageName,
-            'password' => $pass,
-            'updated_at' => now(),
-        ];
-
-        User::where(['id' => $request->user()->id])->update($userDetails);
-
-        return response()->json(['message' => translate('successfully updated!')], 200);
     }
 
     public function update_cm_firebase_token(Request $request)

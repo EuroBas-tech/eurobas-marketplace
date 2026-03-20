@@ -38,6 +38,10 @@ Route::group(['namespace' => 'api\v4', 'prefix' => 'v4', 'middleware' => ['api_l
         Route::post('update-phone', 'SocialAuthController@update_phone');
     });
 
+    Route::group(['prefix' => 'locale'], function() {
+        Route::post('translations/{locale}', 'LocaleController@translations');
+    });
+
     Route::group(['prefix' => 'config'], function () {
         Route::get('/', 'ConfigController@configuration');
     });
@@ -91,6 +95,10 @@ Route::group(['namespace' => 'api\v4', 'prefix' => 'v4', 'middleware' => ['api_l
 
     Route::group(['prefix' => 'categories'], function () {
         Route::get('/', 'CategoryController@get_categories');
+    });
+    
+    Route::group(['prefix' => 'paid-banners'], function () {
+        Route::get('/', 'PaidBannerController@get_paid_banners');
     });
 
     Route::group(['prefix' => 'products'], function () {
@@ -152,8 +160,15 @@ Route::group(['namespace' => 'api\v4', 'prefix' => 'v4', 'middleware' => ['api_l
     });
 
     Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
+
+        Route::group(['prefix' => 'profile'], function() {
+            Route::post('/', 'CustomerController@get_customer_profile');
+            Route::post('update', 'CustomerController@update_profile');
+            Route::post('ads', 'CustomerController@get_customer_ads');
+            Route::post('paid-banners', 'CustomerController@get_customer_paid_banners');        
+        });
+        
         Route::get('info', 'CustomerController@info');
-        Route::put('update-profile', 'CustomerController@update_profile');
         Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
         Route::get('account-delete','CustomerController@account_delete');
 
@@ -200,9 +215,9 @@ Route::group(['namespace' => 'api\v4', 'prefix' => 'v4', 'middleware' => ['api_l
 
         // Chatting
         Route::group(['prefix' => 'chat'], function () {
-            Route::get('list/{type}', 'ChatController@list');
-            Route::get('get-messages/{type}/{id}', 'ChatController@get_message');
-            Route::post('send-message/{type}', 'ChatController@send_message');
+            Route::get('list', 'ChatController@list');
+            Route::get('get-messages/{id}', 'ChatController@get_message');
+            Route::post('send-message', 'ChatController@send_message');
         });
 
         //wallet
@@ -219,8 +234,14 @@ Route::group(['namespace' => 'api\v4', 'prefix' => 'v4', 'middleware' => ['api_l
         Route::get('recent-ordered-shops', 'SellerController@get_recent_ordered_shops');
     });
 
+    Route::get('ads/show/{ad}', 'AdController@show')->name('show-ad');
+    Route::get('ads/by-category/{id}', 'AdController@get_ads_by_category')->name('get-ads-by-category');
+    Route::post('ads/filter', 'AdController@ads_filter')->name('filter-ads');
+    
+    Route::post('searched-ads', 'WebController@searched_ads')->name('searched-ads');
+
     Route::group(['prefix' => 'digital-payment','middleware'=>'apiGuestCheck'], function () {
-        Route::post('/', [PaymentController::class, 'payment']);
+        Route::get('/', [PaymentController::class, 'payment']);
     });
 
     Route::group(['prefix' => 'add-to-fund','middleware'=>'auth:api'], function () {
