@@ -7,17 +7,17 @@ use App\CPU\Helpers;
 use App\CPU\ImageManager;
 use App\CPU\ProductManager;
 use App\Http\Controllers\Controller;
-use App\Model\Banner;
 use App\Model\Brand;
 use App\Model\Category;
-use App\Model\DealOfTheDay;
+use App\Model\FlashDeal;
+use App\Model\FlashDealProduct;
 use App\Model\MostDemanded;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\Model\Review;
-use App\Model\Seller;
 use App\Model\ShippingMethod;
+use App\Model\Translation;
 use App\Model\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,12 +27,6 @@ use function App\CPU\translate;
 
 class ProductController extends Controller
 {
-    public function __construct(
-        private Product      $product,
-        private Order        $order,
-        private MostDemanded $most_demanded,
-    ){}
-
     public function get_latest_products(Request $request)
     {
         $products = ProductManager::get_latest_products($request, $request['limit'], $request['offset']);
@@ -56,55 +50,286 @@ class ProductController extends Controller
 
     public function get_searched_products(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
+        $user = Helpers::get_customer($request);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        $porduct_data = Product::active()->with([
+            'reviews','rating',
+            'seller.shop',
+            'wish_list'=>function($query) use($request){
+                return $query->where('customer_id', $request->user()->id ?? 0);
+            },
+            'compare_list'=>function($query) use($request){
+                return $query->where('user_id', $request->user()->id ?? 0);
+            }
+        ])
+        ->withCount(['wish_list' => function($query) use($user){
+            $query->where('customer_id', $user != 'offline' ? $user->id : '0');
+        }])
+        ->when($request['data_from'] == 'category', function ($query) use($request){
+            $query->where('category_id', $request['id'])
+            ->orWhere('sub_category_id', $request['id'])
+            ->orWhere('sub_sub_category_id', $request['id']);
+        })
+        ->when($request->has('category') && $request['category'] != 'all', function ($query) use($request){
+            $query->where('category_id', $request['id'])
+            ->orWhere('sub_category_id', $request['id'])
+            ->orWhere('sub_sub_category_id', $request['id']);
+        })
+        ->when($request['data_from'] == 'brand', function ($query) use($request){
+            $query->where('brand_id', $request['id']);
+        })
+        ->when(!$request->has('data_from') || $request['data_from'] == 'latest', function ($query){
+            return $query;
+        });
+
+        $query = $porduct_data;
+        if ($request['data_from'] == 'top-rated') {
+            $reviews = Review::select('product_id', DB::raw('AVG(rating) as count'))
+                ->groupBy('product_id')
+                ->orderBy("count", 'desc')->get();
+            $product_ids = [];
+            foreach ($reviews as $review) {
+                array_push($product_ids, $review['product_id']);
+            }
+            $query = $porduct_data->whereIn('id', $product_ids);
         }
 
-        $products = ProductManager::search_products($request, $request['name'], 'all', $request['limit'], $request['offset']);
-        if ($products['products'] == null) {
-            $products = ProductManager::translated_product_search($request['name'], 'all', $request['limit'], $request['offset']);
+        if ($request['data_from'] == 'best-selling') {
+            $details = OrderDetail::with('product')
+                ->select('product_id', DB::raw('COUNT(product_id) as count'))
+                ->groupBy('product_id')
+                ->orderBy("count", 'desc')
+                ->get();
+            $product_ids = [];
+            foreach ($details as $detail) {
+                array_push($product_ids, $detail['product_id']);
+            }
+            $query = $porduct_data->whereIn('id', $product_ids);
         }
-        $products['products'] = Helpers::product_data_formatting($products['products'], true);
-        return response()->json($products, 200);
+
+        if ($request['data_from'] == 'most-favorite') {
+            $details = Wishlist::with('product')
+                ->select('product_id', DB::raw('COUNT(product_id) as count'))
+                ->groupBy('product_id')
+                ->orderBy("count", 'desc')
+                ->get();
+            $product_ids = [];
+            foreach ($details as $detail) {
+                array_push($product_ids, $detail['product_id']);
+            }
+            $query = $porduct_data->whereIn('id', $product_ids);
+        }
+
+        if ($request['data_from'] == 'featured') {
+            $query = Product::with([
+                'reviews','seller.shop',
+                'wish_list'=>function($query) use($request){
+                    return $query->where('customer_id', $request->user()->id ?? 0);
+                },
+                'compare_list'=>function($query) use($request){
+                    return $query->where('user_id', $request->user()->id ?? 0);
+                }
+            ])->active()->where('featured', 1);
+        }
+
+        if ($request['data_from'] == 'featured_deal') {
+            $featured_deal_id = FlashDeal::where(['status'=>1])->where(['deal_type'=>'feature_deal'])->pluck('id')->first();
+            $featured_deal_product_ids = FlashDealProduct::where('flash_deal_id',$featured_deal_id)->pluck('product_id')->toArray();
+            $query = Product::with([
+                'reviews','seller.shop',
+                'wish_list'=>function($query) use($request){
+                    return $query->where('customer_id', $request->user()->id ?? 0);
+                },
+                'compare_list'=>function($query) use($request){
+                    return $query->where('user_id', $request->user()->id ?? 0);
+                }
+            ])->active()->whereIn('id', $featured_deal_product_ids);
+        }
+
+        if ($request['data_from'] == 'discounted') {
+            $query = Product::with([
+                'reviews','seller.shop',
+                'wish_list'=>function($query) use($request){
+                    return $query->where('customer_id', $request->user()->id ?? 0);
+                },
+                'compare_list'=>function($query) use($request){
+                    return $query->where('user_id', $request->user()->id ?? 0);
+                }
+            ])->active()->where('discount', '!=', 0);
+        }
+
+        if ($request->has('search_category') && $request['search_category'] != 'all') {
+            $products = $porduct_data->get();
+            $product_ids = [];
+            foreach ($products as $product) {
+                foreach (json_decode($product['category_ids'], true) as $category) {
+                    if ($category['id'] == $request['search_category']) {
+                        array_push($product_ids, $product['id']);
+                    }
+                }
+            }
+            $query = $porduct_data->whereIn('id', $product_ids);
+        }
+
+        if ($request['data_from'] == 'search') {
+            $key = explode(' ', $request['name']);
+            $product_ids = Product::with([
+                'seller.shop',
+                'wish_list'=>function($query) use($request){
+                    return $query->where('customer_id', $request->user()->id ?? 0);
+                },
+                'compare_list'=>function($query) use($request){
+                    return $query->where('user_id', $request->user()->id ?? 0);
+                }
+            ])
+                ->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('name', 'like', "%{$value}%")
+                            ->orWhereHas('tags',function($query)use($value){
+                                $query->where('tag', 'like', "%{$value}%");
+                            });
+                    }
+                })->pluck('id');
+
+            if($product_ids->count()==0)
+            {
+                $product_ids = Translation::where('translationable_type', 'App\Model\Product')
+                    ->where('key', 'name')
+                    ->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('value', 'like', "%{$value}%");
+                        }
+                    })
+                    ->pluck('translationable_id');
+            }
+
+            $query = $porduct_data->WhereIn('id', $product_ids);
+        }
+
+        $fetched = $query->when($request->has('sort_by') && !empty($request->sort_by), function($query) use($request){
+            $query->when($request['sort_by'] == 'low-high', function($query){
+                return $query->orderBy('unit_price', 'ASC');
+            })
+                ->when($request['sort_by'] == 'high-low', function($query){
+                    return $query->orderBy('unit_price', 'DESC');
+                })
+                ->when($request['sort_by'] == 'a-z', function($query){
+                    return $query->orderBy('name', 'ASC');
+                })
+                ->when($request['sort_by'] == 'z-a', function($query){
+                    return $query->orderBy('name', 'DESC');
+                })
+                ->when($request['sort_by'] == '', function($query){
+                    return $query->latest();
+                });
+        })->latest();
+
+        $common_query = $fetched;
+
+        $rating_1 = 0;
+        $rating_2 = 0;
+        $rating_3 = 0;
+        $rating_4 = 0;
+        $rating_5 = 0;
+
+        foreach($common_query->get() as $rating){
+            if(isset($rating->rating[0]['average']) && ($rating->rating[0]['average'] >0 && $rating->rating[0]['average'] <2)){
+                $rating_1 += 1;
+            }elseif(isset($rating->rating[0]['average']) && ($rating->rating[0]['average'] >=2 && $rating->rating[0]['average'] <3)){
+                $rating_2 += 1;
+            }elseif(isset($rating->rating[0]['average']) && ($rating->rating[0]['average'] >=3 && $rating->rating[0]['average'] <4)){
+                $rating_3 += 1;
+            }elseif(isset($rating->rating[0]['average']) && ($rating->rating[0]['average'] >=4 && $rating->rating[0]['average'] <5)){
+                $rating_4 += 1;
+            }elseif(isset($rating->rating[0]['average']) && ($rating->rating[0]['average'] == 5)){
+                $rating_5 += 1;
+            }
+        }
+        $ratings = [
+            'rating_1'=>$rating_1,
+            'rating_2'=>$rating_2,
+            'rating_3'=>$rating_3,
+            'rating_4'=>$rating_4,
+            'rating_5'=>$rating_5,
+        ];
+
+        $products = $common_query->paginate($request['limit'], ['*'], 'page', $request['offset']);
+        $products_final = Helpers::product_data_formatting($products, true);
+
+        // Categories start
+        $categories = Category::withCount(['product'=>function($query){
+            $query->where(['status'=>'1']);
+            }])->with(['childes' => function ($query) {
+                $query->with(['childes' => function ($query) {
+                    $query->withCount(['sub_sub_category_product'])->where('position', 2);
+                }])->withCount(['sub_category_product'])->where('position', 1);
+            }, 'childes.childes'])
+            ->where('position', 0)->get();
+        // Categories End
+
+        $brands = Brand::active()->withCount('brandProducts')->latest()->get();
+
+        return [
+            'total_size' => $products->total(),
+            'limit' => $request['limit'],
+            'offset' => $request['offset'],
+            'products' => $products_final,
+            'brands' => $brands,
+            'category' => $categories,
+            'rating' => $ratings,
+        ];
     }
 
     public function product_filter(Request $request)
     {
-        $search = [base64_decode($request->search)];
-        $categories =  json_decode($request->category);
-        $brand = json_decode($request->brand);
+        $categories = $request->category ?? [];
+        $category = [];
+        if($request->has('category') && count($request->category)>0)
+        {
+            foreach($categories as $category)
+            {
+                $cat_info = Category::where('id', $category)->first();
+                $index = $cat_info ? array_search($cat_info->parent_id, $categories) : false;
+                if ($index !== false) {
+                    array_splice($categories, $index, 1);
+                }
+            }
+            $category = Category::whereIn('id', $request->category)
+                ->select('id', 'name')
+                ->get();
+        }
 
+        $brands = [];
+        if($request->has('brand') && count($request->brand)>0)
+        {
+            $brands = Brand::whereIn('id', $request->brand)->select('id','name')->get();
+        }
+        $rating = $request->rating ?? [];
 
         // products search
-        $products = Product::active()->with(['rating','tags'])
-            ->where(function ($query) use ($search) {
-                foreach ($search as $value) {
-                    $query->orWhere('name', 'like', "%{$value}%")
-                    ->orWhereHas('tags',function($query)use($search){
-                        $query->where(function($q)use($search){
-                            foreach ($search as $value) {
-                                $q->where('tag', 'like', "%{$value}%");
-                            }
-                        });
-                    });
-                }
+        $products = Product::active()->with(['wish_list'=>function($query) use($request){
+                    return $query->where('customer_id', $request->user()->id ?? 0);
+                }, 'compare_list'=>function($query) use($request){
+                    return $query->where('user_id', $request->user()->id ?? 0);
+            }])
+            ->when($request->has('shop_id') && !empty($request->shop_id) && $request->shop_id == '0', function ($query) {
+                return $query->where(['added_by' => 'admin']);
             })
-            ->when($request->has('brand') && count($brand)>0, function($query) use($request, $brand){
-                return $query->whereIn('brand_id', $brand);
+            ->when($request->has('shop_id') && !empty($request->shop_id) && $request->shop_id != '0', function ($query) use ($request) {
+                return $query->where(['added_by' => 'seller', 'user_id'=> $request->shop_id]);
             })
-            ->when($request->has('category') && count($categories)>0, function($query) use($categories){
+            ->when($request->has('brand') && count($request->brand)>0, function($query) use($request){
+                return $query->whereIn('brand_id', $request->brand);
+            })
+            ->when($request->has('category') && count($request->category)>0, function($query) use($categories){
                 return $query->whereIn('category_id', $categories)
                     ->orWhereIn('sub_category_id', $categories)
                     ->orWhereIn('sub_sub_category_id', $categories);
             })
             ->when($request->has('sort_by') && !empty($request->sort_by), function($query) use($request){
                 $query->when($request['sort_by'] == 'low-high', function($query){
-                    return $query->orderBy('unit_price', 'ASC');
-                })
+                        return $query->orderBy('unit_price', 'ASC');
+                    })
                     ->when($request['sort_by'] == 'high-low', function($query){
                         return $query->orderBy('unit_price', 'DESC');
                     })
@@ -114,12 +339,24 @@ class ProductController extends Controller
                     ->when($request['sort_by'] == 'z-a', function($query){
                         return $query->orderBy('name', 'DESC');
                     })
-                    ->when($request['sort_by'] == 'latest', function($query){
+                    ->when($request['sort_by'] == '', function($query){
                         return $query->latest();
                     });
             })
             ->when(!empty($request['price_min']) || !empty($request['price_max']), function($query) use($request){
-                return $query->whereBetween('unit_price', [$request['price_min'], $request['price_max']]);
+                return $query->whereBetween('unit_price', [Helpers::convert_manual_currency_to_usd($request['price_min'], $request['currency']), Helpers::convert_manual_currency_to_usd($request['price_max'], $request['currency'])]);
+            })
+            ->when(!empty($request->colors), function($query) use($request){
+                return $query->where(function($query) use ($request) {
+                    foreach ($request->colors as $color) {
+                        $query->orWhere('colors', 'like', '%'.$color.'%');
+                    }
+                });
+            })
+            ->when(!empty($request->rating), function($query) use($request){
+                $query->with(['rating'])->whereHas('rating', function($query) use($request){
+                    return $query;
+                });
             });
 
         $products = $products->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -128,36 +365,10 @@ class ProductController extends Controller
             'total_size' => $products->total(),
             'limit' => $request['limit'],
             'offset' => $request['offset'],
-            'products' => Helpers::product_data_formatting($products->items(),true)
+            'products' => Helpers::product_data_formatting($products->items(),true),
+            'selected_brands' => $brands,
+            'selected_category' => $category,
         ];
-    }
-
-    public function get_suggestion_product(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        }
-
-        $products = ProductManager::search_products($request, $request['name'], 'all', $request['limit'], $request['offset']);
-        if ($products['products'] == null) {
-            $products = ProductManager::translated_product_search($request['name'], 'all', $request['limit'], $request['offset']);
-        }
-
-        $products_array = [];
-        if($products['products']){
-            foreach($products['products'] as $product){
-                $products_array[] = [
-                    'id'=>$product->id,
-                    'name'=>$product->name,
-                ];
-            }
-        }
-
-        return response()->json(['products'=>$products_array], 200);
     }
 
     public function get_product(Request $request, $slug)
@@ -168,8 +379,8 @@ class ProductController extends Controller
             ->withCount(['wish_list' => function($query) use($user){
                 $query->where('customer_id', $user != 'offline' ? $user->id : '0');
             }])
-            ->where(['slug' => $slug])->first();
-
+            ->where(['slug' => $slug])
+            ->first();
         if (isset($product)) {
             $product = Helpers::product_data_formatting($product, false);
 
@@ -180,6 +391,19 @@ class ProductController extends Controller
                 $product['average_review'] = 0;
             }
 
+            $product_reviews_count = $product->reviews->count();
+            $ratting_status_positive = $product->reviews ? $product->reviews->where('rating','>=', 4)->count() : 0;
+            $ratting_status_good = $product->reviews ? $product->reviews->where('rating', 3)->count() : 0;
+            $ratting_status_neutral = $product->reviews ? $product->reviews->where('rating', 2)->count() : 0;
+            $ratting_status_negative = $product->reviews ? $product->reviews->where('rating','=', 1)->count() : 0;
+            $ratting_status = [
+                'positive' => $ratting_status_positive,
+                'good' => $ratting_status_good,
+                'neutral' => $ratting_status_neutral,
+                'negative' => $ratting_status_negative,
+                'total_review_count'=>$product_reviews_count,
+            ];
+
             $temporary_close = Helpers::get_business_settings('temporary_close');
             $inhouse_vacation = Helpers::get_business_settings('vacation_add');
             $inhouse_vacation_start_date = $product['added_by'] == 'admin' ? $inhouse_vacation['vacation_start_date'] : null;
@@ -188,6 +412,7 @@ class ProductController extends Controller
             $product['inhouse_vacation_start_date'] = $inhouse_vacation_start_date;
             $product['inhouse_vacation_end_date'] = $inhouse_vacation_end_date;
             $product['inhouse_temporary_close'] = $inhouse_temporary_close;
+            $product['rating_status'] = $ratting_status;
         }
         return response()->json($product, 200);
     }
@@ -195,7 +420,7 @@ class ProductController extends Controller
     public function get_best_sellings(Request $request)
     {
         $products = ProductManager::get_best_selling_products($request, $request['limit'], $request['offset']);
-        $products['products'] = isset($products['products'][0]) ? Helpers::product_data_formatting($products['products'], true) : [];
+        $products['products'] = Helpers::product_data_formatting($products['products'], true);
 
         return response()->json($products, 200);
     }
@@ -366,12 +591,12 @@ class ProductController extends Controller
         $user = Helpers::get_customer($request);
         // Most demanded product
         $products = MostDemanded::where('status',1)->with(['product'=>function($query) use($user){
-            $query->withCount(['order_details','order_delivered','reviews','wish_list'=>function($query) use($user){
-                $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-            }]);
-        }])->whereHas('product', function ($query){
-            return $query->active();
-        })->first();
+                $query->withCount(['order_details','order_delivered','reviews','wish_list'=>function($query) use($user){
+                    $query->where('customer_id', $user != 'offline' ? $user->id : '0');
+                }]);
+            }])->whereHas('product', function ($query){
+                return $query->active();
+            })->first();
 
         if($products)
         {
@@ -391,114 +616,6 @@ class ProductController extends Controller
             $products = [];
         }
 
-        return response()->json($products, 200);
-    }
-
-    public function get_shop_again_product(Request $request)
-    {
-        $user = Helpers::get_customer($request);
-        if($user != 'offline') {
-            $products = Product::active()->with('seller.shop')
-                ->withCount(['wish_list' => function($query) use($user){
-                    $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-                }])
-                ->whereHas('seller.orders', function ($query) use($request) {
-                    $query->where(['customer_id' => $request->user()->id, 'seller_is' => 'seller']);
-                })
-                ->select('id','name','slug','thumbnail','unit_price','purchase_price','added_by','user_id')
-                ->inRandomOrder()->take(12)->get();
-
-            unset($products['reviews']);
-        }else{
-            $products = [];
-        }
-
-
-        return response()->json($products, 200);
-    }
-
-    public function just_for_you(Request $request)
-    {
-        $user = Helpers::get_customer($request);
-        if($user != 'offline') {
-            $orders = $this->order->where(['customer_id' => $user->id])->with(['details'])->get();
-
-            if ($orders) {
-                $orders = $orders?->map(function ($order) {
-                    $order_details = $order->details->map(function ($detail) {
-                        $product = json_decode($detail->product_details);
-                        $category = json_decode($product->category_ids)[0]->id;
-                        $detail['category_id'] = $category;
-                        return $detail;
-                    });
-                    $order['id'] = $order_details[0]->id;
-                    $order['category_id'] = $order_details[0]->category_id;
-
-                    return $order;
-                });
-
-                $categories = [];
-                foreach ($orders as $order) {
-                    $categories[] = ($order['category_id']);;
-                }
-                $ids = array_unique($categories);
-
-
-                $just_for_you = $this->product->with([
-                        'compare_list'=>function($query) use($user){
-                            return $query->where('user_id', $user != 'offline' ? $user->id : 0);
-                        }
-                    ])
-                    ->withCount(['wish_list' => function($query) use($user){
-                        $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-                    }])
-                    ->active()
-                    ->where(function ($query) use ($ids) {
-                        foreach ($ids as $id) {
-                            $query->orWhere('category_ids', 'like', "%{$id}%");
-                        }
-                    })
-                    ->inRandomOrder()
-                    ->take(8)
-                    ->get();
-            } else {
-                $just_for_you = $this->product->with([
-                        'compare_list'=>function($query) use($user){
-                            return $query->where('user_id', $user != 'offline' ? $user->id : 0);
-                        }
-                    ])
-                    ->withCount(['wish_list' => function($query) use($user){
-                        $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-                    }])
-                    ->active()
-                    ->inRandomOrder()
-                    ->take(8)
-                    ->get();
-            }
-        } else {
-            $just_for_you = $this->product->with([
-                    'compare_list'=>function($query) use($user){
-                        return $query->where('user_id', $user != 'offline' ? $user->id : 0);
-                    }
-                ])
-                ->withCount(['wish_list' => function($query) use($user){
-                    $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-                }])
-                ->active()
-                ->inRandomOrder()
-                ->take(8)
-                ->get();
-        }
-
-        $products = Helpers::product_data_formatting($just_for_you, true);
-
-        return response()->json($products, 200);
-    }
-
-    public function get_most_searching_products(Request $request)
-    {
-        $products = ProductManager::get_best_selling_products($request, $request['limit'], $request['offset']);
-        $products['products'] = Helpers::product_data_formatting($products['products'], true);
         return response()->json($products, 200);
     }
 }

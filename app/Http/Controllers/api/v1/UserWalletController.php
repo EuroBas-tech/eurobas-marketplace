@@ -29,12 +29,9 @@ class UserWalletController extends Controller
         {
             $user = $request->user();
             $total_wallet_balance = $user->wallet_balance;
-            $wallet_transactio_list = WalletTransaction::where(['user_id'=>$user->id])
-                ->when($request->transaction_type != 'all', function($query) use($request){
-                    return $query->where(['transaction_type'=>$request->transaction_type]);
-                })
-                ->latest()
-                ->paginate($request['limit'], ['*'], 'page', $request['offset']);
+            $wallet_transactio_list = WalletTransaction::where('user_id',$user->id)
+                                                    ->latest()
+                                                    ->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
             return response()->json([
                 'limit'=>(integer)$request->limit,
@@ -52,11 +49,11 @@ class UserWalletController extends Controller
 
     public function bonus_list(Request $request)
     {
-        $add_fund_bonus_categories = AddFundBonusCategories::active()
-            ->whereDate('start_date_time', '<=', now())
-            ->whereDate('end_date_time', '>=', now())
+        $add_fund_bonus_list = AddFundBonusCategories::where('is_active', 1)
+            ->whereDate('start_date_time', '<=', date('Y-m-d'))
+            ->whereDate('end_date_time', '>=', date('Y-m-d'))
             ->get();
 
-        return response()->json(['bonus_list' => $add_fund_bonus_categories], 200);
+        return response()->json(['add_fund_bonus_list'=>$add_fund_bonus_list], 200);
     }
 }

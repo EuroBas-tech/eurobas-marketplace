@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\api\v1;
 
+use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
 use App\Model\Contact;
 use App\Model\GuestUser;
 use App\Model\HelpTopic;
-use Brian2694\Toastr\Facades\Toastr;
+use App\Model\SocialMedia;
+use App\Model\Subscription;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use App\CPU\Helpers;
+use function App\CPU\translate;
 
 class GeneralController extends Controller
 {
@@ -24,6 +25,39 @@ class GeneralController extends Controller
             'created_at' => now(),
         ]);
         return response()->json(['guest_id'=>$guest_id],200);
+    }
+
+    public function subscription(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subscription_email' => 'required'
+        ], [
+            'subscription_email.required' => 'The email is required!'
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+
+        $subscription_email = Subscription::where('email',$request->subscription_email)->first();
+        if($subscription_email){
+            return response()->json(['status'=>'subscribed',200]);
+
+        }else{
+            $new_subcription = new Subscription;
+            $new_subcription->email = $request->subscription_email;
+            $new_subcription->save();
+
+            return response()->json(['status'=>'success',200]);
+        }
+
+    }
+
+    public function social_media(){
+        $socials = SocialMedia::where(['active_status'=>1])->get();
+
+        return response()->json(['socials'=>$socials, 200]);
     }
 
     public function contact_store(Request $request)

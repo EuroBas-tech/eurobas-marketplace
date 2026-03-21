@@ -43,9 +43,6 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-        $this->mapApiv2Routes();
-        $this->mapApiv3Routes();
-        $this->mapApiv4Routes();
 
         $this->mapAdminRoutes();
         $this->mapCustomerRoutes();
@@ -127,27 +124,4 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/api/v1/api.php'));
     }
 
-    protected function mapApiv2Routes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api/v2/api.php'));
-    }
-
-    protected function mapApiv3Routes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api/v3/seller.php'));
-    }
-
-    protected function mapApiv4Routes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api/v4/api.php'));
-    }
 }

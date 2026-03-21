@@ -5,20 +5,22 @@ namespace App\Http\Controllers\api\v1;
 use App\CPU\Helpers;
 use App\CPU\ProductManager;
 use App\Http\Controllers\Controller;
+use App\Model\Brand;
 use App\Model\BusinessSetting;
 use App\Model\Color;
 use App\Model\Currency;
 use App\Model\HelpTopic;
+use App\Model\Shop;
+use App\Model\SocialMedia;
 use Illuminate\Http\Request;
-use function App\CPU\payment_gateways;
 use App\Model\ShippingType;
-use App\Model\Tag;
+use function App\CPU\payment_gateways;
 
 class ConfigController extends Controller
 {
     public function configuration()
     {
-        $currency = Currency::all();
+        $currency = Currency::where(['status'=>1])->get();
         $social_login = [];
         foreach (Helpers::get_business_settings('social_login') as $social) {
             $config = [
@@ -28,21 +30,16 @@ class ConfigController extends Controller
             array_push($social_login, $config);
         }
 
-        foreach (Helpers::get_business_settings('apple_login') as $social) {
-            $config = [
-                'login_medium' => $social['login_medium'],
-                'status' => (boolean)$social['status']
-            ];
-            array_push($social_login, $config);
-        }
-
-        $languages = Helpers::get_business_settings('pnc_language');
+        $languages = Helpers::get_business_settings('language');
         $lang_array = [];
         foreach ($languages as $language) {
-            array_push($lang_array, [
-                'code' => $language,
-                'name' => Helpers::get_language_name($language)
-            ]);
+            $lang_array[] = array(
+                'code' => $language['code'],
+                'name' => Helpers::get_language_name($language['code']),
+                'status' => $language['status'],
+                'default' => $language['default'],
+                'direction' => $language['direction'],
+            );
         }
 
         $offline_payment = null;
@@ -60,34 +57,52 @@ class ConfigController extends Controller
 
             unset(
                 $payment->additional_data,
-                $payment->live_values,
-                $payment->test_values,
                 $payment->id,
                 $payment->settings_type,
-                $payment->mode,
                 $payment->is_active,
                 $payment->created_at,
                 $payment->updated_at
             );
         });
 
-
         $admin_shipping = ShippingType::where('seller_id',0)->first();
         $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
 
         $company_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
+        $company_cover_image = cloudfront("logo/").'/'.BusinessSetting::where(['type'=>'shop_banner'])->first()->value;
+        $company_fav_icon = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_fav_icon'])->first()->value;
+        $footer_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_footer_logo'])->first()->value;
+        $android = BusinessSetting::where(['type'=>'download_app_google_stroe'])->first()->value;
+        $android = json_decode($android)->link;
+        $shops = Shop::whereHas('seller', function ($query) {
+            return $query->approved();
+        })->take(9)->get();
+        $brands = Brand::active()->take(15)->get();
+
+        $ios = BusinessSetting::where(['type'=>'download_app_apple_stroe'])->first()->value;
+        $ios = json_decode($ios)->link;
 
         return response()->json([
             'brand_setting' => BusinessSetting::where('type', 'product_brand')->first()->value,
+            'brands' => $brands,
+            'shops' => $shops,
             'digital_product_setting' => BusinessSetting::where('type', 'digital_product')->first()->value,
             'system_default_currency' => (int)Helpers::get_business_settings('system_default_currency'),
             'digital_payment' => (boolean)Helpers::get_business_settings('digital_payment')['status'] ?? 0,
             'cash_on_delivery' => (boolean)Helpers::get_business_settings('cash_on_delivery')['status'] ?? 0,
             'seller_registration' => BusinessSetting::where('type', 'seller_registration')->first()->value,
             'pos_active' => BusinessSetting::where('type','seller_pos')->first()->value,
+            'company_address' => Helpers::get_business_settings('shop_address'),
             'company_phone' => Helpers::get_business_settings('company_phone'),
             'company_email' => Helpers::get_business_settings('company_email'),
             'company_logo' => $company_logo,
+            'company_cover_image' => $company_cover_image,
+            'company_fav_icon' => $company_fav_icon,
+            'footer_logo' => $footer_logo,
+            'ios' => $ios,
+            'android' => $android,
+            'social_media' => SocialMedia::where('active_status', 1)->get(),
+            'copyright_text' => BusinessSetting::where(['type'=>'company_copyright_text'])->first()->value,
             'delivery_country_restriction' => Helpers::get_business_settings('delivery_country_restriction'),
             'delivery_zip_code_area_restriction' => Helpers::get_business_settings('delivery_zip_code_area_restriction'),
             'base_urls' => [
@@ -103,6 +118,8 @@ class ConfigController extends Controller
                 'shop_image_url' => asset('storage/app/public/shop'),
                 'notification_image_url' => asset('storage/app/public/notification'),
                 'delivery_man_image_url' => asset('storage/app/public/delivery-man'),
+                'flag_image_url' => asset('public/assets/front-end/img/flags'),
+                'delivery_man_verification_image' => asset('storage/app/public/delivery-man/verification-image'),
             ],
             'static_urls' => [
                 'contact_us' => route('contacts'),
@@ -143,30 +160,16 @@ class ConfigController extends Controller
             'loyalty_point_exchange_rate'=>Helpers::get_business_settings('loyalty_point_exchange_rate'),
             'loyalty_point_minimum_point'=>Helpers::get_business_settings('loyalty_point_minimum_point'),
             'payment_methods' => $payment_methods,
-            'offline_payment' => $offline_payment,
             'payment_method_image_path' => asset('storage/app/public/payment_modules/gateway_image'),
-            'ref_earning_status' => BusinessSetting::where('type', 'ref_earning_status')->first()->value ?? 0,
-            'active_theme' => theme_root_path(),
-            'popular_tags'=>Tag::orderBy('visit_count', 'desc')->take(15)->get(),
-            'guest_checkout'=>Helpers::get_business_settings('guest_checkout'),
-            'upload_picture_on_delivery'=>Helpers::get_business_settings('upload_picture_on_delivery'),
-            'user_app_version_control'=>Helpers::get_business_settings('user_app_version_control'),
-            'seller_app_version_control'=>Helpers::get_business_settings('seller_app_version_control'),
-            'delivery_man_app_version_control'=>Helpers::get_business_settings('delivery_man_app_version_control'),
-            'add_funds_to_wallet'=>Helpers::get_business_settings('add_funds_to_wallet'),
-            'minimum_add_fund_amount'=>Helpers::get_business_settings('minimum_add_fund_amount'),
-            'maximum_add_fund_amount'=>Helpers::get_business_settings('maximum_add_fund_amount'),
-            'inhouse_temporary_close'=>Helpers::get_business_settings('temporary_close'),
-            'inhouse_vacation_add'=>Helpers::get_business_settings('vacation_add'),
-            'free_delivery_status'=>Helpers::get_business_settings('free_delivery_status'),
-            'free_delivery_over_amount'=>Helpers::get_business_settings('free_delivery_over_amount'),
-            'free_delivery_responsibility'=>Helpers::get_business_settings('free_delivery_responsibility'),
-            'free_delivery_over_amount_seller'=>Helpers::get_business_settings('free_delivery_over_amount_seller'),
+            'offline_payment' => $offline_payment,
+            'default_location' => Helpers::get_business_settings('default_location'),
+            'refund_day_limit' => Helpers::get_business_settings('refund_day_limit'),
+            'seller_login_url' => route('seller.auth.login'),
             'minimum_order_amount_status'=> Helpers::get_business_settings('minimum_order_amount_status'),
             'minimum_order_amount'=> Helpers::get_business_settings('minimum_order_amount'),
             'minimum_order_amount_by_seller'=> Helpers::get_business_settings('minimum_order_amount_by_seller'),
-            'order_verification'=> Helpers::get_business_settings('order_verification'),
-            'referral_customer_signup_url'=> route('home').'?referral_code=',
+            'free_delivery_status'=>Helpers::get_business_settings('free_delivery_status'),
+            'free_delivery_responsibility'=>Helpers::get_business_settings('free_delivery_responsibility'),
         ]);
     }
 }

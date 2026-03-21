@@ -13,62 +13,35 @@ class BannerController extends Controller
 {
     public function get_banners(Request $request)
     {
-         $lang="";
-        if($request->header()['lang']!=null)
-        {
-             $lang= $request->header()['lang'][0];
+        $validator = Validator::make($request->all(), [
+            'banner_type' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
-        $theme_name = theme_root_path();
 
-        $banner_array = match ($theme_name) {
-            'default' => array(
-                'Main Banner',
-                'Footer Banner',
-                'Popup Banner',
-                'Main Section Banner'
-            ),
-            'theme_aster' => array(
-                'Main Banner',
-                'Footer Banner',
-                'Popup Banner',
-                'Header Banner',
-                'Sidebar Banner',
-                'Top Side Banner',
-                'Main Section Banner'
-            ),
-            'theme_fashion' => array(
-                'Main Banner',
-                'Footer Banner',
-                'Popup Banner',
-                'Main Section Banner',
-                'Promo Banner Left',
-                'Promo Banner Middle Top',
-                'Promo Banner Middle Bottom',
-                'Promo Banner Right',
-                'Promo Banner Bottom'
-            ),
-        };
-
-$banners = Banner::whereIn('banner_type', $banner_array)
-    ->where('published', 1)
-    ->where('theme', $theme_name)
-    ->where(function($query) use ($lang) {
-        $query->where('lang', $lang)
-              ->orWhere('lang', 'Both');
-    })
-    ->whereIn('for_mobile', [1, 2])->orderBy('priority', 'desc')->get();
-
-$pro_ids = [];
-$data = [];
-foreach ($banners as $banner) {
-    if ($banner['resource_type'] == 'product' && !in_array($banner['resource_id'], $pro_ids)) {
-        array_push($pro_ids, $banner['resource_id']);
-        $product = Product::find($banner['resource_id']);
-        $banner['product'] = Helpers::product_data_formatting($product);
-    }
-    $data[] = $banner;
-}
-
+        if ($request['banner_type'] == 'all') {
+            $banners = Banner::where(['published' => 1])->get();
+        } elseif ($request['banner_type'] == 'main_banner') {
+            $banners = Banner::where(['published' => 1, 'banner_type' => 'Main Banner'])->get();
+        } elseif ($request['banner_type'] == 'main_section_banner') {
+            $banners = Banner::where(['published' => 1, 'banner_type' => 'Main Section Banner'])->get();
+        } elseif ($request['banner_type'] == 'top_side_banner') {
+            $banners = Banner::where(['published' => 1, 'banner_type' => 'Top Side Banner'])->get();
+        }else {
+            $banners = Banner::where(['published' => 1, 'banner_type' => 'Footer Banner'])->get();
+        }
+        $pro_ids = [];
+        $data = [];
+        foreach ($banners as $banner) {
+            if ($banner['resource_type'] == 'product' && !in_array($banner['resource_id'], $pro_ids)) {
+                array_push($pro_ids,$banner['resource_id']);
+                $product = Product::find($banner['resource_id']);
+                $banner['product'] = Helpers::product_data_formatting($product);
+            }
+            $data[] = $banner;
+        }
 
         return response()->json($data, 200);
 

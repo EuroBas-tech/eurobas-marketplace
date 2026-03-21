@@ -38,7 +38,7 @@ class UserLoyaltyController extends Controller
                 'limit'=>(integer)$request->limit,
                 'offset'=>(integer)$request->offset,
                 'total_loyalty_point'=>$total_loyalty_point,
-                'total_loyalty_point'=>$loyalty_point_list->total(),
+                'total_loyalty_point_count'=>$loyalty_point_list->total(),
                 'loyalty_point_list'=>$loyalty_point_list->items()
             ],200);
         }else{

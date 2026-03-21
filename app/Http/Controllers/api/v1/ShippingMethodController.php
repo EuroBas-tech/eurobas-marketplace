@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api\v1;
 
 use App\CPU\CartManager;
 use App\CPU\Helpers;
-use App\CPU\OrderManager;
 use App\Http\Controllers\Controller;
 use App\Model\CartShipping;
 use App\Model\ShippingMethod;
@@ -71,15 +70,7 @@ class ShippingMethodController extends Controller
     public function chosen_shipping_methods(Request $request)
     {
         $group_ids = CartManager::get_cart_group_ids($request);
-        $cart_shipping = CartShipping::whereIn('cart_group_id', $group_ids)->get();
-
-        $cart_shipping->map(function ($data) {
-            $free_delivery_status = OrderManager::free_delivery_order_amount($data['cart_group_id'])['status'];
-            $data['free_delivery_status'] = $free_delivery_status;
-            return $data;
-        });
-
-        return response()->json($cart_shipping, 200);
+        return response()->json(CartShipping::whereIn('cart_group_id', $group_ids)->get(), 200);
     }
 
     public function check_shipping_type(Request $request)
