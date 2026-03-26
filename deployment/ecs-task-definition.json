@@ -39,6 +39,16 @@
           "value": "error"
         }
       ],
+      "secrets": [
+        {
+          "name": "PASSPORT_PRIVATE_KEY",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:961341543644:secret:eurobas-passport-keys-EGOTI4:PASSPORT_PRIVATE_KEY::"
+        },
+        {
+          "name": "PASSPORT_PUBLIC_KEY",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:961341543644:secret:eurobas-passport-keys-EGOTI4:PASSPORT_PUBLIC_KEY::"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
