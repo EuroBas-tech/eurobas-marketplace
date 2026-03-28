@@ -47,6 +47,14 @@
         {
           "name": "PASSPORT_PUBLIC_KEY",
           "valueFrom": "arn:aws:secretsmanager:eu-central-1:961341543644:secret:eurobas-passport-keys-EGOTI4:PASSPORT_PUBLIC_KEY::"
+        },
+        {
+          "name": "PASSPORT_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:961341543644:secret:eurobas-passport-keys-EGOTI4:PASSPORT_CLIENT_ID::"
+        },
+        {
+          "name": "PASSPORT_CLIENT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:961341543644:secret:eurobas-passport-keys-EGOTI4:PASSPORT_CLIENT_SECRET::"
         }
       ],
       "logConfiguration": {
