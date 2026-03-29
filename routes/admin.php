@@ -50,11 +50,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::post('status-filter', 'WithdrawController@status_filter')->name('status-filter');
         });
 
-        Route::group(['prefix' => 'deal', 'as' => 'deal.','middleware'=>['module:promotion_management']], function () {
-
-            Route::get('flash', 'DealController@flash_index')->name('flash');
-            Route::post('flash', 'DealController@flash_submit');
-            Route::any('search-product', 'DealController@search_product')->name('search-product');
 
             
         Route::group(['prefix' => 'business-settings', 'as' => 'business-settings.','middleware'=>['module:promotion_management']], function () {
