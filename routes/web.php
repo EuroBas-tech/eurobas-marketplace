@@ -296,8 +296,6 @@ Route::group(
             Route::get('account-transaction', 'UserProfileController@account_transaction')->name('account-transaction');
             Route::get('account-wallet-history', 'UserProfileController@account_wallet_history')->name('account-wallet-history');
 
-            Route::get('wallet-account','UserWalletController@my_wallet_account')->name('wallet-account'); //theme fashion
-            Route::get('wallet','UserWalletController@index')->name('wallet')->middleware('customer');
             Route::get('loyalty','UserLoyaltyController@index')->name('loyalty')->middleware('customer');
             Route::post('loyalty-exchange-currency','UserLoyaltyController@loyalty_exchange_currency')->name('loyalty-exchange-currency');
             Route::get('ajax-loyalty-currency-amount','UserLoyaltyController@ajax_loyalty_currency_amount')->name('ajax-loyalty-currency-amount');
