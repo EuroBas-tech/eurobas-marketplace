@@ -596,7 +596,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
                 Route::post('instructions-for-use', 'BusinessSettingsController@updateInstructionsForUse')->name('update-instructions-for-use');
 
                 Route::get('privacy-policy', 'BusinessSettingsController@privacy_policy')->name('privacy-policy');
-                Route::post('privacy-policy', 'BusinessSettingsController@privacy_policy_update')->name('privacy-policy');
+                Route::post('privacy-policy', 'BusinessSettingsController@privacy_policy_update')->name('privacy-policy-update');
 
                 Route::get('fcm-index', 'BusinessSettingsController@fcm_index')->name('fcm-index');
                 Route::post('update-fcm', 'BusinessSettingsController@update_fcm')->name('update-fcm');
