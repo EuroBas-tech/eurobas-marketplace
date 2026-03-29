@@ -152,7 +152,7 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
     });
 
     Route::group(['prefix' => 'add-to-fund','middleware'=>'auth:api'], function () {
-        Route::get('bonus-list', 'UserWalletController@bonus_list');
+         
         Route::post('/', [PaymentController::class, 'customer_add_to_fund_request']);
     });
 
