@@ -50,37 +50,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::post('status-filter', 'WithdrawController@status_filter')->name('status-filter');
         });
 
-        Route::group(['prefix' => 'deal', 'as' => 'deal.','middleware'=>['module:promotion_management']], function () {
 
-            Route::get('flash', 'DealController@flash_index')->name('flash');
-            Route::post('flash', 'DealController@flash_submit');
-            Route::any('search-product', 'DealController@search_product')->name('search-product');
-
-            // feature deal
-            Route::get('feature', 'DealController@feature_index')->name('feature');
-
-            Route::get('day', 'DealController@deal_of_day')->name('day');
-            Route::post('day', 'DealController@deal_of_day_submit');
-            Route::post('day-status-update', 'DealController@day_status_update')->name('day-status-update');
-
-            Route::get('day-update/{id}', 'DealController@day_edit')->name('day-update');
-            Route::post('day-update/{id}', 'DealController@day_update');
-            Route::post('day-delete', 'DealController@day_delete')->name('day-delete');
-
-            Route::get('update/{id}', 'DealController@edit')->name('update');
-            Route::get('edit/{id}', 'DealController@feature_edit')->name('edit');
-
-            Route::post('update/{id}', 'DealController@update')->name('update');
-            Route::post('status-update', 'DealController@status_update')->name('status-update');
-            Route::post('feature-status', 'DealController@feature_status')->name('feature-status');
-
-            Route::post('featured-update', 'DealController@featured_update')->name('featured-update');
-            Route::get('add-product/{deal_id}', 'DealController@add_product')->name('add-product');
-            Route::post('add-product/{deal_id}', 'DealController@add_product_submit');
-            Route::post('delete-product', 'DealController@delete_product')->name('delete-product');
-        });
-
-
+            
         Route::group(['prefix' => 'business-settings', 'as' => 'business-settings.','middleware'=>['module:promotion_management']], function () {
             Route::get('announcement', 'BusinessSettingsController@announcement')->name('announcement');
             Route::post('update-announcement', 'BusinessSettingsController@updateAnnouncement')->name('update-announcement');
@@ -625,7 +596,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
                 Route::post('instructions-for-use', 'BusinessSettingsController@updateInstructionsForUse')->name('update-instructions-for-use');
 
                 Route::get('privacy-policy', 'BusinessSettingsController@privacy_policy')->name('privacy-policy');
-                Route::post('privacy-policy', 'BusinessSettingsController@privacy_policy_update')->name('privacy-policy');
+                Route::post('privacy-policy', 'BusinessSettingsController@privacy_policy_update')->name('privacy-policy-update');
 
                 Route::get('fcm-index', 'BusinessSettingsController@fcm_index')->name('fcm-index');
                 Route::post('update-fcm', 'BusinessSettingsController@update_fcm')->name('update-fcm');
