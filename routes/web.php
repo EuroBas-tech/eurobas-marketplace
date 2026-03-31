@@ -994,20 +994,3 @@ Route::get('update-terms-and-conditions', function() {
     return $terms;
 });
 
-Route::get('check-passport-tables', function () {
-    $tables = [
-        'oauth_access_tokens',
-        'oauth_auth_codes',
-        'oauth_clients',
-        'oauth_personal_access_clients',
-        'oauth_refresh_tokens',
-    ];
-
-    $result = [];
-
-    foreach ($tables as $table) {
-        $result[$table] = Schema::hasTable($table);
-    }
-
-    return response()->json($result);
-});
