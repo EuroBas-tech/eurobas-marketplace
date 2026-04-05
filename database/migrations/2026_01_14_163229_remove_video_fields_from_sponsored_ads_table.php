@@ -13,14 +13,16 @@ class RemoveVideoFieldsFromSponsoredAdsTable extends Migration
      */
     public function up()
     {
-        Schema::table('sponsored_ads', function (Blueprint $table) {
-            $table->dropColumn([
-                'video_url',
-                'playback_id',
-                'is_video_deleted',
-                'is_video_suspended',
-            ]);
-        });
+        if (Schema::hasTable('sponsored_ads')) {
+            Schema::table('sponsored_ads', function (Blueprint $table) {
+                $table->dropColumn([
+                    'video_url',
+                    'playback_id',
+                    'is_video_deleted',
+                    'is_video_suspended',
+                ]);
+            });
+        }
     }
 
     /**

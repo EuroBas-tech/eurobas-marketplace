@@ -13,15 +13,16 @@ class AddVideoRelationToSponsoredAdsTable extends Migration
      */
     public function up()
     {
-    
-        Schema::table('sponsored_ads', function (Blueprint $table) {
-            $table->foreignId('video_id')
-            ->nullable()
-            ->after('payment_transaction_id')
-            ->constrained('sponsor_videos')
-            ->nullOnDelete()
-            ->unique(); // one-to-one
-        });
+        if (Schema::hasTable('sponsored_ads')) {
+            Schema::table('sponsored_ads', function (Blueprint $table) {
+                $table->foreignId('video_id')
+                ->nullable()
+                ->after('payment_transaction_id')
+                ->constrained('sponsor_videos')
+                ->nullOnDelete()
+                ->unique(); // one-to-one
+            });
+        }
 
     }
 

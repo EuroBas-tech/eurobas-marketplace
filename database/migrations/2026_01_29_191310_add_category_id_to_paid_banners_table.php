@@ -13,13 +13,15 @@ class AddCategoryIdToPaidBannersTable extends Migration
      */
     public function up()
     {
-        Schema::table('paid_banners', function (Blueprint $table) {
-            $table->foreignId('category_id')
-            ->nullable()
-            ->after('user_id')
-            ->constrained('categories')
-            ->cascadeOnDelete();
-        });
+        if (Schema::hasTable('paid_banners')) {
+            Schema::table('paid_banners', function (Blueprint $table) {
+                $table->foreignId('category_id')
+                ->nullable()
+                ->after('user_id')
+                ->constrained('categories')
+                ->cascadeOnDelete();
+            });
+        }
     }
 
     /**

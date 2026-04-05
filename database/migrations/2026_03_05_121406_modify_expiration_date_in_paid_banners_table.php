@@ -10,10 +10,12 @@ class ModifyExpirationDateInPaidBannersTable extends Migration
 
     public function up(): void
     {
-        DB::statement("
-            ALTER TABLE paid_banners 
-            MODIFY expiration_date TIMESTAMP NULL DEFAULT NULL
-        ");
+        if (Schema::hasTable('paid_banners')) {
+            DB::statement("
+                ALTER TABLE paid_banners
+                MODIFY expiration_date TIMESTAMP NULL DEFAULT NULL
+            ");
+        }
     }
 
     public function down()
