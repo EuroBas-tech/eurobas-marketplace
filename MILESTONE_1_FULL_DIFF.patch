@@ -133,7 +133,7 @@ index a884b2a..831942b 100644
      public function down()
 
 # ============================================
-# Commit b3477c6 - Milestone 1 Work
+# Commit b3477c6 - Milestone 1 Work (API fixes, security, cleanup)
 # ============================================
 
 diff --git a/app/Http/Controllers/Admin/CategoryTypeController.php b/app/Http/Controllers/Admin/CategoryTypeController.php
@@ -2912,3 +2912,86 @@ index f4ffdb1..fd2d3a2 100644
          Route::get('clear-cache', function() {
              Cache::forget('home_categories');
              Cache::forget('active_brands');
+
+# ============================================
+# Follow-up commits - Production fixes & verification
+# (edb7a21, 2df2154, 5d67bfd, c3c2f9d, ba70e5a: Passport key normalization)
+# (fbb2ab5: login validation 403 -> 422)
+# ============================================
+
+diff --git a/app/Http/Controllers/api/v1/auth/PassportAuthController.php b/app/Http/Controllers/api/v1/auth/PassportAuthController.php
+index 8232873..2f612db 100644
+--- a/app/Http/Controllers/api/v1/auth/PassportAuthController.php
++++ b/app/Http/Controllers/api/v1/auth/PassportAuthController.php
+@@ -250,7 +250,7 @@ class PassportAuthController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $email = $request->email;
+diff --git a/app/Providers/AuthServiceProvider.php b/app/Providers/AuthServiceProvider.php
+index 9594c5c..1960829 100644
+--- a/app/Providers/AuthServiceProvider.php
++++ b/app/Providers/AuthServiceProvider.php
+@@ -16,13 +16,52 @@ class AuthServiceProvider extends ServiceProvider
+     {
+         $this->registerPolicies();
+ 
+-        // Check if keys are provided via environment variables (AWS Secrets Manager)
+-        $hasKeys = (config('passport.private_key') || env('PASSPORT_PRIVATE_KEY')) && 
+-                   (config('passport.public_key') || env('PASSPORT_PUBLIC_KEY'));
++        // If Passport keys are provided via env vars (e.g. AWS Secrets Manager),
++        // normalize the PEM content and inject it back into config so Passport
++        // uses the key strings directly. This avoids both the filesystem
++        // permission issues of writing files at runtime and the "Invalid key
++        // supplied" errors caused by escaped \n or CRLF line endings in the
++        // raw env var value.
++        $privateKey = env('PASSPORT_PRIVATE_KEY');
++        $publicKey  = env('PASSPORT_PUBLIC_KEY');
+ 
+-        if (!$hasKeys) {
+-            // Only attempt to load from storage files if keys are NOT in environment variables
+-            Passport::loadKeysFrom(storage_path());
++        if ($privateKey && $publicKey) {
++            $privateKey = $this->normalizePemKey($privateKey);
++            $publicKey  = $this->normalizePemKey($publicKey);
++
++            config([
++                'passport.private_key' => $privateKey,
++                'passport.public_key'  => $publicKey,
++            ]);
++        }
++    }
++
++    /**
++     * Normalize a PEM-encoded key read from an env var. Handles literal "\n"
++     * escape sequences, CRLF line endings, and the common failure mode where
++     * newlines have been replaced with spaces (e.g. when the key was pasted
++     * into a JSON value without proper escaping). Rebuilds the PEM with the
++     * standard 64-char body wrapping if the BEGIN/END markers are present.
++     */
++    protected function normalizePemKey(string $key): string
++    {
++        $key = str_replace(["\r\n", "\r", '\\n'], ["\n", "\n", "\n"], $key);
++        $key = trim($key);
++
++        if (preg_match('/-----BEGIN ([A-Z0-9 ]+)-----(.*?)-----END \1-----/s', $key, $m)) {
++            $label = $m[1];
++            // Strip every whitespace character from the base64 body, then
++            // rewrap at 64 characters per line (RFC 7468).
++            $body = preg_replace('/\s+/', '', $m[2]);
++            $wrapped = chunk_split($body, 64, "\n");
++
++            return "-----BEGIN {$label}-----\n" . $wrapped . "-----END {$label}-----\n";
+         }
++
++        if (substr($key, -1) !== "\n") {
++            $key .= "\n";
++        }
++
++        return $key;
+     }
+ }
