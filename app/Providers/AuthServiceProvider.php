@@ -16,13 +16,25 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Check if keys are provided via environment variables (AWS Secrets Manager)
-        $hasKeys = (config('passport.private_key') || env('PASSPORT_PRIVATE_KEY')) && 
-                   (config('passport.public_key') || env('PASSPORT_PUBLIC_KEY'));
+        // If Passport keys are provided via env vars (e.g. AWS Secrets Manager),
+        // materialize them to storage so Passport can load them normally.
+        $privateKey = env('PASSPORT_PRIVATE_KEY');
+        $publicKey  = env('PASSPORT_PUBLIC_KEY');
 
-        if (!$hasKeys) {
-            // Only attempt to load from storage files if keys are NOT in environment variables
-            Passport::loadKeysFrom(storage_path());
+        if ($privateKey && $publicKey) {
+            $privatePath = storage_path('oauth-private.key');
+            $publicPath  = storage_path('oauth-public.key');
+
+            if (!file_exists($privatePath)) {
+                file_put_contents($privatePath, $privateKey);
+                chmod($privatePath, 0600);
+            }
+            if (!file_exists($publicPath)) {
+                file_put_contents($publicPath, $publicKey);
+                chmod($publicPath, 0600);
+            }
         }
+
+        Passport::loadKeysFrom(storage_path());
     }
 }
