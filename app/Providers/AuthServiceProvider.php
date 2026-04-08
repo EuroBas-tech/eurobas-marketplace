@@ -39,10 +39,16 @@ class AuthServiceProvider extends ServiceProvider
             $privatePath = storage_path('oauth-private.key');
             $publicPath  = storage_path('oauth-public.key');
 
-            file_put_contents($privatePath, $privateKey);
-            chmod($privatePath, 0600);
-            file_put_contents($publicPath, $publicKey);
-            chmod($publicPath, 0600);
+            // Only write if missing or content differs, to avoid unnecessary
+            // I/O on every request. No chmod: Passport disables the strict
+            // key-permission check, and chmod fails when the existing file is
+            // owned by a different user (e.g. baked into the image as root).
+            if (!file_exists($privatePath) || file_get_contents($privatePath) !== $privateKey) {
+                file_put_contents($privatePath, $privateKey);
+            }
+            if (!file_exists($publicPath) || file_get_contents($publicPath) !== $publicKey) {
+                file_put_contents($publicPath, $publicKey);
+            }
 
             // Force Passport to use the files we just wrote instead of the
             // raw env-var strings.
