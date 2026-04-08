@@ -133,7 +133,7 @@ index a884b2a..831942b 100644
      public function down()
 
 # ============================================
-# All API Fixes (current working tree)
+# Commit b3477c6 - Milestone 1 Work
 # ============================================
 
 diff --git a/app/Http/Controllers/Admin/CategoryTypeController.php b/app/Http/Controllers/Admin/CategoryTypeController.php

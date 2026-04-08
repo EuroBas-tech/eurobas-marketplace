@@ -5,6 +5,11 @@
 
 All Phase 1 / Milestone 1 deliverables have been completed and tested against the local development environment (`http://eurobas.test/`). This includes fixing all broken API endpoints, resolving critical security vulnerabilities, standardizing API responses, and ensuring the core authentication flow works end-to-end.
 
+**Commits delivered:**
+- `715161b` - update aws deploy file to deploy only on main branch
+- `e2f4d77` - fix migrations
+- `b3477c6` - milestone 1 work (all API fixes, security, cleanup)
+
 ### Milestone 1 Deliverables Checklist
 
 | # | Deliverable | Status | Covered in |
@@ -501,12 +506,12 @@ index a884b2a..831942b 100644
 
 ## Appendix B: Full Git Diff (All Milestone 1 Changes)
 
-The complete diff of all Milestone 1 changes (2,920 lines) is saved in:
+The complete diff of all Milestone 1 changes is saved in:
 **`MILESTONE_1_FULL_DIFF.patch`** (in the project root)
 
 This file contains three sections:
 1. **Commit `715161b`** - AWS deploy workflow fix
 2. **Commit `e2f4d77`** - Migration safety fixes (4 files)
-3. **All API fixes** - Every code change under `app/`, `routes/`, `resources/`, and `database/migrations/`
+3. **Commit `b3477c6`** - All API fixes, security hardening, and legacy endpoint cleanup
 
-To review: `cat MILESTONE_1_FULL_DIFF.patch` or open in any editor/diff viewer.
+To review: `cat MILESTONE_1_FULL_DIFF.patch`, run `git show b3477c6`, or open in any diff viewer.
