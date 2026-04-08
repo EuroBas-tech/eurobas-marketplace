@@ -3,12 +3,13 @@
 
 ## Summary
 
-All Phase 1 / Milestone 1 deliverables have been completed and tested against the local development environment (`http://eurobas.test/`). This includes fixing all broken API endpoints, resolving critical security vulnerabilities, standardizing API responses, and ensuring the core authentication flow works end-to-end.
+All Phase 1 / Milestone 1 deliverables have been completed, tested against the local development environment (`http://eurobas.test/`), deployed to AWS ECS, and re-verified directly against production (`https://eurobas.com/`). This includes fixing all broken API endpoints, resolving critical security vulnerabilities, standardizing API responses, ensuring the core authentication flow works end-to-end, and resolving the production-only Passport OAuth key configuration.
 
 **Commits delivered:**
 - `715161b` - update aws deploy file to deploy only on main branch
 - `e2f4d77` - fix migrations
 - `b3477c6` - milestone 1 work (all API fixes, security, cleanup)
+- Follow-up commit(s) on `milestone1` branch - Passport key normalization for AWS Secrets Manager (`AuthServiceProvider` rewrite, see Section 8.6)
 
 ### Milestone 1 Deliverables Checklist
 
@@ -315,6 +316,48 @@ All removed endpoints verified returning HTTP 404. Unused `PaymentController` im
 | 4 | Register | Invalid account_type | 422 with error details |
 | 5 | Register | Missing agree field | 422 with error details |
 
+### 8.6 Production Verification (https://eurobas.com)
+
+Every fix above was re-tested directly against the live production deployment after the AWS ECS rollout. Two additional production-only issues were uncovered and fixed during this verification:
+
+**Issue 1: Passport OAuth keys not available in ECS container.**
+The production container had no Passport RSA key pair, so any endpoint that issued or validated a Bearer token (`register`, `login`, any `auth:api` route) returned HTTP 500 with `LogicException: Unable to read key from file`. Fixed by:
+- Storing the private/public key pair in AWS Secrets Manager (`eurobas-passport-keys`).
+- Wiring `PASSPORT_PRIVATE_KEY` / `PASSPORT_PUBLIC_KEY` into the ECS task definition via the `secrets` block with JSON-key extraction syntax.
+- Granting the ECS task execution role `secretsmanager:GetSecretValue` on that secret ARN.
+- Rewriting `app/Providers/AuthServiceProvider.php` to normalize the PEM content read from the env var (handle CRLF, literal `\n` escapes, and whitespace-for-newline substitution) and inject the cleaned key back into `config('passport.*_key')`, bypassing Passport's default file loader.
+
+**Issue 2: PEM whitespace corruption in Secrets Manager.**
+When the RSA private key was initially stored in Secrets Manager, newlines inside the PEM body were replaced with spaces, leaving a single-line string of the form `-----BEGIN PRIVATE KEY----- MIIE... -----END PRIVATE KEY-----`. OpenSSL rejected this with "Invalid key supplied". The normalizer in `AuthServiceProvider::normalizePemKey()` now uses a regex to isolate the header/body/footer, strips every whitespace character from the base64 body, and rewraps it to the canonical 64-character RFC 7468 format before handing it to Passport. This makes the key loader resilient to any newline/whitespace mangling in the secret store.
+
+**Production test results (post-fix):**
+
+| # | Endpoint | Method | Status | Result |
+|---|----------|--------|--------|--------|
+| 1 | `/api/v1/auth/register` | POST | 200 | Account created, RS256 JWT returned |
+| 2 | `/api/v1/auth/login` | POST | 200 | JWT returned on valid credentials |
+| 3 | `/api/v1/auth/login` (wrong password) | POST | 401 | Structured error response |
+| 4 | `/api/v1/auth/register` (missing fields) | POST | 422 | Full validation error list |
+| 5 | `/api/v1/customer/info` | GET (auth) | 200 | User object returned |
+| 6 | `/api/v1/customer/profile` | GET (auth) | 200 | Profile returned |
+| 7 | `/api/v1/customer/profile` | POST (auth) | 200 | Mobile POST compatibility confirmed |
+| 8 | `/api/v1/customer/profile/ads` | GET (auth) | 200 | Paginated ads |
+| 9 | `/api/v1/customer/wish-list` | GET (auth) | 200 | Wishlist returned |
+| 10 | `/api/v1/notifications` | GET (auth) | 200 | Notifications returned |
+| 11 | `/api/v1/notifications` | GET (no auth) | redirect | Unauthenticated access blocked |
+| 12 | `/api/v1/customer/info` (bad token) | GET | redirect | Invalid token rejected |
+| 13 | `/api/v1/config` | GET | 200 | Full config returned |
+| 14 | `/api/v1/categories` | GET | 200 | Categories returned |
+| 15 | `/api/v1/banners?banner_type=main_banner` | GET | 200 | Banners returned |
+| 16 | `/api/v1/paid-banners` | GET | 200 | Paid banners returned |
+| 17 | `/api/v1/faq` | GET | 200 | FAQ returned |
+| 18 | `/api/v1/social-media` | GET | 200 | Social links returned |
+| 19 | `/api/v1/get-guest-id` | GET | 200 | Guest ID generated |
+| 20 | `/api/v1/ads/filter` | POST | 200 | Paginated ads |
+| 21 | `/api/v1/locale/translations/en` | POST | 200 | Translation bundle returned |
+
+**Status:** All Milestone 1 endpoints are live and verified on production. The mobile developer can build against `https://eurobas.com/api/v1` with confidence.
+
 ---
 
 ## 9. Files Changed
@@ -340,6 +383,7 @@ All removed endpoints verified returning HTTP 404. Unused `PaymentController` im
 | `app/Http/Middleware/APIGuestMiddleware.php` | Rewritten |
 | `app/Model/CategoryType.php` | New |
 | `app/Providers/AppServiceProvider.php` | Modified |
+| `app/Providers/AuthServiceProvider.php` | Rewritten (Passport key normalization for AWS Secrets Manager) |
 | `routes/api/v1/api.php` | Rewritten |
 | `routes/web.php` | Modified |
 | 4 migration files | Modified (Schema::hasTable checks) |
