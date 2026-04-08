@@ -181,9 +181,9 @@ Route::group(
                 ->name('multiple.payment.cancel');
             });
 
-            Route::get('web-payment', 'Customer\PaymentController@web_payment_success')->name('web-payment-success');
-            Route::get('payment-success', 'Customer\PaymentController@success')->name('payment-success');
-            Route::get('payment-fail', 'Customer\PaymentController@fail')->name('payment-fail');
+            Route::get('web-payment', [\App\Http\Controllers\Customer\PaymentController::class, 'web_payment_success'])->name('web-payment-success');
+            Route::get('payment-success', [\App\Http\Controllers\Customer\PaymentController::class, 'success'])->name('payment-success');
+            Route::get('payment-fail', [\App\Http\Controllers\Customer\PaymentController::class, 'fail'])->name('payment-fail');
 
             Route::get('checkout-details', 'WebController@checkout_details')->name('checkout-details');
             Route::get('checkout-shipping', 'WebController@checkout_shipping')->name('checkout-shipping');
@@ -366,6 +366,8 @@ Route::group(
         Route::get('seller-auth-forgot-password', function() {
             return 'empty';
         })->name('seller.auth.forgot-password');
+
+        Route::get('seller/auth/code/captcha/{tmp}', 'Seller\Auth\LoginController@captcha')->name('seller.auth.captcha');
 
         Route::get('clear-cache', function() {
             Cache::forget('home_categories');

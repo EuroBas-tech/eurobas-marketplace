@@ -102,6 +102,7 @@
 </div>
 
 @push('script')
+    @if($web_config['recaptcha']['status'] == '1')
     {{-- Google reCAPTCHA v2 Scripts - Optimized for More Challenges --}}
     <script type="text/javascript">
         var onloadCallbackCustomerLogin = function () {
@@ -153,6 +154,7 @@
         })();
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit&hl=en" async defer></script>
+    @endif
 
     <script>
         $("#customer_login_modal").submit(function (e) {

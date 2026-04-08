@@ -4,8 +4,11 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Model\Ad;
+use App\Model\AdAuction;
 use App\Model\AdView;
 use App\Model\Category;
 use App\Model\Wishlist;
@@ -51,7 +54,6 @@ class AdController extends Controller
         // Related ads
         $relatedAds = Ad::active()
             ->with(['category', 'brand', 'model'])
-            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
             ->where('model_id', $ad->model_id)
             ->whereKeyNot($ad->id)
             ->limit(12)
@@ -72,33 +74,23 @@ class AdController extends Controller
             ->first();
 
         // Gallery
-        $gallery_images_number = count(json_decode($ad->images)) + 1;
+        $images = json_decode($ad->images);
+        $gallery_images_number = is_array($images) ? count($images) + 1 : 1;
         if ($ad_promotional_video) { $gallery_images_number++; }
 
         // More ads from same user
         $more_ads_from_user = Ad::active()
             ->withCount('reviews')
-            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
             ->where('id', '!=', $ad->id)
             ->where('user_id', $ad->user_id)
             ->latest()
             ->take(5)
             ->get();
 
-        $ad_views_number = $ad->adViews->count();
+        $ad_views_number = $ad->adViews()->count();
 
         // Paid banners
-        $userInterests = Cache::remember('user_category_interests', 0, fn() =>
-            UserCategoryInterest::all()
-        );
-
-        $favCategoryId = $userInterests
-            ->where(
-                auth('api')->check() ? 'user_id' : 'guest_id',
-                auth('api')->check() ? auth('api')->id() : Helpers::deviceId()
-            )
-            ->sortByDesc('score')
-            ->first()?->category_id;
+        $favCategoryId = $this->getUserFavoriteCategoryId();
 
         $bannerQuery = PaidBanner::with('package.features', 'category')
             ->whereHas('package', fn($q) =>
@@ -114,12 +106,12 @@ class AdController extends Controller
 
         if ($totalBanners <= 5) {
             $paid_banners = (clone $bannerQuery)
-                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
+                ->when($favCategoryId, fn($q) => $q->orderByRaw('category_id = ? DESC', [$favCategoryId]))
                 ->get();
         } else {
             $offset       = session('banner_offset', 0);
             $paid_banners = (clone $bannerQuery)
-                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
+                ->when($favCategoryId, fn($q) => $q->orderByRaw('category_id = ? DESC', [$favCategoryId]))
                 ->offset($offset)
                 ->limit(5)
                 ->get();
@@ -164,32 +156,34 @@ class AdController extends Controller
     public function ads_filter(Request $request) {
 
         $query = Ad::active()->with('sponsor');
-        
+
         if ($request->color != 'all' && $request->color) {
             $query->where('color', $request->color);
         }
-        
+
         $query = $this->ad_query_filter($query, $request);
-        
+
         if ($request->city != '' && $request->city) {
             $coordinates = $this->getLocationCoordinates($request->city);
-            
-            if($request->radius != '') {
-                $query = $this->getAdsInRadius($query, $request->radius, $coordinates['latitude'], $coordinates['longitude']);
-            } else {
-                $query->where('latitude', $coordinates['latitude'])
-                ->where('longitude', $coordinates['longitude']);
+
+            if ($coordinates) {
+                if($request->radius != '') {
+                    $query = $this->getAdsInRadius($query, $request->radius, $coordinates['latitude'], $coordinates['longitude']);
+                } else {
+                    $query->where('latitude', $coordinates['latitude'])
+                    ->where('longitude', $coordinates['longitude']);
+                }
             }
         }
-        
+
         if ($request->status) {
             $query->whereIn('ad_status', $request->status);
         }
-        
+
         if ($request->doors_number) {
             $query->whereIn('doors_number', $request->doors_number);
         }
-        
+
         if ($request->seats_number) {
             $query->whereIn('seats_number', $request->seats_number);
         }
@@ -197,11 +191,11 @@ class AdController extends Controller
         if ($request->body_type) {
             $query->whereIn('body_type', $request->body_type);
         }
-        
+
         if ($request->fuel_type) {
             $query->whereIn('fuel_type', $request->fuel_type);
         }
-        
+
         if ($request->transmission_type) {
             $query->whereIn('transmission_type', $request->transmission_type);
         }
@@ -217,55 +211,55 @@ class AdController extends Controller
         if ($request['multiple_furniture_material'] != 'all' && $request['multiple_furniture_material']) {
             $query->whereIn('material', $request['multiple_furniture_material']);
         }
-                
+
         if ($request['multiple_furniture_type'] != 'all' && $request['multiple_furniture_type']) {
             $query->whereIn('furniture_type', $request['multiple_furniture_type']);
         }
-        
+
         if ($request['multiple_home_garden_material'] != 'all' && $request['multiple_home_garden_material']) {
             $query->whereIn('material', $request['multiple_home_garden_material']);
         }
-        
+
         if ($request['multiple_shipbuilding_type'] != 'all' && $request['multiple_shipbuilding_type']) {
             $query->whereIn('shipbuilding_type', $request['multiple_shipbuilding_type']);
         }
-        
+
         if ($request['multiple_engines_number'] != 'all' && $request['multiple_engines_number']) {
             $query->whereIn('engines_number', $request['multiple_engines_number']);
         }
-        
+
         if ($request['multiple_cabins_number'] != 'all' && $request['multiple_cabins_number']) {
             $query->whereIn('cabins_number', $request['multiple_cabins_number']);
         }
-        
+
         if ($request['multiple_usage'] != 'all' && $request['multiple_usage']) {
             $query->whereIn('usage_type', $request['multiple_usage']);
         }
-        
+
         if ($request['multiple_machine_type'] != 'all' && $request['multiple_machine_type']) {
             $query->whereIn('machine_type', $request['multiple_machine_type']);
         }
-        
+
         if ($request['multiple_power_source'] != 'all' && $request['multiple_power_source']) {
             $query->whereIn('power_source', $request['multiple_power_source']);
         }
-        
+
         if ($request['multiple_home_appliance_type'] != 'all' && $request['multiple_home_appliance_type']) {
             $query->whereIn('home_appliance_type', $request['multiple_home_appliance_type']);
         }
-                
+
         if ($request['multiple_listing_type'] != 'all' && $request['multiple_listing_type']) {
             $query->whereIn('listing_type', $request['multiple_listing_type']);
         }
-        
+
         if ($request['multiple_property_type'] != 'all' && $request['multiple_property_type']) {
             $query->whereIn('property_type', $request['multiple_property_type']);
         }
-        
+
         if ($request['multiple_floor'] != 'all' && $request['multiple_floor']) {
             $query->whereIn('floor', $request['multiple_floor']);
         }
-        
+
         if ($request['multiple_electronic_type'] != 'all' && $request['multiple_electronic_type']) {
             $query->whereIn('electronic_type', $request['multiple_electronic_type']);
         }
@@ -273,35 +267,35 @@ class AdController extends Controller
         if ($request->length) {
             $query->where('length', $request->length);
         }
-        
+
         if ($request->width) {
             $query->where('width', $request->width);
         }
-        
+
         if ($request->height) {
             $query->where('height', $request->height);
         }
-        
+
         if ($request->max_weight) {
             $query->where('max_weight', $request->max_weight);
         }
-        
+
         if ($request->bag_capacity) {
             $query->where('bag_capacity', $request->bag_capacity);
         }
-        
+
         if ($request->battery_charging_time) {
             $query->where('battery_charging_time', $request->battery_charging_time);
         }
-        
+
         if ($request->fast_battery_charging_time) {
             $query->where('fast_battery_charging_time', $request->fast_battery_charging_time);
         }
-        
+
         if ($request->battery_life) {
             $query->where('battery_life', $request->battery_life);
         }
-        
+
         if ($request->acceleration_0_100) {
             $query->where('acceleration_0_100', $request->acceleration_0_100);
         }
@@ -314,43 +308,21 @@ class AdController extends Controller
             $query->where('mileage', '<=', $request['max_mileage']);
         }
 
-        if($request->has('offset') && $request->has('limit')) {
-            $limit = $request->input('limit', 5);
-            $offset = $request->input('offset', 5);
-        
-            $ads = $query->offset($offset)->limit($limit)->get();
-            
-            return response()->json([
-                'html' => $ads->count() > 0 ? view('theme-views.partials._ajax-products-view', compact('ads'))->render() : null,
-                'ads_count' => $ads->count(),
-                'show_ad_ids' => $ads->pluck('id')->toArray()
-            ]);
-        }
-
         $count = $query->count();
         $ads = $query->paginate(10);
 
         return response()->json($ads, 200);
-
-        // return response()->json([
-        //     'html' => view('theme-views.partials._ajax-products-view', compact('ads'))->render(),
-        //     'show_ad_ids' => $ads->pluck('id')->toArray(),
-        //     'count' => $count,
-        // ],);
     }
 
     public function ad_query_filter($query, $request) {
-        // Filter by category if specified
         if ($request['category_id'] != 'all' && $request['category_id']) {
             $query->where('category_id', $request['category_id']);
         }
 
-        // Filter by brand if specified
         if ($request['brand_id'] != 'all' && $request['brand_id']) {
             $query->where('brand_id', $request['brand_id']);
         }
-        
-        // Filter by model if specified
+
         if ($request['model_id'] != 'all' && $request['model_id']) {
             $query->where('model_id', $request['model_id']);
         }
@@ -362,121 +334,95 @@ class AdController extends Controller
         if ($request['bicycle_size'] != 'all' && $request['bicycle_size']) {
             $query->where('bicycle_size', $request['bicycle_size']);
         }
-        
-        // Filter by country if specified
+
         if ($request['country'] != 'All Europe' && $request['country']) {
             $query->where('country', $request['country']);
         }
-        
+
         if ($request['furniture_material'] != 'all' && $request['furniture_material']) {
             $query->where('material', $request['furniture_material']);
         }
-                
+
         if ($request['furniture_type'] != 'all' && $request['furniture_type']) {
             $query->where('furniture_type', $request['furniture_type']);
         }
-        
+
         if ($request['home_garden_material'] != 'all' && $request['home_garden_material']) {
             $query->where('material', $request['home_garden_material']);
         }
-        
+
         if ($request['shipbuilding_type'] != 'all' && $request['shipbuilding_type']) {
             $query->where('shipbuilding_type', $request['shipbuilding_type']);
         }
-        
+
         if ($request['engines_number'] != 'all' && $request['engines_number']) {
             $query->where('engines_number', $request['engines_number']);
         }
-        
+
         if ($request['cabins_number'] != 'all' && $request['cabins_number']) {
             $query->where('cabins_number', $request['cabins_number']);
         }
-        
+
         if ($request['usage'] != 'all' && $request['usage']) {
             $query->where('usage_type', $request['usage']);
         }
-        
+
         if ($request['machine_type'] != 'all' && $request['machine_type']) {
             $query->where('machine_type', $request['machine_type']);
         }
-        
+
         if ($request['power_source'] != 'all' && $request['power_source']) {
             $query->where('power_source', $request['power_source']);
         }
-                
+
         if ($request['home_appliance_type'] != 'all' && $request['home_appliance_type']) {
             $query->where('home_appliance_type', $request['home_appliance_type']);
         }
-        
+
         if ($request['listing_type'] != 'all' && $request['listing_type']) {
             $query->where('listing_type', $request['listing_type']);
         }
-        
+
         if ($request['property_type'] != 'all' && $request['property_type']) {
             $query->where('property_type', $request['property_type']);
         }
-        
+
         if ($request['floor'] != 'all' && $request['floor']) {
             $query->where('floor', $request['floor']);
         }
-        
+
         if ($request['electronic_type'] != 'all' && $request['electronic_type']) {
             $query->where('electronic_type', $request['electronic_type']);
         }
 
-        // Optimized price filtering
-        $query->where(function ($q) use ($request) {
-            // Variables to avoid repeated function calls
-            $minPrice = $request->min_price;
-            $maxPrice = $request->max_price;
-            
-            // Only process if we have at least one price constraint
-            if ($minPrice || $maxPrice) {
-                // Create conditions for each price type
-                $fixedPriceCondition = [];
-                $auctionCondition = [];
-                
-                // Build price conditions based on available filters
-                if ($minPrice && $maxPrice) {
-                    $fixedPriceCondition[] = "price BETWEEN {$minPrice} AND {$maxPrice}";
-                    $auctionCondition[] = "starting_price BETWEEN {$minPrice} AND {$maxPrice}";
-                } elseif ($minPrice) {
-                    $fixedPriceCondition[] = "price >= {$minPrice}";
-                    $auctionCondition[] = "starting_price >= {$minPrice}";
-                } elseif ($maxPrice) {
-                    $fixedPriceCondition[] = "price <= {$maxPrice}";
-                    $auctionCondition[] = "starting_price <= {$maxPrice}";
-                }
-                
-                // Instead of using raw queries, use Laravel's query builder
-                if (!empty($fixedPriceCondition) && !empty($auctionCondition)) {
-                    $q->where(function($query) use ($fixedPriceCondition, $auctionCondition) {
-                        // Fixed price or asking price condition
-                        $query->where(function($subquery) use ($fixedPriceCondition) {
-                            $subquery->whereIn('price_type', ['fixed_price', 'asking_price']);
+        // Parameterized price filtering (fixes SQL injection)
+        $minPrice = $request->min_price;
+        $maxPrice = $request->max_price;
 
-                            if (!empty($fixedPriceCondition)) {
-                                foreach ($fixedPriceCondition as $condition) {
-                                    $subquery->whereRaw($condition);
-                                }
-                            }
-                        });
-                        
-                        // Auction price condition
-                        $query->orWhere(function($subquery) use ($auctionCondition) {
-                            $subquery->where('price_type', 'auction');
-                            
-                            if (!empty($auctionCondition)) {
-                                foreach ($auctionCondition as $condition) {
-                                    $subquery->whereRaw($condition);
-                                }
-                            }
-                        });
-                    });
-                }
-            }
-        });
-        
+        if ($minPrice || $maxPrice) {
+            $query->where(function ($q) use ($minPrice, $maxPrice) {
+                $q->where(function ($sub) use ($minPrice, $maxPrice) {
+                    $sub->whereIn('price_type', ['fixed_price', 'asking_price']);
+                    if ($minPrice && $maxPrice) {
+                        $sub->whereBetween('price', [$minPrice, $maxPrice]);
+                    } elseif ($minPrice) {
+                        $sub->where('price', '>=', $minPrice);
+                    } elseif ($maxPrice) {
+                        $sub->where('price', '<=', $maxPrice);
+                    }
+                })->orWhere(function ($sub) use ($minPrice, $maxPrice) {
+                    $sub->where('price_type', 'auction');
+                    if ($minPrice && $maxPrice) {
+                        $sub->whereBetween('starting_price', [$minPrice, $maxPrice]);
+                    } elseif ($minPrice) {
+                        $sub->where('starting_price', '>=', $minPrice);
+                    } elseif ($maxPrice) {
+                        $sub->where('starting_price', '<=', $maxPrice);
+                    }
+                });
+            });
+        }
+
         // Filter by construction year
         if ($request->min_construction_year && $request->max_construction_year) {
             $query->whereBetween('year', [$request['min_construction_year'], $request['max_construction_year']]);
@@ -493,10 +439,8 @@ class AdController extends Controller
 
         $apiKey = Helpers::get_business_settings('map_api_key');
 
-        $address = $city;
-
         $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'address' => $address,
+            'address' => $city,
             'key' => $apiKey
         ]);
 
@@ -521,20 +465,18 @@ class AdController extends Controller
 
     public function getAdsInRadius($query, $radius, $latitude, $longitude)
     {
-        $query->withinRadius($latitude, $longitude ,$radius);
+        $query->withinRadius($latitude, $longitude, $radius);
         return $query;
     }
 
     public function store_auction(Request $request)
     {
-        // Profile check
         if (Helpers::prevent_if_profile_incomplete()) {
             return response()->json([
                 'message' => translate('you_must_complete_your_profile_first_to_be_able_to_make_an_offer')
             ], 403);
         }
 
-        // Validation
         $validator = Validator::make($request->all(), [
             'id'    => 'required',
             'price' => 'required|numeric|min:0|max:10000000000',
@@ -546,7 +488,6 @@ class AdController extends Controller
             ], 422);
         }
 
-        // Find ad
         $ad = Ad::active()->with('auctions')->find($request->id);
 
         if (!$ad) {
@@ -555,14 +496,12 @@ class AdController extends Controller
             ], 404);
         }
 
-        // Already placed an offer
         if ($ad->auctions->contains('user_id', auth('api')->id())) {
             return response()->json([
                 'message' => translate('you_already_send_an_offer_to_this_ad')
             ], 409);
         }
 
-        // Price check
         $last_auction_price = $ad->auctions->count() > 0
             ? $ad->auctions()->latest()->value('price')
             : ($ad->starting_price ?? 0);
@@ -573,7 +512,6 @@ class AdController extends Controller
             ], 422);
         }
 
-        // Store
         $auction = AdAuction::create([
             'ad_id'   => $ad->id,
             'user_id' => auth('api')->id(),
@@ -584,6 +522,19 @@ class AdController extends Controller
             'message' => translate('offer_sended_successfully'),
             'data'    => $auction,
         ], 201);
+    }
+
+    private function getUserFavoriteCategoryId(): ?int
+    {
+        $userInterests = UserCategoryInterest::all();
+
+        return $userInterests
+            ->where(
+                auth('api')->check() ? 'user_id' : 'guest_id',
+                auth('api')->check() ? auth('api')->id() : Helpers::deviceId()
+            )
+            ->sortByDesc('score')
+            ->first()?->category_id;
     }
 
 }

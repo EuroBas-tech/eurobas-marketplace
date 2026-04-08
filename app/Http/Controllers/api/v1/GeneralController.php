@@ -16,7 +16,7 @@ use function App\CPU\translate;
 class GeneralController extends Controller
 {
     public function faq(){
-        return response()->json(HelpTopic::orderBy('ranking')->get(),200);
+        return response()->json(HelpTopic::orderBy('ranking')->get(), 200);
     }
 
     public function get_guest_id(Request $request){
@@ -24,40 +24,36 @@ class GeneralController extends Controller
             'ip_address' => $request->ip(),
             'created_at' => now(),
         ]);
-        return response()->json(['guest_id'=>$guest_id],200);
+        return response()->json(['guest_id' => $guest_id], 200);
     }
 
     public function subscription(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'subscription_email' => 'required'
+            'subscription_email' => 'required|email'
         ], [
             'subscription_email.required' => 'The email is required!'
-
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
-        $subscription_email = Subscription::where('email',$request->subscription_email)->first();
-        if($subscription_email){
-            return response()->json(['status'=>'subscribed',200]);
-
-        }else{
-            $new_subcription = new Subscription;
-            $new_subcription->email = $request->subscription_email;
-            $new_subcription->save();
-
-            return response()->json(['status'=>'success',200]);
+        $subscription_email = Subscription::where('email', $request->subscription_email)->first();
+        if ($subscription_email) {
+            return response()->json(['message' => 'Already subscribed'], 200);
         }
 
+        $new_subcription = new Subscription;
+        $new_subcription->email = $request->subscription_email;
+        $new_subcription->save();
+
+        return response()->json(['message' => 'Subscribed successfully'], 200);
     }
 
     public function social_media(){
-        $socials = SocialMedia::where(['active_status'=>1])->get();
-
-        return response()->json(['socials'=>$socials, 200]);
+        $socials = SocialMedia::where(['active_status' => 1])->get();
+        return response()->json(['socials' => $socials], 200);
     }
 
     public function contact_store(Request $request)
@@ -66,19 +62,12 @@ class GeneralController extends Controller
             'mobile_number' => 'required',
             'subject' => 'required',
             'message' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'name' => 'required',
-        ], [
-            'name.required' => 'Name is Empty!',
-            'mobile_number.required' => 'Mobile Number is Empty!',
-            'subject.required' => ' Subject is Empty!',
-            'message.required' => 'Message is Empty!',
-            'email.required' => 'Email is Empty!',
-
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $contact = new Contact;
@@ -89,6 +78,6 @@ class GeneralController extends Controller
         $contact->message = $request->message;
         $contact->save();
 
-        return response()->json(['message'=>'Your Message Send Successfully'], 200);
+        return response()->json(['message' => 'Your message has been sent successfully'], 200);
     }
 }
