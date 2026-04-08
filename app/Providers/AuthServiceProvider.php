@@ -37,12 +37,26 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * Normalize a PEM-encoded key read from an env var: convert literal "\n"
-     * escapes and CRLF into real newlines, and ensure a trailing newline.
+     * Normalize a PEM-encoded key read from an env var. Handles literal "\n"
+     * escape sequences, CRLF line endings, and the common failure mode where
+     * newlines have been replaced with spaces (e.g. when the key was pasted
+     * into a JSON value without proper escaping). Rebuilds the PEM with the
+     * standard 64-char body wrapping if the BEGIN/END markers are present.
      */
     protected function normalizePemKey(string $key): string
     {
         $key = str_replace(["\r\n", "\r", '\\n'], ["\n", "\n", "\n"], $key);
+        $key = trim($key);
+
+        if (preg_match('/-----BEGIN ([A-Z0-9 ]+)-----(.*?)-----END \1-----/s', $key, $m)) {
+            $label = $m[1];
+            // Strip every whitespace character from the base64 body, then
+            // rewrap at 64 characters per line (RFC 7468).
+            $body = preg_replace('/\s+/', '', $m[2]);
+            $wrapped = chunk_split($body, 64, "\n");
+
+            return "-----BEGIN {$label}-----\n" . $wrapped . "-----END {$label}-----\n";
+        }
 
         if (substr($key, -1) !== "\n") {
             $key .= "\n";
