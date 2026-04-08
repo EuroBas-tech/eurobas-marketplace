@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -21,7 +22,7 @@ class CategoryController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Failed to fetch home categories: ' . $e->getMessage());
-            return response()->json(['message' => 'Something went wrong'], 500);    
+            return response()->json(['message' => 'Something went wrong'], 500);
         }
     }
 

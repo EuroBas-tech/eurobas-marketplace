@@ -307,7 +307,11 @@ class ForgotPassword extends Controller
             ->where(['token' => $request['otp']])->first();
 
         if (isset($data)) {
-            DB::table('users')->where('phone', 'like', "%{$data->identity}%")
+            DB::table('users')
+                ->where(function ($query) use ($data) {
+                    $query->where('email', $data->identity)
+                        ->orWhere('phone', 'like', "%{$data->identity}%");
+                })
                 ->update([
                     'password' => bcrypt(str_replace(' ', '', $request['password']))
                 ]);

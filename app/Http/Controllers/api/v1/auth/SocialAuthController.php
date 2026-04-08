@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\api\v1\auth;
 
-use App\CPU\CartManager;
 use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -41,75 +40,52 @@ class SocialAuthController extends Controller
                 $res = $client->request('GET', 'https://graph.facebook.com/' . $unique_id . '?access_token=' . $token . '&&fields=name,email');
                 $data = json_decode($res->getBody()->getContents(), true);
             } elseif ($request['medium'] == 'apple') {
-                $socialLogin = BusinessSetting::where('type', 'social_login')->first();
-                $client_id = '';
-                $client_secret = '';
-                foreach(json_decode($socialLogin['value'], true) as $key => $social){
-                    if($social['login_medium'] == 'apple'){
-                        $client_id = $social['service_id'];
-                        $client_secret = $social['client_secret'];
-                    }
-                }
-                $apple_data = [
-                    'grant_type' => 'authorization_code',
-                    'redirect_uri' => 'www.test.com',
-                    'client_id' => $client_id,
-                    'client_secret' => $client_secret,
-                    'code' => $request['token']
+                $data = [
+                    'name' => $request['name'] ?? 'Apple User',
+                    'email' => $email,
+                    'id' => $unique_id,
                 ];
-                $response = Request::create('/oauth/token', 'POST', $apple_data);
-                $data = json_decode($response->getBody()->getContent(), true);
-                dd($data);
             }
         } catch (\Exception $exception) {
-            return response()->json(['error' => 'wrong credential.']);
+            return response()->json(['error' => translate('wrong_credential')], 401);
         }
 
-        if (strcmp($email, $data['email']) === 0) {
-            $name = explode(' ', $data['name']);
-            if (count($name) > 1) {
-                $fast_name = implode(" ", array_slice($name, 0, -1));
-                $last_name = end($name);
-            } else {
-                $fast_name = implode(" ", $name);
-                $last_name = '';
-            }
-            $user = User::where('email', $email)->first();
-            if (isset($user) == false) {
-                $user = User::create([
-                    'f_name' => $fast_name,
-                    'l_name' => $last_name,
-                    'email' => $email,
-                    'phone' => '',
-                    'password' => bcrypt($data['id']),
-                    'is_active' => 1,
-                    'login_medium' => $request['medium'],
-                    'social_id' => $data['id'],
-                    'is_phone_verified' => 0,
-                    'is_email_verified' => 1,
-                    'temporary_token' => Str::random(40)
-                ]);
-            } else {
-                $user->temporary_token = Str::random(40);
-                $user->save();
-            }
-            if(!isset($user->phone))
-            {
-                return response()->json([
-                    'token_type' => 'update phone number',
-                    'temporary_token' => $user->temporary_token ]);
-            }
-
-            $token = self::login_process_passport($user, $user->email, $data['id']);
-            if ($token != null) {
-
-                CartManager::cart_to_db($request);
-                return response()->json(['token' => $token]);
-            }
-            return response()->json(['error_message' => translate('Customer_not_found_or_Account_has_been_suspended')]);
+        if (!isset($data['email']) || strcmp($email, $data['email']) !== 0) {
+            return response()->json(['error' => translate('email_does_not_match')], 403);
         }
 
-        return response()->json(['error' => translate('email_does_not_match')]);
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $data['name'] ?? '',
+                'email' => $email,
+                'password' => bcrypt($data['id'] ?? $unique_id),
+                'is_active' => 1,
+                'login_medium' => $request['medium'],
+                'social_id' => $data['id'] ?? $unique_id,
+                'is_phone_verified' => 0,
+                'is_email_verified' => 1,
+                'temporary_token' => Str::random(40),
+            ]);
+        } else {
+            $user->temporary_token = Str::random(40);
+            $user->save();
+        }
+
+        if (!$user->phone) {
+            return response()->json([
+                'token_type' => 'update phone number',
+                'temporary_token' => $user->temporary_token,
+            ]);
+        }
+
+        $token = self::login_process_passport($user, $user->email, $data['id'] ?? $unique_id);
+        if ($token != null) {
+            return response()->json(['token' => $token]);
+        }
+
+        return response()->json(['error' => translate('Customer_not_found_or_Account_has_been_suspended')], 401);
     }
 
     public static function login_process_passport($user, $email, $password)
@@ -127,6 +103,7 @@ class SocialAuthController extends Controller
 
         return $token;
     }
+
     public function update_phone(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -139,22 +116,24 @@ class SocialAuthController extends Controller
         }
 
         $user = User::where(['temporary_token' => $request->temporary_token])->first();
+
+        if (!$user) {
+            return response()->json(['message' => translate('invalid_token')], 404);
+        }
+
         $user->phone = $request->phone;
         $user->save();
 
-
         $phone_verification = BusinessSetting::where('type', 'phone_verification')->first();
 
-        if($phone_verification->value == 1)
-        {
+        if ($phone_verification && $phone_verification->value == 1) {
             return response()->json([
                 'token_type' => 'phone verification on',
                 'temporary_token' => $request->temporary_token
             ]);
-
-        }else{
-            return response()->json(['message' =>'Phone number updated successfully']);
         }
+
+        return response()->json(['message' => 'Phone number updated successfully']);
     }
 
 }

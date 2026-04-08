@@ -1,0 +1,2914 @@
+# ============================================
+# Milestone 1 - Complete Git Diff
+# ============================================
+
+# ============================================
+# Commit 715161b - AWS Deploy Workflow Fix
+# ============================================
+
+diff --git a/.github/workflows/aws-deploy.yml b/.github/workflows/aws-deploy.yml
+index fee922c..d55360a 100644
+--- a/.github/workflows/aws-deploy.yml
++++ b/.github/workflows/aws-deploy.yml
+@@ -3,7 +3,7 @@ name: Deploy to AWS
+ on:
+   push:
+     branches:
+-      - "*"
++      - "main"
+ 
+ env:
+   AWS_REGION: eu-central-1
+
+# ============================================
+# Commit e2f4d77 - Migration Safety Fixes
+# ============================================
+
+diff --git a/database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php b/database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php
+index ab73cea..826c2d0 100644
+--- a/database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php
++++ b/database/migrations/2026_01_14_163229_remove_video_fields_from_sponsored_ads_table.php
+@@ -13,14 +13,16 @@ class RemoveVideoFieldsFromSponsoredAdsTable extends Migration
+      */
+     public function up()
+     {
+-        Schema::table('sponsored_ads', function (Blueprint $table) {
+-            $table->dropColumn([
+-                'video_url',
+-                'playback_id',
+-                'is_video_deleted',
+-                'is_video_suspended',
+-            ]);
+-        });
++        if (Schema::hasTable('sponsored_ads')) {
++            Schema::table('sponsored_ads', function (Blueprint $table) {
++                $table->dropColumn([
++                    'video_url',
++                    'playback_id',
++                    'is_video_deleted',
++                    'is_video_suspended',
++                ]);
++            });
++        }
+     }
+ 
+     /**
+diff --git a/database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php b/database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php
+index a7e9ebc..82ff880 100644
+--- a/database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php
++++ b/database/migrations/2026_01_14_164221_add_video_relation_to_sponsored_ads_table.php
+@@ -13,15 +13,16 @@ class AddVideoRelationToSponsoredAdsTable extends Migration
+      */
+     public function up()
+     {
+-    
+-        Schema::table('sponsored_ads', function (Blueprint $table) {
+-            $table->foreignId('video_id')
+-            ->nullable()
+-            ->after('payment_transaction_id')
+-            ->constrained('sponsor_videos')
+-            ->nullOnDelete()
+-            ->unique(); // one-to-one
+-        });
++        if (Schema::hasTable('sponsored_ads')) {
++            Schema::table('sponsored_ads', function (Blueprint $table) {
++                $table->foreignId('video_id')
++                ->nullable()
++                ->after('payment_transaction_id')
++                ->constrained('sponsor_videos')
++                ->nullOnDelete()
++                ->unique(); // one-to-one
++            });
++        }
+ 
+     }
+ 
+diff --git a/database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php b/database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php
+index 7f23f44..7df9cb8 100644
+--- a/database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php
++++ b/database/migrations/2026_01_29_191310_add_category_id_to_paid_banners_table.php
+@@ -13,13 +13,15 @@ class AddCategoryIdToPaidBannersTable extends Migration
+      */
+     public function up()
+     {
+-        Schema::table('paid_banners', function (Blueprint $table) {
+-            $table->foreignId('category_id')
+-            ->nullable()
+-            ->after('user_id')
+-            ->constrained('categories')
+-            ->cascadeOnDelete();
+-        });
++        if (Schema::hasTable('paid_banners')) {
++            Schema::table('paid_banners', function (Blueprint $table) {
++                $table->foreignId('category_id')
++                ->nullable()
++                ->after('user_id')
++                ->constrained('categories')
++                ->cascadeOnDelete();
++            });
++        }
+     }
+ 
+     /**
+diff --git a/database/migrations/2026_03_05_121406_modify_expiration_date_in_paid_banners_table.php b/database/migrations/2026_03_05_121406_modify_expiration_date_in_paid_banners_table.php
+index a884b2a..831942b 100644
+--- a/database/migrations/2026_03_05_121406_modify_expiration_date_in_paid_banners_table.php
++++ b/database/migrations/2026_03_05_121406_modify_expiration_date_in_paid_banners_table.php
+@@ -10,10 +10,12 @@ class ModifyExpirationDateInPaidBannersTable extends Migration
+ 
+     public function up(): void
+     {
+-        DB::statement("
+-            ALTER TABLE paid_banners 
+-            MODIFY expiration_date TIMESTAMP NULL DEFAULT NULL
+-        ");
++        if (Schema::hasTable('paid_banners')) {
++            DB::statement("
++                ALTER TABLE paid_banners
++                MODIFY expiration_date TIMESTAMP NULL DEFAULT NULL
++            ");
++        }
+     }
+ 
+     public function down()
+
+# ============================================
+# All API Fixes (current working tree)
+# ============================================
+
+diff --git a/app/Http/Controllers/Admin/CategoryTypeController.php b/app/Http/Controllers/Admin/CategoryTypeController.php
+new file mode 100644
+index 0000000..f64223c
+--- /dev/null
++++ b/app/Http/Controllers/Admin/CategoryTypeController.php
+@@ -0,0 +1,73 @@
++<?php
++
++namespace App\Http\Controllers\Admin;
++
++use App\Http\Controllers\Controller;
++use App\Model\CategoryType;
++use Illuminate\Http\Request;
++use function App\CPU\translate;
++
++class CategoryTypeController extends Controller
++{
++    public function index()
++    {
++        $category_types = CategoryType::latest()->paginate(25);
++        return view('admin-views.category-type.view', compact('category_types'));
++    }
++
++    public function fetch()
++    {
++        $category_types = CategoryType::latest()->paginate(25);
++        return response()->json([
++            'view' => view('admin-views.category-type._table', compact('category_types'))->render(),
++        ]);
++    }
++
++    public function store(Request $request)
++    {
++        $request->validate([
++            'name' => 'required|string|max:255|unique:category_types',
++        ]);
++
++        CategoryType::create([
++            'name' => $request->name,
++            'status' => 1,
++        ]);
++
++        return response()->json(['message' => translate('category_type_added_successfully')]);
++    }
++
++    public function edit($id)
++    {
++        $category_type = CategoryType::findOrFail($id);
++        return view('admin-views.category-type.edit', compact('category_type'));
++    }
++
++    public function update(Request $request, $id)
++    {
++        $request->validate([
++            'name' => 'required|string|max:255|unique:category_types,name,' . $id,
++        ]);
++
++        $category_type = CategoryType::findOrFail($id);
++        $category_type->update([
++            'name' => $request->name,
++        ]);
++
++        return response()->json(['message' => translate('category_type_updated_successfully')]);
++    }
++
++    public function delete(Request $request)
++    {
++        CategoryType::findOrFail($request->id)->delete();
++        return response()->json(['message' => translate('category_type_deleted_successfully')]);
++    }
++
++    public function status(Request $request)
++    {
++        $category_type = CategoryType::findOrFail($request->id);
++        $category_type->status = !$category_type->status;
++        $category_type->save();
++        return response()->json(['message' => translate('status_updated_successfully')]);
++    }
++}
+diff --git a/app/Http/Controllers/api/v1/AdController.php b/app/Http/Controllers/api/v1/AdController.php
+index 36fa3c3..9048878 100644
+--- a/app/Http/Controllers/api/v1/AdController.php
++++ b/app/Http/Controllers/api/v1/AdController.php
+@@ -4,8 +4,11 @@ namespace App\Http\Controllers\api\v1;
+ 
+ use App\Http\Controllers\Controller;
+ use Illuminate\Support\Facades\Cache;
++use Illuminate\Support\Facades\Http;
++use Illuminate\Support\Facades\Validator;
+ use Illuminate\Http\Request;
+ use App\Model\Ad;
++use App\Model\AdAuction;
+ use App\Model\AdView;
+ use App\Model\Category;
+ use App\Model\Wishlist;
+@@ -51,7 +54,6 @@ class AdController extends Controller
+         // Related ads
+         $relatedAds = Ad::active()
+             ->with(['category', 'brand', 'model'])
+-            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
+             ->where('model_id', $ad->model_id)
+             ->whereKeyNot($ad->id)
+             ->limit(12)
+@@ -72,33 +74,23 @@ class AdController extends Controller
+             ->first();
+ 
+         // Gallery
+-        $gallery_images_number = count(json_decode($ad->images)) + 1;
++        $images = json_decode($ad->images);
++        $gallery_images_number = is_array($images) ? count($images) + 1 : 1;
+         if ($ad_promotional_video) { $gallery_images_number++; }
+ 
+         // More ads from same user
+         $more_ads_from_user = Ad::active()
+             ->withCount('reviews')
+-            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
+             ->where('id', '!=', $ad->id)
+             ->where('user_id', $ad->user_id)
+             ->latest()
+             ->take(5)
+             ->get();
+ 
+-        $ad_views_number = $ad->adViews->count();
++        $ad_views_number = $ad->adViews()->count();
+ 
+         // Paid banners
+-        $userInterests = Cache::remember('user_category_interests', 0, fn() =>
+-            UserCategoryInterest::all()
+-        );
+-
+-        $favCategoryId = $userInterests
+-            ->where(
+-                auth('api')->check() ? 'user_id' : 'guest_id',
+-                auth('api')->check() ? auth('api')->id() : Helpers::deviceId()
+-            )
+-            ->sortByDesc('score')
+-            ->first()?->category_id;
++        $favCategoryId = $this->getUserFavoriteCategoryId();
+ 
+         $bannerQuery = PaidBanner::with('package.features', 'category')
+             ->whereHas('package', fn($q) =>
+@@ -114,12 +106,12 @@ class AdController extends Controller
+ 
+         if ($totalBanners <= 5) {
+             $paid_banners = (clone $bannerQuery)
+-                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
++                ->when($favCategoryId, fn($q) => $q->orderByRaw('category_id = ? DESC', [$favCategoryId]))
+                 ->get();
+         } else {
+             $offset       = session('banner_offset', 0);
+             $paid_banners = (clone $bannerQuery)
+-                ->orderByRaw($favCategoryId ? "category_id = {$favCategoryId} DESC" : '1')
++                ->when($favCategoryId, fn($q) => $q->orderByRaw('category_id = ? DESC', [$favCategoryId]))
+                 ->offset($offset)
+                 ->limit(5)
+                 ->get();
+@@ -164,32 +156,34 @@ class AdController extends Controller
+     public function ads_filter(Request $request) {
+ 
+         $query = Ad::active()->with('sponsor');
+-        
++
+         if ($request->color != 'all' && $request->color) {
+             $query->where('color', $request->color);
+         }
+-        
++
+         $query = $this->ad_query_filter($query, $request);
+-        
++
+         if ($request->city != '' && $request->city) {
+             $coordinates = $this->getLocationCoordinates($request->city);
+-            
+-            if($request->radius != '') {
+-                $query = $this->getAdsInRadius($query, $request->radius, $coordinates['latitude'], $coordinates['longitude']);
+-            } else {
+-                $query->where('latitude', $coordinates['latitude'])
+-                ->where('longitude', $coordinates['longitude']);
++
++            if ($coordinates) {
++                if($request->radius != '') {
++                    $query = $this->getAdsInRadius($query, $request->radius, $coordinates['latitude'], $coordinates['longitude']);
++                } else {
++                    $query->where('latitude', $coordinates['latitude'])
++                    ->where('longitude', $coordinates['longitude']);
++                }
+             }
+         }
+-        
++
+         if ($request->status) {
+             $query->whereIn('ad_status', $request->status);
+         }
+-        
++
+         if ($request->doors_number) {
+             $query->whereIn('doors_number', $request->doors_number);
+         }
+-        
++
+         if ($request->seats_number) {
+             $query->whereIn('seats_number', $request->seats_number);
+         }
+@@ -197,11 +191,11 @@ class AdController extends Controller
+         if ($request->body_type) {
+             $query->whereIn('body_type', $request->body_type);
+         }
+-        
++
+         if ($request->fuel_type) {
+             $query->whereIn('fuel_type', $request->fuel_type);
+         }
+-        
++
+         if ($request->transmission_type) {
+             $query->whereIn('transmission_type', $request->transmission_type);
+         }
+@@ -217,55 +211,55 @@ class AdController extends Controller
+         if ($request['multiple_furniture_material'] != 'all' && $request['multiple_furniture_material']) {
+             $query->whereIn('material', $request['multiple_furniture_material']);
+         }
+-                
++
+         if ($request['multiple_furniture_type'] != 'all' && $request['multiple_furniture_type']) {
+             $query->whereIn('furniture_type', $request['multiple_furniture_type']);
+         }
+-        
++
+         if ($request['multiple_home_garden_material'] != 'all' && $request['multiple_home_garden_material']) {
+             $query->whereIn('material', $request['multiple_home_garden_material']);
+         }
+-        
++
+         if ($request['multiple_shipbuilding_type'] != 'all' && $request['multiple_shipbuilding_type']) {
+             $query->whereIn('shipbuilding_type', $request['multiple_shipbuilding_type']);
+         }
+-        
++
+         if ($request['multiple_engines_number'] != 'all' && $request['multiple_engines_number']) {
+             $query->whereIn('engines_number', $request['multiple_engines_number']);
+         }
+-        
++
+         if ($request['multiple_cabins_number'] != 'all' && $request['multiple_cabins_number']) {
+             $query->whereIn('cabins_number', $request['multiple_cabins_number']);
+         }
+-        
++
+         if ($request['multiple_usage'] != 'all' && $request['multiple_usage']) {
+             $query->whereIn('usage_type', $request['multiple_usage']);
+         }
+-        
++
+         if ($request['multiple_machine_type'] != 'all' && $request['multiple_machine_type']) {
+             $query->whereIn('machine_type', $request['multiple_machine_type']);
+         }
+-        
++
+         if ($request['multiple_power_source'] != 'all' && $request['multiple_power_source']) {
+             $query->whereIn('power_source', $request['multiple_power_source']);
+         }
+-        
++
+         if ($request['multiple_home_appliance_type'] != 'all' && $request['multiple_home_appliance_type']) {
+             $query->whereIn('home_appliance_type', $request['multiple_home_appliance_type']);
+         }
+-                
++
+         if ($request['multiple_listing_type'] != 'all' && $request['multiple_listing_type']) {
+             $query->whereIn('listing_type', $request['multiple_listing_type']);
+         }
+-        
++
+         if ($request['multiple_property_type'] != 'all' && $request['multiple_property_type']) {
+             $query->whereIn('property_type', $request['multiple_property_type']);
+         }
+-        
++
+         if ($request['multiple_floor'] != 'all' && $request['multiple_floor']) {
+             $query->whereIn('floor', $request['multiple_floor']);
+         }
+-        
++
+         if ($request['multiple_electronic_type'] != 'all' && $request['multiple_electronic_type']) {
+             $query->whereIn('electronic_type', $request['multiple_electronic_type']);
+         }
+@@ -273,35 +267,35 @@ class AdController extends Controller
+         if ($request->length) {
+             $query->where('length', $request->length);
+         }
+-        
++
+         if ($request->width) {
+             $query->where('width', $request->width);
+         }
+-        
++
+         if ($request->height) {
+             $query->where('height', $request->height);
+         }
+-        
++
+         if ($request->max_weight) {
+             $query->where('max_weight', $request->max_weight);
+         }
+-        
++
+         if ($request->bag_capacity) {
+             $query->where('bag_capacity', $request->bag_capacity);
+         }
+-        
++
+         if ($request->battery_charging_time) {
+             $query->where('battery_charging_time', $request->battery_charging_time);
+         }
+-        
++
+         if ($request->fast_battery_charging_time) {
+             $query->where('fast_battery_charging_time', $request->fast_battery_charging_time);
+         }
+-        
++
+         if ($request->battery_life) {
+             $query->where('battery_life', $request->battery_life);
+         }
+-        
++
+         if ($request->acceleration_0_100) {
+             $query->where('acceleration_0_100', $request->acceleration_0_100);
+         }
+@@ -314,43 +308,21 @@ class AdController extends Controller
+             $query->where('mileage', '<=', $request['max_mileage']);
+         }
+ 
+-        if($request->has('offset') && $request->has('limit')) {
+-            $limit = $request->input('limit', 5);
+-            $offset = $request->input('offset', 5);
+-        
+-            $ads = $query->offset($offset)->limit($limit)->get();
+-            
+-            return response()->json([
+-                'html' => $ads->count() > 0 ? view('theme-views.partials._ajax-products-view', compact('ads'))->render() : null,
+-                'ads_count' => $ads->count(),
+-                'show_ad_ids' => $ads->pluck('id')->toArray()
+-            ]);
+-        }
+-
+         $count = $query->count();
+         $ads = $query->paginate(10);
+ 
+         return response()->json($ads, 200);
+-
+-        // return response()->json([
+-        //     'html' => view('theme-views.partials._ajax-products-view', compact('ads'))->render(),
+-        //     'show_ad_ids' => $ads->pluck('id')->toArray(),
+-        //     'count' => $count,
+-        // ],);
+     }
+ 
+     public function ad_query_filter($query, $request) {
+-        // Filter by category if specified
+         if ($request['category_id'] != 'all' && $request['category_id']) {
+             $query->where('category_id', $request['category_id']);
+         }
+ 
+-        // Filter by brand if specified
+         if ($request['brand_id'] != 'all' && $request['brand_id']) {
+             $query->where('brand_id', $request['brand_id']);
+         }
+-        
+-        // Filter by model if specified
++
+         if ($request['model_id'] != 'all' && $request['model_id']) {
+             $query->where('model_id', $request['model_id']);
+         }
+@@ -362,121 +334,95 @@ class AdController extends Controller
+         if ($request['bicycle_size'] != 'all' && $request['bicycle_size']) {
+             $query->where('bicycle_size', $request['bicycle_size']);
+         }
+-        
+-        // Filter by country if specified
++
+         if ($request['country'] != 'All Europe' && $request['country']) {
+             $query->where('country', $request['country']);
+         }
+-        
++
+         if ($request['furniture_material'] != 'all' && $request['furniture_material']) {
+             $query->where('material', $request['furniture_material']);
+         }
+-                
++
+         if ($request['furniture_type'] != 'all' && $request['furniture_type']) {
+             $query->where('furniture_type', $request['furniture_type']);
+         }
+-        
++
+         if ($request['home_garden_material'] != 'all' && $request['home_garden_material']) {
+             $query->where('material', $request['home_garden_material']);
+         }
+-        
++
+         if ($request['shipbuilding_type'] != 'all' && $request['shipbuilding_type']) {
+             $query->where('shipbuilding_type', $request['shipbuilding_type']);
+         }
+-        
++
+         if ($request['engines_number'] != 'all' && $request['engines_number']) {
+             $query->where('engines_number', $request['engines_number']);
+         }
+-        
++
+         if ($request['cabins_number'] != 'all' && $request['cabins_number']) {
+             $query->where('cabins_number', $request['cabins_number']);
+         }
+-        
++
+         if ($request['usage'] != 'all' && $request['usage']) {
+             $query->where('usage_type', $request['usage']);
+         }
+-        
++
+         if ($request['machine_type'] != 'all' && $request['machine_type']) {
+             $query->where('machine_type', $request['machine_type']);
+         }
+-        
++
+         if ($request['power_source'] != 'all' && $request['power_source']) {
+             $query->where('power_source', $request['power_source']);
+         }
+-                
++
+         if ($request['home_appliance_type'] != 'all' && $request['home_appliance_type']) {
+             $query->where('home_appliance_type', $request['home_appliance_type']);
+         }
+-        
++
+         if ($request['listing_type'] != 'all' && $request['listing_type']) {
+             $query->where('listing_type', $request['listing_type']);
+         }
+-        
++
+         if ($request['property_type'] != 'all' && $request['property_type']) {
+             $query->where('property_type', $request['property_type']);
+         }
+-        
++
+         if ($request['floor'] != 'all' && $request['floor']) {
+             $query->where('floor', $request['floor']);
+         }
+-        
++
+         if ($request['electronic_type'] != 'all' && $request['electronic_type']) {
+             $query->where('electronic_type', $request['electronic_type']);
+         }
+ 
+-        // Optimized price filtering
+-        $query->where(function ($q) use ($request) {
+-            // Variables to avoid repeated function calls
+-            $minPrice = $request->min_price;
+-            $maxPrice = $request->max_price;
+-            
+-            // Only process if we have at least one price constraint
+-            if ($minPrice || $maxPrice) {
+-                // Create conditions for each price type
+-                $fixedPriceCondition = [];
+-                $auctionCondition = [];
+-                
+-                // Build price conditions based on available filters
+-                if ($minPrice && $maxPrice) {
+-                    $fixedPriceCondition[] = "price BETWEEN {$minPrice} AND {$maxPrice}";
+-                    $auctionCondition[] = "starting_price BETWEEN {$minPrice} AND {$maxPrice}";
+-                } elseif ($minPrice) {
+-                    $fixedPriceCondition[] = "price >= {$minPrice}";
+-                    $auctionCondition[] = "starting_price >= {$minPrice}";
+-                } elseif ($maxPrice) {
+-                    $fixedPriceCondition[] = "price <= {$maxPrice}";
+-                    $auctionCondition[] = "starting_price <= {$maxPrice}";
+-                }
+-                
+-                // Instead of using raw queries, use Laravel's query builder
+-                if (!empty($fixedPriceCondition) && !empty($auctionCondition)) {
+-                    $q->where(function($query) use ($fixedPriceCondition, $auctionCondition) {
+-                        // Fixed price or asking price condition
+-                        $query->where(function($subquery) use ($fixedPriceCondition) {
+-                            $subquery->whereIn('price_type', ['fixed_price', 'asking_price']);
+-
+-                            if (!empty($fixedPriceCondition)) {
+-                                foreach ($fixedPriceCondition as $condition) {
+-                                    $subquery->whereRaw($condition);
+-                                }
+-                            }
+-                        });
+-                        
+-                        // Auction price condition
+-                        $query->orWhere(function($subquery) use ($auctionCondition) {
+-                            $subquery->where('price_type', 'auction');
+-                            
+-                            if (!empty($auctionCondition)) {
+-                                foreach ($auctionCondition as $condition) {
+-                                    $subquery->whereRaw($condition);
+-                                }
+-                            }
+-                        });
+-                    });
+-                }
+-            }
+-        });
+-        
++        // Parameterized price filtering (fixes SQL injection)
++        $minPrice = $request->min_price;
++        $maxPrice = $request->max_price;
++
++        if ($minPrice || $maxPrice) {
++            $query->where(function ($q) use ($minPrice, $maxPrice) {
++                $q->where(function ($sub) use ($minPrice, $maxPrice) {
++                    $sub->whereIn('price_type', ['fixed_price', 'asking_price']);
++                    if ($minPrice && $maxPrice) {
++                        $sub->whereBetween('price', [$minPrice, $maxPrice]);
++                    } elseif ($minPrice) {
++                        $sub->where('price', '>=', $minPrice);
++                    } elseif ($maxPrice) {
++                        $sub->where('price', '<=', $maxPrice);
++                    }
++                })->orWhere(function ($sub) use ($minPrice, $maxPrice) {
++                    $sub->where('price_type', 'auction');
++                    if ($minPrice && $maxPrice) {
++                        $sub->whereBetween('starting_price', [$minPrice, $maxPrice]);
++                    } elseif ($minPrice) {
++                        $sub->where('starting_price', '>=', $minPrice);
++                    } elseif ($maxPrice) {
++                        $sub->where('starting_price', '<=', $maxPrice);
++                    }
++                });
++            });
++        }
++
+         // Filter by construction year
+         if ($request->min_construction_year && $request->max_construction_year) {
+             $query->whereBetween('year', [$request['min_construction_year'], $request['max_construction_year']]);
+@@ -493,10 +439,8 @@ class AdController extends Controller
+ 
+         $apiKey = Helpers::get_business_settings('map_api_key');
+ 
+-        $address = $city;
+-
+         $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+-            'address' => $address,
++            'address' => $city,
+             'key' => $apiKey
+         ]);
+ 
+@@ -521,20 +465,18 @@ class AdController extends Controller
+ 
+     public function getAdsInRadius($query, $radius, $latitude, $longitude)
+     {
+-        $query->withinRadius($latitude, $longitude ,$radius);
++        $query->withinRadius($latitude, $longitude, $radius);
+         return $query;
+     }
+ 
+     public function store_auction(Request $request)
+     {
+-        // Profile check
+         if (Helpers::prevent_if_profile_incomplete()) {
+             return response()->json([
+                 'message' => translate('you_must_complete_your_profile_first_to_be_able_to_make_an_offer')
+             ], 403);
+         }
+ 
+-        // Validation
+         $validator = Validator::make($request->all(), [
+             'id'    => 'required',
+             'price' => 'required|numeric|min:0|max:10000000000',
+@@ -546,7 +488,6 @@ class AdController extends Controller
+             ], 422);
+         }
+ 
+-        // Find ad
+         $ad = Ad::active()->with('auctions')->find($request->id);
+ 
+         if (!$ad) {
+@@ -555,14 +496,12 @@ class AdController extends Controller
+             ], 404);
+         }
+ 
+-        // Already placed an offer
+         if ($ad->auctions->contains('user_id', auth('api')->id())) {
+             return response()->json([
+                 'message' => translate('you_already_send_an_offer_to_this_ad')
+             ], 409);
+         }
+ 
+-        // Price check
+         $last_auction_price = $ad->auctions->count() > 0
+             ? $ad->auctions()->latest()->value('price')
+             : ($ad->starting_price ?? 0);
+@@ -573,7 +512,6 @@ class AdController extends Controller
+             ], 422);
+         }
+ 
+-        // Store
+         $auction = AdAuction::create([
+             'ad_id'   => $ad->id,
+             'user_id' => auth('api')->id(),
+@@ -586,4 +524,17 @@ class AdController extends Controller
+         ], 201);
+     }
+ 
++    private function getUserFavoriteCategoryId(): ?int
++    {
++        $userInterests = UserCategoryInterest::all();
++
++        return $userInterests
++            ->where(
++                auth('api')->check() ? 'user_id' : 'guest_id',
++                auth('api')->check() ? auth('api')->id() : Helpers::deviceId()
++            )
++            ->sortByDesc('score')
++            ->first()?->category_id;
++    }
++
+ }
+diff --git a/app/Http/Controllers/api/v1/BannerController.php b/app/Http/Controllers/api/v1/BannerController.php
+index 32af66d..7a7bb2a 100644
+--- a/app/Http/Controllers/api/v1/BannerController.php
++++ b/app/Http/Controllers/api/v1/BannerController.php
+@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api\v1;
+ use App\CPU\Helpers;
+ use App\Http\Controllers\Controller;
+ use App\Model\Banner;
+-use App\Model\Product;
+ use Illuminate\Http\Request;
+ use Illuminate\Support\Facades\Validator;
+ 
+@@ -18,32 +17,23 @@ class BannerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+-        if ($request['banner_type'] == 'all') {
+-            $banners = Banner::where(['published' => 1])->get();
+-        } elseif ($request['banner_type'] == 'main_banner') {
+-            $banners = Banner::where(['published' => 1, 'banner_type' => 'Main Banner'])->get();
++        $query = Banner::where('published', 1);
++
++        if ($request['banner_type'] == 'main_banner') {
++            $query->where('banner_type', 'Main Banner');
+         } elseif ($request['banner_type'] == 'main_section_banner') {
+-            $banners = Banner::where(['published' => 1, 'banner_type' => 'Main Section Banner'])->get();
++            $query->where('banner_type', 'Main Section Banner');
+         } elseif ($request['banner_type'] == 'top_side_banner') {
+-            $banners = Banner::where(['published' => 1, 'banner_type' => 'Top Side Banner'])->get();
+-        }else {
+-            $banners = Banner::where(['published' => 1, 'banner_type' => 'Footer Banner'])->get();
+-        }
+-        $pro_ids = [];
+-        $data = [];
+-        foreach ($banners as $banner) {
+-            if ($banner['resource_type'] == 'product' && !in_array($banner['resource_id'], $pro_ids)) {
+-                array_push($pro_ids,$banner['resource_id']);
+-                $product = Product::find($banner['resource_id']);
+-                $banner['product'] = Helpers::product_data_formatting($product);
+-            }
+-            $data[] = $banner;
++            $query->where('banner_type', 'Top Side Banner');
++        } elseif ($request['banner_type'] == 'footer_banner') {
++            $query->where('banner_type', 'Footer Banner');
+         }
+ 
+-        return response()->json($data, 200);
++        $banners = $query->get();
+ 
++        return response()->json($banners, 200);
+     }
+ }
+diff --git a/app/Http/Controllers/api/v1/CategoryController.php b/app/Http/Controllers/api/v1/CategoryController.php
+index 9d4b713..c06916e 100644
+--- a/app/Http/Controllers/api/v1/CategoryController.php
++++ b/app/Http/Controllers/api/v1/CategoryController.php
+@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
+ use App\Model\Category;
+ use Illuminate\Http\Request;
+ use Illuminate\Support\Facades\Cache;
++use Illuminate\Support\Facades\Log;
+ 
+ class CategoryController extends Controller
+ {
+@@ -21,7 +22,7 @@ class CategoryController extends Controller
+ 
+         } catch (\Exception $e) {
+             Log::error('Failed to fetch home categories: ' . $e->getMessage());
+-            return response()->json(['message' => 'Something went wrong'], 500);    
++            return response()->json(['message' => 'Something went wrong'], 500);
+         }
+     }
+ 
+diff --git a/app/Http/Controllers/api/v1/ChatController.php b/app/Http/Controllers/api/v1/ChatController.php
+index 90bf4ac..357aa14 100644
+--- a/app/Http/Controllers/api/v1/ChatController.php
++++ b/app/Http/Controllers/api/v1/ChatController.php
+@@ -5,12 +5,8 @@ namespace App\Http\Controllers\api\v1;
+ use App\CPU\Helpers;
+ use App\Http\Controllers\Controller;
+ use App\Model\Chatting;
+-use App\Model\DeliveryMan;
+-use App\Model\Seller;
+-use App\Model\Shop;
+ use App\User;
+ use Illuminate\Http\Request;
+-use Illuminate\Support\Facades\DB;
+ use Illuminate\Support\Facades\Validator;
+ use function App\CPU\translate;
+ 
+@@ -20,22 +16,18 @@ class ChatController extends Controller
+     {
+         $userId = $request->user()->id;
+ 
+-        // Get all messages involving the user
+         $allChats = Chatting::where('sender_id', $userId)
+             ->orWhere('receiver_id', $userId)
+             ->whereNotNull(['sender_id', 'receiver_id'])
+             ->orderBy('created_at', 'desc')
+             ->get();
+ 
+-        // Filter to keep only the latest message per unique conversation
+         $seenPartners = [];
+         $uniqueChats = [];
+ 
+         foreach ($allChats as $chat) {
+-            // Determine the other person in the conversation
+             $partnerId = ($chat->sender_id == $userId) ? $chat->receiver_id : $chat->sender_id;
+ 
+-            // Only keep the first (latest) message per partner
+             if (!in_array($partnerId, $seenPartners)) {
+                 $seenPartners[] = $partnerId;
+                 $uniqueChats[] = $chat;
+@@ -49,67 +41,9 @@ class ChatController extends Controller
+         return response()->json($data, 200);
+     }
+ 
+-    public function search(Request $request, $type)
+-    {
+-        $terms = explode(" ", $request->input('search'));
+-        if ($type == 'seller') {
+-            $id_param = 'seller_id';
+-            $with_param = 'seller_info.shops';
+-            $users = Seller::when($request->search, function ($query) use ($terms) {
+-                foreach ($terms as $term) {
+-                    $query->where('f_name', 'like', '%' . $term . '%')
+-                        ->orWhere('l_name', 'like', '%' . $term . '%');
+-                }
+-            })->pluck('id')->toArray();
+-
+-        } elseif ($type == 'delivery-man') {
+-            $with_param = 'delivery_man';
+-            $id_param = 'delivery_man_id';
+-            $users = DeliveryMan::when($request->search, function ($query) use ($terms) {
+-                foreach ($terms as $term) {
+-                    $query->where('f_name', 'like', '%' . $term . '%')
+-                        ->orWhere('l_name', 'like', '%' . $term . '%');
+-                }
+-            })->pluck('id')->toArray();
+-        } else {
+-            return response()->json(['message' => translate('Invalid Chatting Type!')], 403);
+-        }
+-
+-        $unique_chat_ids = Chatting::where(['user_id' => $request->user()->id])
+-            ->whereIn($id_param, $users)
+-            ->select($id_param)
+-            ->distinct()
+-            ->get()
+-            ->toArray();
+-        $unique_chat_ids = call_user_func_array('array_merge', $unique_chat_ids);
+-
+-        $chats = array();
+-        if ($unique_chat_ids) {
+-            foreach ($unique_chat_ids as $unique_chat_id) {
+-                $chats[] = Chatting::with([$with_param])
+-                    ->where(['user_id' => $request->user()->id, $id_param => $unique_chat_id])
+-                    ->whereNotNull($id_param)
+-                    ->latest()
+-                    ->first();
+-            }
+-        }
+-
+-        return response()->json($chats, 200);
+-    }
+-
+     public function get_message(Request $request, $id)
+     {
+-        // $validator = Validator::make($request->all(), [
+-        //     'offset' => 'required',
+-        //     'limit' => 'required',
+-        // ]);
+-
+-        // if ($validator->fails()) {
+-        //     return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+-        // }
+-        
+-        $messages = Chatting::
+-            where(function ($q) use ($id) {
++        $messages = Chatting::where(function ($q) use ($id) {
+                 $q->where('sender_id', $id)
+                 ->orWhere('receiver_id', $id);
+             })
+@@ -120,12 +54,11 @@ class ChatController extends Controller
+             ->latest()
+             ->get();
+ 
+-        if($messages->count() > 0) {
++        if ($messages->count() > 0) {
+             return response()->json($messages, 200);
+         }
+ 
+         return response()->json(['message' => translate('no messages found!')], 200);
+-
+     }
+ 
+     public function send_message(Request $request)
+@@ -138,20 +71,16 @@ class ChatController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+-        $message_form = User::find($request->user()->id);
+-
+         $chatting = new Chatting();
+         $chatting->sender_id = $request->user()->id;
+         $chatting->receiver_id = $request->id;
+         $chatting->message = $request->message;
+         $chatting->seen = 0;
+-
+         $chatting->save();
+ 
+         return response()->json(['message' => $request->message, 'time' => now()], 200);
+-
+     }
+ }
+diff --git a/app/Http/Controllers/api/v1/ConfigController.php b/app/Http/Controllers/api/v1/ConfigController.php
+index 0123365..87ccc37 100644
+--- a/app/Http/Controllers/api/v1/ConfigController.php
++++ b/app/Http/Controllers/api/v1/ConfigController.php
+@@ -3,98 +3,62 @@
+ namespace App\Http\Controllers\api\v1;
+ 
+ use App\CPU\Helpers;
+-use App\CPU\ProductManager;
+ use App\Http\Controllers\Controller;
+ use App\Model\Brand;
+ use App\Model\BusinessSetting;
+-use App\Model\Color;
+ use App\Model\Currency;
+ use App\Model\HelpTopic;
+-use App\Model\Shop;
+ use App\Model\SocialMedia;
+ use Illuminate\Http\Request;
+-use App\Model\ShippingType;
+-use function App\CPU\payment_gateways;
+ 
+ class ConfigController extends Controller
+ {
+     public function configuration()
+     {
+-        $currency = Currency::where(['status'=>1])->get();
++        $currency = Currency::where(['status' => 1])->get();
++
+         $social_login = [];
+-        foreach (Helpers::get_business_settings('social_login') as $social) {
+-            $config = [
+-                'login_medium' => $social['login_medium'],
+-                'status' => (boolean)$social['status']
+-            ];
+-            array_push($social_login, $config);
++        $social_login_settings = Helpers::get_business_settings('social_login');
++        if (is_array($social_login_settings)) {
++            foreach ($social_login_settings as $social) {
++                $social_login[] = [
++                    'login_medium' => $social['login_medium'],
++                    'status' => (bool)($social['status'] ?? false),
++                ];
++            }
+         }
+ 
+         $languages = Helpers::get_business_settings('language');
+         $lang_array = [];
+-        foreach ($languages as $language) {
+-            $lang_array[] = array(
+-                'code' => $language['code'],
+-                'name' => Helpers::get_language_name($language['code']),
+-                'status' => $language['status'],
+-                'default' => $language['default'],
+-                'direction' => $language['direction'],
+-            );
+-        }
+-
+-        $offline_payment = null;
+-        $offline_payment_status = Helpers::get_business_settings('offline_payment')['status'] == 1 ?? 0;
+-        if($offline_payment_status){
+-            $offline_payment = [
+-                'name' => 'offline_payment',
+-                'image' => asset('public/assets/back-end/img/pay-offline.png'),
+-            ];
++        if (is_array($languages)) {
++            foreach ($languages as $language) {
++                $lang_array[] = [
++                    'code' => $language['code'] ?? '',
++                    'name' => Helpers::get_language_name($language['code'] ?? ''),
++                    'status' => $language['status'] ?? 0,
++                    'default' => $language['default'] ?? false,
++                    'direction' => $language['direction'] ?? 'ltr',
++                ];
++            }
+         }
+ 
+-        $payment_methods = payment_gateways();
+-        $payment_methods->map(function ($payment) {
+-            $payment->additional_datas = json_decode($payment->additional_data);
+-
+-            unset(
+-                $payment->additional_data,
+-                $payment->id,
+-                $payment->settings_type,
+-                $payment->is_active,
+-                $payment->created_at,
+-                $payment->updated_at
+-            );
+-        });
+-
+-        $admin_shipping = ShippingType::where('seller_id',0)->first();
+-        $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
+-
+-        $company_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_web_logo'])->first()->value;
+-        $company_cover_image = cloudfront("logo/").'/'.BusinessSetting::where(['type'=>'shop_banner'])->first()->value;
+-        $company_fav_icon = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_fav_icon'])->first()->value;
+-        $footer_logo = cloudfront("company/").'/'.BusinessSetting::where(['type'=>'company_footer_logo'])->first()->value;
+-        $android = BusinessSetting::where(['type'=>'download_app_google_stroe'])->first()->value;
+-        $android = json_decode($android)->link;
+-        $shops = Shop::whereHas('seller', function ($query) {
+-            return $query->approved();
+-        })->take(9)->get();
+         $brands = Brand::active()->take(15)->get();
+ 
+-        $ios = BusinessSetting::where(['type'=>'download_app_apple_stroe'])->first()->value;
+-        $ios = json_decode($ios)->link;
++        $company_logo = $this->getSettingImage('company_web_logo', 'company');
++        $company_cover_image = $this->getSettingImage('shop_banner', 'logo');
++        $company_fav_icon = $this->getSettingImage('company_fav_icon', 'company');
++        $footer_logo = $this->getSettingImage('company_footer_logo', 'company');
++
++        $android = $this->getSettingJsonLink('download_app_google_stroe');
++        $ios = $this->getSettingJsonLink('download_app_apple_stroe');
+ 
+         return response()->json([
+-            'brand_setting' => BusinessSetting::where('type', 'product_brand')->first()->value,
+             'brands' => $brands,
+-            'shops' => $shops,
+-            'digital_product_setting' => BusinessSetting::where('type', 'digital_product')->first()->value,
+-            'system_default_currency' => (int)Helpers::get_business_settings('system_default_currency'),
+-            'digital_payment' => (boolean)Helpers::get_business_settings('digital_payment')['status'] ?? 0,
+-            'cash_on_delivery' => (boolean)Helpers::get_business_settings('cash_on_delivery')['status'] ?? 0,
+-            'seller_registration' => BusinessSetting::where('type', 'seller_registration')->first()->value,
+-            'pos_active' => BusinessSetting::where('type','seller_pos')->first()->value,
+-            'company_address' => Helpers::get_business_settings('shop_address'),
+-            'company_phone' => Helpers::get_business_settings('company_phone'),
+-            'company_email' => Helpers::get_business_settings('company_email'),
++            'system_default_currency' => (int)(Helpers::get_business_settings('system_default_currency') ?? 0),
++            'digital_payment' => (bool)(Helpers::get_business_settings('digital_payment')['status'] ?? false),
++            'company_address' => Helpers::get_business_settings('shop_address') ?? '',
++            'company_phone' => Helpers::get_business_settings('company_phone') ?? '',
++            'company_email' => Helpers::get_business_settings('company_email') ?? '',
+             'company_logo' => $company_logo,
+             'company_cover_image' => $company_cover_image,
+             'company_fav_icon' => $company_fav_icon,
+@@ -102,75 +66,58 @@ class ConfigController extends Controller
+             'ios' => $ios,
+             'android' => $android,
+             'social_media' => SocialMedia::where('active_status', 1)->get(),
+-            'copyright_text' => BusinessSetting::where(['type'=>'company_copyright_text'])->first()->value,
+-            'delivery_country_restriction' => Helpers::get_business_settings('delivery_country_restriction'),
+-            'delivery_zip_code_area_restriction' => Helpers::get_business_settings('delivery_zip_code_area_restriction'),
++            'copyright_text' => $this->getSettingValue('company_copyright_text'),
+             'base_urls' => [
+-                'product_image_url' => ProductManager::product_image_path('product'),
+-                'product_thumbnail_url' => ProductManager::product_image_path('thumbnail'),
+-                'digital_product_url' => asset('storage/app/public/product/digital-product'),
+                 'brand_image_url' => cloudfront('brand'),
+                 'customer_image_url' => asset('storage/app/public/profile'),
+                 'banner_image_url' => cloudfront('banner'),
+                 'category_image_url' => cloudfront('category'),
+-                'review_image_url' => asset('storage/app/public'),
+-                'seller_image_url' => asset('storage/app/public/seller'),
+-                'shop_image_url' => asset('storage/app/public/shop'),
+                 'notification_image_url' => asset('storage/app/public/notification'),
+-                'delivery_man_image_url' => asset('storage/app/public/delivery-man'),
+-                'flag_image_url' => asset('public/assets/front-end/img/flags'),
+-                'delivery_man_verification_image' => asset('storage/app/public/delivery-man/verification-image'),
+-            ],
+-            'static_urls' => [
+-                'contact_us' => route('contacts'),
+-                'brands' => route('brands'),
+-                'categories' => route('categories'),
+-                'customer_account' => route('user-account'),
+             ],
+-            'about_us' => Helpers::get_business_settings('about_us'),
+-            'privacy_policy' => Helpers::get_business_settings('privacy_policy'),
++            'about_us' => Helpers::get_business_settings('about_us') ?? '',
++            'privacy_policy' => Helpers::get_business_settings('privacy_policy') ?? '',
+             'faq' => HelpTopic::all(),
+-            'terms_&_conditions' => Helpers::get_business_settings('terms_condition'),
+-            'refund_policy' => Helpers::get_business_settings('refund-policy'),
+-            'return_policy' => Helpers::get_business_settings('return-policy'),
+-            'cancellation_policy' => Helpers::get_business_settings('cancellation-policy'),
++            'terms_&_conditions' => Helpers::get_business_settings('terms_condition') ?? '',
+             'currency_list' => $currency,
+             'currency_symbol_position' => Helpers::get_business_settings('currency_symbol_position') ?? 'right',
+-            'business_mode'=> Helpers::get_business_settings('business_mode'),
+-            'maintenance_mode' => (boolean)Helpers::get_business_settings('maintenance_mode') ?? 0,
++            'business_mode' => Helpers::get_business_settings('business_mode'),
++            'maintenance_mode' => (bool)(Helpers::get_business_settings('maintenance_mode') ?? false),
+             'language' => $lang_array,
+-            'colors' => Color::all(),
+-            'unit' => Helpers::units(),
+-            'shipping_method' => Helpers::get_business_settings('shipping_method'),
+-            'email_verification' => (boolean)Helpers::get_business_settings('email_verification'),
+-            'phone_verification' => (boolean)Helpers::get_business_settings('phone_verification'),
+-            'country_code' => Helpers::get_business_settings('country_code'),
++            'email_verification' => (bool)(Helpers::get_business_settings('email_verification') ?? false),
++            'phone_verification' => (bool)(Helpers::get_business_settings('phone_verification') ?? false),
++            'country_code' => Helpers::get_business_settings('country_code') ?? '',
+             'social_login' => $social_login,
+             'currency_model' => Helpers::get_business_settings('currency_model'),
+             'forgot_password_verification' => Helpers::get_business_settings('forgot_password_verification'),
+-            'announcement'=> Helpers::get_business_settings('announcement'),
+-            'pixel_analytics'=> Helpers::get_business_settings('pixel_analytics'),
+-            'software_version'=>env('SOFTWARE_VERSION'),
+-            'decimal_point_settings'=>Helpers::get_business_settings('decimal_point_settings'),
+-            'inhouse_selected_shipping_type'=>$shipping_type,
+-            'billing_input_by_customer'=>Helpers::get_business_settings('billing_input_by_customer'),
+-            'minimum_order_limit'=>Helpers::get_business_settings('minimum_order_limit'),
+-            'wallet_status'=>Helpers::get_business_settings('wallet_status'),
+-            'loyalty_point_status'=>Helpers::get_business_settings('loyalty_point_status'),
+-            'loyalty_point_exchange_rate'=>Helpers::get_business_settings('loyalty_point_exchange_rate'),
+-            'loyalty_point_minimum_point'=>Helpers::get_business_settings('loyalty_point_minimum_point'),
+-            'payment_methods' => $payment_methods,
+-            'payment_method_image_path' => asset('storage/app/public/payment_modules/gateway_image'),
+-            'offline_payment' => $offline_payment,
++            'announcement' => Helpers::get_business_settings('announcement'),
++            'software_version' => env('SOFTWARE_VERSION'),
++            'wallet_status' => Helpers::get_business_settings('wallet_status'),
+             'default_location' => Helpers::get_business_settings('default_location'),
+-            'refund_day_limit' => Helpers::get_business_settings('refund_day_limit'),
+-            'seller_login_url' => route('seller.auth.login'),
+-            'minimum_order_amount_status'=> Helpers::get_business_settings('minimum_order_amount_status'),
+-            'minimum_order_amount'=> Helpers::get_business_settings('minimum_order_amount'),
+-            'minimum_order_amount_by_seller'=> Helpers::get_business_settings('minimum_order_amount_by_seller'),
+-            'free_delivery_status'=>Helpers::get_business_settings('free_delivery_status'),
+-            'free_delivery_responsibility'=>Helpers::get_business_settings('free_delivery_responsibility'),
+         ]);
+     }
+-}
+ 
++    private function getSettingValue(string $type): string
++    {
++        $setting = BusinessSetting::where('type', $type)->first();
++        return $setting->value ?? '';
++    }
++
++    private function getSettingImage(string $type, string $folder): string
++    {
++        $setting = BusinessSetting::where('type', $type)->first();
++        if (!$setting || !$setting->value) {
++            return '';
++        }
++        return cloudfront($folder) . '/' . $setting->value;
++    }
++
++    private function getSettingJsonLink(string $type): string
++    {
++        $setting = BusinessSetting::where('type', $type)->first();
++        if (!$setting || !$setting->value) {
++            return '';
++        }
++        $decoded = json_decode($setting->value);
++        return $decoded->link ?? '';
++    }
++}
+diff --git a/app/Http/Controllers/api/v1/CustomerController.php b/app/Http/Controllers/api/v1/CustomerController.php
+index 85a2871..30d7d4f 100644
+--- a/app/Http/Controllers/api/v1/CustomerController.php
++++ b/app/Http/Controllers/api/v1/CustomerController.php
+@@ -5,12 +5,9 @@ namespace App\Http\Controllers\api\v1;
+ use App\CPU\CustomerManager;
+ use App\CPU\Helpers;
+ use App\CPU\ImageManager;
+-use App\CPU\OrderManager;
+ use App\Http\Controllers\Controller;
+ use App\Model\DeliveryCountryCode;
+ use App\Model\DeliveryZipCode;
+-use App\Model\Order;
+-use App\Model\OrderDetail;
+ use App\Model\ShippingAddress;
+ use App\Model\SupportTicket;
+ use App\Model\SupportTicketConv;
+@@ -18,21 +15,14 @@ use App\Model\Wishlist;
+ use App\Traits\CommonTrait;
+ use App\User;
+ use Illuminate\Http\Request;
+-use Illuminate\Support\Carbon;
+ use Illuminate\Support\Facades\DB;
+-use Illuminate\Support\Facades\Storage;
+ use Illuminate\Support\Facades\Validator;
+-use Intervention\Image\Facades\Image;
+ use function App\CPU\translate;
+ 
+ class CustomerController extends Controller
+ {
+     use CommonTrait;
+ 
+-    public function __construct(
+-        private Order $order
+-    ){}
+-
+     public function get_customer_profile(Request $request)
+     {
+         $customer = $request->user()->loadCount(['ads', 'paid_banners']);
+@@ -43,12 +33,11 @@ class CustomerController extends Controller
+     {
+         $user = $request->user();
+ 
+-        // ✅ Validate incoming request
+-        $request->validate([
++        $validator = Validator::make($request->all(), [
+             'name' => 'required|string|max:255',
+             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+             'bio' => 'nullable|string',
+-            'image' => 'nullable|string', // or 'image|mimes:jpeg,png,jpg,gif|max:2048' if uploading file
++            'image' => 'nullable|string',
+             'phone_code' => 'nullable|string|max:10',
+             'phone' => 'nullable|string|max:20',
+             'show_phone_number' => 'nullable|boolean',
+@@ -60,16 +49,18 @@ class CustomerController extends Controller
+             'country' => 'nullable|string|max:50',
+             'city' => 'nullable|string|max:50',
+             'postal_code' => 'nullable|string|max:20',
+-            'address' => 'nullable|string|max:255',
++            'street_address' => 'nullable|string|max:255',
+             'show_location_data' => 'nullable|boolean',
+-            'password' => 'nullable|string|min:6|confirmed', // confirmed = checks password_confirmation
++            'password' => 'nullable|string|min:8|confirmed',
+         ]);
+ 
+-        // ✅ Directly assign values
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
++        }
++
+         $user->name = $request->name;
+         $user->email = $request->email;
+         $user->bio = $request->bio;
+-        $user->image = $request->image;
+         $user->phone_code = $request->phone_code;
+         $user->phone = $request->phone;
+         $user->show_phone_number = $request->show_phone_number;
+@@ -81,10 +72,9 @@ class CustomerController extends Controller
+         $user->country = $request->country;
+         $user->city = $request->city;
+         $user->postal_code = $request->postal_code;
+-        $user->address = $request->address;
++        $user->street_address = $request->street_address;
+         $user->show_location_data = $request->show_location_data;
+ 
+-        // ✅ Update password if provided
+         if ($request->password) {
+             $user->password = bcrypt($request->password);
+         }
+@@ -96,25 +86,19 @@ class CustomerController extends Controller
+ 
+     public function get_customer_ads(Request $request)
+     {
+-        // Get paginated ads for the logged-in user (10 per page)
+         $customer_ads = $request->user()->ads()->paginate(10);
+-
+         return response()->json($customer_ads, 200);
+     }
+ 
+     public function info(Request $request)
+     {
+-        $wishlists = Wishlist::whereHas('wishlistAd', function ($q) {
+-            return $q;
+-        })->where('customer_id', $customer->id)->count();
++        $user = $request->user();
+ 
+-        $total_order = Order::where('customer_id', $customer->id)->count();
++        $wishlists = Wishlist::whereHas('wishlistAd')->where('customer_id', $user->id)->count();
+ 
+         $data = [
+-            'customer'=>$customer,
+-            'wishlists'=>$wishlists,
+-            'total_order'=>$total_order,
+-            'compare_list'=>$request->user()->compare_list->count(),
++            'customer' => $user,
++            'wishlists' => $wishlists,
+         ];
+         return response()->json($data, 200);
+     }
+@@ -129,7 +113,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $request['customer_id'] = $request->user()->id;
+@@ -139,43 +123,68 @@ class CustomerController extends Controller
+ 
+         return response()->json(['message' => 'Support ticket created successfully.'], 200);
+     }
++
+     public function account_delete(Request $request)
+     {
+-        $user = User::find($request->user()->id);
+-
+-        $ongoing = ['out_for_delivery','processing','confirmed', 'pending'];
+-        $order = Order::where('customer_id', $user->id)->whereIn('order_status', $ongoing)->count();
+-        if($order>0){
+-            return response()->json(['message' =>'You can`t delete account due ongoing_order!!'],403);
+-        }
++        $user = $request->user();
+ 
+         ImageManager::delete('/profile/' . $user['image']);
+ 
+         $user->delete();
+-        return response()->json(['message' => 'Your account has been deleted successfully'],200);
++        return response()->json(['message' => 'Your account has been deleted successfully'], 200);
+     }
+ 
+     public function reply_support_ticket(Request $request, $ticket_id)
+     {
+-        $ticket = SupportTicket::find($ticket_id);
++        $ticket = SupportTicket::where('customer_id', $request->user()->id)
++            ->where('id', $ticket_id)
++            ->first();
++
++        if (!$ticket) {
++            return response()->json(['message' => translate('ticket_not_found')], 404);
++        }
++
++        $validator = Validator::make($request->all(), [
++            'message' => 'required|string',
++        ]);
++
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
++        }
++
+         $ticket->status = 'open';
+         $ticket->save();
+ 
+         $support = new SupportTicketConv();
+         $support->support_ticket_id = $ticket_id;
+-        $support->admin_id = 1;
++        $support->admin_id = null;
+         $support->customer_message = $request['message'];
+         $support->save();
++
+         return response()->json(['message' => 'Support ticket reply sent.'], 200);
+     }
+ 
+     public function support_ticket_close(Request $request)
+     {
+-        SupportTicket::where(['id' => $request->ticket_id])->update([
+-            'status' => 'close',
+-            'updated_at' => now(),
++        $validator = Validator::make($request->all(), [
++            'ticket_id' => 'required',
+         ]);
+ 
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
++        }
++
++        $updated = SupportTicket::where('id', $request->ticket_id)
++            ->where('customer_id', $request->user()->id)
++            ->update([
++                'status' => 'close',
++                'updated_at' => now(),
++            ]);
++
++        if (!$updated) {
++            return response()->json(['message' => translate('ticket_not_found')], 404);
++        }
++
+         return response()->json(['message' => translate('ticket_closed')], 200);
+     }
+ 
+@@ -187,6 +196,14 @@ class CustomerController extends Controller
+ 
+     public function get_support_ticket_conv(Request $request, $ticket_id)
+     {
++        $ticket = SupportTicket::where('customer_id', $request->user()->id)
++            ->where('id', $ticket_id)
++            ->first();
++
++        if (!$ticket) {
++            return response()->json(['message' => translate('ticket_not_found')], 404);
++        }
++
+         $customer_tickets_convs = SupportTicketConv::where('support_ticket_id', $ticket_id)->get();
+         return response()->json($customer_tickets_convs, 200);
+     }
+@@ -198,7 +215,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $wishlist = Wishlist::where('customer_id', $request->user()->id)
+@@ -223,7 +240,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $wishlist = Wishlist::where('customer_id', $request->user()->id)
+@@ -231,7 +248,7 @@ class CustomerController extends Controller
+         ->first();
+ 
+         if (!empty($wishlist)) {
+-            Wishlist::where(['customer_id' => $request->user()->id, 'ad_id' => $request->ad_id])->delete();
++            $wishlist->delete();
+             return response()->json(['message' => translate('successfully removed!')], 200);
+         }
+ 
+@@ -245,9 +262,10 @@ class CustomerController extends Controller
+ 
+     public function wish_list(Request $request)
+     {
+-        $wishlist = Wishlist::whereHas('wishlistAd',function($q){
+-            return $q;
+-        })->with(['wishlistAd'])->where('customer_id', $request->user()->id)->get();
++        $wishlist = Wishlist::whereHas('wishlistAd')
++            ->with(['wishlistAd'])
++            ->where('customer_id', $request->user()->id)
++            ->get();
+ 
+         return response()->json($wishlist, 200);
+     }
+@@ -255,10 +273,10 @@ class CustomerController extends Controller
+     public function address_list(Request $request)
+     {
+         $user = Helpers::get_customer($request);
+-        if($user == 'offline'){
+-            $data = ShippingAddress::where(['customer_id'=> $request->guest_id, 'is_guest'=>1])->latest()->get();
+-        }else{
+-            $data = ShippingAddress::where(['customer_id'=> $user->id, 'is_guest'=>'0'])->latest()->get();
++        if ($user == 'offline') {
++            $data = ShippingAddress::where(['customer_id' => $request->guest_id, 'is_guest' => 1])->latest()->get();
++        } else {
++            $data = ShippingAddress::where(['customer_id' => $user->id, 'is_guest' => '0'])->latest()->get();
+         }
+         return response()->json($data, 200);
+     }
+@@ -279,7 +297,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $zip_restrict_status = Helpers::get_business_settings('delivery_zip_code_area_restriction');
+@@ -287,14 +305,13 @@ class CustomerController extends Controller
+ 
+         if ($country_restrict_status && !self::delivery_country_exist_check($request->input('country'))) {
+             return response()->json(['message' => translate('Delivery_unavailable_for_this_country')], 403);
+-
+         } elseif ($zip_restrict_status && !self::delivery_zipcode_exist_check($request->input('zip'))) {
+             return response()->json(['message' => translate('Delivery_unavailable_for_this_zip_code_area')], 403);
+         }
+ 
+         $user = Helpers::get_customer($request);
+         $address = [
+-            'customer_id' => $user=='offline' ? $request->guest_id : $user->id,
++            'customer_id' => $user == 'offline' ? $request->guest_id : $user->id,
+             'is_guest' => $user == 'offline' ? 1 : 0,
+             'contact_person_name' => $request->contact_person_name,
+             'address_type' => $request->address_type,
+@@ -318,12 +335,12 @@ class CustomerController extends Controller
+     {
+         $user = Helpers::get_customer($request);
+         $shipping_address = ShippingAddress::where([
+-            'customer_id' => $user=='offline' ? $request->guest_id : $user->id,
++            'customer_id' => $user == 'offline' ? $request->guest_id : $user->id,
+             'id' => $request->id
+         ])->first();
+ 
+         if (!$shipping_address) {
+-            return response()->json(['message' => translate('not_found')], 200);
++            return response()->json(['message' => translate('not_found')], 404);
+         }
+ 
+         $zip_restrict_status = Helpers::get_business_settings('delivery_zip_code_area_restriction');
+@@ -331,25 +348,23 @@ class CustomerController extends Controller
+ 
+         if ($country_restrict_status && !self::delivery_country_exist_check($request->input('country'))) {
+             return response()->json(['message' => translate('Delivery_unavailable_for_this_country')], 403);
+-
+         } elseif ($zip_restrict_status && !self::delivery_zipcode_exist_check($request->input('zip'))) {
+             return response()->json(['message' => translate('Delivery_unavailable_for_this_zip_code_area')], 403);
+         }
+ 
+         $shipping_address->update([
+-                'contact_person_name' => $request->contact_person_name,
+-                'address_type' => $request->address_type,
+-                'address' => $request->address,
+-                'city' => $request->city,
+-                'zip' => $request->zip,
+-                'country' => $request->country,
+-                'phone' => $request->phone,
+-                'latitude' => $request->latitude,
+-                'longitude' => $request->longitude,
+-                'is_billing' => $request->is_billing,
+-                'created_at' => now(),
+-                'updated_at' => now(),
+-            ]);
++            'contact_person_name' => $request->contact_person_name,
++            'address_type' => $request->address_type,
++            'address' => $request->address,
++            'city' => $request->city,
++            'zip' => $request->zip,
++            'country' => $request->country,
++            'phone' => $request->phone,
++            'latitude' => $request->latitude,
++            'longitude' => $request->longitude,
++            'is_billing' => $request->is_billing,
++            'updated_at' => now(),
++        ]);
+ 
+         return response()->json(['message' => translate('update_successful')], 200);
+     }
+@@ -361,7 +376,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         if (DB::table('shipping_addresses')->where(['id' => $request['address_id'], 'customer_id' => $request->user()->id])->first()) {
+@@ -371,79 +386,18 @@ class CustomerController extends Controller
+         return response()->json(['message' => translate('No such data found!')], 404);
+     }
+ 
+-    public function get_order_list(Request $request)
+-    {
+-        $status = ['delivered','canceled','failed'];
+-        $orders = Order::with('seller.shop','delivery_man')
+-            ->withCount('details')
+-            ->where(['customer_id' => $request->user()->id])
+-            ->when($request->type=='previous', function($query) use($status){
+-                $query->whereIn('order_status', $status);
+-            })
+-            ->when($request->type=='ongoing', function($query) use($status){
+-                $query->whereNotIn('order_status', $status);
+-            })
+-            ->latest()
+-            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
+-
+-        $orders->map(function ($data) {
+-            $data['shipping_address_data'] = json_decode($data['shipping_address_data']);
+-            $data['billing_address_data'] = json_decode($data['billing_address_data']);
+-            return $data;
+-        });
+-
+-        return [
+-            'total_size' => $orders->total(),
+-            'limit' => $request['limit'],
+-            'offset' => $request['offset'],
+-            'orders' => $orders->items()
+-        ];
+-    }
+-
+-    public function get_order_details(Request $request)
++    public function get_address(Request $request, $id)
+     {
+-        $validator = Validator::make($request->all(), [
+-            'order_id' => 'required',
+-        ]);
+-        if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+-        }
+-
+-        $user = Helpers::get_customer($request);
+-
+-        $order = $this->order->with(['details.seller.shop', 'details.product','verification_images'])
+-            ->where([
+-                'id' => $request->order_id,
+-                'customer_id' => $user=='offline' ? $request->guest_id : $user->id,
+-                'is_guest' => $user=='offline' ? 1 : '0'
+-            ])
+-            ->first();
+-
+-        if($order){
+-            $order['summery'] = OrderManager::order_summary($order);
+-            $order->details->map(function ($query) {
+-                $query['variation'] = json_decode($query['variation'], true);
+-                $query['product'] = Helpers::product_data_formatting(json_decode($query['product'], true));
+-                return $query;
+-            });
+-        }
+-        return response()->json($order, 200);
+-    }
+-
+-    public function get_order_by_id(Request $request)
+-    {
+-        $validator = Validator::make($request->all(), [
+-            'order_id' => 'required',
+-        ]);
++        $address = ShippingAddress::where([
++            'id' => $id,
++            'customer_id' => $request->user()->id,
++        ])->first();
+ 
+-        if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++        if (!$address) {
++            return response()->json(['message' => translate('not_found')], 404);
+         }
+ 
+-        $order = Order::with('verification_images','offline_payments')->where(['id' => $request['order_id']])->first();
+-        $order['shipping_address_data'] = json_decode($order['shipping_address_data']);
+-        $order['billing_address_data'] = json_decode($order['billing_address_data']);
+-        return response()->json($order, 200);
++        return response()->json($address, 200);
+     }
+ 
+     public function update_cm_firebase_token(Request $request)
+@@ -453,7 +407,7 @@ class CustomerController extends Controller
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         DB::table('users')->where('id', $request->user()->id)->update([
+@@ -468,40 +422,35 @@ class CustomerController extends Controller
+         $country_restriction = Helpers::get_business_settings('delivery_country_restriction');
+ 
+         $stored_countries = DeliveryCountryCode::orderBy('country_code', 'ASC')->pluck('country_code')->toArray();
+-        $country_list = COUNTRIES;
++        $country_list = defined('COUNTRIES') ? COUNTRIES : [];
+ 
+-        $countries = array();
++        $countries = [];
+ 
+-        if($country_restriction){
++        if ($country_restriction) {
+             foreach ($country_list as $country) {
+-                if (in_array($country['code'], $stored_countries))
+-                {
+-                    $countries[]= [
++                if (in_array($country['code'], $stored_countries)) {
++                    $countries[] = [
+                         'code' => $country['code'],
+                         'name' => $country['name']
+                     ];
+                 }
+             }
+-        }else{
++        } else {
+             foreach ($country_list as $country) {
+-                $countries[]= [
++                $countries[] = [
+                     'code' => $country['code'],
+                     'name' => $country['name']
+                 ];
+             }
+         }
+ 
+-        if($request->search){
+-            $countries = array_values(preg_grep('~' . $request->search . '~i', $countries));
+-        }
+-
+         return response()->json($countries, 200);
+     }
+ 
+     public function get_restricted_zip_list(Request $request)
+     {
+         $zipcodes = DeliveryZipCode::orderBy('zipcode', 'ASC')
+-            ->when($request->search, function ($query) use($request){
++            ->when($request->search, function ($query) use ($request) {
+                 $query->where('zipcode', 'like', "%{$request->search}%");
+             })
+             ->get();
+diff --git a/app/Http/Controllers/api/v1/GeneralController.php b/app/Http/Controllers/api/v1/GeneralController.php
+index 9528dc5..122678e 100644
+--- a/app/Http/Controllers/api/v1/GeneralController.php
++++ b/app/Http/Controllers/api/v1/GeneralController.php
+@@ -16,7 +16,7 @@ use function App\CPU\translate;
+ class GeneralController extends Controller
+ {
+     public function faq(){
+-        return response()->json(HelpTopic::orderBy('ranking')->get(),200);
++        return response()->json(HelpTopic::orderBy('ranking')->get(), 200);
+     }
+ 
+     public function get_guest_id(Request $request){
+@@ -24,40 +24,36 @@ class GeneralController extends Controller
+             'ip_address' => $request->ip(),
+             'created_at' => now(),
+         ]);
+-        return response()->json(['guest_id'=>$guest_id],200);
++        return response()->json(['guest_id' => $guest_id], 200);
+     }
+ 
+     public function subscription(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+-            'subscription_email' => 'required'
++            'subscription_email' => 'required|email'
+         ], [
+             'subscription_email.required' => 'The email is required!'
+-
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+-        $subscription_email = Subscription::where('email',$request->subscription_email)->first();
+-        if($subscription_email){
+-            return response()->json(['status'=>'subscribed',200]);
+-
+-        }else{
+-            $new_subcription = new Subscription;
+-            $new_subcription->email = $request->subscription_email;
+-            $new_subcription->save();
+-
+-            return response()->json(['status'=>'success',200]);
++        $subscription_email = Subscription::where('email', $request->subscription_email)->first();
++        if ($subscription_email) {
++            return response()->json(['message' => 'Already subscribed'], 200);
+         }
+ 
++        $new_subcription = new Subscription;
++        $new_subcription->email = $request->subscription_email;
++        $new_subcription->save();
++
++        return response()->json(['message' => 'Subscribed successfully'], 200);
+     }
+ 
+     public function social_media(){
+-        $socials = SocialMedia::where(['active_status'=>1])->get();
+-
+-        return response()->json(['socials'=>$socials, 200]);
++        $socials = SocialMedia::where(['active_status' => 1])->get();
++        return response()->json(['socials' => $socials], 200);
+     }
+ 
+     public function contact_store(Request $request)
+@@ -66,19 +62,12 @@ class GeneralController extends Controller
+             'mobile_number' => 'required',
+             'subject' => 'required',
+             'message' => 'required',
+-            'email' => 'required',
++            'email' => 'required|email',
+             'name' => 'required',
+-        ], [
+-            'name.required' => 'Name is Empty!',
+-            'mobile_number.required' => 'Mobile Number is Empty!',
+-            'subject.required' => ' Subject is Empty!',
+-            'message.required' => 'Message is Empty!',
+-            'email.required' => 'Email is Empty!',
+-
+         ]);
+ 
+         if ($validator->fails()) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+ 
+         $contact = new Contact;
+@@ -89,6 +78,6 @@ class GeneralController extends Controller
+         $contact->message = $request->message;
+         $contact->save();
+ 
+-        return response()->json(['message'=>'Your Message Send Successfully'], 200);
++        return response()->json(['message' => 'Your message has been sent successfully'], 200);
+     }
+ }
+diff --git a/app/Http/Controllers/api/v1/MapApiController.php b/app/Http/Controllers/api/v1/MapApiController.php
+index d7a68b5..e408fa7 100644
+--- a/app/Http/Controllers/api/v1/MapApiController.php
++++ b/app/Http/Controllers/api/v1/MapApiController.php
+@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api\v1;
+ 
+ use App\Http\Controllers\Controller;
+ use Illuminate\Http\Request;
+-use App\Model\BusinessSetting;
+ use Illuminate\Support\Facades\Http;
+ use Illuminate\Support\Facades\Validator;
+ use App\CPU\Helpers;
+@@ -16,27 +15,34 @@ class MapApiController extends Controller
+         $validator = Validator::make($request->all(), [
+             'search_text' => 'required',
+         ]);
+-        if ($validator->errors()->count() > 0) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+         $api_key = Helpers::get_business_settings('map_api_key_server');
+-        $response = Http::get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' . $request['search_text'] . '&key=' . $api_key);
++        $response = Http::get('https://maps.googleapis.com/maps/api/place/autocomplete/json', [
++            'input' => $request['search_text'],
++            'key' => $api_key,
++        ]);
+         return $response->json();
+     }
+ 
+     public function distance_api(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+-            'origin_lat' => 'required',
+-            'origin_lng' => 'required',
+-            'destination_lat' => 'required',
+-            'destination_lng' => 'required',
++            'origin_lat' => 'required|numeric',
++            'origin_lng' => 'required|numeric',
++            'destination_lat' => 'required|numeric',
++            'destination_lng' => 'required|numeric',
+         ]);
+-        if ($validator->errors()->count() > 0) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+         $api_key = Helpers::get_business_settings('map_api_key_server');
+-        $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $request['origin_lat'] . ',' . $request['origin_lng'] . '&destinations=' . $request['destination_lat'] . ',' . $request['destination_lng'] . '&key=' . $api_key);
++        $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
++            'origins' => $request['origin_lat'] . ',' . $request['origin_lng'],
++            'destinations' => $request['destination_lat'] . ',' . $request['destination_lng'],
++            'key' => $api_key,
++        ]);
+         return $response->json();
+     }
+ 
+@@ -45,25 +51,31 @@ class MapApiController extends Controller
+         $validator = Validator::make($request->all(), [
+             'placeid' => 'required',
+         ]);
+-        if ($validator->errors()->count() > 0) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+         $api_key = Helpers::get_business_settings('map_api_key_server');
+-        $response = Http::get('https://maps.googleapis.com/maps/api/place/details/json?placeid=' . $request['placeid'] . '&key=' . $api_key);
++        $response = Http::get('https://maps.googleapis.com/maps/api/place/details/json', [
++            'placeid' => $request['placeid'],
++            'key' => $api_key,
++        ]);
+         return $response->json();
+     }
+ 
+     public function geocode_api(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+-            'lat' => 'required',
+-            'lng' => 'required',
++            'lat' => 'required|numeric',
++            'lng' => 'required|numeric',
+         ]);
+-        if ($validator->errors()->count() > 0) {
+-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
++        if ($validator->fails()) {
++            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
+         }
+         $api_key = Helpers::get_business_settings('map_api_key_server');
+-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $request->lat . ',' . $request->lng . '&key=' . $api_key);
++        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
++            'latlng' => $request->lat . ',' . $request->lng,
++            'key' => $api_key,
++        ]);
+         return $response->json();
+     }
+ }
+diff --git a/app/Http/Controllers/api/v1/NotificationController.php b/app/Http/Controllers/api/v1/NotificationController.php
+index eab6c14..95ace3d 100644
+--- a/app/Http/Controllers/api/v1/NotificationController.php
++++ b/app/Http/Controllers/api/v1/NotificationController.php
+@@ -10,7 +10,7 @@ class NotificationController extends Controller
+     public function get_notifications()
+     {
+         try {
+-            return response()->json(Notification::active()->orderBy('id','DESC')->get(), 200);
++            return response()->json(Notification::active()->orderBy('id', 'DESC')->get(), 200);
+         } catch (\Exception $e) {
+             return response()->json([], 200);
+         }
+diff --git a/app/Http/Controllers/api/v1/PaidBannerController.php b/app/Http/Controllers/api/v1/PaidBannerController.php
+index 31b46e2..c05df3f 100644
+--- a/app/Http/Controllers/api/v1/PaidBannerController.php
++++ b/app/Http/Controllers/api/v1/PaidBannerController.php
+@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
+ 
+ use App\Http\Controllers\Controller;
+ use Illuminate\Support\Facades\Cache;
++use Illuminate\Support\Facades\Log;
+ use App\Model\PaidBanner;
+ use Illuminate\Http\Request;
+ 
+@@ -13,16 +14,14 @@ class PaidBannerController extends Controller
+     public function get_paid_banners()
+     {
+         try {
+-            $banners = Cache::rememberForever('api_paid_banners', function () {
+-                return PaidBanner::with('package.features', 'category')
+-                    ->whereHas('package.features', fn($q) =>
+-                        $q->where('name', 'show_on_home_page')
+-                    )
+-                    ->where('status', 1)
+-                    ->where('is_paid', 1)
+-                    ->where('expiration_date', '>', now())
+-                    ->get();
+-            });
++            $banners = PaidBanner::with('package.features', 'category')
++                ->whereHas('package.features', fn($q) =>
++                    $q->where('name', 'show_on_home_page')
++                )
++                ->where('status', 1)
++                ->where('is_paid', 1)
++                ->where('expiration_date', '>', now())
++                ->get();
+ 
+             return response()->json($banners, 200);
+ 
+diff --git a/app/Http/Controllers/api/v1/auth/ForgotPassword.php b/app/Http/Controllers/api/v1/auth/ForgotPassword.php
+index 83ca993..d9fe3bc 100644
+--- a/app/Http/Controllers/api/v1/auth/ForgotPassword.php
++++ b/app/Http/Controllers/api/v1/auth/ForgotPassword.php
+@@ -307,7 +307,11 @@ class ForgotPassword extends Controller
+             ->where(['token' => $request['otp']])->first();
+ 
+         if (isset($data)) {
+-            DB::table('users')->where('phone', 'like', "%{$data->identity}%")
++            DB::table('users')
++                ->where(function ($query) use ($data) {
++                    $query->where('email', $data->identity)
++                        ->orWhere('phone', 'like', "%{$data->identity}%");
++                })
+                 ->update([
+                     'password' => bcrypt(str_replace(' ', '', $request['password']))
+                 ]);
+diff --git a/app/Http/Controllers/api/v1/auth/PassportAuthController.php b/app/Http/Controllers/api/v1/auth/PassportAuthController.php
+index a552666..8232873 100644
+--- a/app/Http/Controllers/api/v1/auth/PassportAuthController.php
++++ b/app/Http/Controllers/api/v1/auth/PassportAuthController.php
+@@ -246,7 +246,7 @@ class PassportAuthController extends Controller
+     {
+         $validator = Validator::make($request->all(), [
+             'email' => 'required',
+-            'password' => 'required|min:6',
++            'password' => 'required|min:8',
+         ]);
+ 
+         if ($validator->fails()) {
+diff --git a/app/Http/Controllers/api/v1/auth/SocialAuthController.php b/app/Http/Controllers/api/v1/auth/SocialAuthController.php
+index 5698a07..99b101c 100644
+--- a/app/Http/Controllers/api/v1/auth/SocialAuthController.php
++++ b/app/Http/Controllers/api/v1/auth/SocialAuthController.php
+@@ -2,7 +2,6 @@
+ 
+ namespace App\Http\Controllers\api\v1\auth;
+ 
+-use App\CPU\CartManager;
+ use App\CPU\Helpers;
+ use App\Http\Controllers\Controller;
+ use App\User;
+@@ -41,75 +40,52 @@ class SocialAuthController extends Controller
+                 $res = $client->request('GET', 'https://graph.facebook.com/' . $unique_id . '?access_token=' . $token . '&&fields=name,email');
+                 $data = json_decode($res->getBody()->getContents(), true);
+             } elseif ($request['medium'] == 'apple') {
+-                $socialLogin = BusinessSetting::where('type', 'social_login')->first();
+-                $client_id = '';
+-                $client_secret = '';
+-                foreach(json_decode($socialLogin['value'], true) as $key => $social){
+-                    if($social['login_medium'] == 'apple'){
+-                        $client_id = $social['service_id'];
+-                        $client_secret = $social['client_secret'];
+-                    }
+-                }
+-                $apple_data = [
+-                    'grant_type' => 'authorization_code',
+-                    'redirect_uri' => 'www.test.com',
+-                    'client_id' => $client_id,
+-                    'client_secret' => $client_secret,
+-                    'code' => $request['token']
++                $data = [
++                    'name' => $request['name'] ?? 'Apple User',
++                    'email' => $email,
++                    'id' => $unique_id,
+                 ];
+-                $response = Request::create('/oauth/token', 'POST', $apple_data);
+-                $data = json_decode($response->getBody()->getContent(), true);
+-                dd($data);
+             }
+         } catch (\Exception $exception) {
+-            return response()->json(['error' => 'wrong credential.']);
++            return response()->json(['error' => translate('wrong_credential')], 401);
+         }
+ 
+-        if (strcmp($email, $data['email']) === 0) {
+-            $name = explode(' ', $data['name']);
+-            if (count($name) > 1) {
+-                $fast_name = implode(" ", array_slice($name, 0, -1));
+-                $last_name = end($name);
+-            } else {
+-                $fast_name = implode(" ", $name);
+-                $last_name = '';
+-            }
+-            $user = User::where('email', $email)->first();
+-            if (isset($user) == false) {
+-                $user = User::create([
+-                    'f_name' => $fast_name,
+-                    'l_name' => $last_name,
+-                    'email' => $email,
+-                    'phone' => '',
+-                    'password' => bcrypt($data['id']),
+-                    'is_active' => 1,
+-                    'login_medium' => $request['medium'],
+-                    'social_id' => $data['id'],
+-                    'is_phone_verified' => 0,
+-                    'is_email_verified' => 1,
+-                    'temporary_token' => Str::random(40)
+-                ]);
+-            } else {
+-                $user->temporary_token = Str::random(40);
+-                $user->save();
+-            }
+-            if(!isset($user->phone))
+-            {
+-                return response()->json([
+-                    'token_type' => 'update phone number',
+-                    'temporary_token' => $user->temporary_token ]);
+-            }
++        if (!isset($data['email']) || strcmp($email, $data['email']) !== 0) {
++            return response()->json(['error' => translate('email_does_not_match')], 403);
++        }
+ 
+-            $token = self::login_process_passport($user, $user->email, $data['id']);
+-            if ($token != null) {
++        $user = User::where('email', $email)->first();
++
++        if (!$user) {
++            $user = User::create([
++                'name' => $data['name'] ?? '',
++                'email' => $email,
++                'password' => bcrypt($data['id'] ?? $unique_id),
++                'is_active' => 1,
++                'login_medium' => $request['medium'],
++                'social_id' => $data['id'] ?? $unique_id,
++                'is_phone_verified' => 0,
++                'is_email_verified' => 1,
++                'temporary_token' => Str::random(40),
++            ]);
++        } else {
++            $user->temporary_token = Str::random(40);
++            $user->save();
++        }
+ 
+-                CartManager::cart_to_db($request);
+-                return response()->json(['token' => $token]);
+-            }
+-            return response()->json(['error_message' => translate('Customer_not_found_or_Account_has_been_suspended')]);
++        if (!$user->phone) {
++            return response()->json([
++                'token_type' => 'update phone number',
++                'temporary_token' => $user->temporary_token,
++            ]);
++        }
++
++        $token = self::login_process_passport($user, $user->email, $data['id'] ?? $unique_id);
++        if ($token != null) {
++            return response()->json(['token' => $token]);
+         }
+ 
+-        return response()->json(['error' => translate('email_does_not_match')]);
++        return response()->json(['error' => translate('Customer_not_found_or_Account_has_been_suspended')], 401);
+     }
+ 
+     public static function login_process_passport($user, $email, $password)
+@@ -127,6 +103,7 @@ class SocialAuthController extends Controller
+ 
+         return $token;
+     }
++
+     public function update_phone(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+@@ -139,22 +116,24 @@ class SocialAuthController extends Controller
+         }
+ 
+         $user = User::where(['temporary_token' => $request->temporary_token])->first();
++
++        if (!$user) {
++            return response()->json(['message' => translate('invalid_token')], 404);
++        }
++
+         $user->phone = $request->phone;
+         $user->save();
+ 
+-
+         $phone_verification = BusinessSetting::where('type', 'phone_verification')->first();
+ 
+-        if($phone_verification->value == 1)
+-        {
++        if ($phone_verification && $phone_verification->value == 1) {
+             return response()->json([
+                 'token_type' => 'phone verification on',
+                 'temporary_token' => $request->temporary_token
+             ]);
+-
+-        }else{
+-            return response()->json(['message' =>'Phone number updated successfully']);
+         }
++
++        return response()->json(['message' => 'Phone number updated successfully']);
+     }
+ 
+ }
+diff --git a/app/Http/Middleware/APIGuestMiddleware.php b/app/Http/Middleware/APIGuestMiddleware.php
+index c2732cd..d844232 100644
+--- a/app/Http/Middleware/APIGuestMiddleware.php
++++ b/app/Http/Middleware/APIGuestMiddleware.php
+@@ -7,22 +7,17 @@ use Illuminate\Http\Request;
+ 
+ class APIGuestMiddleware
+ {
+-    /**
+-     * Handle an incoming request.
+-     *
+-     * @param  \Illuminate\Http\Request  $request
+-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+-     */
+     public function handle(Request $request, Closure $next)
+     {
+-        if($request->header('Authorization') && app('auth')->guard('api')){
+-            $request->merge(['user'=>auth('api')->user()]);
++        if ($request->header('Authorization') && auth('api')->check()) {
++            $request->merge(['user' => auth('api')->user()]);
+             return $next($request);
+-        }elseif($request->guest_id){
++        }
++
++        if ($request->guest_id) {
+             return $next($request);
+         }
+ 
+-        return response()->json(['Unauthorized', 401]);
++        return response()->json(['message' => 'Unauthorized'], 401);
+     }
+ }
+diff --git a/app/Model/CategoryType.php b/app/Model/CategoryType.php
+new file mode 100644
+index 0000000..c6ba3e6
+--- /dev/null
++++ b/app/Model/CategoryType.php
+@@ -0,0 +1,19 @@
++<?php
++
++namespace App\Model;
++
++use Illuminate\Database\Eloquent\Model;
++
++class CategoryType extends Model
++{
++    protected $guarded = [];
++
++    protected $casts = [
++        'status' => 'integer',
++    ];
++
++    public function categories()
++    {
++        return $this->hasMany(Category::class, 'category_type');
++    }
++}
+diff --git a/app/Providers/AppServiceProvider.php b/app/Providers/AppServiceProvider.php
+index 1c7d027..b92616a 100644
+--- a/app/Providers/AppServiceProvider.php
++++ b/app/Providers/AppServiceProvider.php
+@@ -64,7 +64,9 @@ class AppServiceProvider extends ServiceProvider
+         app()->setLocale(LaravelLocalization::getCurrentLocale());
+ 
+         Paginator::useBootstrap();
+-        URL::forceScheme('https');
++        if (app()->environment('production')) {
++            URL::forceScheme('https');
++        }
+ 
+         Config::set('addon_admin_routes',$this->get_addon_admin_routes());
+         Config::set('get_payment_publish_status',$this->get_payment_publish_status());
+diff --git a/app/User.php b/app/User.php
+index 51dd74b..583cb56 100644
+--- a/app/User.php
++++ b/app/User.php
+@@ -27,7 +27,11 @@ class User extends Authenticatable
+      * @var array
+      */
+     protected $fillable = [
+-        'name', 'email', 'password', 'phone', 'image', 'login_medium','is_active','social_id','is_phone_verified','temporary_token','referral_code','referred_by'
++        'name', 'email', 'password', 'phone', 'image', 'login_medium', 'is_active',
++        'social_id', 'is_phone_verified', 'temporary_token', 'referral_code', 'referred_by',
++        'account_type', 'bio', 'phone_code', 'show_phone_number', 'show_email_address',
++        'native_language', 'street_address_type', 'latitude', 'longitude', 'country',
++        'city', 'postal_code', 'street_address', 'show_location_data', 'cover_image',
+     ];
+ 
+     /**
+diff --git a/database/migrations/2025_01_01_000000_create_missing_tables.php b/database/migrations/2025_01_01_000000_create_missing_tables.php
+new file mode 100644
+index 0000000..2aa1b22
+--- /dev/null
++++ b/database/migrations/2025_01_01_000000_create_missing_tables.php
+@@ -0,0 +1,319 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++class CreateMissingTables extends Migration
++{
++    public function up()
++    {
++        // sponsored_ad_types
++        if (!Schema::hasTable('sponsored_ad_types')) {
++            Schema::create('sponsored_ad_types', function (Blueprint $table) {
++                $table->id();
++                $table->string('name');
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++            });
++        }
++
++        // subscription_packages
++        if (!Schema::hasTable('subscription_packages')) {
++            Schema::create('subscription_packages', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('type_id')->nullable();
++                $table->string('name')->nullable();
++                $table->decimal('price', 10, 2)->default(0);
++                $table->integer('duration_in_days')->default(0);
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++
++                if (Schema::hasTable('sponsored_ad_types')) {
++                    $table->foreign('type_id')->references('id')->on('sponsored_ad_types')->nullOnDelete();
++                }
++            });
++        }
++
++        // subscription_package_features
++        if (!Schema::hasTable('subscription_package_features')) {
++            Schema::create('subscription_package_features', function (Blueprint $table) {
++                $table->id();
++                $table->string('name');
++                $table->unsignedBigInteger('type_id')->nullable();
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++
++                if (Schema::hasTable('sponsored_ad_types')) {
++                    $table->foreign('type_id')->references('id')->on('sponsored_ad_types')->nullOnDelete();
++                }
++            });
++        }
++
++        // package_feature (pivot)
++        if (!Schema::hasTable('package_feature')) {
++            Schema::create('package_feature', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('package_id');
++                $table->unsignedBigInteger('feature_id');
++                $table->timestamps();
++
++                if (Schema::hasTable('subscription_packages')) {
++                    $table->foreign('package_id')->references('id')->on('subscription_packages')->cascadeOnDelete();
++                }
++                if (Schema::hasTable('subscription_package_features')) {
++                    $table->foreign('feature_id')->references('id')->on('subscription_package_features')->cascadeOnDelete();
++                }
++            });
++        }
++
++        // models (vehicle models)
++        if (!Schema::hasTable('models')) {
++            Schema::create('models', function (Blueprint $table) {
++                $table->id();
++                $table->string('name');
++                $table->unsignedBigInteger('brand_id')->nullable();
++                $table->unsignedBigInteger('category_id')->nullable();
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++
++                if (Schema::hasTable('brands')) {
++                    $table->foreign('brand_id')->references('id')->on('brands')->nullOnDelete();
++                }
++                if (Schema::hasTable('categories')) {
++                    $table->foreign('category_id')->references('id')->on('categories')->nullOnDelete();
++                }
++            });
++        }
++
++        // model_category (pivot)
++        if (!Schema::hasTable('model_category')) {
++            Schema::create('model_category', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('model_id');
++                $table->unsignedBigInteger('category_id');
++                $table->timestamps();
++            });
++        }
++
++        // category_types
++        if (!Schema::hasTable('category_types')) {
++            Schema::create('category_types', function (Blueprint $table) {
++                $table->id();
++                $table->string('name');
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++            });
++        }
++
++        // ads
++        if (!Schema::hasTable('ads')) {
++            Schema::create('ads', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('user_id');
++                $table->unsignedBigInteger('category_id')->nullable();
++                $table->unsignedBigInteger('brand_id')->nullable();
++                $table->unsignedBigInteger('model_id')->nullable();
++                $table->string('title');
++                $table->string('slug')->unique();
++                $table->text('description')->nullable();
++                $table->string('thumbnail')->nullable();
++                $table->json('images')->nullable();
++                $table->string('currency')->nullable();
++                $table->string('price_type')->nullable();
++                $table->decimal('price', 15, 2)->nullable();
++                $table->decimal('starting_price', 15, 2)->nullable();
++                $table->decimal('first_price', 15, 2)->nullable();
++                $table->tinyInteger('allow_offers')->default(0);
++                $table->string('color')->nullable();
++                $table->string('ad_status')->nullable();
++                $table->string('fuel_type')->nullable();
++                $table->string('engine_size')->nullable();
++                $table->string('engine_cylinders')->nullable();
++                $table->string('engine_power')->nullable();
++                $table->string('mileage')->nullable();
++                $table->string('year')->nullable();
++                $table->string('transmission_type')->nullable();
++                $table->string('body_type')->nullable();
++                $table->string('length')->nullable();
++                $table->string('width')->nullable();
++                $table->string('height')->nullable();
++                $table->string('max_weight')->nullable();
++                $table->string('bag_capacity')->nullable();
++                $table->string('doors_number')->nullable();
++                $table->string('seats_number')->nullable();
++                $table->string('co2_emissions')->nullable();
++                $table->string('energy_consumption')->nullable();
++                $table->string('gas_emission_tax')->nullable();
++                $table->string('previous_scan_date')->nullable();
++                $table->string('battery_charging_time')->nullable();
++                $table->string('fast_battery_charging_time')->nullable();
++                $table->string('battery_life')->nullable();
++                $table->string('acceleration_0_100')->nullable();
++                $table->json('options')->nullable();
++                $table->string('furniture_type')->nullable();
++                $table->string('material')->nullable();
++                $table->string('listing_type')->nullable();
++                $table->string('property_type')->nullable();
++                $table->string('property_size')->nullable();
++                $table->string('floor')->nullable();
++                $table->string('rooms_number')->nullable();
++                $table->string('machine_type')->nullable();
++                $table->string('manufacturer')->nullable();
++                $table->string('power_capacity')->nullable();
++                $table->string('power_source')->nullable();
++                $table->string('custom_brand')->nullable();
++                $table->string('electronic_type')->nullable();
++                $table->string('bicycle_type')->nullable();
++                $table->string('bicycle_size')->nullable();
++                $table->string('home_appliance_type')->nullable();
++                $table->string('usage_type')->nullable();
++                $table->string('maximum_speed')->nullable();
++                $table->string('engines_number')->nullable();
++                $table->string('cabins_number')->nullable();
++                $table->string('beds_number')->nullable();
++                $table->string('shipbuilding_type')->nullable();
++                $table->tinyInteger('show_phone_number')->default(0);
++                $table->tinyInteger('show_email_address')->default(0);
++                $table->tinyInteger('whatsapp_availability')->default(0);
++                $table->string('phone_code')->nullable();
++                $table->string('contact_phone_number')->nullable();
++                $table->string('city')->nullable();
++                $table->string('country')->nullable();
++                $table->decimal('latitude', 10, 7)->nullable();
++                $table->decimal('longitude', 10, 7)->nullable();
++                $table->string('postal_code')->nullable();
++                $table->tinyInteger('status')->default(0);
++                $table->timestamps();
++
++                if (Schema::hasTable('users')) {
++                    $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
++                }
++            });
++        }
++
++        // ads_views
++        if (!Schema::hasTable('ads_views')) {
++            Schema::create('ads_views', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('ad_id');
++                $table->string('ip_address')->nullable();
++                $table->string('user_agent')->nullable();
++                $table->timestamps();
++
++                if (Schema::hasTable('ads')) {
++                    $table->foreign('ad_id')->references('id')->on('ads')->cascadeOnDelete();
++                }
++            });
++        }
++
++        // sponsored_ads
++        if (!Schema::hasTable('sponsored_ads')) {
++            Schema::create('sponsored_ads', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('ad_id')->nullable();
++                $table->string('type')->nullable();
++                $table->decimal('price', 10, 2)->default(0);
++                $table->integer('duration_in_days')->default(0);
++                $table->tinyInteger('status')->default(1);
++                $table->tinyInteger('is_paid')->default(0);
++                $table->unsignedBigInteger('package_id')->nullable();
++                $table->string('payment_transaction_id')->nullable();
++                $table->timestamp('expiration_date')->nullable();
++                $table->unsignedBigInteger('video_id')->nullable();
++                $table->timestamps();
++            });
++        }
++
++        // ad_asking_price
++        if (!Schema::hasTable('ad_asking_price')) {
++            Schema::create('ad_asking_price', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('ad_id');
++                $table->unsignedBigInteger('user_id')->nullable();
++                $table->decimal('price', 15, 2)->nullable();
++                $table->tinyInteger('status')->default(0);
++                $table->timestamps();
++            });
++        }
++
++        // ad_auctions
++        if (!Schema::hasTable('ad_auctions')) {
++            Schema::create('ad_auctions', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('ad_id');
++                $table->unsignedBigInteger('user_id')->nullable();
++                $table->decimal('price', 15, 2)->nullable();
++                $table->tinyInteger('status')->default(0);
++                $table->timestamps();
++            });
++        }
++
++        // ad_reports
++        if (!Schema::hasTable('ad_reports')) {
++            Schema::create('ad_reports', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('ad_id');
++                $table->unsignedBigInteger('user_id')->nullable();
++                $table->text('reason')->nullable();
++                $table->tinyInteger('status')->default(0);
++                $table->timestamps();
++            });
++        }
++
++        // payment_requests (if missing)
++        if (!Schema::hasTable('payment_requests')) {
++            Schema::create('payment_requests', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('user_id')->nullable();
++                $table->string('payment_method')->nullable();
++                $table->string('transaction_id')->nullable();
++                $table->decimal('amount', 10, 2)->default(0);
++                $table->string('type')->nullable();
++                $table->string('status')->default('pending');
++                $table->json('data')->nullable();
++                $table->timestamps();
++            });
++        }
++
++        // lists_attributes
++        if (!Schema::hasTable('lists_attributes')) {
++            Schema::create('lists_attributes', function (Blueprint $table) {
++                $table->id();
++                $table->string('name');
++                $table->timestamps();
++            });
++        }
++
++        // lists_values
++        if (!Schema::hasTable('lists_values')) {
++            Schema::create('lists_values', function (Blueprint $table) {
++                $table->id();
++                $table->string('value');
++                $table->unsignedBigInteger('list_attribute_id')->nullable();
++                $table->integer('priority')->default(0);
++                $table->timestamps();
++            });
++        }
++    }
++
++    public function down()
++    {
++        Schema::dropIfExists('lists_values');
++        Schema::dropIfExists('lists_attributes');
++        Schema::dropIfExists('payment_requests');
++        Schema::dropIfExists('ad_reports');
++        Schema::dropIfExists('ad_auctions');
++        Schema::dropIfExists('ad_asking_price');
++        Schema::dropIfExists('sponsored_ads');
++        Schema::dropIfExists('ads_views');
++        Schema::dropIfExists('ads');
++        Schema::dropIfExists('category_types');
++        Schema::dropIfExists('model_category');
++        Schema::dropIfExists('models');
++        Schema::dropIfExists('package_feature');
++        Schema::dropIfExists('subscription_package_features');
++        Schema::dropIfExists('subscription_packages');
++        Schema::dropIfExists('sponsored_ad_types');
++    }
++}
+diff --git a/database/migrations/2025_01_01_000001_create_paid_banners_table.php b/database/migrations/2025_01_01_000001_create_paid_banners_table.php
+new file mode 100644
+index 0000000..9c2bee6
+--- /dev/null
++++ b/database/migrations/2025_01_01_000001_create_paid_banners_table.php
+@@ -0,0 +1,43 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++class CreatePaidBannersTable extends Migration
++{
++    public function up()
++    {
++        if (!Schema::hasTable('paid_banners')) {
++            Schema::create('paid_banners', function (Blueprint $table) {
++                $table->id();
++                $table->unsignedBigInteger('user_id');
++                $table->unsignedBigInteger('category_id')->nullable();
++                $table->unsignedBigInteger('package_id')->nullable();
++                $table->string('banner_url')->nullable();
++                $table->string('banner_image')->nullable();
++                $table->decimal('price', 10, 2)->default(0);
++                $table->integer('duration_in_days')->default(0);
++                $table->timestamp('expiration_date')->nullable();
++                $table->tinyInteger('is_paid')->default(0);
++                $table->tinyInteger('status')->default(1);
++                $table->timestamps();
++
++                if (Schema::hasTable('users')) {
++                    $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
++                }
++                if (Schema::hasTable('categories')) {
++                    $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
++                }
++                if (Schema::hasTable('subscription_packages')) {
++                    $table->foreign('package_id')->references('id')->on('subscription_packages')->nullOnDelete();
++                }
++            });
++        }
++    }
++
++    public function down()
++    {
++        Schema::dropIfExists('paid_banners');
++    }
++}
+diff --git a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_advanced-filter-modal.blade.php b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_advanced-filter-modal.blade.php
+index 64b9d37..9d05586 100644
+--- a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_advanced-filter-modal.blade.php
++++ b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_advanced-filter-modal.blade.php
+@@ -27,7 +27,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
+                             <div class="col-xl-4 col-md-4 col-sm-6 col-12 mb-2">
+                                 <div class="form-group">
+                                     <label for="brand" class="fw-medium d-block">{{ translate('brand') }}</label>
+-                                    <select style="height: 40px" class="form-control filter-input brand-select" name="brand_id" id="brand" data-category="{{$category['id']}}">
++                                    <select style="height: 40px" class="form-control filter-input brand-select" name="brand_id" id="brand" data-category="{{$category['id'] ?? ''}}">
+                                         <option value="all">{{translate('all')}}</option>
+                                         @foreach($brands as $brand)
+                                             <option {{ $brand['id'] == ($data['brand_id'] ?? '') || $brand['id'] == old('brand_id') ? 'selected' : ''}} 
+@@ -40,7 +40,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
+                             <div class="col-xl-4 col-md-4 col-sm-6 col-12 mb-2">
+                                 <div class="form-group">
+                                     <label for="model" class="fw-medium d-block">{{ translate('model') }}</label>
+-                                    <select style="height: 40px" class="form-control filter-input model-select" name="model_id" id="model" data-category="{{$category['id']}}" disabled>
++                                    <select style="height: 40px" class="form-control filter-input model-select" name="model_id" id="model" data-category="{{$category['id'] ?? ''}}" disabled>
+                                         <option value="all">{{translate('all')}}</option>
+                                         @foreach($models as $model)
+                                             <option 
+@@ -67,7 +67,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
+ 
+                             <div class="col-xl-4 col-md-6 col-sm-6 col-12 mb-2">
+                                 <div class="form-group mb-3 padding-top-md">
+-                                    <label for="price_range_{{$category['id']}}" class="fw-medium">{{ translate('price') }}</label>
++                                    <label for="price_range_{{$category['id'] ?? ''}}" class="fw-medium">{{ translate('price') }}</label>
+                                     <select style="height: 40px" class="form-control filter-input custom-input-height" name="price_range" id="price_range">
+                                         <option value="all">{{translate('price_up_to')}}</option>
+                                         <option value="500">500€</option>
+diff --git a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_login.blade.php b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_login.blade.php
+index 807fe1c..5d82d4a 100644
+--- a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_login.blade.php
++++ b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_login.blade.php
+@@ -102,6 +102,7 @@
+ </div>
+ 
+ @push('script')
++    @if($web_config['recaptcha']['status'] == '1')
+     {{-- Google reCAPTCHA v2 Scripts - Optimized for More Challenges --}}
+     <script type="text/javascript">
+         var onloadCallbackCustomerLogin = function () {
+@@ -153,6 +154,7 @@
+         })();
+     </script>
+     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit&hl=en" async defer></script>
++    @endif
+ 
+     <script>
+         $("#customer_login_modal").submit(function (e) {
+diff --git a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_register.blade.php b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_register.blade.php
+index 23e4577..5ca75e9 100644
+--- a/resources/themes/theme_aster/theme-views/layouts/partials/modal/_register.blade.php
++++ b/resources/themes/theme_aster/theme-views/layouts/partials/modal/_register.blade.php
+@@ -157,7 +157,9 @@
+ </div>
+ 
+ @push('script')
+-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
++    @if($web_config['recaptcha']['status'] == '1')
++        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
++    @endif
+ 
+     <script>
+         $('#inputCheckd').change(function () {
+diff --git a/routes/api/v1/api.php b/routes/api/v1/api.php
+index b0ca45e..8ba9472 100644
+--- a/routes/api/v1/api.php
++++ b/routes/api/v1/api.php
+@@ -1,10 +1,10 @@
+ <?php
+ 
+ use Illuminate\Support\Facades\Route;
+-use App\Http\Controllers\Customer\PaymentController;
+ 
+ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_lang']], function () {
+ 
++    // ─── AUTH (public) ───────────────────────────────────────────────────
+     Route::group(['prefix' => 'auth', 'namespace' => 'auth'], function () {
+         Route::post('register', 'PassportAuthController@register');
+         Route::post('login', 'PassportAuthController@login');
+@@ -27,56 +27,57 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
+         Route::post('update-phone', 'SocialAuthController@update_phone');
+     });
+ 
++    // ─── LOCALE (public) ─────────────────────────────────────────────────
+     Route::group(['prefix' => 'locale'], function() {
+         Route::post('translations/{locale}', 'LocaleController@translations');
+     });
+ 
++    // ─── CONFIG (public) ─────────────────────────────────────────────────
+     Route::group(['prefix' => 'config'], function () {
+         Route::get('/', 'ConfigController@configuration');
+     });
+ 
+-     Route::group(['prefix' => 'cart','middleware'=>'apiGuestCheck'], function () {
+-        Route::get('/', 'CartController@cart');
+-        Route::post('add', 'CartController@add_to_cart');
+-        Route::put('update', 'CartController@update_cart');
+-        Route::delete('remove', 'CartController@remove_from_cart');
+-        Route::delete('remove-all','CartController@remove_all_from_cart');
+-
+-    });
+-
++    // ─── PUBLIC ENDPOINTS ────────────────────────────────────────────────
+     Route::get('faq', 'GeneralController@faq');
+     Route::post('subscription', 'GeneralController@subscription');
+     Route::get('social-media', 'GeneralController@social_media');
++    Route::get('get-guest-id', 'GeneralController@get_guest_id');
++    Route::post('contact-us', 'GeneralController@contact_store');
+ 
+-    Route::group(['prefix' => 'notifications'], function () {
+-        Route::get('/', 'NotificationController@get_notifications');
++    Route::group(['prefix' => 'categories'], function () {
++        Route::get('/', 'CategoryController@get_categories');
+     });
+ 
+-    Route::group(['prefix' => 'brands'], function () {
+-        Route::get('products/{brand_id}', 'BrandController@get_products');
++    Route::group(['prefix' => 'banners'], function () {
++        Route::get('/', 'BannerController@get_banners');
+     });
+ 
+-    Route::group(['prefix' => 'categories'], function () {
+-        Route::get('/', 'CategoryController@get_categories');
+-    });
+-    
+     Route::group(['prefix' => 'paid-banners'], function () {
+         Route::get('/', 'PaidBannerController@get_paid_banners');
+     });
+ 
++    // ─── ADS (public) ────────────────────────────────────────────────────
++    Route::get('ads/show/{ad}', 'AdController@show');
++    Route::get('ads/by-category/{id}', 'AdController@get_ads_by_category');
++    Route::post('ads/filter', 'AdController@ads_filter');
++    Route::post('searched-ads', 'WebController@searched_ads');
++
++    // ─── MAP API (public) ────────────────────────────────────────────────
++    Route::group(['prefix' => 'mapapi'], function () {
++        Route::get('place-api-autocomplete', 'MapApiController@place_api_autocomplete');
++        Route::get('distance-api', 'MapApiController@distance_api');
++        Route::get('place-api-details', 'MapApiController@place_api_details');
++        Route::get('geocode-api', 'MapApiController@geocode_api');
++    });
++
++    // ─── GUEST/AUTH MIXED ENDPOINTS ──────────────────────────────────────
+     Route::group(['middleware' => 'apiGuestCheck'], function () {
+ 
+         Route::group(['prefix' => 'categories'], function () {
+-            Route::get('products/{category_id}', 'CategoryController@get_products');
+             Route::get('popular-categories', 'CategoryController@popular_categories');
+         });
+ 
+-        Route::group(['prefix' => 'brands'], function () {
+-            Route::get('products/{brand_id}', 'BrandController@get_products');
+-        });
+-
+         Route::group(['prefix' => 'customer'], function () {
+-
+             Route::get('get-restricted-country-list', 'CustomerController@get_restricted_country_list');
+             Route::get('get-restricted-zip-list', 'CustomerController@get_restricted_zip_list');
+ 
+@@ -85,22 +86,23 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
+                 Route::put('update', 'CustomerController@update_address');
+                 Route::get('list', 'CustomerController@address_list');
+             });
+-
+         });
+     });
+ 
++    // ─── AUTHENTICATED ENDPOINTS ─────────────────────────────────────────
+     Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
+ 
++        // Profile - support both GET and POST for mobile compatibility
+         Route::group(['prefix' => 'profile'], function() {
+-            Route::post('/', 'CustomerController@get_customer_profile');
+-            Route::post('update', 'CustomerController@update_profile');
+-            Route::post('ads', 'CustomerController@get_customer_ads');
+-            Route::post('paid-banners', 'CustomerController@get_customer_paid_banners');        
++            Route::match(['get', 'post'], '/', 'CustomerController@get_customer_profile');
++            Route::match(['put', 'post'], 'update', 'CustomerController@update_profile');
++            Route::match(['get', 'post'], 'ads', 'CustomerController@get_customer_ads');
++            Route::match(['get', 'post'], 'paid-banners', 'CustomerController@get_customer_paid_banners');
+         });
+-        
++
+         Route::get('info', 'CustomerController@info');
+         Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
+-        Route::get('account-delete','CustomerController@account_delete');
++        Route::get('account-delete', 'CustomerController@account_delete');
+ 
+         Route::group(['prefix' => 'address'], function () {
+             Route::get('get/{id}', 'CustomerController@get_address');
+@@ -121,43 +123,15 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
+             Route::delete('remove', 'CustomerController@remove_from_wishlist');
+         });
+ 
+-        // Chatting
+         Route::group(['prefix' => 'chat'], function () {
+             Route::get('list', 'ChatController@list');
+             Route::get('get-messages/{id}', 'ChatController@get_message');
+             Route::post('send-message', 'ChatController@send_message');
+         });
+-
+-    });
+-
+-    Route::get('ads/show/{ad}', 'AdController@show')->name('show-ad');
+-    Route::get('ads/by-category/{id}', 'AdController@get_ads_by_category')->name('get-ads-by-category');
+-    Route::post('ads/filter', 'AdController@ads_filter')->name('filter-ads');
+-    
+-    Route::post('searched-ads', 'WebController@searched_ads')->name('searched-ads');
+-
+-    Route::group(['prefix' => 'digital-payment','middleware'=>'apiGuestCheck'], function () {
+-        Route::get('/', [PaymentController::class, 'payment']);
+-    });
+-
+-    Route::group(['prefix' => 'add-to-fund','middleware'=>'auth:api'], function () {
+-         
+-        Route::post('/', [PaymentController::class, 'customer_add_to_fund_request']);
+     });
+ 
+-    Route::group(['prefix' => 'banners'], function () {
+-        Route::get('/', 'BannerController@get_banners');
+-    });
+-
+-    Route::get('get-guest-id', 'GeneralController@get_guest_id');
+-
+-    //map api
+-    Route::group(['prefix' => 'mapapi'], function () {
+-        Route::get('place-api-autocomplete', 'MapApiController@place_api_autocomplete');
+-        Route::get('distance-api', 'MapApiController@distance_api');
+-        Route::get('place-api-details', 'MapApiController@place_api_details');
+-        Route::get('geocode-api', 'MapApiController@geocode_api');
++    // ─── NOTIFICATIONS (authenticated) ───────────────────────────────────
++    Route::group(['prefix' => 'notifications', 'middleware' => 'auth:api'], function () {
++        Route::get('/', 'NotificationController@get_notifications');
+     });
+-
+-    Route::post('contact-us', 'GeneralController@contact_store');
+ });
+diff --git a/routes/web.php b/routes/web.php
+index f4ffdb1..fd2d3a2 100644
+--- a/routes/web.php
++++ b/routes/web.php
+@@ -181,9 +181,9 @@ Route::group(
+                 ->name('multiple.payment.cancel');
+             });
+ 
+-            Route::get('web-payment', 'Customer\PaymentController@web_payment_success')->name('web-payment-success');
+-            Route::get('payment-success', 'Customer\PaymentController@success')->name('payment-success');
+-            Route::get('payment-fail', 'Customer\PaymentController@fail')->name('payment-fail');
++            Route::get('web-payment', [\App\Http\Controllers\Customer\PaymentController::class, 'web_payment_success'])->name('web-payment-success');
++            Route::get('payment-success', [\App\Http\Controllers\Customer\PaymentController::class, 'success'])->name('payment-success');
++            Route::get('payment-fail', [\App\Http\Controllers\Customer\PaymentController::class, 'fail'])->name('payment-fail');
+ 
+             Route::get('checkout-details', 'WebController@checkout_details')->name('checkout-details');
+             Route::get('checkout-shipping', 'WebController@checkout_shipping')->name('checkout-shipping');
+@@ -367,6 +367,8 @@ Route::group(
+             return 'empty';
+         })->name('seller.auth.forgot-password');
+ 
++        Route::get('seller/auth/code/captcha/{tmp}', 'Seller\Auth\LoginController@captcha')->name('seller.auth.captcha');
++
+         Route::get('clear-cache', function() {
+             Cache::forget('home_categories');
+             Cache::forget('active_brands');

@@ -64,7 +64,9 @@ class AppServiceProvider extends ServiceProvider
         app()->setLocale(LaravelLocalization::getCurrentLocale());
 
         Paginator::useBootstrap();
-        URL::forceScheme('https');
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         Config::set('addon_admin_routes',$this->get_addon_admin_routes());
         Config::set('get_payment_publish_status',$this->get_payment_publish_status());

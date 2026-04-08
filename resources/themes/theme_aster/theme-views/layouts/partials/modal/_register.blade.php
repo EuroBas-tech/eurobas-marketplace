@@ -157,7 +157,9 @@
 </div>
 
 @push('script')
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
+    @if($web_config['recaptcha']['status'] == '1')
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
+    @endif
 
     <script>
         $('#inputCheckd').change(function () {

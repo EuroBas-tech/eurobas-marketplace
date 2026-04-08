@@ -27,7 +27,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
                             <div class="col-xl-4 col-md-4 col-sm-6 col-12 mb-2">
                                 <div class="form-group">
                                     <label for="brand" class="fw-medium d-block">{{ translate('brand') }}</label>
-                                    <select style="height: 40px" class="form-control filter-input brand-select" name="brand_id" id="brand" data-category="{{$category['id']}}">
+                                    <select style="height: 40px" class="form-control filter-input brand-select" name="brand_id" id="brand" data-category="{{$category['id'] ?? ''}}">
                                         <option value="all">{{translate('all')}}</option>
                                         @foreach($brands as $brand)
                                             <option {{ $brand['id'] == ($data['brand_id'] ?? '') || $brand['id'] == old('brand_id') ? 'selected' : ''}} 
@@ -40,7 +40,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
                             <div class="col-xl-4 col-md-4 col-sm-6 col-12 mb-2">
                                 <div class="form-group">
                                     <label for="model" class="fw-medium d-block">{{ translate('model') }}</label>
-                                    <select style="height: 40px" class="form-control filter-input model-select" name="model_id" id="model" data-category="{{$category['id']}}" disabled>
+                                    <select style="height: 40px" class="form-control filter-input model-select" name="model_id" id="model" data-category="{{$category['id'] ?? ''}}" disabled>
                                         <option value="all">{{translate('all')}}</option>
                                         @foreach($models as $model)
                                             <option 
@@ -67,7 +67,7 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
 
                             <div class="col-xl-4 col-md-6 col-sm-6 col-12 mb-2">
                                 <div class="form-group mb-3 padding-top-md">
-                                    <label for="price_range_{{$category['id']}}" class="fw-medium">{{ translate('price') }}</label>
+                                    <label for="price_range_{{$category['id'] ?? ''}}" class="fw-medium">{{ translate('price') }}</label>
                                     <select style="height: 40px" class="form-control filter-input custom-input-height" name="price_range" id="price_range">
                                         <option value="all">{{translate('price_up_to')}}</option>
                                         <option value="500">500€</option>
