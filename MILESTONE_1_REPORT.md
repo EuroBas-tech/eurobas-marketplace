@@ -9,7 +9,10 @@ All Phase 1 / Milestone 1 deliverables have been completed, tested against the l
 - `715161b` - update aws deploy file to deploy only on main branch
 - `e2f4d77` - fix migrations
 - `b3477c6` - milestone 1 work (all API fixes, security, cleanup)
-- Follow-up commit(s) on `milestone1` branch - Passport key normalization for AWS Secrets Manager (`AuthServiceProvider` rewrite, see Section 8.6)
+- `86604bf` - milestone 1 report + diff patch
+- `edb7a21`, `2df2154`, `5d67bfd`, `c3c2f9d`, `ba70e5a` - Passport key normalization for AWS Secrets Manager (`AuthServiceProvider` rewrite, see Section 8.6)
+- `d793b04` - production verification section in report
+- `fbb2ab5` - `/auth/login` validation error code 403 → 422 (consistency with other endpoints)
 
 ### Milestone 1 Deliverables Checklist
 
@@ -553,9 +556,10 @@ index a884b2a..831942b 100644
 The complete diff of all Milestone 1 changes is saved in:
 **`MILESTONE_1_FULL_DIFF.patch`** (in the project root)
 
-This file contains three sections:
+This file contains four sections:
 1. **Commit `715161b`** - AWS deploy workflow fix
 2. **Commit `e2f4d77`** - Migration safety fixes (4 files)
 3. **Commit `b3477c6`** - All API fixes, security hardening, and legacy endpoint cleanup
+4. **Follow-up commits** (`edb7a21` → `fbb2ab5`) - Passport key normalization for AWS Secrets Manager (`AuthServiceProvider` rewrite) and `/auth/login` validation error code 403 → 422
 
-To review: `cat MILESTONE_1_FULL_DIFF.patch`, run `git show b3477c6`, or open in any diff viewer.
+To review: `cat MILESTONE_1_FULL_DIFF.patch`, run `git log milestone1` for the full commit history, or open the patch in any diff viewer.

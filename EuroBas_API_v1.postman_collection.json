@@ -1,0 +1,220 @@
+{
+  "info": {
+    "name": "EuroBas Marketplace API v1",
+    "description": "Complete API collection for EuroBas classified ads marketplace.\n\nBase URL: https://eurobas.com/api/v1\n\nAuthentication: Bearer token (Passport OAuth2)\n- Tokens expire after 7 days\n- Use POST /auth/refresh to get a new token\n- Use POST /auth/logout to revoke the current token",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "https://eurobas.com/api/v1"},
+    {"key": "token", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"]},
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"account_type\": \"individual\",\n  \"agree\": true,\n  \"password\": \"SecurePass1\",\n  \"password_confirmation\": \"SecurePass1\"\n}"}
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{"listen": "test", "script": {"exec": ["var json = pm.response.json();", "if (json.token) { pm.collectionVariables.set('token', json.token); }"]}}],
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"]},
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass1\"\n}"}
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [{"listen": "test", "script": {"exec": ["var json = pm.response.json();", "if (json.token) { pm.collectionVariables.set('token', json.token); }"]}}],
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{base_url}}/auth/refresh", "host": ["{{base_url}}"], "path": ["auth", "refresh"]}
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"]}
+          }
+        },
+        {
+          "name": "Social Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{base_url}}/auth/social-login", "host": ["{{base_url}}"], "path": ["auth", "social-login"]},
+            "body": {"mode": "raw", "raw": "{\n  \"token\": \"oauth_token\",\n  \"unique_id\": \"provider_id\",\n  \"email\": \"user@example.com\",\n  \"medium\": \"google\"\n}"}
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/forgot-password", "host": ["{{base_url}}"], "path": ["auth", "forgot-password"]},
+            "body": {"mode": "raw", "raw": "{\n  \"identity\": \"user@example.com\"\n}"}
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/verify-otp", "host": ["{{base_url}}"], "path": ["auth", "verify-otp"]},
+            "body": {"mode": "raw", "raw": "{\n  \"identity\": \"user@example.com\",\n  \"otp\": \"1234\"\n}"}
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/reset-password", "host": ["{{base_url}}"], "path": ["auth", "reset-password"]},
+            "body": {"mode": "raw", "raw": "{\n  \"identity\": \"user@example.com\",\n  \"otp\": \"1234\",\n  \"password\": \"NewPass123\",\n  \"confirm_password\": \"NewPass123\"\n}"}
+          }
+        },
+        {
+          "name": "Check Phone",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/check-phone", "host": ["{{base_url}}"], "path": ["auth", "check-phone"]},
+            "body": {"mode": "raw", "raw": "{\n  \"temporary_token\": \"token_from_register\",\n  \"phone\": \"+31612345678\"\n}"}
+          }
+        },
+        {
+          "name": "Verify Phone",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/verify-phone", "host": ["{{base_url}}"], "path": ["auth", "verify-phone"]},
+            "body": {"mode": "raw", "raw": "{\n  \"temporary_token\": \"token_from_register\",\n  \"phone\": \"+31612345678\",\n  \"otp\": \"1234\"\n}"}
+          }
+        },
+        {
+          "name": "Check Email",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/check-email", "host": ["{{base_url}}"], "path": ["auth", "check-email"]},
+            "body": {"mode": "raw", "raw": "{\n  \"temporary_token\": \"token_from_register\",\n  \"email\": \"user@example.com\"\n}"}
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "{{base_url}}/auth/verify-email", "host": ["{{base_url}}"], "path": ["auth", "verify-email"]},
+            "body": {"mode": "raw", "raw": "{\n  \"temporary_token\": \"token_from_register\",\n  \"email\": \"user@example.com\",\n  \"token\": \"1234\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {"name": "Config", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/config", "host": ["{{base_url}}"], "path": ["config"]}}},
+        {"name": "Categories", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/categories", "host": ["{{base_url}}"], "path": ["categories"]}}},
+        {"name": "Popular Categories", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/categories/popular-categories", "host": ["{{base_url}}"], "path": ["categories", "popular-categories"]}}},
+        {"name": "FAQ", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/faq", "host": ["{{base_url}}"], "path": ["faq"]}}},
+        {"name": "Social Media", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/social-media", "host": ["{{base_url}}"], "path": ["social-media"]}}},
+        {"name": "Get Guest ID", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/get-guest-id", "host": ["{{base_url}}"], "path": ["get-guest-id"]}}},
+        {"name": "Subscribe", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{base_url}}/subscription", "host": ["{{base_url}}"], "path": ["subscription"]}, "body": {"mode": "raw", "raw": "{\n  \"subscription_email\": \"user@example.com\"\n}"}}},
+        {"name": "Contact Us", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{base_url}}/contact-us", "host": ["{{base_url}}"], "path": ["contact-us"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"John\",\n  \"email\": \"john@example.com\",\n  \"mobile_number\": \"+31612345678\",\n  \"subject\": \"Question\",\n  \"message\": \"Hello\"\n}"}}},
+        {"name": "Translations", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/locale/translations/en", "host": ["{{base_url}}"], "path": ["locale", "translations", "en"]}}},
+        {"name": "Banners", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/banners?banner_type=main_banner", "host": ["{{base_url}}"], "path": ["banners"], "query": [{"key": "banner_type", "value": "main_banner"}]}}},
+        {"name": "Paid Banners", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/paid-banners", "host": ["{{base_url}}"], "path": ["paid-banners"]}}}
+      ]
+    },
+    {
+      "name": "Ads",
+      "item": [
+        {"name": "Filter Ads", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{base_url}}/ads/filter", "host": ["{{base_url}}"], "path": ["ads", "filter"]}, "body": {"mode": "raw", "raw": "{\n  \"category_id\": \"all\",\n  \"brand_id\": \"all\",\n  \"color\": \"all\",\n  \"country\": \"All Europe\"\n}"}}},
+        {"name": "Search Ads", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{base_url}}/searched-ads", "host": ["{{base_url}}"], "path": ["searched-ads"]}, "body": {"mode": "raw", "raw": "{\n  \"title\": \"car\"\n}"}}},
+        {"name": "Show Ad", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/ads/show/1", "host": ["{{base_url}}"], "path": ["ads", "show", "1"]}}},
+        {"name": "Ads By Category", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/ads/by-category/1", "host": ["{{base_url}}"], "path": ["ads", "by-category", "1"]}}},
+        {"name": "Place Auction", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/ads/auction", "host": ["{{base_url}}"], "path": ["ads", "auction"]}, "body": {"mode": "raw", "raw": "{\n  \"id\": 1,\n  \"price\": 5000\n}"}}}
+      ]
+    },
+    {
+      "name": "Map API",
+      "item": [
+        {"name": "Place Autocomplete", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/mapapi/place-api-autocomplete?search_text=Amsterdam", "host": ["{{base_url}}"], "path": ["mapapi", "place-api-autocomplete"], "query": [{"key": "search_text", "value": "Amsterdam"}]}}},
+        {"name": "Distance API", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/mapapi/distance-api?origin_lat=52.3676&origin_lng=4.9041&destination_lat=51.9225&destination_lng=4.4792", "host": ["{{base_url}}"], "path": ["mapapi", "distance-api"], "query": [{"key": "origin_lat", "value": "52.3676"}, {"key": "origin_lng", "value": "4.9041"}, {"key": "destination_lat", "value": "51.9225"}, {"key": "destination_lng", "value": "4.4792"}]}}},
+        {"name": "Place Details", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/mapapi/place-api-details?placeid=ChIJVXealLU_xkcRja_At0z9AGY", "host": ["{{base_url}}"], "path": ["mapapi", "place-api-details"], "query": [{"key": "placeid", "value": "ChIJVXealLU_xkcRja_At0z9AGY"}]}}},
+        {"name": "Geocode", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": {"raw": "{{base_url}}/mapapi/geocode-api?lat=52.3676&lng=4.9041", "host": ["{{base_url}}"], "path": ["mapapi", "geocode-api"], "query": [{"key": "lat", "value": "52.3676"}, {"key": "lng", "value": "4.9041"}]}}}
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {"name": "Get Info", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/info", "host": ["{{base_url}}"], "path": ["customer", "info"]}}},
+        {"name": "Get Profile", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/profile", "host": ["{{base_url}}"], "path": ["customer", "profile"]}}},
+        {"name": "Update Profile", "request": {"method": "PUT", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/profile/update", "host": ["{{base_url}}"], "path": ["customer", "profile", "update"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"bio\": \"About me\",\n  \"country\": \"Netherlands\",\n  \"city\": \"Amsterdam\"\n}"}}},
+        {"name": "My Ads", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/profile/ads", "host": ["{{base_url}}"], "path": ["customer", "profile", "ads"]}}},
+        {"name": "My Paid Banners", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/profile/paid-banners", "host": ["{{base_url}}"], "path": ["customer", "profile", "paid-banners"]}}},
+        {"name": "Update Firebase Token", "request": {"method": "PUT", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/cm-firebase-token", "host": ["{{base_url}}"], "path": ["customer", "cm-firebase-token"]}, "body": {"mode": "raw", "raw": "{\n  \"cm_firebase_token\": \"token_here\"\n}"}}},
+        {"name": "Delete Account", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/account-delete", "host": ["{{base_url}}"], "path": ["customer", "account-delete"]}}}
+      ]
+    },
+    {
+      "name": "Support Tickets",
+      "item": [
+        {"name": "Create", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/support-ticket/create", "host": ["{{base_url}}"], "path": ["customer", "support-ticket", "create"]}, "body": {"mode": "raw", "raw": "{\n  \"subject\": \"Issue\",\n  \"type\": \"general\",\n  \"description\": \"Description\",\n  \"priority\": \"medium\"\n}"}}},
+        {"name": "List", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/support-ticket/get", "host": ["{{base_url}}"], "path": ["customer", "support-ticket", "get"]}}},
+        {"name": "Conversation", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/support-ticket/conv/1", "host": ["{{base_url}}"], "path": ["customer", "support-ticket", "conv", "1"]}}},
+        {"name": "Reply", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/support-ticket/reply/1", "host": ["{{base_url}}"], "path": ["customer", "support-ticket", "reply", "1"]}, "body": {"mode": "raw", "raw": "{\n  \"message\": \"Thank you\"\n}"}}},
+        {"name": "Close", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/support-ticket/close", "host": ["{{base_url}}"], "path": ["customer", "support-ticket", "close"]}, "body": {"mode": "raw", "raw": "{\n  \"ticket_id\": 1\n}"}}}
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {"name": "List", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/wish-list", "host": ["{{base_url}}"], "path": ["customer", "wish-list"]}}},
+        {"name": "Add", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/wish-list/add", "host": ["{{base_url}}"], "path": ["customer", "wish-list", "add"]}, "body": {"mode": "raw", "raw": "{\n  \"ad_id\": 1\n}"}}},
+        {"name": "Remove", "request": {"method": "DELETE", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/wish-list/remove", "host": ["{{base_url}}"], "path": ["customer", "wish-list", "remove"]}, "body": {"mode": "raw", "raw": "{\n  \"ad_id\": 1\n}"}}}
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {"name": "List", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/chat/list", "host": ["{{base_url}}"], "path": ["customer", "chat", "list"]}}},
+        {"name": "Messages", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/chat/get-messages/1", "host": ["{{base_url}}"], "path": ["customer", "chat", "get-messages", "1"]}}},
+        {"name": "Send", "request": {"method": "POST", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/customer/chat/send-message", "host": ["{{base_url}}"], "path": ["customer", "chat", "send-message"]}, "body": {"mode": "raw", "raw": "{\n  \"id\": 1,\n  \"message\": \"Hello, is this still available?\"\n}"}}}
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {"name": "List", "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{token}}"}], "url": {"raw": "{{base_url}}/notifications", "host": ["{{base_url}}"], "path": ["notifications"]}}}
+      ]
+    }
+  ]
+}

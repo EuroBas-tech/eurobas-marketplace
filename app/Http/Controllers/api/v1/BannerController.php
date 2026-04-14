@@ -32,7 +32,7 @@ class BannerController extends Controller
             $query->where('banner_type', 'Footer Banner');
         }
 
-        $banners = $query->get();
+        $banners = $query->limit(50)->get();
 
         return response()->json($banners, 200);
     }

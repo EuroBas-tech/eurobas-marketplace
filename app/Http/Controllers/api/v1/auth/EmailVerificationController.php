@@ -23,13 +23,14 @@ class EmailVerificationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
-        if(User::where('email', $request->email)->first()->temporary_token != $request->temporary_token) {
+        $user = User::where('email', $request->email)->first();
+        if(!$user || $user->temporary_token != $request->temporary_token) {
             return response()->json([
                 'message' => 'Temporary token mismatch',
-            ], 200);
+            ], 403);
         }
 
         $token = rand(1000, 9999);
@@ -69,11 +70,11 @@ class EmailVerificationController extends Controller
     public function resend_otp_check_email(Request $request){
         $validator = Validator::make($request->all(), [
             'temporary_token' => 'required',
-            'email' => 'required|min:11|max:14'
+            'email' => 'required|email'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $otp_resend_time = Helpers::get_business_settings('otp_resend_time') > 0 ? Helpers::get_business_settings('otp_resend_time') : 0;
@@ -98,12 +99,12 @@ class EmailVerificationController extends Controller
                 $token->created_at = now();
                 $token->save();
             }else{
-                $new_token = new PhoneOrEmailVerification();
-                $new_token->phone_or_email = $user->email;
-                $new_token->token = $new_token;
-                $new_token->created_at = now();
-                $new_token->updated_at = now();
-                $new_token->save();
+                $verification = new PhoneOrEmailVerification();
+                $verification->phone_or_email = $user->email;
+                $verification->token = $new_token;
+                $verification->created_at = now();
+                $verification->updated_at = now();
+                $verification->save();
             }
 
             $otp_resend_time = 0;
@@ -148,7 +149,7 @@ class EmailVerificationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $max_otp_hit = Helpers::get_business_settings('maximum_otp_hit') ?? 5;

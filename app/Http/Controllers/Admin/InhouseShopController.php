@@ -41,12 +41,6 @@ class InhouseShopController extends Controller
      */
     public function update(Request $request)
     {
-        if ($request['email_verification'] == 1) {
-            $request['phone_verification'] = 0;
-        } elseif ($request['phone_verification'] == 1) {
-            $request['email_verification'] = 0;
-        }
-
         //comapy shop banner
         $imgBanner = BusinessSetting::where(['type' => 'shop_banner'])->first();
         if ($request->has('shop_banner')) {

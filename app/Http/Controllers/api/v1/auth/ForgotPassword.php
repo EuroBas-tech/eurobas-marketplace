@@ -25,7 +25,7 @@ class ForgotPassword extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $verification_by = Helpers::get_business_settings('forgot_password_verification');
@@ -200,7 +200,7 @@ class ForgotPassword extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $data = DB::table('password_resets')->where('user_type','customer')->where(['token' => $request['token']])->first();
@@ -298,7 +298,7 @@ class ForgotPassword extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
         }
 
         $data = DB::table('password_resets')

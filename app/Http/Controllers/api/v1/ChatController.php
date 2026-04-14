@@ -16,7 +16,11 @@ class ChatController extends Controller
     {
         $userId = $request->user()->id;
 
-        $allChats = Chatting::where('sender_id', $userId)
+        $allChats = Chatting::with([
+                'sender' => fn($q) => $q->select('id', 'name', 'image'),
+                'receiver' => fn($q) => $q->select('id', 'name', 'image'),
+            ])
+            ->where('sender_id', $userId)
             ->orWhere('receiver_id', $userId)
             ->whereNotNull(['sender_id', 'receiver_id'])
             ->orderBy('created_at', 'desc')
@@ -52,13 +56,9 @@ class ChatController extends Controller
                 ->orWhere('receiver_id', $request->user()->id);
             })
             ->latest()
-            ->get();
+            ->paginate(20);
 
-        if ($messages->count() > 0) {
-            return response()->json($messages, 200);
-        }
-
-        return response()->json(['message' => translate('no messages found!')], 200);
+        return response()->json($messages, 200);
     }
 
     public function send_message(Request $request)

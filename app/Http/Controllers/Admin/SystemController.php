@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CPU\Helpers;
 use App\Model\OrderDetail;
 use Illuminate\Http\Request;
 use App\Model\SearchFunction;
@@ -46,7 +47,7 @@ class SystemController extends Controller
             ]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         if (isset($maintenance_mode) && $maintenance_mode->value){
             return response()->json(['message'=>'Maintenance is off.']);

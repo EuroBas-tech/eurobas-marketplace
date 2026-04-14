@@ -6,6 +6,7 @@ use App\CPU\CustomerManager;
 use App\CPU\Helpers;
 use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Model\DeliveryCountryCode;
 use App\Model\DeliveryZipCode;
 use App\Model\ShippingAddress;
@@ -29,34 +30,9 @@ class CustomerController extends Controller
         return response()->json($customer, 200);
     }
 
-    public function update_profile(Request $request)
+    public function update_profile(UpdateProfileRequest $request)
     {
         $user = $request->user();
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'bio' => 'nullable|string',
-            'image' => 'nullable|string',
-            'phone_code' => 'nullable|string|max:10',
-            'phone' => 'nullable|string|max:20',
-            'show_phone_number' => 'nullable|boolean',
-            'show_email_address' => 'nullable|boolean',
-            'native_language' => 'nullable|string|max:50',
-            'street_address_type' => 'nullable|string|max:50',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
-            'country' => 'nullable|string|max:50',
-            'city' => 'nullable|string|max:50',
-            'postal_code' => 'nullable|string|max:20',
-            'street_address' => 'nullable|string|max:255',
-            'show_location_data' => 'nullable|boolean',
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 422);
-        }
 
         $user->name = $request->name;
         $user->email = $request->email;
@@ -86,7 +62,7 @@ class CustomerController extends Controller
 
     public function get_customer_ads(Request $request)
     {
-        $customer_ads = $request->user()->ads()->paginate(10);
+        $customer_ads = $request->user()->ads()->with(['category', 'brand', 'model'])->paginate(10);
         return response()->json($customer_ads, 200);
     }
 
@@ -190,7 +166,9 @@ class CustomerController extends Controller
 
     public function get_support_tickets(Request $request)
     {
-        $customer_support_tickets = SupportTicket::where('customer_id', $request->user()->id)->get();
+        $customer_support_tickets = SupportTicket::where('customer_id', $request->user()->id)
+            ->latest()
+            ->paginate(15);
         return response()->json($customer_support_tickets, 200);
     }
 
@@ -204,7 +182,9 @@ class CustomerController extends Controller
             return response()->json(['message' => translate('ticket_not_found')], 404);
         }
 
-        $customer_tickets_convs = SupportTicketConv::where('support_ticket_id', $ticket_id)->get();
+        $customer_tickets_convs = SupportTicketConv::where('support_ticket_id', $ticket_id)
+            ->oldest()
+            ->paginate(20);
         return response()->json($customer_tickets_convs, 200);
     }
 
@@ -263,9 +243,10 @@ class CustomerController extends Controller
     public function wish_list(Request $request)
     {
         $wishlist = Wishlist::whereHas('wishlistAd')
-            ->with(['wishlistAd'])
+            ->with(['wishlistAd' => fn($q) => $q->with(['category', 'brand', 'model'])])
             ->where('customer_id', $request->user()->id)
-            ->get();
+            ->latest()
+            ->paginate(15);
 
         return response()->json($wishlist, 200);
     }
@@ -421,14 +402,14 @@ class CustomerController extends Controller
     {
         $country_restriction = Helpers::get_business_settings('delivery_country_restriction');
 
-        $stored_countries = DeliveryCountryCode::orderBy('country_code', 'ASC')->pluck('country_code')->toArray();
+        $stored_countries = array_flip(DeliveryCountryCode::orderBy('country_code', 'ASC')->pluck('country_code')->toArray());
         $country_list = defined('COUNTRIES') ? COUNTRIES : [];
 
         $countries = [];
 
         if ($country_restriction) {
             foreach ($country_list as $country) {
-                if (in_array($country['code'], $stored_countries)) {
+                if (isset($stored_countries[$country['code']])) {
                     $countries[] = [
                         'code' => $country['code'],
                         'name' => $country['name']

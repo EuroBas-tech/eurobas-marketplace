@@ -25,6 +25,12 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
 
         Route::any('social-login', 'SocialAuthController@social_login');
         Route::post('update-phone', 'SocialAuthController@update_phone');
+
+        // Authenticated token management
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::post('refresh', 'PassportAuthController@refresh');
+            Route::post('logout', 'PassportAuthController@logout');
+        });
     });
 
     // ─── LOCALE (public) ─────────────────────────────────────────────────
@@ -61,6 +67,11 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
     Route::get('ads/by-category/{id}', 'AdController@get_ads_by_category');
     Route::post('ads/filter', 'AdController@ads_filter');
     Route::post('searched-ads', 'WebController@searched_ads');
+
+    // ─── ADS (authenticated) ──────────────────────────────────────────────
+    Route::group(['prefix' => 'ads', 'middleware' => 'auth:api'], function () {
+        Route::post('auction', 'AdController@store_auction');
+    });
 
     // ─── MAP API (public) ────────────────────────────────────────────────
     Route::group(['prefix' => 'mapapi'], function () {

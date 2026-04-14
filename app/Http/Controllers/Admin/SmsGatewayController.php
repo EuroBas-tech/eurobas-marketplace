@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
 use App\Model\BusinessSetting;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class SmsGatewayController extends Controller
             }
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return back();
     }

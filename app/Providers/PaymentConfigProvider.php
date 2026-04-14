@@ -28,8 +28,7 @@ class PaymentConfigProvider extends ServiceProvider
     {
         
         try {
-            $data = BusinessSetting::where(['type' => 'paypal'])->first();
-            $paypal = json_decode($data['value'], true);
+            $paypal = Helpers::get_business_settings('paypal');
             if ($paypal) {
                 $mode = $paypal['environment']??'sandbox';
                 if ($mode == 'live') {
@@ -86,8 +85,7 @@ class PaymentConfigProvider extends ServiceProvider
                 Config::set('sslcommerz', $config);
             }*/
 
-            $data = BusinessSetting::where(['type' => 'razor_pay'])->first();
-            $razor = json_decode($data['value'], true);
+            $razor = Helpers::get_business_settings('razor_pay');
             if ($razor) {
                 $config = array(
                     'razor_key' => env('RAZOR_KEY', $razor['razor_key']),
@@ -96,8 +94,7 @@ class PaymentConfigProvider extends ServiceProvider
                 Config::set('razor', $config);
             }
 
-            $data = BusinessSetting::where(['type' => 'paystack'])->first();
-            $paystack = json_decode($data['value'], true);
+            $paystack = Helpers::get_business_settings('paystack');
             if ($paystack) {
                 $config = array(
                     'publicKey' => env('PAYSTACK_PUBLIC_KEY', $paystack['publicKey']),
@@ -108,8 +105,7 @@ class PaymentConfigProvider extends ServiceProvider
                 Config::set('paystack', $config);
             }
 
-            $data = BusinessSetting::where(['type' => 'flutterwave'])->first();
-            $flutterwave = json_decode($data['value'], true);
+            $flutterwave = Helpers::get_business_settings('flutterwave');
             if ($flutterwave) {
                 $config = array(
                     'publicKey' => env('FLW_PUBLIC_KEY', $flutterwave['public_key']), // values : (local | production)

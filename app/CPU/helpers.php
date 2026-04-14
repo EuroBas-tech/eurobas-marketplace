@@ -190,28 +190,28 @@ class Helpers
 
     public static function get_business_settings($name)
     {
-        $config = null;
-        $check = [
-            'currency_model', 'currency_symbol_position', 'system_default_currency',
-            'language', 'company_name', 'decimal_point_settings', 'product_brand',
-            'digital_product', 'company_email'
-        ];
-
-        $config = (function () use ($name) {
-            $data = BusinessSetting::where('type', $name)->first();
-            if ($data) {
-                $decoded = json_decode($data->value, true);
-                return $decoded ?? $data->value;
+        return \Illuminate\Support\Facades\Cache::remember(
+            'business_setting_' . $name,
+            now()->addHour(),
+            function () use ($name) {
+                $data = BusinessSetting::where('type', $name)->first();
+                if ($data) {
+                    $decoded = json_decode($data->value, true);
+                    return $decoded ?? $data->value;
+                }
+                return null;
             }
-            return null;
-        })();
+        );
+    }
 
-        // Store in session if in check list
-        if (in_array($name, $check) && !session()->has($name)) {
-            session()->put($name, $config);
+    public static function flush_business_settings_cache(): void
+    {
+        $settings = BusinessSetting::pluck('type');
+        foreach ($settings as $type) {
+            \Illuminate\Support\Facades\Cache::forget('business_setting_' . $type);
         }
-
-        return $config;
+        \Illuminate\Support\Facades\Cache::forget('business_settings');
+        \Illuminate\Support\Facades\Cache::forget('business_setting_timezone');
     }
 
     public static function get_settings($object, $type)
@@ -346,23 +346,19 @@ class Helpers
     }
 
     public static function prevent_if_profile_incomplete() {
-        if(auth("customer")->check() && (!auth("customer")->user()->phone_code ||
-        !auth('customer')->user()->phone || !auth('customer')->user()->country ||
-        !auth('customer')->user()->city || !auth('customer')->user()->native_language)){
+        $user = auth("customer")->check() ? auth("customer")->user() : (auth("api")->check() ? auth("api")->user() : null);
+        if($user && (!$user->phone_code || !$user->phone || !$user->country || !$user->city || !$user->native_language)){
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static function json_prevent_if_profile_incomplete() {
-        if(auth("customer")->check() && (!auth("customer")->user()->phone_code ||
-        !auth('customer')->user()->phone || !auth('customer')->user()->country ||
-        !auth('customer')->user()->city || !auth('customer')->user()->native_language)){
+        $user = auth("customer")->check() ? auth("customer")->user() : (auth("api")->check() ? auth("api")->user() : null);
+        if($user && (!$user->phone_code || !$user->phone || !$user->country || !$user->city || !$user->native_language)){
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static function saveJSONFile($code, $data)
@@ -1057,14 +1053,11 @@ class Helpers
 
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
-        $userId = auth('customer')->user()?->id;
+        $userId = auth('customer')->user()?->id ?? auth('api')->user()?->id;
         $guestId = $userId ? null : self::deviceId();
 
-        Log::debug('User ID: ' . $userId);
-        Log::debug('Guest ID: ' . $guestId);
-        
         try {
-            $userInterest = UserCategoryInterest::updateOrCreate(
+            UserCategoryInterest::updateOrCreate(
                 [
                     'user_id' => $userId,
                     'guest_id' => $guestId,
@@ -1074,8 +1067,6 @@ class Helpers
                     'score' => DB::raw('score + ' . $points),
                 ]
             );
-
-            Log::debug($userInterest);
         } catch (\Exception $e) {
             Log::error('Error tracking category interest: ' . $e->getMessage());
         }
@@ -1091,10 +1082,8 @@ class Helpers
         $userAgent = request()->userAgent();
         $deviceId = md5($ip . $userAgent);
 
-        Log::debug('user ip and device = ' . $ip . $userAgent);
-        
         session(['guest_device_id' => $deviceId]);
-        
+
         return $deviceId;
     }
 
@@ -1453,25 +1442,7 @@ if (!function_exists('payment_gateways')) {
 if (!function_exists('get_business_settings')) {
     function get_business_settings($name)
     {
-        $config = null;
-        $check = ['currency_model', 'currency_symbol_position', 'system_default_currency', 'language', 'company_name', 'decimal_point_settings', 'product_brand', 'digital_product', 'company_email'];
-
-        if (in_array($name, $check) && session()->has($name)) {
-            $config = session($name);
-        } else {
-            $data = BusinessSetting::where(['type' => $name])->first();
-            if (isset($data)) {
-                $config = json_decode($data['value'], true);
-                if (is_null($config)) {
-                    $config = $data['value'];
-                }
-            }
-
-            if (in_array($name, $check)) {
-                session()->put($name, $config);
-            }
-        }
-        return $config;
+        return \App\CPU\Helpers::get_business_settings($name);
     }
 }
 

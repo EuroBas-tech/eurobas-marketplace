@@ -66,7 +66,7 @@ class PaymentMethodController extends Controller
             'updated_at' => now()
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('successfully_updated'));
         return back();

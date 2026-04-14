@@ -32,13 +32,10 @@ class CategoryController extends Controller
     }
 
     public function popular_categories(){
-        $categories = Category::withCount(['product' => function($query){
-                $query->whereHas('order_details', function($query){
-                    $query->where('delivery_status', 'delivered');
-                })->active();
-            }])
-            ->orderBy('product_count', 'DESC')
-            ->take(9)->get();
+        $categories = Category::withCount('ads')
+            ->orderBy('ads_count', 'DESC')
+            ->take(9)
+            ->get();
 
         return response()->json($categories, 200);
     }
