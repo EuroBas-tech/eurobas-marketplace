@@ -448,7 +448,6 @@ Based on remaining items from our discussions and improvements identified during
 ### 12.6 CI/CD & Testing Pipeline
 - Integrate the 44 feature tests into the GitHub Actions / AWS deployment pipeline
 - Add automated syntax checking and test execution on every push
-- Set up staging environment for pre-production testing
 
 ### 12.7 Additional Features (Based on Platform Needs)
 - **Ad expiration system**: Auto-expire ads after configurable period, notify users before expiry
