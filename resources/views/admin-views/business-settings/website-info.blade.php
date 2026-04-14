@@ -1313,26 +1313,7 @@
 
     <script>
         $(document).ready(function () {
-            $("#phone_verification_on").click(function () {
-                @if(env('APP_MODE')!='demo')
-                if ($('#email_verification_on').prop("checked") == true) {
-                    $('#email_verification_off').prop("checked", true);
-                    $('#email_verification_on').prop("checked", false);
-                    const message = "{{translate('both_Phone_&_Email_verification_can_not_be_active_at_a_time')}}";
-                    toastr.info(message);
-                }
-                @else
-                call_demo();
-                @endif
-            });
-            $("#email_verification_on").click(function () {
-                if ($('#phone_verification_on').prop("checked") == true) {
-                    $('#phone_verification_off').prop("checked", true);
-                    $('#phone_verification_on').prop("checked", false);
-                    const message = "{{translate('both_Phone_&_Email_verification_can_not_be_active_at_a_time')}}";
-                    toastr.info(message);
-                }
-            });
+            // Both email and phone verification can now be enabled simultaneously
         });
     </script>
 @endpush

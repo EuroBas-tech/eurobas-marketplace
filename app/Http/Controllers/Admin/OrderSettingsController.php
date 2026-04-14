@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\CPU\BackEndHelper;
+use App\CPU\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Model\BusinessSetting;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
@@ -56,7 +58,7 @@ class OrderSettingsController extends Controller
             'updated_at' => now()
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('successfully_updated'));
         return back();

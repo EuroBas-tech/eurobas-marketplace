@@ -98,26 +98,32 @@ class ConfigController extends Controller
 
     private function getSettingValue(string $type): string
     {
-        $setting = BusinessSetting::where('type', $type)->first();
-        return $setting->value ?? '';
+        $value = Helpers::get_business_settings($type);
+        return is_string($value) ? $value : '';
     }
 
     private function getSettingImage(string $type, string $folder): string
     {
-        $setting = BusinessSetting::where('type', $type)->first();
-        if (!$setting || !$setting->value) {
+        $value = Helpers::get_business_settings($type);
+        if (!$value || !is_string($value)) {
             return '';
         }
-        return cloudfront($folder) . '/' . $setting->value;
+        return cloudfront($folder) . '/' . $value;
     }
 
     private function getSettingJsonLink(string $type): string
     {
-        $setting = BusinessSetting::where('type', $type)->first();
-        if (!$setting || !$setting->value) {
+        $value = Helpers::get_business_settings($type);
+        if (!$value) {
             return '';
         }
-        $decoded = json_decode($setting->value);
-        return $decoded->link ?? '';
+        if (is_array($value)) {
+            return $value['link'] ?? '';
+        }
+        if (is_string($value)) {
+            $decoded = json_decode($value);
+            return $decoded->link ?? '';
+        }
+        return '';
     }
 }

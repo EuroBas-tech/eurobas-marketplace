@@ -204,7 +204,7 @@ class CustomerController extends Controller
             }
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(\App\CPU\translate('customer_settings_updated_successfully'));
         return back();

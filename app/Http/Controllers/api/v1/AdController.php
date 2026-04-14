@@ -80,6 +80,7 @@ class AdController extends Controller
 
         // More ads from same user
         $more_ads_from_user = Ad::active()
+            ->with(['category', 'brand', 'model'])
             ->withCount('reviews')
             ->where('id', '!=', $ad->id)
             ->where('user_id', $ad->user_id)
@@ -155,7 +156,7 @@ class AdController extends Controller
 
     public function ads_filter(Request $request) {
 
-        $query = Ad::active()->with('sponsor');
+        $query = Ad::active()->with(['sponsor', 'category', 'brand', 'model', 'user']);
 
         if ($request->color != 'all' && $request->color) {
             $query->where('color', $request->color);
@@ -308,7 +309,6 @@ class AdController extends Controller
             $query->where('mileage', '<=', $request['max_mileage']);
         }
 
-        $count = $query->count();
         $ads = $query->paginate(10);
 
         return response()->json($ads, 200);
@@ -503,7 +503,7 @@ class AdController extends Controller
         }
 
         $last_auction_price = $ad->auctions->count() > 0
-            ? $ad->auctions()->latest()->value('price')
+            ? $ad->auctions->sortByDesc('created_at')->first()->price
             : ($ad->starting_price ?? 0);
 
         if ($request->price <= $last_auction_price) {
@@ -526,15 +526,12 @@ class AdController extends Controller
 
     private function getUserFavoriteCategoryId(): ?int
     {
-        $userInterests = UserCategoryInterest::all();
+        $column = auth('api')->check() ? 'user_id' : 'guest_id';
+        $value = auth('api')->check() ? auth('api')->id() : Helpers::deviceId();
 
-        return $userInterests
-            ->where(
-                auth('api')->check() ? 'user_id' : 'guest_id',
-                auth('api')->check() ? auth('api')->id() : Helpers::deviceId()
-            )
-            ->sortByDesc('score')
-            ->first()?->category_id;
+        return UserCategoryInterest::where($column, $value)
+            ->orderByDesc('score')
+            ->value('category_id');
     }
 
 }

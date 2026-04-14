@@ -30,7 +30,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-ini_set('memory_limit',-1);
+ini_set('memory_limit','512M');
 ini_set('upload_max_filesize','180M');
 ini_set('post_max_size','200M');
 
@@ -143,9 +143,9 @@ class AppServiceProvider extends ServiceProvider
                     if (theme_root_path() == "theme_fashion") {
 
                         $features_section = [
-                            'features_section_top' => BusinessSetting::where('type', 'features_section_top')->first() ? BusinessSetting::where('type', 'features_section_top')->first()->value : [],
-                            'features_section_middle' => BusinessSetting::where('type', 'features_section_middle')->first() ? BusinessSetting::where('type', 'features_section_middle')->first()->value : [],
-                            'features_section_bottom' => BusinessSetting::where('type', 'features_section_bottom')->first() ? BusinessSetting::where('type', 'features_section_bottom')->first()->value : [],
+                            'features_section_top' => Helpers::get_business_settings('features_section_top') ?? [],
+                            'features_section_middle' => Helpers::get_business_settings('features_section_middle') ?? [],
+                            'features_section_bottom' => Helpers::get_business_settings('features_section_bottom') ?? [],
                         ];
 
                         $tags = Tag::orderBy('visit_count', 'desc')->take(15)->get();

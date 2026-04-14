@@ -41,7 +41,7 @@ class BusinessSettingsController extends Controller
         ]);
         BusinessSetting::where('type', 'about_us')->update(['value' => $data->about_us]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('about_us_updated_successfully'));
         return back();
@@ -177,7 +177,7 @@ class BusinessSettingsController extends Controller
                 ])
             ]);
 
-            Cache::forget('business_settings');
+            Helpers::flush_business_settings_cache();
 
             Toastr::success(translate('updated_successfully'));
         }else{
@@ -232,7 +232,7 @@ class BusinessSettingsController extends Controller
         ]);
         BusinessSetting::where('type', 'privacy_policy')->update(['value' => $data->value]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Privacy_policy_Updated_successfully'));
         return redirect()->back();
@@ -298,12 +298,6 @@ class BusinessSettingsController extends Controller
     public function updateInfo(Request $request)
     {
         
-        if ($request['email_verification'] == 1) {
-            $request['phone_verification'] = 0;
-        } elseif ($request['phone_verification'] == 1) {
-            $request['email_verification'] = 0;
-        }
-
         // comapny name
         BusinessSetting::updateOrInsert(['type' => 'company_name'], [
             'value' => $request['company_name']
@@ -479,7 +473,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['pagination_limit'],
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('updated_successfully'));
         return back();
@@ -532,7 +526,7 @@ class BusinessSettingsController extends Controller
             ]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('updated_successfully'));
         return back();
@@ -661,7 +655,7 @@ class BusinessSettingsController extends Controller
             DB::table('business_settings')->insert(['type' => 'seller_registration', 'value' => 1]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return view('admin-views.business-settings.seller-settings');
     }
@@ -678,7 +672,7 @@ class BusinessSettingsController extends Controller
             'value' => json_encode($languages),
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Language_updated'));
         return back();
@@ -712,7 +706,7 @@ class BusinessSettingsController extends Controller
             'value' => $credential_array
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate($service . '_credentials_updated'));
         return redirect()->back();
@@ -749,7 +743,7 @@ class BusinessSettingsController extends Controller
             'value' => $credential_array
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('credential_updated', ['service' => $service]));
         return redirect()->back();
@@ -787,7 +781,7 @@ class BusinessSettingsController extends Controller
             return redirect()->back();
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate($service . '_information_update_successfully'));
         return redirect()->back();
@@ -813,7 +807,7 @@ class BusinessSettingsController extends Controller
             'updated_at' => now(),
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::flush();
 
         Toastr::success(translate('Updated_Successfully'));
@@ -835,7 +829,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['map_api_key_server']
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('config_data_updated'));
         return back();
@@ -856,7 +850,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['pixel_analytics']
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('config_data_updated'));
         return back();
@@ -872,7 +866,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['google_tag_manager_id']
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('google_tag_manager_id_updated'));
         return back();
@@ -900,7 +894,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['maximum_ad_images_number']
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('updated_successfully'));
         return back();
@@ -928,7 +922,7 @@ class BusinessSettingsController extends Controller
             ]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return back();
     }
@@ -955,7 +949,7 @@ class BusinessSettingsController extends Controller
             ]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return back();
     }
@@ -976,7 +970,7 @@ class BusinessSettingsController extends Controller
             'updated_at' => now()
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('cookie_settings_updated_successfully'));
         return redirect()->back();
@@ -1012,7 +1006,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['temporary_login_block_time'],
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Settings_updated'));
         return back();
@@ -1083,7 +1077,7 @@ class BusinessSettingsController extends Controller
 
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return back();
     }
@@ -1108,7 +1102,7 @@ class BusinessSettingsController extends Controller
             ]);
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return response()->json([
             'status'=>'success'
@@ -1151,7 +1145,7 @@ class BusinessSettingsController extends Controller
             }
         }
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return back();
     }
@@ -1225,7 +1219,7 @@ class BusinessSettingsController extends Controller
             'updated_at' => now()
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Updated_successfully'));
         return redirect()->back();
@@ -1243,7 +1237,7 @@ class BusinessSettingsController extends Controller
             'value' => $request['upload_picture_on_delivery'] ?? 0
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Updated_successfully'));
         return redirect()->back();
@@ -1287,7 +1281,7 @@ class BusinessSettingsController extends Controller
             'value' => json_encode($item),
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         return redirect()->back();
     }

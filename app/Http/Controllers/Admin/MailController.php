@@ -64,7 +64,7 @@ class MailController extends Controller
             ])
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('Configuration_updated_successfully'));
         return back();
@@ -115,7 +115,7 @@ class MailController extends Controller
             ])
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('SendGrid_Configuration_updated_successfully'));
         return back();

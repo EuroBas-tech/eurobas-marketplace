@@ -27,7 +27,9 @@ class ConfigServiceProvider extends ServiceProvider
     public function boot(): void
     {
         try {
-            $timezone = BusinessSetting::where(['type' => 'timezone'])->first();
+            $timezone = \Illuminate\Support\Facades\Cache::rememberForever('business_setting_timezone', function () {
+                return BusinessSetting::where('type', 'timezone')->first();
+            });
             if ($timezone) {
                 Config::set('timezone', $timezone->value);
                 date_default_timezone_set($timezone->value);

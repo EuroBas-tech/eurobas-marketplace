@@ -78,7 +78,7 @@ class LanguageController extends Controller
             'value' => json_encode($codes),
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
         Cache::flush();
@@ -118,7 +118,7 @@ class LanguageController extends Controller
             'value' => $lang_array
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
         Cache::flush();
@@ -157,7 +157,7 @@ class LanguageController extends Controller
             'value' => $lang_array
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
         Cache::flush();
@@ -203,7 +203,7 @@ class LanguageController extends Controller
             'value' => $lang_array
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
         Cache::flush();
@@ -332,7 +332,7 @@ class LanguageController extends Controller
             'value' => json_encode($languages),
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
         Cache::flush();

@@ -16,12 +16,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Passport::tokensExpireIn(now()->addDays(7));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addDays(7));
+
         // If Passport keys are provided via env vars (e.g. AWS Secrets Manager),
         // normalize the PEM content and inject it back into config so Passport
-        // uses the key strings directly. This avoids both the filesystem
-        // permission issues of writing files at runtime and the "Invalid key
-        // supplied" errors caused by escaped \n or CRLF line endings in the
-        // raw env var value.
+        // uses the key strings directly.
         $privateKey = env('PASSPORT_PRIVATE_KEY');
         $publicKey  = env('PASSPORT_PUBLIC_KEY');
 

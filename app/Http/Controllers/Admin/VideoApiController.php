@@ -43,7 +43,7 @@ class VideoApiController extends Controller
             'updated_at' => now()
         ]);
 
-        Cache::forget('business_settings');
+        Helpers::flush_business_settings_cache();
 
         Toastr::success(translate('video_api_data_successfully_updated'));
         return back();
