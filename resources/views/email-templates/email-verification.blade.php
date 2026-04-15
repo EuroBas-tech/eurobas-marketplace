@@ -5,112 +5,111 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{{\App\CPU\translate('Email Verification')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style type="text/css">
-        /**
-         * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
-         */
         @media screen {
             @font-face {
                 font-family: 'Source Sans Pro';
                 font-style: normal;
                 font-weight: 400;
-                src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
+                src: url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
             }
 
             @font-face {
                 font-family: 'Source Sans Pro';
                 font-style: normal;
                 font-weight: 700;
-                src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
+                src: url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
             }
         }
 
-        /**
-         * Avoid browser level font resizing.
-         * 1. Windows Mobile
-         * 2. iOS / OSX
-         */
-        body,
-        table,
-        td,
-        a {
-            -ms-text-size-adjust: 100%; /* 1 */
-            -webkit-text-size-adjust: 100%; /* 2 */
+        body, table, td, a {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
         }
 
-        /**
-         * Remove extra space added to tables and cells in Outlook.
-         */
-        table,
-        td {
+        table, td {
             mso-table-rspace: 0pt;
             mso-table-lspace: 0pt;
         }
 
-        /**
-         * Better fluid images in Internet Explorer.
-         */
         img {
             -ms-interpolation-mode: bicubic;
-        }
-
-        /**
-         * Remove blue links for iOS devices.
-         */
-        a[x-apple-data-detectors] {
-            font-family: inherit !important;
-            font-size: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-            color: inherit !important;
-            text-decoration: none !important;
-        }
-
-        /**
-         * Fix centering issues in Android 4.4.
-         */
-        div[style*="margin: 16px 0;"] {
-            margin: 0 !important;
+            border: 0;
+            outline: none;
         }
 
         body {
             width: 100% !important;
             height: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            font-family: 'Source Sans Pro', Arial, sans-serif;
         }
 
-        /**
-         * Collapse table borders to avoid space between cells.
-         */
         table {
             border-collapse: collapse !important;
         }
-
-        a {
-            color: #1a82e2;
-        }
-
-        img {
-            height: auto;
-            line-height: 100%;
-            text-decoration: none;
-            border: 0;
-            outline: none;
-        }
     </style>
 </head>
-<body style="background-color: #e9ecef;">
-<!-- end preheader -->
-<div class="card">
-    <div class="card-header">
-        {{\App\CPU\translate('Verify your email')}}.
-    </div>
-    <div class="card-body">
-        {{\App\CPU\translate('Token')}} : {{$token}}
-    </div>
-</div>
+
+<body>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td align="center">
+            <table width="500" style="background:#ffffff; margin:50px auto; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eeeeee;">
+                
+                <tr>
+                    <td style="background:#1a73e8; padding:25px; text-align:center; color:white;">
+                        <h2 style="margin:0; font-size: 24px;">
+                            {{\App\CPU\translate('Email Verification')}}
+                        </h2>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:40px 30px; text-align:center;">
+                        <p style="color:#555; font-size:18px; margin-bottom: 20px;">
+                            {{\App\CPU\translate('Verify your email')}}
+                        </p>
+
+                        <div style="
+                            margin:20px 0;
+                            font-size:36px;
+                            font-weight:bold;
+                            letter-spacing:8px;
+                            color:#ff6f00;
+                            background:#f1f5ff;
+                            padding:20px;
+                            border-radius:12px;
+                            display:inline-block;
+                            border: 1px dashed #1a73e8;
+                        ">
+                            {{$token}}
+                        </div>
+
+                        <p style="color:#777; font-size:14px; margin-top: 25px;">
+                            {{\App\CPU\translate('Token')}} : <strong>{{$token}}</strong>
+                        </p>
+
+                        <p style="color:#aaa; font-size:12px; margin-top:20px; line-height: 1.5;">
+                            إذا لم تقم بطلب هذا الرمز، يمكنك تجاهل هذه الرسالة بأمان.
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background:#f8f8f8; text-align:center; padding:20px; font-size:12px; color:#999; border-top: 1px solid #eeeeee;">
+                        © {{ date('Y') }} {{\App\CPU\translate('All rights reserved')}}
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>
-
