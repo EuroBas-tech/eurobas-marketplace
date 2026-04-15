@@ -9,6 +9,8 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use function App\CPU\translate;
 
@@ -39,6 +41,26 @@ class PassportAuthController extends Controller
         }
 
         if ($email_verification && !$user->is_email_verified) {
+            $otp = rand(1000, 9999);
+            DB::table('phone_or_email_verifications')->insert([
+                'phone_or_email' => $user->email,
+                'token' => $otp,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $emailServices_smtp = Helpers::get_business_settings('mail_config');
+            if ($emailServices_smtp['status'] == 0) {
+                $emailServices_smtp = Helpers::get_business_settings('mail_config_sendgrid');
+            }
+            if ($emailServices_smtp['status'] == 1) {
+                try {
+                    Mail::to($user->email)->send(new \App\Mail\EmailVerification($otp));
+                } catch (\Exception $exception) {
+                    // Email sending failed — user can still use resend OTP
+                }
+            }
+
             return response()->json([
                 'temporary_token' => $temporary_token,
                 'message' => translate('please_verify_your_email'),
@@ -102,6 +124,27 @@ class PassportAuthController extends Controller
             if ($email_verification && !$user->is_email_verified) {
                 $user->temporary_token = Str::random(40);
                 $user->save();
+
+                $otp = rand(1000, 9999);
+                DB::table('phone_or_email_verifications')->insert([
+                    'phone_or_email' => $user->email,
+                    'token' => $otp,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                $emailServices_smtp = Helpers::get_business_settings('mail_config');
+                if ($emailServices_smtp['status'] == 0) {
+                    $emailServices_smtp = Helpers::get_business_settings('mail_config_sendgrid');
+                }
+                if ($emailServices_smtp['status'] == 1) {
+                    try {
+                        Mail::to($user->email)->send(new \App\Mail\EmailVerification($otp));
+                    } catch (\Exception $exception) {
+                        // Email sending failed — user can still use resend OTP
+                    }
+                }
+
                 return response()->json([
                     'temporary_token' => $user->temporary_token,
                     'message' => translate('please_verify_your_email'),

@@ -102,6 +102,45 @@ class RegisterController extends Controller
 
         $user->save();
 
+        $phone_verification = Helpers::get_business_settings('phone_verification');
+        $email_verification = Helpers::get_business_settings('email_verification');
+
+        if ($email_verification && !$user->is_email_verified) {
+            $otp = rand(1000, 9999);
+            DB::table('phone_or_email_verifications')->insert([
+                'phone_or_email' => $user->email,
+                'token' => $otp,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $emailServices_smtp = Helpers::get_business_settings('mail_config');
+            if ($emailServices_smtp['status'] == 0) {
+                $emailServices_smtp = Helpers::get_business_settings('mail_config_sendgrid');
+            }
+            if ($emailServices_smtp['status'] == 1) {
+                try {
+                    Mail::to($user->email)->send(new \App\Mail\EmailVerification($otp));
+                } catch (\Exception $exception) {
+                    // Email sending failed — user can still use resend OTP
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => translate('check_your_email'),
+                'redirect_url' => route('customer.auth.check', [$user->id])
+            ]);
+        }
+
+        if ($phone_verification && !$user->is_phone_verified) {
+            return response()->json([
+                'success' => true,
+                'message' => translate('please_check_your_SMS_for_OTP'),
+                'redirect_url' => route('customer.auth.check', [$user->id])
+            ]);
+        }
+
         session([
             'redirect_to_login' => true,
             'redirect_to_login_expires_at' => now()->addMinutes(2)->timestamp,
