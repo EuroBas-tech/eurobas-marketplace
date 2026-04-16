@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Model\Ad;
 use App\CPU\Helpers;
 use App\Model\Order;
-use App\Models\User;
+use App\User;
 use App\CPU\BackEndHelper;
 use App\Model\Subscription;
 use Illuminate\Http\Request;
