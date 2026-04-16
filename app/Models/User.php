@@ -53,24 +53,7 @@ class User extends Authenticatable
         'loyalty_point'=>'float',
         'referred_by'=>'integer',
     ];
-
-
-    protected static function booted()
-    {
-        static::deleting(function ($user) {
-            $user->ads()->delete();
-            $user->wish_list()->delete();
-            $user->compare_list()->delete();
-            $user->auctions()->delete();
-            $user->askingPrice()->delete();
-            $user->reports()->delete();
-            $user->paid_banners()->delete();
-            $user->category_interests()->delete();
-            $user->chatsAsSender()->delete();
-            $user->chatsAsReceiver()->delete();
-        });
-    }
-
+    
     public function ads()
     {
         return $this->hasMany(Ad::class, 'user_id');
@@ -90,7 +73,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(ShippingAddress::class, 'shipping_address');
     }
-
     public function compare_list()
     {
         return $this->hasMany(ProductCompare::class, 'user_id');
@@ -128,4 +110,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCategoryInterest::class, 'user_id');
     }
+
+
+
 }
