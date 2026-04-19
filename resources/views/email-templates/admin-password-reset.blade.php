@@ -29,7 +29,7 @@
                     <tr>
                         <td style="background:#0F407D; padding:35px; text-align:center; color:white;">
                             <h1 style="margin:0; font-size: 24px; font-weight: bold; letter-spacing: 1px;">
-                                Eurobas.com
+                                EuroBas.com
                             </h1>
                         </td>
                     </tr>
@@ -59,11 +59,11 @@
                                 </a>
                             </div>
 
-                            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid #f3f4f6;">
-                                <p style="color:#9ca3af; font-size:13px; margin: 5px 0;">
+                            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid #f3f4f6; text-align:center;">
+                                <p style="color:#666666; font-size:14px; margin: 0 0 10px 0; line-height: 1.5; font-weight: bold;">
                                     {{\App\CPU\translate('This link will expire in 60 minutes.')}}
                                 </p>
-                                <p style="color:#d1d5db; font-size:12px; margin: 5px 0;">
+                                <p style="color:#888888; font-size:13px; margin: 0; line-height: 1.6;">
                                     {{\App\CPU\translate('If you did not request this, please ignore this email.')}}
                                 </p>
                             </div>
