@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{\App\CPU\translate('Password Reset')}}</title>
+    <title>{{\App\CPU\translate('Create a new password')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
         .preheader { display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0; }
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="preheader">
-        {{\App\CPU\translate('Reset your password')}}
+        {{\App\CPU\translate('Create a new password')}}
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
     </div>
 
@@ -37,7 +37,7 @@
                         <td style="padding:40px 40px; text-align:left; direction: ltr;">
                             
                             <h2 style="color:#000000; font-size:24px; font-weight: 800; margin:0 0 20px 0;">
-                                {{\App\CPU\translate('Password Reset')}}
+                                {{\App\CPU\translate('Create a new password')}}
                             </h2>
                             
                             <p style="color:#000000; font-size:16px; line-height:1.5; margin-bottom: 25px;">
