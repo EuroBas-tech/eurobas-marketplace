@@ -58,7 +58,7 @@
                             </h2>
 
                             <p style="color:#000000; font-size:17px; margin-bottom: 25px;">
-                                {{\App\CPU\translate('Verify your email')}}
+                                {{\App\CPU\translate('Verification Code')}}
                             </p>
 
                             <div class="otp-box">
