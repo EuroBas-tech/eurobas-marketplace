@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
 {
+    /**
+     * Trust all proxies - Essential for AWS Load Balancers.
+     *
+     * @var array|string|null
+     */
     protected $proxies = '*';
 
-    protected $headers = Request::HEADER_X_FORWARDED_FOR |
-                         Request::HEADER_X_FORWARDED_HOST |
-                         Request::HEADER_X_FORWARDED_PORT |
-                         Request::HEADER_X_FORWARDED_PROTO;
+    /**
+     * Use all X-Forwarded headers to detect correct protocol (HTTPS) and IP.
+     *
+     * @var int
+     */
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;
 }
