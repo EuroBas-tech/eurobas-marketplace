@@ -71,7 +71,7 @@ class ForgotPasswordController extends Controller
                             $reset_data->save();
                         }
                         $locale = LaravelLocalization::getCurrentLocale();
-                        $reset_url = url($locale . '/customer/auth/reset-password?token=' . $token);
+                        $reset_url = LaravelLocalization::getLocalizedURL($locale, '/customer/auth/reset-password?token=' . $token);
                         Log::debug($reset_url);
                         Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($reset_url));
 
@@ -310,7 +310,7 @@ class ForgotPasswordController extends Controller
                 ]);
             Toastr::success(translate('Password_reset_successfully'));
             DB::table('password_resets')->where('user_type','customer')->where(['token' => $request['reset_token']])->delete();
-            return redirect('/');
+            return redirect(LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), '/'));
         }
         Toastr::error(translate('Invalid_data'));
         return back();
