@@ -1,31 +1,18 @@
 <?php
-
 namespace App\Http\Middleware;
-
-use App\Model\GuestUser;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GuestMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('customer')->check()) {
-            if(!session('guest_id')){
-                $guest_id = GuestUser::insertGetId([
-                    'ip_address' => $request->ip(),
-                    'created_at' => now(),
-                ]);
-
+            if ($request->hasSession() && !session()->has('guest_id')) {
+                $guest_id = 'guest_' . uniqid() . rand(1000, 9999);
                 session()->put('guest_id', $guest_id);
+                session()->save();
             }
         }
         return $next($request);
