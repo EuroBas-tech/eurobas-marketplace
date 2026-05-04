@@ -56,6 +56,8 @@ aria-labelledby="search_ModalLabel" aria-hidden="true">
                                 <option class="fw-medium" value="1000">1000 {{ translate('km') }}</option>
                             </select>
                         </div>
+                        <input type="hidden" id="location_lat" name="location_lat" value="">
+                        <input type="hidden" id="location_lng" name="location_lng" value="">
                         <div class="form-group mb-2">
                             <div id="shippingMapContainer" class="container my-2 p-0">
                                 <div class="modal-content border-0 shadow-none">

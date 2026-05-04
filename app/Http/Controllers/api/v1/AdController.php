@@ -165,15 +165,16 @@ class AdController extends Controller
         $query = $this->ad_query_filter($query, $request);
 
         if ($request->city != '' && $request->city) {
-            $coordinates = $this->getLocationCoordinates($request->city);
+            $coordinates = null;
+            if ($request->filled('location_lat') && $request->filled('location_lng')) {
+                $coordinates = ['latitude' => (float) $request->location_lat, 'longitude' => (float) $request->location_lng];
+            } else {
+                $coordinates = $this->getLocationCoordinates($request->city);
+            }
 
             if ($coordinates) {
-                if($request->radius != '') {
-                    $query = $this->getAdsInRadius($query, $request->radius, $coordinates['latitude'], $coordinates['longitude']);
-                } else {
-                    $query->where('latitude', $coordinates['latitude'])
-                    ->where('longitude', $coordinates['longitude']);
-                }
+                $radius = ($request->radius != '') ? $request->radius : 25;
+                $query = $this->getAdsInRadius($query, $radius, $coordinates['latitude'], $coordinates['longitude']);
             }
         }
 

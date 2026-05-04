@@ -1161,6 +1161,8 @@
                 $('#location_country').val('All Europe').trigger('change');
                 $('#location_city').val('');
                 $('#location_radius').val('');
+                $('#location_lat').val('');
+                $('#location_lng').val('');
 
                 filterAds();
                 $('#clear-filters').prop('disabled', true);
@@ -1196,6 +1198,8 @@
                 $('#location_country').val('All Europe').trigger('change');
                 $('#location_city').val('');
                 $('#location_radius').val('');
+                $('#location_lat').val('');
+                $('#location_lng').val('');
 
                 filterAds();
                 $('#clear-filters').prop('disabled', true);
@@ -1220,7 +1224,10 @@
                         }
                     }
 
-                    if($elmByDataId.hasClass('location-filter-input')) { filterAds(); }
+                    if($elmByDataId.hasClass('location-filter-input')) {
+                        if(id === 'location_city') { $('#location_lat').val(''); $('#location_lng').val(''); }
+                        filterAds();
+                    }
                 }
 
                 if (name) {
@@ -1339,6 +1346,10 @@
         }
 
         function focusOnCity(location, cityName) {
+            // Store coordinates in hidden fields for server-side filtering
+            document.getElementById('location_lat').value = location.lat();
+            document.getElementById('location_lng').value = location.lng();
+
             // Center map on the city
             map.setCenter(location);
             map.setZoom(12);
