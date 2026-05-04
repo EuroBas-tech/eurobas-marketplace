@@ -459,7 +459,7 @@ class AdController extends Controller
 
     public function getLocationCoordinates($city) {
 
-        $apiKey = Helpers::get_business_settings('map_api_key');
+        $apiKey = Helpers::get_business_settings('map_api_key_server');
 
         $address = $city;
 
