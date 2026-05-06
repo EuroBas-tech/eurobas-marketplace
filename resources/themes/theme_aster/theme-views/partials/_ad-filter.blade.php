@@ -370,7 +370,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="home_appliance_type" id="home_appliance_type">
-                                                                     <option value="all">{{ translate('appliance_type') }}</option>
+                                                                    <option value="all">{{ translate('appliance_type') }}</option>
                                                                     <option value="refrigerator">{{ translate('refrigerator') }}</option>
                                                                     <option value="washing_machine">{{ translate('washing_machine') }}</option>
                                                                     <option value="microwave">{{ translate('microwave') }}</option>
