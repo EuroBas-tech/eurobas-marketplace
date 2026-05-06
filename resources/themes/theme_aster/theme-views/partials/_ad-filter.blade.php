@@ -435,7 +435,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="real estate" data-for="real-estate" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="property_type" id="property_type">
-                                                                    <option value="all">{{ translate('listing_type') }}</option>
+                                                                    <option value="all">{{ translate('property_type') }}</option> 
                                                                     <option {{ old('property_type') == 'apartment' ? 'selected' : ''}} value="apartment">{{ translate('apartment') }}</option>
                                                                     <option {{ old('property_type') == 'villa' ? 'selected' : ''}} value="villa">{{ translate('villa') }}</option>
                                                                     <option {{ old('property_type') == 'house' ? 'selected' : ''}} value="house">{{ translate('house') }}</option>
