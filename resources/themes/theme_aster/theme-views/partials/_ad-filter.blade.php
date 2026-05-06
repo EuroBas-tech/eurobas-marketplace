@@ -249,7 +249,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="shipbuilding_type" id="type">
-                                                                    <option value="all">{{ translate('shipbulding_marine_type') }}</option>
+                                                                    <option value="all">{{ translate('vessel_type') }}</option>
                                                                     <option {{ old('type') == 'yacht' ? 'selected' : ''}} value="yacht">{{ translate('yacht') }}</option>
                                                                     <option {{ old('type') == 'fishing_boat' ? 'selected' : ''}} value="fishing_boat">{{ translate('fishing_boat') }}</option>
                                                                     <option {{ old('type') == 'cargo_ship' ? 'selected' : ''}} value="cargo_ship">{{ translate('cargo_ship') }}</option>
@@ -320,7 +320,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home garden" data-for="home-garden" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="usage" id="usage">
-                                                                    <option value="all">{{translate('home_garden_usage')}}</option>
+                                                                    <option value="all">{{ translate('usage') }}</option>
                                                                     <option {{ old('indoor') == 'new' ? 'selected' : ''}} value="indoor">{{translate('indoor')}}</option>
                                                                     <option {{ old('outdoor') == 'used' ? 'selected' : ''}} value="outdoor">{{translate('outdoor')}}</option>
                                                                 </select>
@@ -370,7 +370,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16" name="home_appliance_type" id="home_appliance_type">
-                                                                    <option value="all">{{ translate('home_appliance_type') }}</option>
+                                                                     <option value="all">{{ translate('appliance_type') }}</option>
                                                                     <option value="refrigerator">{{ translate('refrigerator') }}</option>
                                                                     <option value="washing_machine">{{ translate('washing_machine') }}</option>
                                                                     <option value="microwave">{{ translate('microwave') }}</option>
