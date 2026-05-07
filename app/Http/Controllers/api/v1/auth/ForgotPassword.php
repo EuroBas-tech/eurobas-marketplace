@@ -60,7 +60,7 @@ class ForgotPassword extends Controller
                         $reset_data->save();
                     }
 
-                    $reset_url = $request->headers->get('referer') . 'auth?page=reset-password&token=' . $token;
+                    $reset_url = url('/') . '/customer/auth/reset-password?token=' . $token;
 
                     $emailServices_smtp = Helpers::get_business_settings('mail_config');
                     if ($emailServices_smtp['status'] == 0) {
