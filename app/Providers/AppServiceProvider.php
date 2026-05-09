@@ -96,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
                 'footer_logo' => Helpers::get_settings($web, 'company_footer_logo'),
                 'copyright_text' => Helpers::get_settings($web, 'company_copyright_text'),
                 'decimal_point_settings' => !empty(\App\CPU\Helpers::get_business_settings('decimal_point_settings')) ? \App\CPU\Helpers::get_business_settings('decimal_point_settings') : 0,
-                'seller_registration' => BusinessSetting::where(['type'=>'seller_registration'])->first()->value,
+                'seller_registration' => optional(BusinessSetting::where('type', 'seller_registration')->first())->value ?? null,
                 'wallet_status' => Helpers::get_business_settings('wallet_status'),
                 'loyalty_point_status' => Helpers::get_business_settings('loyalty_point_status'),
                 'guest_checkout_status' => Helpers::get_business_settings('guest_checkout'),
