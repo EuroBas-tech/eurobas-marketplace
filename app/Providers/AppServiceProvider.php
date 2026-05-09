@@ -75,9 +75,9 @@ class AppServiceProvider extends ServiceProvider
 
             if (Schema::hasTable('business_settings')) {
 
-            $web = Cache::rememberForever('business_settings', function () {
-                return BusinessSetting::all();
-            });
+             $web = Cache::rememberForever('business_settings', function () {
+                   return BusinessSetting::select('type', 'value')->get();
+             });
 
             $settings = Helpers::get_settings($web, 'colors');
             $data = json_decode($settings['value'], true);
