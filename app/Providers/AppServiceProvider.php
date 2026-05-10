@@ -75,9 +75,11 @@ class AppServiceProvider extends ServiceProvider
 
             if (Schema::hasTable('business_settings')) {
 
-             $web = Cache::rememberForever('business_settings', function () {
-                   return BusinessSetting::select('type', 'value')->get();
-             });
+             $web = Cache::remember('business_settings', 3600, function () {
+              return BusinessSetting::select('type', 'value')->get();
+            });
+                    
+             
 
             $settings = Helpers::get_settings($web, 'colors');
             $data = json_decode($settings['value'], true);
@@ -123,7 +125,9 @@ class AppServiceProvider extends ServiceProvider
                         'cookie_setting' => Helpers::get_settings($web, 'cookie_setting'),
                         'announcement' => Helpers::get_business_settings('announcement'),
                         'currency_model' => Helpers::get_business_settings('currency_model'),
-                        'currencies' => Currency::where('status', 1)->get(),
+                        'currencies' => Cache::remember('currencies_static', 604800, function () {
+                         return Currency::where('status', 1)->get();
+                          }),
                         'main_categories' => Category::priority()->get(),
                         'business_mode' => Helpers::get_business_settings('business_mode'),
                         'social_media' => SocialMedia::where('active_status', 1)->get(),
@@ -133,7 +137,7 @@ class AppServiceProvider extends ServiceProvider
                         'return_policy' => Helpers::get_business_settings('return-policy'),
                         'cancellation_policy' => Helpers::get_business_settings('cancellation-policy'),
                         'brand_setting' => Helpers::get_business_settings('product_brand'),
-                        'discount_product' => Product::with(['reviews'])->active()->where('discount', '!=', 0)->count(),
+                        'discount_product' => 0, // تم إيقافه لزيادة السرعة؛ لا توجد عروض حالياً من الإدارة
                         'recaptcha' => $recaptcha,
                         'socials_login' => $socials_login,
                         'apple_login' => $apple_login,
@@ -167,7 +171,7 @@ class AppServiceProvider extends ServiceProvider
                 });
 
                 //currency
-                \App\CPU\Helpers::currency_load();
+                // \App\CPU\Helpers::currency_load();
 
                 View::share(['web_config' => $web_config, 'language' => $language]);
 
