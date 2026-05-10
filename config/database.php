@@ -116,14 +116,20 @@ return [
     | such as APC or Memcached. Laravel makes it easy to dig right in.
     |
     */
-
+    
     'redis' => [
 
-       'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'eurobas'), '_').'_database_'),
+            'parameters' => [
+                'stream' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ],
         ],
 
         'default' => [
