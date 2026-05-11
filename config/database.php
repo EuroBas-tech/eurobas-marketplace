@@ -117,14 +117,14 @@ return [
     |
     */
     
-    'redis' => [
+     'redis' => [
 
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
-            'cluster' => env('REDIS_CLUSTER', 'redis'),
+              
+            'cluster' => env('REDIS_CLUSTER', 'atomic'), 
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'eurobas'), '_').'_database_'),
-             
         ],
 
         'default' => [
@@ -144,5 +144,4 @@ return [
         ],
 
     ],
-
 ];
