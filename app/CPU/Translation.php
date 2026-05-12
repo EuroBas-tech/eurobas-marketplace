@@ -8,51 +8,76 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 if(!function_exists('translate')) {
     function translate($key)
     {
+        static $staticTranslations = [];
+
         $locale = LaravelLocalization::getCurrentLocale();
+        $cacheKey = "translations_{$locale}";
 
         try {
-            $cacheKey = "translations_{$locale}";
-            
-            // Get all translations for locale from cache, or load from DB
-            $translations = Cache::rememberForever($cacheKey, function () use ($locale) {
-                return LanguageTranslation::where('locale', $locale)
-                ->pluck('value', 'key')
-                ->toArray();
-            });
+            if (!isset($staticTranslations[$locale])) {
+                $translations = Cache::get($cacheKey);
 
-            $processedKey = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
-            $key = Helpers::remove_invalid_charcaters($key);
-            
-            // If key doesn't exist, create it
-            if (!isset($translations[$key])) {
-                LanguageTranslation::create([
-                    'key' => $key,
-                    'value' => $processedKey,
-                    'locale' => $locale
-                ]);
-                
-                // Clear cache to refresh
-                Cache::forget($cacheKey);
-                
-                $result = $processedKey;
-            } else {
-                $result = $translations[$key];
+                if (!$translations) {
+                    $translations = LanguageTranslation::where('locale', $locale)
+                        ->pluck('value', 'key')
+                        ->toArray();
+
+                    Cache::forever($cacheKey, $translations);
+                }
+
+                $staticTranslations[$locale] = $translations;
             }
-        } catch (\Exception $exception) {
-            $result = $key;
-        }
 
-        return $result;
+            $translations = $staticTranslations[$locale];
+            $cleanKey = Helpers::remove_invalid_charcaters($key);
+
+            if (!isset($translations[$cleanKey])) {
+                $processedValue = ucfirst(str_replace('_', ' ', $cleanKey));
+
+                LanguageTranslation::updateOrCreate(
+                    [
+                        'key' => $cleanKey,
+                        'locale' => $locale
+                    ],
+                    [
+                        'value' => $processedValue
+                    ]
+                );
+
+                $staticTranslations[$locale][$cleanKey] = $processedValue;
+
+                Cache::forever(
+                    $cacheKey,
+                    $staticTranslations[$locale]
+                );
+
+                return $processedValue;
+            }
+
+            return $translations[$cleanKey];
+
+        } catch (\Throwable $exception) {
+            return ucfirst(str_replace('_', ' ', $key));
+        }
     }
 }
 
-function getSeoTitle() {
-    $seoArray = include(resource_path('lang/' . LaravelLocalization::getCurrentLocale() . '/Seo.php'));
-    return $seoArray['meta_title'];
+if(!function_exists('getSeoTitle')) {
+    function getSeoTitle() {
+        return Cache::rememberForever('seo_title_' . LaravelLocalization::getCurrentLocale(), function() {
+            $path = resource_path('lang/' . LaravelLocalization::getCurrentLocale() . '/Seo.php');
+            $seoArray = file_exists($path) ? include($path) : [];
+            return $seoArray['meta_title'] ?? 'EuroBas';
+        });
+    }
 }
 
-function getSeoDescription() {
-    $seoArray = include(resource_path('lang/' . LaravelLocalization::getCurrentLocale() . '/Seo.php'));
-    return $seoArray['meta_description'];
+if(!function_exists('getSeoDescription')) {
+    function getSeoDescription() {
+        return Cache::rememberForever('seo_desc_' . LaravelLocalization::getCurrentLocale(), function() {
+            $path = resource_path('lang/' . LaravelLocalization::getCurrentLocale() . '/Seo.php');
+            $seoArray = file_exists($path) ? include($path) : [];
+            return $seoArray['meta_description'] ?? '';
+        });
+    }
 }
-
