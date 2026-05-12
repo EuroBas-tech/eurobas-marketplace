@@ -166,25 +166,10 @@ class AppServiceProvider extends ServiceProvider
                 }
 
            // Get language setting with caching
-            static $staticLanguage = null;
-
-            if ($staticLanguage === null) {
-
-            $staticLanguage = Cache::remember(
-           'language',
-            now()->addDays(7),
-           function () {
-
-           return BusinessSetting::query()
-                ->where('type', 'language')
-                ->first();
-        }
-    );
-}
-
-  $language = $staticLanguage;
+              $language = Cache::rememberForever('language', function () {
+                    return BusinessSetting::where('type', 'language')->first();
+                });
                   
-             
                 
                 //currency
                 // \App\CPU\Helpers::currency_load();
