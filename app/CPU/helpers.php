@@ -1119,11 +1119,11 @@ function translate($key)
         $cacheKey = "translations_{$locale}";
         
         // Get all translations for locale from cache, or load from DB 
-      $translations = Cache::store('file')->rememberForever($cacheKey, function () use ($locale) {
-      return LanguageTranslation::where('locale', $locale)
-      ->pluck('value', 'key')
-      ->toArray();
-    });
+         $translations = Cache::rememberForever($cacheKey, function () use ($locale) {
+            return LanguageTranslation::where('locale', $locale)
+            ->pluck('value', 'key')
+            ->toArray();
+        });
 
         $processedKey = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
         $key = Helpers::remove_invalid_charcaters($key);
