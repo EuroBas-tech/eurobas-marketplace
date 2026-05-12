@@ -16,7 +16,7 @@ class CategoryManager
             return Category::with(['childes.childes', 'translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
             }])
-            ->where('position', 0)
+            ->where('position', 1)    
             ->priority()
             ->get();
         });
@@ -74,10 +74,10 @@ class CategoryManager
                             }, 'childes' => function ($query) use ($locale) {
                                 $query->with(['translations' => function($q) use ($locale) {
                                     $q->where('locale', $locale);
-                                }])->withCount(['sub_sub_category_product'])->where('position', 2);
-                            }])->withCount(['sub_category_product'])->where('position', 1);
+                                }])->withCount(['sub_sub_category_product'])->where('position', 3);    
+                            }])->withCount(['sub_category_product'])->where('position', 2);   
                         }])
-                        ->where('position', 0)
+                        ->where('position', 1)    
                         ->get();
         });
     }
