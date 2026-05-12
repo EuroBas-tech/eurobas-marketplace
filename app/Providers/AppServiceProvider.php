@@ -166,10 +166,10 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 // Get language setting with caching
-              $language = Cache::store('file')->rememberForever('language', function () {
-              return BusinessSetting::where('type', 'language')->first();
-            });
-
+                 $language = Cache::rememberForever('language', function () {
+                 return BusinessSetting::where('type', 'language')->first();
+             });
+                
                 //currency
                 // \App\CPU\Helpers::currency_load();
 
