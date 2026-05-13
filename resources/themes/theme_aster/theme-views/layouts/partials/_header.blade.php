@@ -1270,7 +1270,7 @@
                                         <li> 
                                             <a href="javascript:"> 
                                                 <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'">
-                                                    {{ $category->name }}
+                                                   {{ translate($category->name) }}
                                                 </span> 
                                             </a>
                                         </li> 
@@ -1357,7 +1357,7 @@
                                                         src="{{ cloudfront('category') }}/{{ $category->icon }}" alt="category_image">
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
-                                                        {{ $category->name }}
+                                                       {{ translate($category->name) }}
                                                     </div>
                                                 </a>
                                             @endforeach
