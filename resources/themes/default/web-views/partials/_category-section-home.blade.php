@@ -25,9 +25,9 @@
                                                     <img
                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                         src="{{cloudfront("category/$category->icon")}}"
-                                                        alt="{{$category->name}}">
+                                                        alt="{{ translate($category->name) }}">
                                                 </div>
-                                                <p class="text-center small mt-2">{{Str::limit($category->name, 12)}}</p>
+                                                <p class="text-center small mt-2">{{Str::limit(translate($category->name), 12)}}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -44,9 +44,9 @@
                                                     <img
                                                         onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                                                         src="{{cloudfront("category/$category->icon")}}"
-                                                        alt="{{$category->name}}">
+                                                        alt="{{ translate($category->name) }}">
                                                 </div>
-                                                <p class="text-center small mt-2">{{Str::limit($category->name, 12)}}</p>
+                                                <p class="text-center small mt-2">{{Str::limit(translate($category->name), 12)}}</p>
                                             </a>
                                         </div>
                                     @endif
