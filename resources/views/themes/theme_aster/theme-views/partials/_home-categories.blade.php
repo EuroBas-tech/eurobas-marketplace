@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="border-bottom gap-3 d-flex align-items-start justify-content-between mb-30">
-                        <h3 class="styled-title">{{Str::limit($category['name'],20)}}</h3>
+                        <h3 class="styled-title">{{Str::limit(translate($category['name']),20)}}</h3>
                         @if(count($category['products']) > 0)
                             <a href="{{route('products',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}" class="outlined-bordered-btn">{{translate('view_all')}}
                                 <i class="bi bi-chevron-right ms-1"></i></a>
