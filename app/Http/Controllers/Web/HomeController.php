@@ -41,10 +41,13 @@ class HomeController extends Controller
     public function index()
     {
         
-   $locale = app()->getLocale(); 
+  $locale = app()->getLocale(); 
 
-     $home_categories = Cache::rememberForever('categories_' . $locale, function () {
-       return Category::where('home_status', true)
+$home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
+    return Category::with(['translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            }])
+            ->where('home_status', true)
             ->priority()
             ->latest()
             ->take(16)
