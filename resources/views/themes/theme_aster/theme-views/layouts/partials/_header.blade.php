@@ -20,10 +20,32 @@
 </h2>        </div> </div>
 
 @endif
-@php($categories = \App\Model\Category::with('childes.childes')->where(['position'=> 0])->priority()->take(11)->get())
-@php($brands = \App\Model\Brand::active()->take(15)->get())
-<style>
 
+ @php(
+    $locale = app()->getLocale()
+)
+
+@php(
+    $categories = \App\Model\Category::with(['childes.childes', 'translations' => function($q) use ($locale) {
+        $q->where('locale', $locale);
+    }])
+    ->where(['position' => 0])
+    ->priority()
+    ->take(11)
+    ->get()
+    ->map(function($cat) use ($locale) {
+        $trans = $cat->translations->first(); 
+        if($trans && !empty($trans->value)) {
+            $cat->name = $trans->value;
+        }
+        return $cat;
+    })
+)
+
+@php($brands = \App\Model\Brand::active()->take(15)->get())
+
+<style>
+    
     .sidebar {
         height: 100%;
         width: 300px;
