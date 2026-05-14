@@ -33,16 +33,10 @@
     ->priority()
     ->take(11)
     ->get()
-    ->map(function($cat) use ($locale) {
-        $trans = $cat->translations->first(); 
-        if($trans && !empty($trans->value)) {
-            $cat->name = $trans->value;
-        }
-        return $cat;
-    })
 )
 
 @php($brands = \App\Model\Brand::active()->take(15)->get())
+
 
 <style>
     
