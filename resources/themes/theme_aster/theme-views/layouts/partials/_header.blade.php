@@ -19,9 +19,16 @@
     </div> 
 @endif
 
+ @php(
+    $locale = app()->getLocale()
+)
+
 @php(
-    $categories = Cache::rememberForever('home_categories', function () {
-        return \App\Model\Category::homeEnabled()
+    $categories = Cache::rememberForever('home_categories_' . $locale, function () use ($locale) {
+        return \App\Model\Category::with(['translations' => function($q) use ($locale) {
+            $q->where('locale', $locale);
+        }])
+        ->homeEnabled()
         ->priority()
         ->get();
     })
