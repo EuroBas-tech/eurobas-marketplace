@@ -69,9 +69,7 @@ class CategoryController extends Controller
             }
         }
 
-        Cache::forget('home_categories');
-        Cache::forget('categories');
-
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         Toastr::success(translate('category_updated_successfully'));
         return back();
@@ -108,8 +106,7 @@ class CategoryController extends Controller
             }
         }
 
-        Cache::forget('home_categories');
-        Cache::forget('categories');
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         Toastr::success(translate('Category_updated_successfully'));
         return back();
@@ -132,8 +129,7 @@ class CategoryController extends Controller
         $translation->delete();
         Category::destroy($request->id);
 
-        Cache::forget('home_categories');
-        Cache::forget('categories');
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         return response()->json();
     }
