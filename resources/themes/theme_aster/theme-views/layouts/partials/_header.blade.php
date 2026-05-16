@@ -24,10 +24,8 @@
 )
 
 @php(
-    $categories = Cache::rememberForever('home_categories_' . $locale, function () use ($locale) {
-        return \App\Model\Category::with(['translations' => function($q) use ($locale) {
-            $q->where('locale', $locale);
-        }])
+    $categories = Cache::rememberForever('home_categories_' . $locale, function () {
+        return \App\Model\Category::with(['translations'])
         ->homeEnabled()
         ->priority()
         ->get();
