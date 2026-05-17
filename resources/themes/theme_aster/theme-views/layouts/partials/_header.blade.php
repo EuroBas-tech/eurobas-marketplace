@@ -23,11 +23,8 @@
     $locale = app()->getLocale()
 )
 @php(
-    $categories = \App\Model\Category::with(['translations' => function($q) use ($locale) {
-        $q->where('locale', $locale);
-    }])->homeEnabled()->priority()->get()
+    $categories = \App\Model\Category::homeEnabled()->priority()->get()
 )
-     
 
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
