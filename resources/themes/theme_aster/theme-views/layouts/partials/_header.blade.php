@@ -31,6 +31,10 @@
         ->get();
     })
 )
+     
+
+
+ 
 
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
@@ -1275,7 +1279,7 @@
                                         <li> 
                                             <a href="javascript:"> 
                                                 <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'">
-                                                   {{ translate($category->name) }}
+                                                {{ $category->translations->where('key', 'name')->where('locale', app()->getLocale())->first()->value ?? $category->name }}
                                                 </span> 
                                             </a>
                                         </li> 
@@ -1362,7 +1366,7 @@
                                                         src="{{ cloudfront('category') }}/{{ $category->icon }}" alt="category_image">
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
-                                                       {{ translate($category->name) }}
+                                                     {{ $category->translations->where('key', 'name')->where('locale', app()->getLocale())->first()->value ?? $category->name }}
                                                     </div>
                                                 </a>
                                             @endforeach
