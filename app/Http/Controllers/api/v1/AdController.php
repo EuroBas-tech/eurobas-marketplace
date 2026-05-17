@@ -22,7 +22,7 @@ class AdController extends Controller
     public function show($id)
     {
         $ad = Ad::active()
-            ->with(['category', 'brand', 'model', 'sponsor'])
+            ->with(['category', 'brand', 'model', 'sponsor', 'user'])
             ->findOrFail($id);
 
         // Track view
@@ -134,6 +134,7 @@ class AdController extends Controller
 
         return response()->json([
             'ad'                                 => $ad,
+            'seller'                             => Helpers::publicSellerProfile($ad->user),
             'wishlist_status'                    => $wishlist_status,
             'count_wishlist'                     => $countWishlist,
             'related_ads'                        => $relatedAds,

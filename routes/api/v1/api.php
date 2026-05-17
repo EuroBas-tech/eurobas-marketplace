@@ -23,7 +23,7 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
         Route::get('verify-email-token', 'ForgotPassword@verify_email_token');
         Route::put('reset-password', 'ForgotPassword@reset_password_submit');
 
-        Route::any('social-login', 'SocialAuthController@social_login');
+        Route::post('social-login', 'SocialAuthController@social_login');
         Route::post('update-phone', 'SocialAuthController@update_phone');
 
         // Authenticated token management
@@ -35,8 +35,12 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
 
     // ─── LOCALE (public) ─────────────────────────────────────────────────
     Route::group(['prefix' => 'locale'], function() {
-        Route::post('translations/{locale}', 'LocaleController@translations');
+        Route::match(['get', 'post'], 'translations/{locale}', 'LocaleController@translations');
+        Route::get('translations/{locale}/version', 'LocaleController@version');
     });
+
+    // ─── PUBLIC USER PROFILE ─────────────────────────────────────────────
+    Route::get('users/{id}', 'CustomerController@show');
 
     // ─── CONFIG (public) ─────────────────────────────────────────────────
     Route::group(['prefix' => 'config'], function () {

@@ -345,6 +345,37 @@ class Helpers
         return str_ireplace(['\'', '"', ',', ';', '<', '>', '?'], ' ', preg_replace('/\s\s+/', ' ', $str));
     }
 
+    public static function publicSellerProfile($user): ?array
+    {
+        if (!$user) {
+            return null;
+        }
+
+        $ads_count = method_exists($user, 'ads') ? $user->ads()->where('status', 1)->count() : 0;
+
+        return [
+            'id'                   => $user->id,
+            'name'                 => $user->name,
+            'image'                => $user->image,
+            'cover_image'          => $user->cover_image,
+            'bio'                  => $user->bio,
+            'account_type'         => $user->account_type,
+            'country'              => $user->show_location_data ? $user->country : null,
+            'city'                 => $user->show_location_data ? $user->city : null,
+            'native_language'      => $user->native_language,
+            'phone'                => $user->show_phone_number ? $user->phone : null,
+            'phone_code'           => $user->show_phone_number ? $user->phone_code : null,
+            'email'                => $user->show_email_address ? $user->email : null,
+            'is_phone_verified'    => (bool) $user->is_phone_verified,
+            'is_email_verified'    => (bool) $user->is_email_verified,
+            'show_phone_number'    => (bool) $user->show_phone_number,
+            'show_email_address'   => (bool) $user->show_email_address,
+            'show_location_data'   => (bool) $user->show_location_data,
+            'ads_count'            => $ads_count,
+            'member_since'         => $user->created_at,
+        ];
+    }
+
     public static function prevent_if_profile_incomplete() {
         $user = auth("customer")->check() ? auth("customer")->user() : (auth("api")->check() ? auth("api")->user() : null);
         if($user && (!$user->phone_code || !$user->phone || !$user->country || !$user->city || !$user->native_language)){

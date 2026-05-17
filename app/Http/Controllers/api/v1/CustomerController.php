@@ -30,6 +30,21 @@ class CustomerController extends Controller
         return response()->json($customer, 200);
     }
 
+    public function show($id)
+    {
+        $user = User::where('is_active', 1)->find($id);
+
+        if (!$user) {
+            return response()->json([
+                'errors' => [['code' => 'user-001', 'message' => translate('user_not_found')]]
+            ], 404);
+        }
+
+        return response()->json([
+            'user' => Helpers::publicSellerProfile($user),
+        ], 200);
+    }
+
     public function update_profile(UpdateProfileRequest $request)
     {
         $user = $request->user();
