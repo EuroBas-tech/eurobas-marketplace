@@ -22,19 +22,12 @@
  @php(
     $locale = app()->getLocale()
 )
-
 @php(
-    $categories = Cache::rememberForever('home_categories_' . $locale, function () {
-        return \App\Model\Category::with(['translations'])
-        ->homeEnabled()
-        ->priority()
-        ->get();
-    })
+    $categories = \App\Model\Category::with(['translations' => function($q) use ($locale) {
+        $q->where('locale', $locale);
+    }])->homeEnabled()->priority()->get()
 )
      
-
-
- 
 
 @php(
     $brands = Cache::rememberForever('active_brands', function () {
@@ -1279,7 +1272,7 @@
                                         <li> 
                                             <a href="javascript:"> 
                                                 <span onclick="location.href='{{ route('show-ads-filter', ['category_id' => $category->id]) }}'">
-                                                {{ $category->translations->where('key', 'name')->where('locale', app()->getLocale())->first()->value ?? $category->name }}
+                                                  {{ translate($category->name) }}
                                                 </span> 
                                             </a>
                                         </li> 
@@ -1366,7 +1359,7 @@
                                                         src="{{ cloudfront('category') }}/{{ $category->icon }}" alt="category_image">
                                                     </div>
                                                     <div class="media-body text-truncate" style="--width: 7rem" title="Bata">
-                                                     {{ $category->translations->where('key', 'name')->where('locale', app()->getLocale())->first()->value ?? $category->name }}
+                                                     {{ translate($category->name) }}
                                                     </div>
                                                 </a>
                                             @endforeach
