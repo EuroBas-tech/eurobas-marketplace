@@ -68,8 +68,11 @@ class CategoryController extends Controller
                 );
             }
         }
-
-        \Illuminate\Support\Facades\Cache::store('redis')->flush();
+ 
+        Cache::store('redis')->forget('categories');
+        Cache::store('redis')->forget('home_categories');
+        Cache::store('file')->forget('categories');
+        Cache::store('file')->forget('home_categories');
 
         Toastr::success(translate('category_updated_successfully'));
         return back();
@@ -95,7 +98,7 @@ class CategoryController extends Controller
         $category->save();
 
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en') {
+            if ($request->name[$index] && $key != 'en) {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -106,7 +109,11 @@ class CategoryController extends Controller
             }
         }
 
-        \Illuminate\Support\Facades\Cache::store('redis')->flush();
+        
+        Cache::store('redis')->forget('categories');
+        Cache::store('redis')->forget('home_categories');
+        Cache::store('file')->forget('categories');
+        Cache::store('file')->forget('home_categories');
 
         Toastr::success(translate('Category_updated_successfully'));
         return back();
@@ -128,8 +135,11 @@ class CategoryController extends Controller
                                     ->where('translationable_id',$request->id);
         $translation->delete();
         Category::destroy($request->id);
-
-        \Illuminate\Support\Facades\Cache::store('redis')->flush();
+ 
+        Cache::store('redis')->forget('categories');
+        Cache::store('redis')->forget('home_categories');
+        Cache::store('file')->forget('categories');
+        Cache::store('file')->forget('home_categories');
 
         return response()->json();
     }
