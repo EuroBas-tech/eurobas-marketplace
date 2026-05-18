@@ -164,7 +164,7 @@
                                     </td>
                                     <td class="text-center">
 
-                                        <form action="{{route('admin.category-type.status')}}" method="post" id="category_status{{$category['id']}}_form" class="category_status_form">
+                                        <form action="{{route('admin.category.home-status')}}" method="post" id="category_status{{$category['id']}}_form" class="category_status_form">
                                             @csrf
                                             <input type="hidden" name="id" value="{{$category['id']}}">
                                             <label class="switcher mx-auto">
@@ -251,7 +251,7 @@
                 }
             });
             $.ajax({
-                url: "{{route('admin.category-type.status')}}",
+                url: "{{route('admin.category.home-status')}}",
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (data) {

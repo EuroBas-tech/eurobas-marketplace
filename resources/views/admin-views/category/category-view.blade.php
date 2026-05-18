@@ -167,7 +167,6 @@
                                     <th>{{ translate('name')}}</th>
                                     <th>{{translate('category_type')}}</th>
                                     <th>{{translate('priority')}}</th>
-
                                     <th class="text-center">{{ translate('action')}}</th>
                                 </tr>
                             </thead>

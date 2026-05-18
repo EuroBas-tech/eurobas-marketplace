@@ -23,7 +23,7 @@
     $locale = app()->getLocale()
 )
 @php(
-    $categories = \App\Model\Category::homeEnabled()->priority()->get()
+    $categories = \App\Model\Category::priority()->get()
 )
 
 @php(
