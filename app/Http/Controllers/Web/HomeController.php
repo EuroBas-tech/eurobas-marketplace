@@ -47,6 +47,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
     return Category::with(['translations' => function ($query) use ($locale) {
                 $query->where('locale', $locale);
             }])
+            ->where('home_status', true)
             ->priority()
             ->latest()
             ->take(16)
@@ -168,7 +169,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
         $now = now();
 
         /** ✅ تحميل الإعلانات بدون limit */
-        $categories = Category::query()
+        $categories = Category::homeEnabled()
         ->with(['ads' => function ($q) use ($now) {
             $q->active()
             ->when(session('show_by_country'),

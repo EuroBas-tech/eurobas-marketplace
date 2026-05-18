@@ -45,7 +45,7 @@
                                                                                 {{ translate('category') }}
                                                                             </a>
                                                                         </li>
-                                                                        @foreach($categories as $category)
+                                                                        @foreach($categories->where('position', 1) as $category)
                                                                             <li class="p-0">
                                                                                 <a onclick="triggerFilterManually(this)" class="dropdown-item font-size-16 d-flex align-items-center category-option p-2 gap-2" href="#"
                                                                                     data-id="{{ $category['id'] }}"

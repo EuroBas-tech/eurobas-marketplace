@@ -53,9 +53,6 @@ class CategoryController extends Controller
         }
         $category->category_type = $request->category_type;
         $category->priority = $request->priority;
-        $category->parent_id = (int) ($request->parent_id ?? 0);
-        $category->position = (int) ($request->position ?? 0);
-        $category->home_status = 1;
         $category->save();
 
         foreach($request->lang as $index=>$key)
@@ -72,7 +69,7 @@ class CategoryController extends Controller
             }
         }
 
-        $this->flushCategoryCachesSafe();
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         Toastr::success(translate('category_updated_successfully'));
         return back();
@@ -87,7 +84,7 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         $category = Category::find($request->id);
-
+     
         $category->name = $request->name[array_search('en', $request->lang)];
         $category->slug = Str::slug($request->name[array_search('en', $request->lang)]);
         $category->category_type = $request->category_type;
@@ -109,7 +106,7 @@ class CategoryController extends Controller
             }
         }
 
-        $this->flushCategoryCachesSafe();
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         Toastr::success(translate('Category_updated_successfully'));
         return back();
@@ -132,7 +129,7 @@ class CategoryController extends Controller
         $translation->delete();
         Category::destroy($request->id);
 
-        $this->flushCategoryCachesSafe();
+        \Illuminate\Support\Facades\Cache::store('redis')->flush();
 
         return response()->json();
     }
@@ -142,56 +139,6 @@ class CategoryController extends Controller
         if ($request->ajax()) {
             $data = Category::orderBy('id', 'desc')->get();
             return response()->json($data);
-        }
-    }
-
-    public function home_status(Request $request)
-    {
-        $category = Category::find($request->id);
-
-        if (!$category) {
-            return response()->json(['success' => false, 'message' => 'Not found'], 404);
-        }
-
-        $category->home_status = $category->home_status == 1 ? 0 : 1;
-        $category->save();
-
-        $this->flushCategoryCachesSafe();
-
-        return response()->json([
-            'success' => true,
-            'home_status' => $category->home_status,
-        ]);
-    }
-
-    private function flushCategoryCachesSafe(): void
-    {
-        $keys = ['home_categories', 'categories', 'active_brands', 'brands', 'models', 'language'];
-
-        foreach ($keys as $key) {
-            try {
-                Cache::forget($key);
-            } catch (\Throwable $e) {
-                // ignore
-            }
-        }
-
-        try {
-            $locales = array_keys((array) config('laravellocalization.supportedLocales'));
-            foreach ($locales as $locale) {
-                Cache::forget('categories_' . $locale);
-                Cache::forget('home_categories_' . $locale);
-            }
-        } catch (\Throwable $e) {
-            // ignore
-        }
-
-        foreach (['redis', 'file'] as $store) {
-            try {
-                Cache::store($store)->flush();
-            } catch (\Throwable $e) {
-                // store unavailable; skip silently
-            }
         }
     }
 }

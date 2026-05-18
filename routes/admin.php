@@ -128,7 +128,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('edit/{id}', 'CategoryController@edit')->name('edit');
             Route::post('update', 'CategoryController@update')->name('update');
             Route::post('delete', 'CategoryController@delete')->name('delete');
-            Route::post('home-status', 'CategoryController@home_status')->name('home-status');
         });
         
         Route::group(['prefix' => 'ad', 'as' => 'ad.','middleware'=>['module:product_management']], function () {
