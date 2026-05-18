@@ -242,19 +242,20 @@ class LanguageController extends Controller
         file_put_contents(base_path('resources/lang/' . $lang . '/messages.php'), $str);
     }
 
-    public function translate_submit(Request $request, $lang)
-    {
+      public function translate_submit(Request $request, $lang)
+   {
         $word = LanguageTranslation::where('id', $request['id'])
         ->update(['value' => $request['value']]);
 
-        Cache::store('redis')->flush();
-        Cache::store('file')->flush();
-        
+      Cache::store('redis')->forget("translations_{$lang}");
+      Cache::store('file')->forget("translations_{$lang}");
+    
+      if (method_exists($this, 'updateCacheTranslations')) {
         $this->updateCacheTranslations();
-        
-        return $word;
-
     }
+    
+    return $word;
+}
 
     public function auto_translate(Request $request, $lang): \Illuminate\Http\JsonResponse
     {
