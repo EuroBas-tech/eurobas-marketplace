@@ -1529,7 +1529,18 @@ class AdController extends Controller
         ]);
     }
 
-    public function ad_query_filter($query, $request) {
+     public function ad_query_filter($query, $request) {
+    
+       if (isset($request['min_price'])) {
+        $request['min_price'] = is_numeric($request['min_price']) ? (float)$request['min_price'] : null;
+       }
+        if (isset($request['max_price'])) {
+        $request['max_price'] = is_numeric($request['max_price']) ? (float)$request['max_price'] : null;
+      }
+    
+       $minPrice = $request['min_price'];
+       $maxPrice = $request['max_price'];
+      
         // Filter by category if specified
         if ($request['category_id'] != 'all' && $request['category_id']) {
             $query->where('category_id', $request['category_id']);
