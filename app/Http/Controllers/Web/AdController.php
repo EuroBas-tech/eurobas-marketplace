@@ -1064,7 +1064,8 @@ class AdController extends Controller
 
         $filter_data = $request->all() ?? [];
 
-        $is_selected_category_vehicle = $request->category_id == 0 || Category::find($request->category_id)->category_type == 'vehicles';
+        $category = $request->category_id ? Category::find($request->category_id) : null;
+        $is_selected_category_vehicle = $request->category_id == 0 || ($category && $category->category_type == 'vehicles');
         
         if($request->category_id) {
             Helpers::trackUserCategoryInterest($request->category_id);
