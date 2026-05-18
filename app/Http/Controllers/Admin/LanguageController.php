@@ -81,7 +81,8 @@ class LanguageController extends Controller
         Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
 
         Toastr::success(translate('Language_Added'));
         return back();
@@ -121,7 +122,8 @@ class LanguageController extends Controller
         Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
 
         return $businessSetting;
     }
@@ -160,7 +162,8 @@ class LanguageController extends Controller
         Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
 
         Toastr::success(translate('Default_Language_Changed'));
         return back();
@@ -206,7 +209,8 @@ class LanguageController extends Controller
         Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
 
         Toastr::success(translate('Language_updated'));
         return back();
@@ -243,7 +247,8 @@ class LanguageController extends Controller
         $word = LanguageTranslation::where('id', $request['id'])
         ->update(['value' => $request['value']]);
 
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
         
         $this->updateCacheTranslations();
         
@@ -335,7 +340,8 @@ class LanguageController extends Controller
         Helpers::flush_business_settings_cache();
         Cache::forget('business_setting_language');
         Cache::forget('language');
-        Cache::flush();
+        Cache::store('redis')->flush();
+        Cache::store('file')->flush();
 
         Toastr::success(translate('Removed_Successfully'));
         return back();
@@ -368,7 +374,8 @@ class LanguageController extends Controller
     }
 
     public function clearAllCache() {
-        Cache::flush();
+       Cache::store('redis')->flush();
+       Cache::store('file')->flush();
         Toastr::success(translate('System_cache_cleared_successfully'));
         return back();
 
