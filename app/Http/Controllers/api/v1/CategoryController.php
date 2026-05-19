@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         try {
             $categories = Cache::rememberForever('api_home_categories', function () {
-                return Category::homeEnabled()->priority()->get();
+                return Category::homeEnabled()->priority()->latest()->take(16)->get();
             });
             return response()->json($categories, 200);
 

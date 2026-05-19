@@ -71,8 +71,10 @@ class CategoryController extends Controller
  
         Cache::store('redis')->forget('categories');
         Cache::store('redis')->forget('home_categories');
+        Cache::store('redis')->forget('api_home_categories');
         Cache::store('file')->forget('categories');
         Cache::store('file')->forget('home_categories');
+        Cache::store('file')->forget('api_home_categories');
 
         Toastr::success(translate('category_updated_successfully'));
         return back();
@@ -112,8 +114,10 @@ class CategoryController extends Controller
         
         Cache::store('redis')->forget('categories');
         Cache::store('redis')->forget('home_categories');
+        Cache::store('redis')->forget('api_home_categories');
         Cache::store('file')->forget('categories');
         Cache::store('file')->forget('home_categories');
+        Cache::store('file')->forget('api_home_categories');
 
         Toastr::success(translate('Category_updated_successfully'));
         return back();
@@ -138,8 +142,10 @@ class CategoryController extends Controller
  
         Cache::store('redis')->forget('categories');
         Cache::store('redis')->forget('home_categories');
+        Cache::store('redis')->forget('api_home_categories');
         Cache::store('file')->forget('categories');
         Cache::store('file')->forget('home_categories');
+        Cache::store('file')->forget('api_home_categories');
 
         return response()->json();
     }
