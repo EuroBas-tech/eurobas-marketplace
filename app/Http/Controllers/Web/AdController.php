@@ -1067,8 +1067,8 @@ class AdController extends Controller
         $category = $request->category_id ? Category::find($request->category_id) : null;
         $is_selected_category_vehicle = $request->category_id == 0 || ($category && $category->category_type == 'vehicles');
         
-        if($request->category_id) {
-            Helpers::trackUserCategoryInterest($request->category_id);
+        if($request->category_id && is_numeric($request->category_id)) {
+            Helpers::trackUserCategoryInterest((int)$request->category_id);
         }
 
         $ad_data = Ad::active()->with('sponsor','wish_list');
