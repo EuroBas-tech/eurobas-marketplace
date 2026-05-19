@@ -358,7 +358,7 @@ class LanguageController extends Controller
                     ->pluck('value', 'key')
                     ->toArray();
                 
-                Cache::forever($cacheKey, $translations);
+                Cache::store('file')->forever($cacheKey, $translations);
                 
                 $cachedLocales[] = $localeCode;
             }  
