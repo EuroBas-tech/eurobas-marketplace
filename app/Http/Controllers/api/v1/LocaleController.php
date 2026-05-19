@@ -13,8 +13,8 @@ class LocaleController extends Controller
     {
         try {
             $cacheKey = "translations_{$locale}";
-
-            $translations = Cache::rememberForever($cacheKey, function () use ($locale) {
+            
+            $translations = Cache::store('file')->rememberForever($cacheKey, function () use ($locale) {
                 return LanguageTranslation::where('locale', $locale)
                     ->pluck('value', 'key')
                     ->toArray();
