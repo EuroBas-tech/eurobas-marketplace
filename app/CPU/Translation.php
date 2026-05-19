@@ -21,8 +21,9 @@ if(!function_exists('translate')) {
                     $translations = LanguageTranslation::where('locale', $locale)
                         ->pluck('value', 'key')
                         ->toArray();
-
-                    Cache::forever($cacheKey, $translations);
+                    
+                  Cache::store('file')->forever($cacheKey, $translations);
+                     
                 }
 
                 $staticTranslations[$locale] = $translations;
@@ -45,10 +46,11 @@ if(!function_exists('translate')) {
                 );
 
                 $staticTranslations[$locale][$cleanKey] = $processedValue;
-
-                Cache::forever(
-                    $cacheKey,
-                    $staticTranslations[$locale]
+               
+                 Cache::store('file')->forever(
+                 $cacheKey,
+                 $staticTranslations[$locale]        
+                
                 );
 
                 return $processedValue;
