@@ -217,9 +217,24 @@ class UserProfileController extends Controller
         $brands = Brand::with('categories:id')->orderBY('name', 'ASC')->get();
         $models = VehicleModel::with('categories:id')->select('id', 'name', 'brand_id', 'status')->get();
 
-        $userInterests = Cache::remember('user_category_interests', 0, function () { 
-            return UserCategoryInterest::all();
-        });
+        $customerId = auth('customer')->id();
+        $guestId    = Helpers::deviceId();
+        $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+
+          $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
+          return \App\Models\UserCategoryInterest::query()
+          ->select('category_id', 'score')
+          ->where(function ($query) use ($customerId, $guestId) {
+            if ($customerId) {
+                $query->where('user_id', $customerId);
+              } else {
+                $query->where('guest_id', $guestId);
+            }
+        })
+        ->get()
+        ->pluck('score', 'category_id')
+        ->toArray();
+     });
 
         $favCategoryId = $userInterests
         ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
