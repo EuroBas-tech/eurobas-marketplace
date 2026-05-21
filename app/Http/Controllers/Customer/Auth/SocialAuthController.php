@@ -21,11 +21,16 @@ class SocialAuthController extends Controller
     
     public function redirectToProvider(Request $request, $service)
     {   
+        $allowedServices = ['google', 'apple', 'facebook'];
+       abort_unless(in_array($service, $allowedServices), 400, 'Invalid social service.');
         return Socialite::driver($service)->redirect();
-    }
+     }
 
     public function handleProviderCallback($service)
     {
+        $allowedServices = ['google', 'apple', 'facebook'];
+       abort_unless(in_array($service, $allowedServices), 400, 'Invalid social service.');
+        
         try {
             $user_data = Socialite::driver($service)->stateless()->user();
         
