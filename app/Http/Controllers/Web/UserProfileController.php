@@ -223,19 +223,15 @@ class UserProfileController extends Controller
 
          $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
           return UserCategoryInterest::query()
-         ->select('category_id', 'score')
-         ->where(function ($query) use ($customerId, $guestId) {
-            if ($customerId) {
+          ->where(function ($query) use ($customerId, $guestId) {
+             if ($customerId) {
                 $query->where('user_id', $customerId);
               } else {
                 $query->where('guest_id', $guestId);
             }
         })
-        ->get()
-        ->pluck('score', 'category_id')
-        ->toArray();
-     });     
-     
+        ->get(); 
+     });
 
         $favCategoryId = $userInterests
         ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
