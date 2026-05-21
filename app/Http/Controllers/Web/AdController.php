@@ -675,7 +675,8 @@ class AdController extends Controller
         if($category) {
             Helpers::trackUserCategoryInterest($category->id);
         }
-
+        
+        abort_if(!$category, 404);
         $category_name = $category->name;
 
         $ads = $category->ads('sponsor')
