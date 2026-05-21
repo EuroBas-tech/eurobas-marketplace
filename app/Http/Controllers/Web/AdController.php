@@ -767,26 +767,26 @@ class AdController extends Controller
             $ad_views_number = $ad->adViews->count();
 
             $ad_ids = Ad::active()->where('user_id', $ad->user_id)->pluck('id');
+            
+            $customerId = auth('customer')->id();
+            $guestId    = Helpers::deviceId();
+            $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
 
-             $customerId = auth('customer')->id();
-             $guestId    = Helpers::deviceId();
-             $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
-
-        $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
-        return \App\Models\UserCategoryInterest::query()
-        ->select('category_id', 'score')
-        ->where(function ($query) use ($customerId, $guestId) {
-            if ($customerId) {
+          $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
+           return UserCategoryInterest::query()
+          ->select('category_id', 'score')
+          ->where(function ($query) use ($customerId, $guestId) {
+             if ($customerId) {
                 $query->where('user_id', $customerId);
-            } else {
+               } else {
                 $query->where('guest_id', $guestId);
             }
         })
         ->get()
         ->pluck('score', 'category_id')
         ->toArray();
-});
-
+       });
+             
             $favCategoryId = $userInterests
             ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
                     auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
@@ -1143,24 +1143,24 @@ class AdController extends Controller
             ];
         });
 
-        $customerId = auth('customer')->id();
-        $guestId    = Helpers::deviceId();
-       $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+         $customerId = auth('customer')->id();
+         $guestId    = Helpers::deviceId();
+         $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
 
         $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
-        return \App\Models\UserCategoryInterest::query()
+         return UserCategoryInterest::query()
         ->select('category_id', 'score')
         ->where(function ($query) use ($customerId, $guestId) {
             if ($customerId) {
                 $query->where('user_id', $customerId);
-            } else {
+              } else {
                 $query->where('guest_id', $guestId);
             }
         })
         ->get()
         ->pluck('score', 'category_id')
         ->toArray();
-});
+      });
 
         $favCategoryId = $userInterests
         ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
