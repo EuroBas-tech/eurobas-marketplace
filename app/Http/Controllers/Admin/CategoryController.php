@@ -98,7 +98,7 @@ class CategoryController extends Controller
         $category->save();
 
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en) {
+            if ($request->name[$index] && $key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
