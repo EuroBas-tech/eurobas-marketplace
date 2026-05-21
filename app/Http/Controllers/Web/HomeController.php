@@ -66,25 +66,22 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
         $banner = $banners->firstWhere('lang', $locale)
         ?? $banners->firstWhere('lang', 'Both');
 
-          $customerId = auth('customer')->id();
-          $guestId    = Helpers::deviceId();
-          $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+        $customerId = auth('customer')->id();
+        $guestId    = Helpers::deviceId();
+        $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
 
-         $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
-          return UserCategoryInterest::query()
-         ->select('category_id', 'score')
-         ->where(function ($query) use ($customerId, $guestId) {
+        $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
+        return UserCategoryInterest::query()
+          ->where(function ($query) use ($customerId, $guestId) {
             if ($customerId) {
                 $query->where('user_id', $customerId);
               } else {
                 $query->where('guest_id', $guestId);
             }
         })
-        ->get()
-        ->pluck('score', 'category_id')
-        ->toArray();
-      });
-
+        ->get(); 
+     });
+           
         $favCategoryId = $userInterests
         ->where(
             auth('customer')->check() ? 'user_id' : 'guest_id',
