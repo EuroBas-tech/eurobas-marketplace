@@ -70,6 +70,14 @@ class CustomerController extends Controller
             $user->password = bcrypt($request->password);
         }
 
+        // Avatar arrives as a multipart file part named `image` (mobile
+        // sends it via POST so PHP populates the body). Stored under
+        // profile/images/ as webp, matching the web profile flow; update()
+        // also clears the previous avatar file.
+        if ($request->hasFile('image')) {
+            $user->image = ImageManager::update('profile/images/', $user->image, 'webp', $request->file('image'));
+        }
+
         $user->save();
 
         return response()->json($user, 200);

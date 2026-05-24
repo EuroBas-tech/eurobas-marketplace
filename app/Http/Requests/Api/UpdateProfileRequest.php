@@ -20,7 +20,10 @@ class UpdateProfileRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user()->id,
             'bio' => 'nullable|string',
-            'image' => 'nullable|string',
+            // Mobile uploads the avatar as a multipart file part (the
+            // endpoint must be hit with POST, not PUT, for PHP to parse the
+            // body). The old `nullable|string` rule rejected the file.
+            'image' => 'nullable|image|max:10240',
             'phone_code' => 'nullable|string|max:10',
             'phone' => 'nullable|string|max:20',
             'show_phone_number' => 'nullable|boolean',
