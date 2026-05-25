@@ -233,11 +233,14 @@ class UserProfileController extends Controller
         ->get(); 
      });
 
-        $favCategoryId = $userInterests
-        ->where(auth('customer')->check() ? 'user_id' : 'guest_id', 
-                auth('customer')->check() ? auth('customer')->user()?->id : Helpers::deviceId())
-        ->sortByDesc('score')
-        ->first()?->category_id;
+        $favCategoryId = UserCategoryInterest::query()
+        ->when(
+         $customerId,
+         fn ($q) => $q->where('user_id', $customerId),
+         fn ($q) => $q->where('guest_id', $guestId)
+        )
+        ->orderByDesc('score')
+        ->value('category_id');
         
         // Get total matching banners count
         $totalBanners = PaidBanner::with('package.features', 'category')
