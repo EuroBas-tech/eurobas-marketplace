@@ -16,35 +16,20 @@ use App\Model\CategoryShippingCost;
 class CartManager
 {
     
-    public static function cart_to_db($request = null)
-{
+   public static function cart_to_db($request=null)
+  {
     $user = Helpers::get_customer($request);
-
-    if (!$user) {
-        return;
-    }
-
-    if (session()->has('guest_id') || optional($request)->guest_id) {
-
-        $guest_id = session('guest_id') ?? optional($request)->guest_id;
-
-        $carts = Cart::where([
-            'is_guest' => 1,
-            'customer_id' => $guest_id
-        ])->get();
-
+    if (session()->has('guest_id') || $request->guest_id) {
+        $guest_id = session('guest_id') ?? $request->guest_id;
+        $carts = Cart::where(['is_guest'=>1, 'customer_id'=>$guest_id])->get();
         foreach ($carts as $cart) {
-
             $db_cart = Cart::where([
                 'customer_id' => $user->id,
-                'seller_id'   => $cart['seller_id'],
-                'seller_is'   => $cart['seller_is']
+                'seller_id' => $cart['seller_id'],
+                'seller_is' => $cart['seller_is']
             ])->first();
 
-            $cart->cart_group_id = isset($db_cart)
-                ? $db_cart['cart_group_id']
-                : str_replace('guest', $user->id, $cart['cart_group_id']);
-
+            $cart->cart_group_id = isset($db_cart) ? $db_cart['cart_group_id'] : str_replace('guest', $user->id, $cart['cart_group_id']);
             $cart->customer_id = $user->id;
             $cart->is_guest = 0;
             $cart->save();
