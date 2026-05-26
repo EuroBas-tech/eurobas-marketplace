@@ -6,4 +6,5 @@ RUN sed -i 's/pm\.max_children = 30/pm.max_children = 15/' /usr/local/etc/php-fp
 RUN sed -i 's/pm\.start_servers = 5/pm.start_servers = 3/' /usr/local/etc/php-fpm.d/app.conf
 RUN sed -i 's/pm\.min_spare_servers = 3/pm.min_spare_servers = 2/' /usr/local/etc/php-fpm.d/app.conf
 RUN sed -i 's/pm\.max_spare_servers = 10/pm.max_spare_servers = 5/' /usr/local/etc/php-fpm.d/app.conf
+COPY ./specifications/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./ /var/www
