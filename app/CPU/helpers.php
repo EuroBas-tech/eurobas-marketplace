@@ -1084,8 +1084,9 @@ class Helpers
 
     public static function trackUserCategoryInterest(int $categoryId, int $points = 1): void
     {
-        $userId = auth('customer')->user()?->id ?? auth('api')->user()?->id;
+        $userId = auth('customer')->id() ?? auth('api')->id();
         $guestId = $userId ? null : self::deviceId();
+         if (!$userId && !$guestId) return;
 
         try {
             UserCategoryInterest::updateOrCreate(
