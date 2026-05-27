@@ -245,7 +245,7 @@
                                                 <h6 class="">
                                                     <span class="bg-primary py-2 px-2 rounded text-light">
                                                         <i class="bi bi-tags-fill"></i>
-                                                        {{$ad->category->name}}
+                                                        {{$ad->category?->name ?? ''}}
                                                     </span>
                                                 </h6>
                                                 <div class="d-flex align-items-center gap-3" >
@@ -414,7 +414,7 @@
                                                             <div class="d-flex gap-2 flex-wrap align-items-center">
                                                                 <h5 class="fw-bold">{{translate('brand')}} :</h5>
                                                                 <div class="d-flex align-items-center" >
-                                                                    <span class="mx-1" >{{$ad->brand_id ? $ad->brand->name : $ad->custom_brand ?? '/'}}</span>
+                                                                    <span class="mx-1" >{{$ad->brand_id ? ($ad->brand?->name ?? '/') : ($ad->custom_brand ?? '/')}}</span>
                                                                 </div>
                                                             </div>
                                                         @endif
