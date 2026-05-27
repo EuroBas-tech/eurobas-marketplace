@@ -362,6 +362,8 @@ class Helpers
             'account_type'         => $user->account_type,
             'country'              => $user->show_location_data ? $user->country : null,
             'city'                 => $user->show_location_data ? $user->city : null,
+            'postal_code'          => $user->show_location_data ? $user->postal_code : null,
+            'street_address'       => $user->show_location_data ? $user->street_address : null,
             'native_language'      => $user->native_language,
             'phone'                => $user->show_phone_number ? $user->phone : null,
             'phone_code'           => $user->show_phone_number ? $user->phone_code : null,

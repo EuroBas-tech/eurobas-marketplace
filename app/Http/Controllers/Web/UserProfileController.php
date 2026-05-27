@@ -202,9 +202,13 @@ class UserProfileController extends Controller
             abort(404, 'User not found');
         }
 
-        $user_ads = $user_profile->ads->take(5);
+        // Only publicly-visible (active) ads, so the count matches the API and
+        // the mobile app (§6.2).
+        $active_ads = $user_profile->ads->where('status', 1);
 
-        $user_ads_count = $user_profile->ads->count();
+        $user_ads = $active_ads->take(5);
+
+        $user_ads_count = $active_ads->count();
 
         $user_categories_ids = $user_profile->ads->pluck('category_id')->unique();
         $user_categories = Category::whereIn('id', $user_categories_ids)->select('id', 'name', 'icon')->get();

@@ -15,7 +15,9 @@ class CategoryController extends Controller
     public function get_categories()
     {
         try {
-            $categories = Cache::rememberForever('api_home_categories', function () {
+            // Bounded TTL so admin category changes self-heal (admin cache-clear
+            // targets the website's own keys, not this one).
+            $categories = Cache::remember('api_home_categories', now()->addHours(6), function () {
                 return Category::homeEnabled()->priority()->get();
             });
             return response()->json($categories, 200);
@@ -32,8 +34,10 @@ class CategoryController extends Controller
     }
 
     public function popular_categories(){
-        $categories = Category::withCount('ads')
-            ->orderBy('ads_count', 'DESC')
+        // Count only active (publicly visible) ads, so the ordering and counts
+        // match what the app/website actually show.
+        $categories = Category::withCount(['ads' => fn($q) => $q->where('status', 1)])
+            ->orderByDesc('ads_count')
             ->take(9)
             ->get();
 

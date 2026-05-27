@@ -97,5 +97,23 @@ class Ad extends Model
         return $this->hasMany(SponsoredAd::class);
     }
 
+    /**
+     * Public serialization hides the contact phone when the seller opted out
+     * (show_phone_number = 0), unless the viewer is the ad's owner — mirroring
+     * the website, which only renders the phone behind that flag.
+     */
+    public function toArray()
+    {
+        $data = parent::toArray();
+
+        $isOwner = auth('api')->check() && (int) auth('api')->id() === (int) $this->user_id;
+
+        if (!$isOwner && !$this->show_phone_number) {
+            $data['contact_phone_number'] = null;
+            $data['phone_code'] = null;
+        }
+
+        return $data;
+    }
 
 }

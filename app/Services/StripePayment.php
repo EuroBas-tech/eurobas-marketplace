@@ -33,9 +33,19 @@ class StripePayment
     /**
      * Create Stripe Checkout Session with all European payment methods
      */
-    public function pay($model)
+    public function pay($model, $returnUrl = null, $cancelUrl = null)
     {
         try {
+            // Default to the web session-based callbacks; callers (e.g. the mobile
+            // API) may pass self-contained URLs that do not depend on a web session.
+            // Stripe needs the {CHECKOUT_SESSION_ID} placeholder on the success URL.
+            if ($returnUrl) {
+                $successUrl = $returnUrl . (parse_url($returnUrl, PHP_URL_QUERY) ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}';
+            } else {
+                $successUrl = route('payment.success', ['method' => 'stripe', 'sponsor_id' => $model->id]) . '?session_id={CHECKOUT_SESSION_ID}';
+            }
+            $cancelUrl = $cancelUrl ?: route('payment.cancel', ['method' => 'stripe', 'sponsor_id' => $model->id]);
+
             $session = Session::create([
                 'payment_method_types' => [
                     'card',           // Credit & Debit Cards (Visa, Mastercard, Amex, etc.) + Apple Pay + Google Pay
@@ -53,8 +63,8 @@ class StripePayment
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
-                'success_url' => route('payment.success', ['method' => 'stripe', 'sponsor_id' => $model->id]) . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('payment.cancel', ['method' => 'stripe', 'sponsor_id' => $model->id]),
+                'success_url' => $successUrl,
+                'cancel_url' => $cancelUrl,
                 
                 // Enable Apple Pay and Google Pay (they appear automatically for supported devices)
                 'payment_method_options' => [

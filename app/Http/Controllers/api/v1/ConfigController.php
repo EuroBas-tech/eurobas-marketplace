@@ -8,6 +8,7 @@ use App\Model\Brand;
 use App\Model\BusinessSetting;
 use App\Model\Currency;
 use App\Model\HelpTopic;
+use App\Model\Setting;
 use App\Model\SocialMedia;
 use Illuminate\Http\Request;
 
@@ -69,10 +70,21 @@ class ConfigController extends Controller
             'copyright_text' => $this->getSettingValue('company_copyright_text'),
             'base_urls' => [
                 'brand_image_url' => cloudfront('brand'),
-                'customer_image_url' => asset('storage/app/public/profile'),
+                // Profile avatars live under profile/images and covers under
+                // profile/covers (served the same way as the other CDN assets).
+                'customer_image_url' => cloudfront('profile/images'),
+                'cover_image_url' => cloudfront('profile/covers'),
                 'banner_image_url' => cloudfront('banner'),
+                'paid_banner_image_url' => cloudfront('paid-banners'),
                 'category_image_url' => cloudfront('category'),
-                'notification_image_url' => asset('storage/app/public/notification'),
+                'ad_image_url' => cloudfront('ad'),
+                'ad_thumbnail_url' => cloudfront('ad/thumbnail'),
+                'chat_image_url' => cloudfront('chatting'),
+                'notification_image_url' => cloudfront('notification'),
+            ],
+            'payment_gateways' => [
+                'paypal' => (bool) Setting::where('key_name', 'paypal')->where('is_active', 1)->exists(),
+                'stripe' => (bool) Setting::where('key_name', 'stripe')->where('is_active', 1)->exists(),
             ],
             'about_us' => Helpers::get_business_settings('about_us') ?? '',
             'privacy_policy' => Helpers::get_business_settings('privacy_policy') ?? '',

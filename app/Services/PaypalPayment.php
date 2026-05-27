@@ -70,10 +70,10 @@ class PaypalPayment
     /**
      * Create a PayPal payment
      */
-    public function pay($model)
+    public function pay($model, $returnUrl = null, $cancelUrl = null)
     {
         try {
-            
+
             $payer = new Payer();
             $payer->setPaymentMethod('paypal');
 
@@ -85,9 +85,14 @@ class PaypalPayment
             $transaction->setAmount($amount)
             ->setDescription("Payment for Sponsored Ad #{$model->id}");
 
+            // Default to the web session-based callbacks; callers (e.g. the mobile
+            // API) may pass self-contained URLs that do not depend on a web session.
+            $returnUrl = $returnUrl ?: URL::route('payment.success', ['method' => 'paypal', 'sponsor_id' => $model->id]);
+            $cancelUrl = $cancelUrl ?: URL::route('payment.cancel', ['method' => 'paypal', 'sponsor_id' => $model->id]);
+
             $redirectUrls = new RedirectUrls();
-            $redirectUrls->setReturnUrl(URL::route('payment.success', ['method' => 'paypal', 'sponsor_id' => $model->id]))
-            ->setCancelUrl(URL::route('payment.cancel', ['method' => 'paypal', 'sponsor_id' => $model->id]));
+            $redirectUrls->setReturnUrl($returnUrl)
+            ->setCancelUrl($cancelUrl);
 
             $payment = new Payment();
             $payment->setIntent('sale')

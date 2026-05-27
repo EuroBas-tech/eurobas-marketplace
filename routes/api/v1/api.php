@@ -68,13 +68,50 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
 
     // ─── ADS (public) ────────────────────────────────────────────────────
     Route::get('ads/show/{ad}', 'AdController@show');
+    Route::get('ads/show-by-slug/{slug}', 'AdController@show_by_slug');
     Route::get('ads/by-category/{id}', 'AdController@get_ads_by_category');
     Route::post('ads/filter', 'AdController@ads_filter');
+    Route::post('ads/filter-count', 'AdController@filter_count');
+    Route::get('ads/load-home-ads', 'AdController@load_home_ads');
     Route::post('searched-ads', 'WebController@searched_ads');
+
+    // ─── BROWSE / DISCOVERY (public) ─────────────────────────────────────
+    Route::get('home', 'AdController@home');
+    Route::get('categories/{id}/fields', 'AdController@category_fields');
+    Route::get('brands', 'BrandController@index');
+    Route::get('brands/{id}', 'BrandController@show');
+    Route::get('models/{id}/ads', 'BrandController@model_ads');
+
+    // ─── PROMOTIONS CATALOGUE / STATIC PAGES (public) ────────────────────
+    Route::get('subscription-packages', 'PromotionController@packages');
+    Route::get('pages/{slug}', 'PageController@show');
+
+    // ─── PUBLIC SELLER ADS ───────────────────────────────────────────────
+    Route::get('users/{id}/ads', 'CustomerController@user_ads');
+
+    // ─── PAYMENT GATEWAY REDIRECT TARGET (public, stateless) ─────────────
+    Route::get('payment/callback/{method}', 'PaymentController@callback');
 
     // ─── ADS (authenticated) ──────────────────────────────────────────────
     Route::group(['prefix' => 'ads', 'middleware' => 'auth:api'], function () {
+        Route::get('create-options', 'AdController@create_options');
         Route::post('auction', 'AdController@store_auction');
+        Route::delete('auction/{id}', 'AdController@delete_auction');
+        Route::post('asking-price', 'AdController@store_asking_price');
+        Route::delete('asking-price/{id}', 'AdController@delete_asking_price');
+        Route::post('report', 'AdController@report');
+        Route::post('/', 'AdController@store');
+        Route::match(['put', 'post'], '{id}', 'AdController@update');
+        Route::delete('{id}', 'AdController@destroy');
+    });
+
+    // ─── MUX VIDEO + PAYMENT (authenticated) ─────────────────────────────
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('mux/create-upload', 'MuxController@create_upload');
+        Route::get('mux/video', 'MuxController@video');
+
+        Route::post('payment/initiate', 'PaymentController@initiate');
+        Route::get('payment/verify', 'PaymentController@verify');
     });
 
     // ─── MAP API (public) ────────────────────────────────────────────────
@@ -130,18 +167,35 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
             Route::get('conv/{ticket_id}', 'CustomerController@get_support_ticket_conv');
             Route::post('reply/{ticket_id}', 'CustomerController@reply_support_ticket');
             Route::post('close', 'CustomerController@support_ticket_close');
+            Route::delete('{ticket_id}', 'CustomerController@delete_support_ticket');
         });
 
         Route::group(['prefix' => 'wish-list'], function () {
             Route::get('/', 'CustomerController@wish_list');
             Route::post('add', 'CustomerController@add_to_wishlist');
             Route::delete('remove', 'CustomerController@remove_from_wishlist');
+            Route::delete('clear', 'CustomerController@clear_wishlist');
         });
 
         Route::group(['prefix' => 'chat'], function () {
             Route::get('list', 'ChatController@list');
+            Route::get('unread-count', 'ChatController@unread_count');
             Route::get('get-messages/{id}', 'ChatController@get_message');
             Route::post('send-message', 'ChatController@send_message');
+            Route::post('mark-seen', 'ChatController@mark_seen');
+        });
+
+        // ─── PROMOTIONS — MANAGE MY PAID BANNERS / SPONSORS (§4) ─────────
+        Route::group(['prefix' => 'paid-banners'], function () {
+            Route::get('/', 'PromotionController@my_paid_banners');
+            Route::post('/', 'PromotionController@store_paid_banner');
+            Route::delete('{id}', 'PromotionController@delete_paid_banner');
+        });
+
+        Route::group(['prefix' => 'sponsors'], function () {
+            Route::get('/', 'PromotionController@my_sponsors');
+            Route::post('/', 'PromotionController@store_sponsor');
+            Route::delete('{id}', 'PromotionController@delete_sponsor');
         });
     });
 

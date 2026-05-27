@@ -7,6 +7,9 @@ use App\CPU\Helpers;
 use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpdateProfileRequest;
+use App\Model\Ad;
+use App\Model\Brand;
+use App\Model\Category;
 use App\Model\DeliveryCountryCode;
 use App\Model\DeliveryZipCode;
 use App\Model\ShippingAddress;
@@ -40,31 +43,78 @@ class CustomerController extends Controller
             ], 404);
         }
 
+        // Sections the website profile shows: categories grid, brands row, and a
+        // preview of the seller's (active) ads — derived from the seller's ads.
+        $activeAds = Ad::active()->where('user_id', $user->id);
+
+        $categoryIds = (clone $activeAds)->distinct()->pluck('category_id')->filter();
+        $brandIds    = (clone $activeAds)->distinct()->pluck('brand_id')->filter();
+
+        $categories = Category::whereIn('id', $categoryIds)->select('id', 'name', 'icon')->get();
+        $brands     = Brand::whereIn('id', $brandIds)->select('id', 'name', 'image')->get();
+
+        $ads = Ad::active()->with(['category', 'brand', 'model', 'sponsor'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(8)
+            ->get();
+
         return response()->json([
-            'user' => Helpers::publicSellerProfile($user),
+            'user'       => Helpers::publicSellerProfile($user),
+            'categories' => $categories,
+            'brands'     => $brands,
+            'ads'        => $ads,
         ], 200);
+    }
+
+    /**
+     * GET v1/users/{id}/ads — paginated public ads list for a seller (§6.2),
+     * shaped like ads/filter rows.
+     */
+    public function user_ads(Request $request, $id)
+    {
+        $user = User::where('is_active', 1)->find($id);
+
+        if (!$user) {
+            return response()->json([
+                'errors' => [['code' => 'user-001', 'message' => translate('user_not_found')]]
+            ], 404);
+        }
+
+        $ads = Ad::active()
+            ->with(['category', 'brand', 'model', 'sponsor', 'user' => fn($q) => $q->select('id', 'name', 'image')])
+            ->where('user_id', $id)
+            ->latest()
+            ->paginate($request->input('limit', 10));
+
+        return response()->json($ads, 200);
     }
 
     public function update_profile(UpdateProfileRequest $request)
     {
         $user = $request->user();
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->bio = $request->bio;
-        $user->phone_code = $request->phone_code;
-        $user->phone = $request->phone;
-        $user->show_phone_number = $request->show_phone_number;
-        $user->show_email_address = $request->show_email_address;
-        $user->native_language = $request->native_language;
-        $user->street_address_type = $request->street_address_type;
-        $user->latitude = $request->latitude;
-        $user->longitude = $request->longitude;
-        $user->country = $request->country;
-        $user->city = $request->city;
-        $user->postal_code = $request->postal_code;
-        $user->street_address = $request->street_address;
-        $user->show_location_data = $request->show_location_data;
+        // Only update fields actually present in the request, so a partial
+        // update from the app never wipes the fields it didn't send.
+        foreach ([
+            'name', 'email', 'bio', 'phone_code', 'phone', 'show_phone_number',
+            'show_email_address', 'native_language', 'street_address_type',
+            'latitude', 'longitude', 'country', 'city', 'postal_code',
+            'street_address', 'show_location_data',
+        ] as $field) {
+            if ($request->has($field)) {
+                $user->{$field} = $request->input($field);
+            }
+        }
+
+        // Avatar + cover are uploaded files (not strings); store them to their
+        // own folders, replacing the previous file. Mirrors the website.
+        if ($request->hasFile('image')) {
+            $user->image = ImageManager::update('profile/images/', $user->image, 'webp', $request->file('image'));
+        }
+        if ($request->hasFile('cover_image')) {
+            $user->cover_image = ImageManager::update('profile/covers/', $user->cover_image, 'webp', $request->file('cover_image'));
+        }
 
         if ($request->password) {
             $user->password = bcrypt($request->password);
@@ -100,7 +150,9 @@ class CustomerController extends Controller
             'subject' => 'required',
             'type' => 'required',
             'description' => 'required',
-            'priority' => 'required'
+            'priority' => 'required',
+            'image' => 'nullable|array',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:6000',
         ]);
 
         if ($validator->fails()) {
@@ -109,10 +161,28 @@ class CustomerController extends Controller
 
         $request['customer_id'] = $request->user()->id;
         $request['status'] = 'pending';
+        $request['attachment'] = json_encode($this->uploadTicketAttachments($request));
 
         CustomerManager::create_support_ticket($request);
 
         return response()->json(['message' => 'Support ticket created successfully.'], 200);
+    }
+
+    /**
+     * Uploads support-ticket image[] attachments (max 6 MB each) and returns the
+     * stored filenames. Parity with the website's ticket attachments (§6.4).
+     */
+    private function uploadTicketAttachments(Request $request): array
+    {
+        $images = [];
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
+                if ($image && $image->isValid()) {
+                    $images[] = ImageManager::upload('support-ticket/', 'webp', $image, 'def.jpg');
+                }
+            }
+        }
+        return $images;
     }
 
     public function account_delete(Request $request)
@@ -137,6 +207,8 @@ class CustomerController extends Controller
 
         $validator = Validator::make($request->all(), [
             'message' => 'required|string',
+            'image' => 'nullable|array',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:6000',
         ]);
 
         if ($validator->fails()) {
@@ -150,9 +222,29 @@ class CustomerController extends Controller
         $support->support_ticket_id = $ticket_id;
         $support->admin_id = null;
         $support->customer_message = $request['message'];
+        $support->attachment = json_encode($this->uploadTicketAttachments($request));
         $support->save();
 
         return response()->json(['message' => 'Support ticket reply sent.'], 200);
+    }
+
+    /**
+     * DELETE v1/customer/support-ticket/{ticket_id} — delete own ticket (§6.4).
+     */
+    public function delete_support_ticket(Request $request, $ticket_id)
+    {
+        $ticket = SupportTicket::where('customer_id', $request->user()->id)
+            ->where('id', $ticket_id)
+            ->first();
+
+        if (!$ticket) {
+            return response()->json(['message' => translate('ticket_not_found')], 404);
+        }
+
+        SupportTicketConv::where('support_ticket_id', $ticket_id)->delete();
+        $ticket->delete();
+
+        return response()->json(['message' => translate('successfully removed!')], 200);
     }
 
     public function support_ticket_close(Request $request)
@@ -248,6 +340,12 @@ class CustomerController extends Controller
         }
 
         return response()->json(['message' => translate('No such data found!')], 404);
+    }
+
+    public function clear_wishlist(Request $request)
+    {
+        Wishlist::where('customer_id', $request->user()->id)->delete();
+        return response()->json(['message' => translate('successfully removed!')], 200);
     }
 
     public function get_customer_paid_banners(Request $request) {
