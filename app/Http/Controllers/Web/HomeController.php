@@ -70,7 +70,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
         $guestId    = Helpers::deviceId();
         $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
 
-        $userInterests = Cache::remember($cacheKey, now()->addDay(), function () use ($customerId, $guestId) {
+        $userInterests = Cache::remember($cacheKey, now()->addHours(2), function () use ($customerId, $guestId) {
         return UserCategoryInterest::query()
           ->where(function ($query) use ($customerId, $guestId) {
             if ($customerId) {
