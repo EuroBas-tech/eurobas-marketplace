@@ -769,30 +769,32 @@ class AdController extends Controller
 
             $ad_ids = Ad::active()->where('user_id', $ad->user_id)->pluck('id');
             
-             $customerId = auth('customer')->id();
-             $guestId    = Helpers::deviceId();
-             $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+              $customerId = auth('customer')->id();
+              $guestId    = $customerId ? null : Helpers::deviceId();
+              $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+              $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
 
-              $userInterests = Cache::remember($cacheKey, now()->addHours(2), function () use ($customerId, $guestId) {
-              return UserCategoryInterest::query()
-              ->where(function ($query) use ($customerId, $guestId) {
-                if ($customerId) {
-                $query->where('user_id', $customerId);
-                 } else {
-                $query->where('guest_id', $guestId);
-            }
-        })
-        ->get(); 
-     });
-             $favCategoryId = UserCategoryInterest::query()
+             $interestData = Cache::remember($cacheKey, $cacheTTL, function () use ($customerId, $guestId) {
+
+             $query = \App\Model\UserCategoryInterest::query()
               ->when(
-               $customerId,
-               fn ($q) => $q->where('user_id', $customerId),
-              fn ($q) => $q->where('guest_id', $guestId)
-              )
-             ->orderByDesc('score')
-             ->value('category_id');
-           
+              $customerId,
+              fn($q) => $q->where('user_id', $customerId),
+              fn($q) => $q->where('guest_id', $guestId)
+          );
+
+            $interests = $query
+         ->orderByDesc('score')
+         ->get();
+
+           return [
+          'userInterests' => $interests,
+          'favCategoryId' => optional($interests->first())->category_id
+       ];
+   });
+
+    $userInterests = $interestData['userInterests'];
+    $favCategoryId = $interestData['favCategoryId'];
             
             // Get total matching banners count
             $totalBanners = PaidBanner::with('package.features', 'category')
@@ -1145,29 +1147,31 @@ class AdController extends Controller
         });
 
          $customerId = auth('customer')->id();
-         $guestId    = Helpers::deviceId();
+         $guestId    = $customerId ? null : Helpers::deviceId();
          $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+         $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
 
-        $userInterests = Cache::remember($cacheKey, now()->addHours(2), function () use ($customerId, $guestId) {
-          return UserCategoryInterest::query()
-        ->where(function ($query) use ($customerId, $guestId) {
-            if ($customerId) {
-                $query->where('user_id', $customerId);
-              } else {
-                $query->where('guest_id', $guestId);
-            }
-        })
-        ->get(); 
-      });
+         $interestData = Cache::remember($cacheKey, $cacheTTL, function () use ($customerId, $guestId) {
 
-        $favCategoryId = UserCategoryInterest::query()
-         ->when(
-        $customerId,
-        fn ($q) => $q->where('user_id', $customerId),
-        fn ($q) => $q->where('guest_id', $guestId)
-        )
-       ->orderByDesc('score')
-       ->value('category_id');
+         $query = \App\Model\UserCategoryInterest::query()
+          ->when(
+              $customerId,
+              fn($q) => $q->where('user_id', $customerId),
+              fn($q) => $q->where('guest_id', $guestId)
+          );
+
+          $interests = $query
+          ->orderByDesc('score')
+          ->get();
+
+        return [
+        'userInterests' => $interests,
+        'favCategoryId' => optional($interests->first())->category_id
+       ];
+   });
+
+      $userInterests = $interestData['userInterests'];
+      $favCategoryId = $interestData['favCategoryId'];
         
         // Get total matching banners count
         $totalBanners = PaidBanner::with('package.features', 'category')
