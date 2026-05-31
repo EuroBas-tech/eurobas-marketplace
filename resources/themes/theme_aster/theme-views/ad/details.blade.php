@@ -423,7 +423,7 @@
                                                             <div class="d-flex gap-2 flex-wrap align-items-center">
                                                                 <h5 class="fw-bold">{{translate('model')}} :</h5>
                                                                 <div class="d-flex align-items-center" >
-                                                                    <span class="mx-1" >{{$ad->model->name ?? '/'}}</span>
+                                                                    <span class="mx-1" >{{$ad->model?->name ?? '/'}}</span>
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -1741,10 +1741,10 @@
                                                                 @csrf
                                                                 <input type="hidden" name="message_type" value="make_an_offer">
                                                                 <input type="hidden" name="ad_id" value="{{$ad->id}}">
-                                                                <input type="hidden" name="seller_id" value="{{$ad->user->id}}" >
+                                                                <input type="hidden" name="seller_id" value="{{$ad->user?->id}}" >
                                                                 <input type="hidden" id="auction_price_value" name="auction_price" value="" >
 <textarea readonly id="auctionMessageBox" style="block-size: 115px;" name="message" class="form-control" rows="18" required placeholder="{{ translate('type_your_offer_message') }}">
-{{ translate('dear') }} {{ $ad->user->f_name }},
+{{ translate('dear') }} {{ $ad->user?->f_name }},
 {{ translate('i_would_like_to_offer') }} {{\App\CPU\BackEndHelper::set_currency($ad->currency)}}[[PRICE]] {{translate('for_your_listing')}} "{{$ad->title}}".
 {{ translate('i_look_forward_to_hearing_from_you') }},
 {{ translate('kind_regards') }},
@@ -1855,10 +1855,10 @@
                                                                 @csrf
                                                                 <input type="hidden" name="message_type" value="asking_price">
                                                                 <input type="hidden" name="ad_id" value="{{$ad->id}}">
-                                                                <input type="hidden" name="seller_id" value="{{$ad->user->id}}" >
+                                                                <input type="hidden" name="seller_id" value="{{$ad->user?->id}}" >
                                                                 <input type="hidden" id="asking_price_value" name="asking_price" value="" >
 <textarea readonly id="askingPriceMessageBox" style="block-size: 115px;" name="message" class="form-control" rows="18" required placeholder="{{ translate('type_your_offer_message') }}">
-{{ translate('dear') }} {{ $ad->user->f_name }},
+{{ translate('dear') }} {{ $ad->user?->f_name }},
 {{ translate('i_would_like_to_offer') }} {{\App\CPU\BackEndHelper::set_currency($ad->currency)}}[[PRICE]] {{translate('for_your_listing')}} "{{$ad->title}}".
 {{ translate('i_look_forward_to_hearing_from_you') }},
 {{ translate('kind_regards') }},
@@ -1958,7 +1958,7 @@
 
                                                             <div class="media-body d-flex flex-column justify-content-center gap-0">
                                                                 <h6 class="text-capitalize mb-1">{{ Str::limit($item['title'], 24) }}</h6>
-                                                                <span><i class="bi bi-person" ></i> {{ $ad->user->f_name }} {{ $ad->user->l_name }}</span>
+                                                                <span><i class="bi bi-person" ></i> {{ $ad->user?->f_name }} {{ $ad->user?->l_name }}</span>
                                                                 <h6 class="text-primary" >{{$item->category->name ?? '/'}}</h6>
                                                                 <div class="product__price text-end">
                                                                     <ins class="product__new-price currency-font">
