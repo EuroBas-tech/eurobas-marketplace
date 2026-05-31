@@ -27,4 +27,4 @@ php artisan view:cache || true
 ln -sf /var/www/public /var/www/public/public
 
 # 7. Start supervisor
-exec /usr/bin/supervisord -n -c '/etc/supervisor/conf.d/supervisord.conf'
+exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
