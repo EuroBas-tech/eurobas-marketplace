@@ -1777,7 +1777,7 @@
                                                     <div class="row" >
                                                         @foreach($ad->auctions->sortByDesc('created_at')->take(3) as $auction)
                                                             <div class="d-flex align-items-center justify-content-between pb-2 mb-2" >
-                                                                <span class="fw-medium d-block fs-13" >{{$auction->user->name}}</span>
+                                                                <span class="fw-medium d-block fs-13" >{{$auction->user?->name}}</span>
                                                                 <span class="fw-bold fs-13" >{{\App\CPU\BackEndHelper::set_price_currency($auction->price, $ad->currency)}}</span>
                                                                 <span class="fw-normal d-block fs-12">{{ date('d M y', strtotime($auction->created_at)) }}</span>
                                                                 @if($auction->user->id == auth('customer')->id())
@@ -1890,7 +1890,7 @@
                                                         <div class="row" >
                                                             @foreach($ad->askingPrice->sortByDesc('created_at')->take(3) as $asking_price)
                                                                 <div class="d-flex align-items-center justify-content-between pb-2 mb-2" >
-                                                                    <span class="fw-medium d-block fs-13" >{{$asking_price->user->name}}</span>
+                                                                    <span class="fw-medium d-block fs-13" >{{$asking_price->user?->name}}</span>
                                                                     <span class="fw-bold fs-13" >{{\App\CPU\BackEndHelper::set_price_currency($asking_price->price, $ad->currency)}}</span>
                                                                     <span class="fw-normal d-block fs-12">{{ date('d M y', strtotime($asking_price->created_at)) }}</span>
                                                                     @if($asking_price->user->id == auth('customer')->id())
