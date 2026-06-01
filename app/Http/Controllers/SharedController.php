@@ -34,11 +34,11 @@ class SharedController extends Controller
         $previousUrl = url()->previous();
         $previousRequest = Request::create($previousUrl);
 
-        Cache::forget('language');
-        Cache::forget('business_setting_language');
-        Cache::forget('home_categories');
-        Cache::forget('categories');
-        Cache::flush();
+        Cache::store('redis')->forget('language');
+        Cache::store('redis')->forget('business_setting_language');
+        Cache::store('redis')->forget("translations_{$local}");
+        Cache::store('redis')->forget("translations_version_{$local}");
+        Helpers::language_load();
 
         try {
             $previousRoute = app('router')->getRoutes()->match($previousRequest);
