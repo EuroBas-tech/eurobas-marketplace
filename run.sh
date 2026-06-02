@@ -21,6 +21,9 @@ php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 
+# 5. Run database migrations (ship schema changes with each deploy)
+php artisan migrate --force
+
 php artisan view:cache || true
 
 # 6. Symlink
