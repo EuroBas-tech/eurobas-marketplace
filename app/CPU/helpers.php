@@ -374,6 +374,9 @@ class Helpers
             'show_email_address'   => (bool) $user->show_email_address,
             'show_location_data'   => (bool) $user->show_location_data,
             'ads_count'            => $ads_count,
+            // Milestone 3: seller rating summary.
+            'seller_rating_avg'    => \App\Model\SellerReview::summaryFor($user->id)['avg'],
+            'seller_reviews_count' => \App\Model\SellerReview::summaryFor($user->id)['count'],
             'member_since'         => $user->created_at,
         ];
     }

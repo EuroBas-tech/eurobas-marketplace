@@ -584,7 +584,7 @@
                                             </div>
 
 
-                                            @if($web_config['recaptcha']['status'] == 1)
+                                            @if(recaptcha_enabled())
                                                 <div class="col-12">
                                                     <div id="recaptcha_element_seller_regi" class="w-100 mt-4" data-type="image"></div>
                                                     <br/>
@@ -672,9 +672,11 @@
     <!-- Page Level Scripts -->
     <script src="{{theme_asset('assets/plugins/jquery-step/jquery.validate.min.js')}}"></script>
     <script src="{{theme_asset('assets/plugins/jquery-step/jquery.steps.min.js')}}"></script>
+    @if(recaptcha_enabled())
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    @endif
 
-@if($web_config['recaptcha']['status'] == '1')
+@if(recaptcha_enabled())
     <script>
         var onloadCallback = function () {
             let reg_id = grecaptcha.render('recaptcha_element_seller_regi', {'sitekey': '{{ $web_config['recaptcha']['site_key'] }}'});
@@ -761,7 +763,7 @@ $(document).ready(function(){
             },
             onFinished: function (event, currentIndex)
             {
-                @if($web_config['recaptcha']['status'] == '1')
+                @if(recaptcha_enabled())
                     if(currentIndex > 0){
                         var response = grecaptcha.getResponse($('#recaptcha_element_seller_regi').attr('data-reg-id'));
                         if (response.length === 0) {

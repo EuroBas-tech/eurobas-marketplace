@@ -249,7 +249,9 @@ Route::group(
 
             //profile Route
             Route::get('show-profile/{id}/{name}', 'UserProfileController@show_profile')->name('show-profile');
-            
+            // Milestone 3: seller rating
+            Route::post('seller-review', 'SellerReviewController@store')->name('seller-review-store');
+
             Route::get('user-profile', 'UserProfileController@user_profile')->name('user-profile')->middleware('customer'); //theme_aster
             Route::get('user-account', 'UserProfileController@user_account')->name('user-account')->middleware('customer');
             Route::post('user-account-update', 'UserProfileController@user_update')->name('user-update');
@@ -284,6 +286,12 @@ Route::group(
             Route::post('messages-store', 'ChattingController@messages_store')->name('messages_store');
             Route::post('chat-with-seller', 'ChattingController@chat_with_seller')->name('chat_with_seller');
             Route::post('discussion-store', 'ChattingController@discussion_store')->name('discussion_store');
+            // Milestone 2: messaging enhancements (report / block / delete)
+            Route::post('report-user', 'ChattingController@report_user')->name('report_user')->middleware('customer');
+            Route::post('block-user', 'ChattingController@block_user')->name('block_user')->middleware('customer');
+            Route::post('unblock-user', 'ChattingController@unblock_user')->name('unblock_user')->middleware('customer');
+            Route::post('delete-message', 'ChattingController@delete_message')->name('delete_message')->middleware('customer');
+            Route::post('delete-conversation', 'ChattingController@delete_conversation')->name('delete_conversation')->middleware('customer');
             // chatting end
 
             //Support Ticket
@@ -995,4 +1003,3 @@ Route::get('update-terms-and-conditions', function() {
 
     return $terms;
 });
-

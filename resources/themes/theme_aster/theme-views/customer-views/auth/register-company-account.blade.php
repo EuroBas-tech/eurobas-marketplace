@@ -107,7 +107,7 @@
                                         </div>
 
                                         {{-- Google reCAPTCHA v2 (Image Challenges) --}}
-                                        @if($web_config['recaptcha']['status'] == 1)
+                                        @if(recaptcha_enabled())
                                             <div class="form-group">
                                                 <div id="recaptcha_element_customer_register_company" class="w-100" data-register-company-id=""></div>
                                             </div>
@@ -147,7 +147,7 @@
                 `);
 
                 // Check Google reCAPTCHA v2 validation
-                @if($web_config['recaptcha']['status'] == 1)
+                @if(recaptcha_enabled())
                     var response_customer_register_company = grecaptcha.getResponse($('#recaptcha_element_customer_register_company').attr('data-register-company-id'));
 
                     if (response_customer_register_company.length === 0) {
@@ -232,6 +232,7 @@
 
     </script>
 
+    @if(recaptcha_enabled())
     {{-- Google reCAPTCHA v2 Scripts - Optimized for More Challenges --}}
     <script type="text/javascript">
         var onloadCallbackCustomerRegisterCompany = function () {
@@ -283,6 +284,7 @@
         })();
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegisterCompany&render=explicit&hl=en" async defer></script>
+    @endif
 
 
 @endpush

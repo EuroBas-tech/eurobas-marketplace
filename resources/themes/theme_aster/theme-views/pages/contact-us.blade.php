@@ -58,10 +58,10 @@
                                     <label for="message">{{ translate('message') }}</label>
                                     <textarea name="message" id="message" class="form-control" rows="6" placeholder="{{ translate('type_your_message_here..') }}"> {{ old('subject') }} </textarea>
                                 </div>
-                                @if(isset($recaptcha) && $recaptcha['status'] == 1)
+                                @if(recaptcha_enabled())
                                     <div id="recaptcha_element_contact" class="w-100" data-type="image"></div>
                                     <br/>
-                                @else
+                                @elseif(!is_local_test_host())
                                     <div class="row p-2">
                                         <div class="col-6 pr-0">
                                             <input type="text" class="form-control form-control-lg border-0" name="default_captcha_value" value=""
@@ -95,7 +95,7 @@
 
 @push('script')
     {{-- recaptcha scripts start --}}
-    @if(isset($recaptcha) && $recaptcha['status'] == 1)
+    @if(recaptcha_enabled())
         <script type="text/javascript">
             var onloadCallback = function () {
                 grecaptcha.render('recaptcha_element_contact', {
@@ -115,7 +115,7 @@
                 }
             });
         </script>
-    @else
+    @elseif(!is_local_test_host())
         <script type="text/javascript">
             function re_captcha() {
                 $url = "{{ URL('/contact/code/captcha') }}";

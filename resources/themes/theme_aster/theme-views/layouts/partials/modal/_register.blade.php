@@ -28,12 +28,11 @@
                     <h2 class="mb-2">{{ translate('sign_up') }}</h2>
                     <p class="text-muted">
                         {{ translate('login_to_your_account.') }} {{ translate('Don’t_have_account') }}?
-                        <span
+                        <a
                             class="text-primary fw-bold"
-                            data-bs-toggle="modal"
-                            data-bs-target="#loginModal">
+                            href="{{ route('customer.auth.login') }}">
                             {{ translate('login') }}
-                        </span>
+                        </a>
                     </p>
                 </div>
 
@@ -104,11 +103,11 @@
                             </div>
                         </div>
 
-                        @if($web_config['recaptcha']['status'] == 1)
+                        @if(recaptcha_enabled())
                             <div class="d-flex justify-content-center">
                                 <div id="recaptcha_element_customer_regi" class="w-100 mt-2" data-type="image"></div>
                             </div>
-                        @else
+                        @elseif(!is_local_test_host())
                             <div class="d-flex gap-3 justify-content-center py-2 mt-4 mb-3">
                                 <div class="">
                                     <input type="text" class="form-control border __h-40" name="default_recaptcha_value_customer_regi" value=""
@@ -157,7 +156,7 @@
 </div>
 
 @push('script')
-    @if($web_config['recaptcha']['status'] == '1')
+    @if(recaptcha_enabled())
         <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
     @endif
 
@@ -171,7 +170,7 @@
 
         });
 
-        @if($web_config['recaptcha']['status'] == '1')
+        @if(recaptcha_enabled())
             var onloadCallbackCustomerRegi = function () {
                 let reg_id = grecaptcha.render('recaptcha_element_customer_regi', {
                     'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}'
@@ -200,7 +199,7 @@
             let formData = $(this).serialize()
             let recaptcha = true;
 
-            @if($web_config['recaptcha']['status'] == '1')
+            @if(recaptcha_enabled())
                 recaptcha = recaptcha_f();
             @endif
 
@@ -233,8 +232,9 @@
                             if (data.redirect_url !== '') {
                                 window.location.href = data.redirect_url;
                             } else {
+                                // Milestone 1: funnel to the dedicated login page, not the modal.
                                 $('#registerModal').modal('hide');
-                                $('#loginModal').modal('show');
+                                window.location.href = "{{ route('customer.auth.login') }}";
                             }
                         }
                     },

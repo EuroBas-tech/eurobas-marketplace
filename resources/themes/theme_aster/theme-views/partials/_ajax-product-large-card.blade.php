@@ -160,6 +160,16 @@
                             <i class="bi bi-tags-fill fs-13"></i><span class="mx-1" >{{$ad->category->name ?? '/'}}</span>
                         </h6>
                     </div>
+                    {{-- Milestone 3: seller name + average rating / review count --}}
+                    @if(\App\Model\SellerReview::summaryFor($ad->user_id)['count'] > 0)
+                        <div class="mb-3 responsive-sides-padding text-start">
+                            @php($__sname = \App\User::cachedName($ad->user_id))
+                            @if($__sname)
+                                <div class="fs-12 text-muted text-truncate">{{ \Illuminate\Support\Str::limit($__sname, 28) }}</div>
+                            @endif
+                            @include('theme-views.partials._seller-rating-inline', ['seller_id' => $ad->user_id])
+                        </div>
+                    @endif
                     <div class="product__price d-flex align-items-end justify-content-between fw-medium">
                         <div class="text-start" >
                             @if($ad->category->category_type == 'vehicles' && $ad->category->slug != 'bicycles')

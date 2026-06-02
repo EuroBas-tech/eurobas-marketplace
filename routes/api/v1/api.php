@@ -88,6 +88,8 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
 
     // ─── PUBLIC SELLER ADS ───────────────────────────────────────────────
     Route::get('users/{id}/ads', 'CustomerController@user_ads');
+    // Milestone 3: public seller reviews
+    Route::get('users/{id}/reviews', 'SellerReviewController@list');
 
     // ─── PAYMENT GATEWAY REDIRECT TARGET (public, stateless) ─────────────
     Route::get('payment/callback/{method}', 'PaymentController@callback');
@@ -144,6 +146,9 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
     // ─── AUTHENTICATED ENDPOINTS ─────────────────────────────────────────
     Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
 
+        // Milestone 3: submit/update a seller review
+        Route::post('seller-review', 'SellerReviewController@store');
+
         // Profile - support both GET and POST for mobile compatibility
         Route::group(['prefix' => 'profile'], function() {
             Route::match(['get', 'post'], '/', 'CustomerController@get_customer_profile');
@@ -183,6 +188,13 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
             Route::get('get-messages/{id}', 'ChatController@get_message');
             Route::post('send-message', 'ChatController@send_message');
             Route::post('mark-seen', 'ChatController@mark_seen');
+            // Milestone 2: messaging enhancements
+            Route::post('report', 'ChatController@report_user');
+            Route::post('block', 'ChatController@block_user');
+            Route::post('unblock', 'ChatController@unblock_user');
+            Route::get('blocked-list', 'ChatController@blocked_list');
+            Route::post('delete-message', 'ChatController@delete_message');
+            Route::post('delete-conversation', 'ChatController@delete_conversation');
         });
 
         // ─── PROMOTIONS — MANAGE MY PAID BANNERS / SPONSORS (§4) ─────────

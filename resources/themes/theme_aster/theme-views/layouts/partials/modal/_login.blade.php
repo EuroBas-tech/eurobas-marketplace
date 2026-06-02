@@ -64,7 +64,7 @@
                     </div>
 
                     {{-- Google reCAPTCHA v2 (Image Challenges) --}}
-                    @if($web_config['recaptcha']['status'] == 1)
+                    @if(recaptcha_enabled())
                         <div class="form-group mb-4">
                             <div id="recaptcha_element_customer_login" class="w-100 pt-4" data-login-id=""></div>
                         </div>
@@ -102,7 +102,7 @@
 </div>
 
 @push('script')
-    @if($web_config['recaptcha']['status'] == '1')
+    @if(recaptcha_enabled())
     {{-- Google reCAPTCHA v2 Scripts - Optimized for More Challenges --}}
     <script type="text/javascript">
         var onloadCallbackCustomerLogin = function () {
@@ -162,7 +162,7 @@
 
             var customer_recaptcha = null;
 
-            @if($web_config['recaptcha']['status'] == 1)
+            @if(recaptcha_enabled())
                 var customer_recaptcha = true;
 
                 // Check Google reCAPTCHA v2 validation

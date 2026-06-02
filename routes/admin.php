@@ -177,7 +177,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('export', 'ReportController@export')->name('export');
             Route::get('confirm/{id}', 'ReportController@confirm')->name('confirm');
         });
-        
+
+        // Milestone 2: user reports (raised from chat / seller profile)
+        Route::group(['prefix' => 'user-reports', 'as' => 'user-reports.'], function () {
+            Route::get('list', 'UserReportController@list')->name('list');
+            Route::get('view/{id}', 'UserReportController@view')->name('view');
+            Route::post('status', 'UserReportController@status')->name('status');
+            Route::delete('delete', 'UserReportController@delete')->name('delete');
+        });
+
         Route::group(['prefix' => 'list', 'as' => 'list.','middleware'=>['module:product_management']], function () {
             Route::get('add-new/{type}', 'ListController@add_new')->name('add-new');
             Route::post('add-new', 'ListController@store')->name('store');

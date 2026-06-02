@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Gregwar\Captcha\PhraseBuilder;
 
 class LoginController extends Controller
@@ -50,15 +51,22 @@ class LoginController extends Controller
         $builder->output();
     }
 
-    public function login()
+    public function login(Request $request)
     {
-        session()->put('keep_return_url', url()->previous());
+        // Milestone 1: Dedicated login page.
+        // Determine a safe post-login redirect target and persist it for the submit() step.
+        $redirect = $request->get('redirect_to') ?: url()->previous();
+        if (!$redirect || Str::contains($redirect, ['auth/login', 'auth/sign-up', 'auth/recover-password'])) {
+            $redirect = route('home');
+        }
+        session()->put('keep_return_url', $redirect);
 
         if(theme_root_path() == 'default'){
             return view('customer-view.auth.login');
-        }else{
-            return redirect()->route('home');
         }
+
+        // theme_aster: render the dedicated standalone login page (mirrors the registration page).
+        return view(VIEW_FILE_NAMES['customer_login']);
     }
 
     public function submit(Request $request)
@@ -70,7 +78,10 @@ class LoginController extends Controller
 
         //recaptcha validation start
         $recaptcha = Helpers::get_business_settings('recaptcha');
-        if (isset($recaptcha) && $recaptcha['status'] == 1) {
+        if (is_local_test_host()) {
+            // Local .test development host — skip captcha entirely so the platform
+            // can be tested without solving a challenge.
+        } elseif (isset($recaptcha) && $recaptcha['status'] == 1) {
             try {
                 $request->validate([
                     'g-recaptcha-response' => [
@@ -181,7 +192,9 @@ class LoginController extends Controller
             $user->updated_at = now();
             $user->save();
 
-            $redirect_url = url()->previous();
+            // Dedicated login page sends an explicit redirect_url (hidden field); the popup modal does not,
+            // so it keeps the original behaviour of returning to the previous page.
+            $redirect_url = $request->filled('redirect_url') ? $request->redirect_url : url()->previous();
 
             if($request->ajax()) {
                 return response()->json([
@@ -190,7 +203,7 @@ class LoginController extends Controller
                     'redirect_url'=> $redirect_url,
                 ]);
             }else{
-                return redirect(session('keep_return_url'));
+                return redirect($request->filled('redirect_url') ? $request->redirect_url : session('keep_return_url'));
             }
 
         }else{

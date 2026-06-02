@@ -804,8 +804,7 @@
                         {{ translate('post_your_ad') }}
                     </a>
                 @else
-                    <a href=""
-                    data-bs-toggle="modal" data-bs-target="#loginModal"
+                    <a href="{{ route('customer.auth.login', ['redirect_to' => route('ads-adding-type')]) }}"
                     class="btn btn-light text-light bg-orange fw-normal custom-fs-16 border-0 d-flex gap-1 px-2 py-1">
                         <i class="bi bi-plus-circle mx-1"></i>
                         {{ translate('post_your_ad') }}
@@ -1174,8 +1173,7 @@
                                 {{ translate('post_your_ad') }}
                             </a>
                         @else
-                            <a href="" 
-                            data-bs-toggle="modal" data-bs-target="#loginModal"
+                            <a href="{{ route('customer.auth.login', ['redirect_to' => route('ads-adding-type')]) }}"
                             class="btn btn-light text-light bg-orange fw-normal fs-16 border-0 d-flex gap-1 ps-3 py-2">
                                 <i class="bi bi-plus-circle mx-1"></i>
                                 {{ translate('post_your_ad') }}
@@ -1319,7 +1317,7 @@
                     </div>
                 @else
                     <div class="d-flex justify-content-center mb-5 pb-5 mt-auto px-4 gap-2">
-                        <a href="" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-primary w-100">
+                        <a href="{{ route('customer.auth.login') }}" class="btn btn-primary w-100">
                             {{ translate('login') }}
                         </a>
                         <a href="{{route('customer.auth.sign-up-type')}}" class="btn btn-primary w-100">
@@ -1509,12 +1507,12 @@
                         </li>
                     @else
                         <li class="login-register d-flex gap-4">
-                            <button class="media gap-2 align-items-center text-uppercase fs-12 bg-transparent border-0 p-0" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <a href="{{ route('customer.auth.login') }}" class="media gap-2 align-items-center text-uppercase fs-12 bg-transparent border-0 p-0">
                                 <span class="avatar header-avatar rounded-circle d-xl-none" style="--size: 1.5rem">
                                     <img loading="lazy" src="{{theme_asset('assets/img/user.png')}}" class="img-fit rounded-circle" alt="" />
                                 </span>
                                 <span class="media-body d-none d-xl-block hover-primary fw-bold">{{ translate('login') }}</span>
-                            </button>
+                            </a>
                             <div class="menu-btn d-xl-none">
                                 <i class="bi bi-list fs-30"></i>
                             </div>
@@ -1623,8 +1621,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         <?php if (session()->has('redirect_to_login')): ?>
             <?php session()->forget('redirect_to_login'); ?>
-            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            loginModal.show();
+            window.location.href = "{{ route('customer.auth.login') }}";
         <?php endif; ?>
     });
 </script>

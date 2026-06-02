@@ -320,8 +320,23 @@ class UserProfileController extends Controller
 
         $user_id = $id;
 
-        return view(VIEW_FILE_NAMES['user_profile_show'], compact('user_profile', 'user_ads', 'user_ads_count', 
-        'user_categories', 'user_brands', 'categories', 'brands', 'models', 'user_id', 'paid_banners'));
+        // Milestone 3: seller rating + moderation state for this profile.
+        $seller_summary = \App\Model\SellerReview::summaryFor($user_profile->id);
+        $seller_reviews = \App\Model\SellerReview::with('customer:id,name,image')
+            ->where('seller_id', $user_profile->id)->where('status', 1)
+            ->latest()->take(20)->get();
+
+        $me = auth('customer')->id();
+        $my_review = $me
+            ? \App\Model\SellerReview::where('seller_id', $user_profile->id)->where('customer_id', $me)->first()
+            : null;
+        $is_blocked = $me
+            ? \App\Model\UserBlock::where('blocker_id', $me)->where('blocked_id', $user_profile->id)->exists()
+            : false;
+
+        return view(VIEW_FILE_NAMES['user_profile_show'], compact('user_profile', 'user_ads', 'user_ads_count',
+        'user_categories', 'user_brands', 'categories', 'brands', 'models', 'user_id', 'paid_banners',
+        'seller_summary', 'seller_reviews', 'my_review', 'is_blocked'));
     }
 
 

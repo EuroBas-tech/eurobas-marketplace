@@ -9,6 +9,8 @@ use App\Model\Order;
 use App\Models\User;
 use App\Model\Seller;
 use App\Model\Chatting;
+use App\Model\UserBlock;
+use App\Model\UserReport;
 use App\Model\Wishlist;
 use App\Model\AdAuction;
 use App\CPU\ImageManager;
@@ -41,8 +43,17 @@ class ChattingController extends Controller
 
         if ($type == 'user')
         {
-            $last_chat = Chatting::where('sender_id', auth('customer')->id())
-            ->orWhere('receiver_id', auth('customer')->id())
+            $userId = auth('customer')->id();
+
+            // Block list: users this customer blocked OR who blocked them — hidden from the list.
+            $blocked_ids = UserBlock::relatedBlockedIds($userId);
+
+            // Message status — "Delivered": mark every incoming message delivered when the
+            // recipient loads their chat list (double check). Automated messages are unaffected.
+            Chatting::where('receiver_id', $userId)->whereNull('delivered_at')->update(['delivered_at' => now()]);
+
+            $last_chat = Chatting::where('sender_id', $userId)
+            ->orWhere('receiver_id', $userId)
             ->whereNotNull(['sender_id', 'receiver_id'])
             ->orderBy('created_at', 'DESC')
             ->first();
@@ -51,55 +62,73 @@ class ChattingController extends Controller
 
             if (isset($last_chat)) {
 
-                $userId = auth('customer')->id();
-
-                $unique_chats = Chatting::where('sender_id', $userId)
-                ->orWhere('receiver_id', $userId)
+                // One row per conversation partner (newest first), excluding blocked users
+                // and conversations fully soft-deleted by this user.
+                $unique_chats = Chatting::visibleTo($userId)
+                ->where(function ($q) use ($userId) {
+                    $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+                })
                 ->orderBy('created_at', 'desc')
                 ->get()
+                ->reject(function ($chat) use ($userId, $blocked_ids) {
+                    $partner = $chat->sender_id === $userId ? $chat->receiver_id : $chat->sender_id;
+                    return in_array($partner, $blocked_ids);
+                })
                 ->unique(function ($chat) use ($userId) {
                     return $chat->sender_id === $userId ? $chat->receiver_id : $chat->sender_id;
-                });
+                })
+                ->values();
 
-                $id = $unique_chats->first()->sender_id == $userId ? 
-                    $unique_chats->first()->receiver_id :
-                $unique_chats->first()->sender_id;
+                // Which conversation is open?
+                $chat_with = request()->id
+                    ?: ($unique_chats->count() > 0
+                        ? ($unique_chats[0]->sender_id == $userId ? $unique_chats[0]->receiver_id : $unique_chats[0]->sender_id)
+                        : null);
 
-                $user = User::select('id', 'name', 'image')->find(request()->id ?? $id);
+                $user = User::select('id', 'name', 'image')->find($chat_with);
 
-                $chatting = Chatting::where('sender_id', $userId)
-                ->orWhere('receiver_id', $userId)
+                // Message status — "Seen": stamp seen_at the first time the recipient opens
+                // the conversation (blue double check); keep the legacy `seen` flag in sync.
+                if ($chat_with) {
+                    Chatting::where('sender_id', $chat_with)->where('receiver_id', $userId)
+                        ->whereNull('seen_at')->update(['seen' => 1, 'seen_at' => now()]);
+                    Chatting::where('sender_id', $chat_with)->where('receiver_id', $userId)
+                        ->where('seen', 0)->update(['seen' => 1]);
+                }
+
+                $filteredChats = Chatting::visibleTo($userId)
+                ->where(function ($q) use ($userId, $chat_with) {
+                    $q->where(function ($q2) use ($userId, $chat_with) {
+                        $q2->where('sender_id', $userId)->where('receiver_id', $chat_with);
+                    })->orWhere(function ($q2) use ($userId, $chat_with) {
+                        $q2->where('sender_id', $chat_with)->where('receiver_id', $userId);
+                    });
+                })
+                ->orderBy('created_at', 'asc')
                 ->get();
 
-                $chat_with = $unique_chats->count() > 0 && !request()->id
-                ? ($unique_chats[0]->sender_id == auth('customer')->id()
-                    ? $unique_chats[0]->receiver_id
-                    : $unique_chats[0]->sender_id)
-                : request()->id;
-
-                Chatting::where('sender_id', $chat_with)
-                ->where('receiver_id', $userId)
-                ->update(['seen' =>1]);
-                
-                $filteredChats = $chatting->filter(function ($chat) use ($chat_with) {
-                    return $chat->sender_id == $chat_with || $chat->receiver_id == $chat_with;
-                });
-
                 // /*Unseen Message Count*/
-                $unique_chats?->map(function($unique_chat){
-                    $unique_chat['unseen_message_count'] = Chatting::where([
-                        'sender_id' =>$unique_chat->sender_id === auth('customer')->id() ? $unique_chat->receiver_id : $unique_chat->sender_id,
-                        'receiver_id'=>auth('customer')->id(),
-                        'seen'=>0,
-                    ])->count();
+                $unique_chats->map(function ($unique_chat) use ($userId) {
+                    $partner = $unique_chat->sender_id === $userId ? $unique_chat->receiver_id : $unique_chat->sender_id;
+                    $unique_chat['unseen_message_count'] = Chatting::where('sender_id', $partner)
+                        ->where('receiver_id', $userId)
+                        ->where('seen', 0)
+                        ->count();
                 });
                 /*End Unseen Message*/
 
-                return view(VIEW_FILE_NAMES['user_inbox'], compact('chatting', 'chat_with', 'filteredChats', 
-                'unique_chats', 'last_chat', 'user'));
+                // Is the open conversation partner currently blocked by this user?
+                $is_blocked = $chat_with
+                    ? UserBlock::where('blocker_id', $userId)->where('blocked_id', $chat_with)->exists()
+                    : false;
+
+                $chatting = $filteredChats; // kept for backward compatibility with the view
+
+                return view(VIEW_FILE_NAMES['user_inbox'], compact('chatting', 'chat_with', 'filteredChats',
+                'unique_chats', 'last_chat', 'user', 'is_blocked'));
             }
         }
-        
+
         return view(VIEW_FILE_NAMES['user_inbox']);
 
     }
@@ -297,6 +326,11 @@ class ChattingController extends Controller
     {
         $message_form = User::find(auth('customer')->id());
 
+        // Milestone 2: a blocked relationship (either direction) prevents messaging.
+        if ($request->has('chat_with') && UserBlock::blockedBetween(auth('customer')->id(), $request->chat_with)) {
+            return response()->json(translate('you_can_not_message_this_user').'!', 403);
+        }
+
         if ($request->image == null && $request->message == '') {
             return response()->json(translate('type_something').'!', 403);
         }
@@ -332,6 +366,93 @@ class ChattingController extends Controller
         }
 
         return response()->json(['message'=>$message,'image'=>$image]);
+    }
+
+    /* ─── Milestone 2: Report / Block / Delete ─────────────────────────────── */
+
+    public function report_user(Request $request)
+    {
+        $request->validate(['reported_id' => 'required']);
+
+        if (auth('customer')->id() == $request->reported_id) {
+            return response()->json(['error_message' => translate('you_can_not_report_yourself')]);
+        }
+
+        UserReport::create([
+            'reporter_id' => auth('customer')->id(),
+            'reported_id' => $request->reported_id,
+            'chatting_id' => $request->chatting_id,
+            'type'        => $request->type ?? 'chat',
+            'reason'      => $request->reason,
+            'message'     => $request->message,
+            'status'      => 'pending',
+        ]);
+
+        return response()->json(['message' => translate('report_submitted_successfully')]);
+    }
+
+    public function block_user(Request $request)
+    {
+        $request->validate(['blocked_id' => 'required']);
+        $me = auth('customer')->id();
+
+        if ($me == $request->blocked_id) {
+            return response()->json(['error_message' => translate('you_can_not_block_yourself')]);
+        }
+
+        UserBlock::firstOrCreate(['blocker_id' => $me, 'blocked_id' => $request->blocked_id]);
+
+        return response()->json(['message' => translate('user_blocked_successfully'), 'blocked' => true]);
+    }
+
+    public function unblock_user(Request $request)
+    {
+        $request->validate(['blocked_id' => 'required']);
+
+        UserBlock::where('blocker_id', auth('customer')->id())
+            ->where('blocked_id', $request->blocked_id)
+            ->delete();
+
+        return response()->json(['message' => translate('user_unblocked_successfully'), 'blocked' => false]);
+    }
+
+    public function delete_message(Request $request)
+    {
+        $request->validate(['message_id' => 'required']);
+        $me = auth('customer')->id();
+
+        $chat = Chatting::where('id', $request->message_id)
+            ->where(function ($q) use ($me) {
+                $q->where('sender_id', $me)->orWhere('receiver_id', $me);
+            })->first();
+
+        if (!$chat) {
+            return response()->json(['error_message' => translate('message_not_found')], 404);
+        }
+
+        // Soft delete for the current user only — the other party still sees it.
+        if ($chat->sender_id == $me) {
+            $chat->deleted_by_sender = 1;
+        }
+        if ($chat->receiver_id == $me) {
+            $chat->deleted_by_receiver = 1;
+        }
+        $chat->save();
+
+        return response()->json(['message' => translate('message_deleted')]);
+    }
+
+    public function delete_conversation(Request $request)
+    {
+        $request->validate(['user_id' => 'required']);
+        $me = auth('customer')->id();
+        $partner = $request->user_id;
+
+        // Batch soft delete for the current user only.
+        Chatting::where('sender_id', $me)->where('receiver_id', $partner)->update(['deleted_by_sender' => 1]);
+        Chatting::where('sender_id', $partner)->where('receiver_id', $me)->update(['deleted_by_receiver' => 1]);
+
+        return response()->json(['message' => translate('conversation_deleted')]);
     }
 
 }

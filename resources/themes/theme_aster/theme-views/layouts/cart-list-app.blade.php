@@ -208,6 +208,9 @@
 <!-- Login Modal -->
 @include('theme-views.layouts.partials.modal._login')
 
+<!-- Mobile modal stability fix -->
+@include('theme-views.layouts.partials.modal._modal-stability')
+
 <!-- Seller Login Modal -->
 @include('theme-views.layouts.partials.modal._seller-login')
 

@@ -166,6 +166,16 @@
                 @endif
             </ins>
         </div>
+        {{-- Milestone 3: seller name + average rating / review count on the ad card --}}
+        @if(\App\Model\SellerReview::summaryFor($ad->user_id)['count'] > 0)
+            <div class="responsive-sides-padding text-start mb-2">
+                @php($__sname = \App\User::cachedName($ad->user_id))
+                @if($__sname)
+                    <span class="fs-12 text-muted d-block text-truncate">{{ \Illuminate\Support\Str::limit($__sname, 22) }}</span>
+                @endif
+                @include('theme-views.partials._seller-rating-inline', ['seller_id' => $ad->user_id])
+            </div>
+        @endif
     </div>
 </div>
 

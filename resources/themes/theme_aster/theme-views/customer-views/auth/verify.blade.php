@@ -124,8 +124,8 @@
                             <h3>{{translate('Verification_Successfully_Completed')}}</h3>
                             <p class="text-muted">{{ translate('Thank_you_for_your_verification')}}! {{ translate('Now_you_can_login_your_account_is_ready_to_use') }}</p>
                             <div class="d-flex flex-wrap justify-content-center gap-3">
-                                 <button class="btn btn-outline-primary bg-primary-light border-transparent"
-                                         data-bs-toggle="modal" data-bs-target="#loginModal">{{ translate('login') }}</button>
+                                 <a class="btn btn-outline-primary bg-primary-light border-transparent"
+                                    href="{{ route('customer.auth.login') }}">{{ translate('login') }}</a>
                             </div>
                         </div>
                     </div>
@@ -155,8 +155,9 @@
                 if (data.status === 'success') {
                     $('#otp_form_section').addClass('d-none');
                     $('#success_message').removeClass('d-none');
-                    $('#loginModal').modal('show');
                     toastr.success(data.message);
+                    // Milestone 1: send the verified user to the dedicated login page (not the modal).
+                    setTimeout(function () { window.location.href = "{{ route('customer.auth.login') }}"; }, 1500);
                 }else{
                     toastr.error(data.message);
                 }

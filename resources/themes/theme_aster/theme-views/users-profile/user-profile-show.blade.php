@@ -109,13 +109,105 @@
                                         <img class="rounded profile-image-size" src="{{$user_profile['image'] ? cloudfront('profile/images/'.$user_profile['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}" alt="profile_image">
                                     </div>
                                     <div class="d-flex flex-column gap-1" >
-                                        <h3 class="text-white profile-name">{{$user_profile->name}}</h5>
+                                        <h3 class="text-white profile-name mb-0">{{$user_profile->name}}</h3>
+                                        {{-- Milestone 3: seller average rating --}}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="star-rating text-gold" style="font-size: 14px;">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $seller_summary['avg'])
+                                                        <i class="bi bi-star-fill"></i>
+                                                    @elseif ($seller_summary['avg'] != 0 && $i <= (int)$seller_summary['avg'] + 1 && $seller_summary['avg'] >= ((int)$seller_summary['avg'] + .30))
+                                                        <i class="bi bi-star-half"></i>
+                                                    @else
+                                                        <i class="bi bi-star text-white-50"></i>
+                                                    @endif
+                                                @endfor
+                                            </span>
+                                            <span class="text-white fw-semibold fs-12" id="seller-rating-text">
+                                                {{ $seller_summary['avg'] }} ({{ $seller_summary['count'] }} {{ translate('reviews') }})
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {{-- Milestone 3: Seller action toolbar (Contact / Rate / Block / Report) --}}
+                @if(!auth('customer')->check() || auth('customer')->id() != $user_profile->id)
+                <div class="col-12">
+                    <div class="card card-border aside-shadow">
+                        <div class="card-body py-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="d-flex align-items-center gap-2 text-muted fs-14">
+                                <i class="bi bi-shield-check"></i>
+                                <span>{{ translate('contact_or_review_this_seller') }}</span>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                @if(auth('customer')->check())
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#contactSellerProfileModal">
+                                        <i class="bi bi-chat-square-fill"></i> {{ translate('contact_seller') }}
+                                    </button>
+                                    <button class="btn btn-outline-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#rateSellerModal">
+                                        <i class="bi bi-star-fill"></i> {{ $my_review ? translate('edit_review') : translate('rate_seller') }}
+                                    </button>
+                                    <button id="profile-block-btn" class="btn btn-outline-secondary d-flex align-items-center gap-2"
+                                            onclick="profileToggleBlock({{$user_profile->id}}, {{ $is_blocked ? 'false' : 'true' }})">
+                                        <i class="bi {{ $is_blocked ? 'bi-unlock' : 'bi-slash-circle' }}"></i>
+                                        <span>{{ $is_blocked ? translate('unblock') : translate('block') }}</span>
+                                    </button>
+                                    <button class="btn btn-outline-danger d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#reportSellerModal">
+                                        <i class="bi bi-flag"></i> {{ translate('report') }}
+                                    </button>
+                                @else
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                        <i class="bi bi-chat-square-fill"></i> {{ translate('contact_seller') }}
+                                    </button>
+                                    <button class="btn btn-outline-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                        <i class="bi bi-star-fill"></i> {{ translate('rate_seller') }}
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Milestone 3: Seller reviews list --}}
+                @if($seller_reviews->count() > 0)
+                <div class="col-12">
+                    <div class="card card-border aside-shadow">
+                        <div class="card-body">
+                            <h5 class="mb-3 d-flex align-items-center gap-2">
+                                <i class="bi bi-star-fill text-gold"></i>
+                                {{ translate('seller_reviews') }}
+                                <span class="badge bg-primary">{{ $seller_summary['count'] }}</span>
+                            </h5>
+                            <div class="d-flex flex-column gap-3">
+                                @foreach($seller_reviews as $review)
+                                    <div class="border-bottom pb-3">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <img width="32" height="32" class="rounded-circle"
+                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                                                 src="{{ cloudfront('profile/images/'.($review->customer->image ?? 'default.png')) }}" alt="">
+                                            <span class="fw-medium">{{ $review->customer->name ?? translate('user') }}</span>
+                                            <span class="star-rating text-gold ms-1" style="font-size: 12px;">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                                @endfor
+                                            </span>
+                                            <span class="text-muted fs-12 ms-auto">{{ $review->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        @if($review->comment)
+                                            <p class="mb-0 text-muted">{{ $review->comment }}</p>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 <div>
                     <nav>
@@ -670,10 +762,194 @@
         </div>
     </main>
     <!-- End Main Content -->
+
+    @if(auth('customer')->check() && auth('customer')->id() != $user_profile->id)
+        {{-- Milestone 3: Contact Seller modal (reuses existing discussion_store, no logic change) --}}
+        <div class="modal fade" id="contactSellerProfileModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ translate('contact_seller') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="contactSellerProfileForm">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="hidden" name="chat_with" value="{{ $user_profile->id }}">
+                            <label class="mb-1">{{ translate('your_message') }}</label>
+                            <textarea name="message" class="form-control" rows="4" required
+                                      placeholder="{{ translate('write_your_message_here') }}"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ translate('cancel') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ translate('send_message') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Milestone 3: Rate Seller modal --}}
+        <div class="modal fade" id="rateSellerModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ translate('rate_seller') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="rateSellerForm">
+                        @csrf
+                        <div class="modal-body text-center">
+                            <input type="hidden" name="seller_id" value="{{ $user_profile->id }}">
+                            <input type="hidden" name="rating" id="rateSellerValue" value="{{ $my_review->rating ?? 0 }}">
+                            <div class="star-input fs-1 text-gold mb-3" id="rateStarInput">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="bi {{ ($my_review && $i <= $my_review->rating) ? 'bi-star-fill' : 'bi-star' }} rate-star" data-val="{{ $i }}" style="cursor:pointer;"></i>
+                                @endfor
+                            </div>
+                            <textarea name="comment" class="form-control" rows="3"
+                                      placeholder="{{ translate('write_your_review_optional') }}">{{ $my_review->comment ?? '' }}</textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ translate('cancel') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ translate('submit_review') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Milestone 3: Report Seller modal (reuses Milestone 2 user_reports) --}}
+        <div class="modal fade" id="reportSellerModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ translate('report_seller') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="reportSellerForm">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="hidden" name="reported_id" value="{{ $user_profile->id }}">
+                            <input type="hidden" name="type" value="seller">
+                            <div class="form-group mb-3">
+                                <label>{{ translate('reason') }}</label>
+                                <select name="reason" class="form-control">
+                                    <option value="spam">{{ translate('spam_or_scam') }}</option>
+                                    <option value="fraud">{{ translate('fraudulent_listing') }}</option>
+                                    <option value="abuse">{{ translate('abusive_or_harassment') }}</option>
+                                    <option value="other">{{ translate('other') }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>{{ translate('details') }}</label>
+                                <textarea name="message" class="form-control" rows="3" placeholder="{{ translate('describe_the_issue') }}"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ translate('cancel') }}</button>
+                            <button type="submit" class="btn btn-danger">{{ translate('submit_report') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 
 @push('script')
+    {{-- Milestone 3: seller profile actions (contact / rate / block / report) --}}
+    <script>
+        $(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') } });
+
+            // ── Contact seller (first message) ──
+            $('#contactSellerProfileForm').on('submit', function (e) {
+                e.preventDefault();
+                var $f = $(this);
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('discussion_store') }}",
+                    data: $f.serialize(),
+                    success: function (res) {
+                        if (res.error_message) { toastr.error(res.error_message); return; }
+                        toastr.success("{{ translate('message_sent') }}");
+                        $('#contactSellerProfileModal').modal('hide');
+                        setTimeout(function () {
+                            window.location.href = "{{ route('chat', 'user') }}?id={{ $user_profile->id }}";
+                        }, 800);
+                    },
+                    error: function (err) {
+                        var msg = (err.responseJSON && typeof err.responseJSON === 'string') ? err.responseJSON : "{{ translate('something_went_wrong') }}";
+                        toastr.warning(msg);
+                    }
+                });
+            });
+
+            // ── Rate seller (star picker) ──
+            $('#rateStarInput').on('click', '.rate-star', function () {
+                var val = $(this).data('val');
+                $('#rateSellerValue').val(val);
+                $('#rateStarInput .rate-star').each(function () {
+                    $(this).toggleClass('bi-star-fill', $(this).data('val') <= val)
+                           .toggleClass('bi-star', $(this).data('val') > val);
+                });
+            });
+            $('#rateSellerForm').on('submit', function (e) {
+                e.preventDefault();
+                if (parseInt($('#rateSellerValue').val()) < 1) { toastr.error("{{ translate('please_select_a_rating') }}"); return; }
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('seller-review-store') }}",
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res.error_message) { toastr.error(res.error_message); return; }
+                        toastr.success(res.message);
+                        $('#rateSellerModal').modal('hide');
+                        if (res.avg !== undefined) {
+                            $('#seller-rating-text').text(res.avg + ' (' + res.count + ' {{ translate('reviews') }})');
+                        }
+                        setTimeout(function () { location.reload(); }, 900);
+                    },
+                    error: function () { toastr.error("{{ translate('something_went_wrong') }}"); }
+                });
+            });
+
+            // ── Report seller ──
+            $('#reportSellerForm').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('report_user') }}",
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res.error_message) { toastr.error(res.error_message); return; }
+                        toastr.success(res.message);
+                        $('#reportSellerModal').modal('hide');
+                        $('#reportSellerForm')[0].reset();
+                    },
+                    error: function () { toastr.error("{{ translate('something_went_wrong') }}"); }
+                });
+            });
+        });
+
+        // ── Block / unblock seller ──
+        function profileToggleBlock(userId, block) {
+            $.ajax({
+                type: 'post',
+                url: block ? "{{ route('block_user') }}" : "{{ route('unblock_user') }}",
+                data: { blocked_id: userId, _token: $('meta[name="_token"]').attr('content') },
+                success: function (res) {
+                    if (res.error_message) { toastr.error(res.error_message); return; }
+                    toastr.success(res.message);
+                    setTimeout(function () { location.reload(); }, 700);
+                },
+                error: function () { toastr.error("{{ translate('something_went_wrong') }}"); }
+            });
+        }
+    </script>
+
 
     <script>
         $(document).ready(function () {

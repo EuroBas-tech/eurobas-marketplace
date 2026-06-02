@@ -21,6 +21,9 @@ use App\Model\EmergencyContact;
 use App\Model\SupportTicketConv;
 use App\Model\WalletTransaction;
 use App\Model\UserCategoryInterest;
+use App\Model\UserBlock;
+use App\Model\UserReport;
+use App\Model\SellerReview;
 use App\Model\LoyaltyPointTransaction;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\DB;
@@ -97,6 +100,13 @@ class User extends Authenticatable
                 $user->category_interests()->delete();
                 $user->chatsAsSender()->delete();
                 $user->chatsAsReceiver()->delete();
+
+                // Milestone 2: block & report records involving this user.
+                UserBlock::where('blocker_id', $user->id)->orWhere('blocked_id', $user->id)->delete();
+                UserReport::where('reporter_id', $user->id)->orWhere('reported_id', $user->id)->delete();
+
+                // Milestone 3: seller reviews written by or about this user.
+                SellerReview::where('seller_id', $user->id)->orWhere('customer_id', $user->id)->delete();
 
                 // Profile-adjacent tables not represented as relationships.
                 ShippingAddress::where('customer_id', $user->id)->delete();
@@ -180,6 +190,71 @@ class User extends Authenticatable
     public function category_interests()
     {
         return $this->hasMany(UserCategoryInterest::class, 'user_id');
+    }
+
+    // Milestone 2: block & report relationships.
+    public function blocks()
+    {
+        return $this->hasMany(UserBlock::class, 'blocker_id');
+    }
+
+    public function blockedByOthers()
+    {
+        return $this->hasMany(UserBlock::class, 'blocked_id');
+    }
+
+    public function reportsMade()
+    {
+        return $this->hasMany(UserReport::class, 'reporter_id');
+    }
+
+    public function reportsAgainst()
+    {
+        return $this->hasMany(UserReport::class, 'reported_id');
+    }
+
+    /** Has the current user blocked the given user? */
+    public function hasBlocked($userId): bool
+    {
+        return UserBlock::where('blocker_id', $this->id)->where('blocked_id', $userId)->exists();
+    }
+
+    // Milestone 3: request-cached seller name lookup for ad cards (only hit when a
+    // seller has reviews, so listing pages don't pay for an extra eager-load).
+    private static array $nameCache = [];
+
+    /** Reset the in-request name memo (used for test isolation; harmless in production). */
+    public static function flushNameCache(): void
+    {
+        self::$nameCache = [];
+    }
+
+    public static function cachedName($id): ?string
+    {
+        $id = (int) $id;
+        if (!$id) {
+            return null;
+        }
+        if (array_key_exists($id, self::$nameCache)) {
+            return self::$nameCache[$id];
+        }
+        return self::$nameCache[$id] = self::where('id', $id)->value('name');
+    }
+
+    // Milestone 3: seller rating relationships & accessors.
+    public function sellerReviews()
+    {
+        return $this->hasMany(SellerReview::class, 'seller_id')->where('status', 1);
+    }
+
+    public function getSellerRatingAvgAttribute(): float
+    {
+        return SellerReview::summaryFor($this->id)['avg'];
+    }
+
+    public function getSellerReviewsCountAttribute(): int
+    {
+        return SellerReview::summaryFor($this->id)['count'];
     }
 
 

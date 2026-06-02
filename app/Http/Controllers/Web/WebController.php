@@ -1032,7 +1032,9 @@ class WebController extends Controller
     {
         //recaptcha validation
         $recaptcha = Helpers::get_business_settings('recaptcha');
-        if (isset($recaptcha) && $recaptcha['status'] == 1) {
+        if (is_local_test_host()) {
+            // Local .test development host — skip captcha for the contact form.
+        } elseif (isset($recaptcha) && $recaptcha['status'] == 1) {
 
             try {
                 $request->validate([

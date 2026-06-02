@@ -66,12 +66,12 @@
                         <a href="{{route('seller.auth.forgot-password')}}">{{ translate('Forgot_Password') }} ?</a>
                     </div>
 
-                    @if($web_config['recaptcha']['status'] == 1)
+                    @if(recaptcha_enabled())
                     <div class="col-12">
                         <div id="recaptcha_element_seller_login" class="w-100 mt-4" data-type="image"></div>
                         <br/>
                     </div>
-                    @else
+                    @elseif(!is_local_test_host())
                     <div class="col-12">
                         <div class="row py-2 mt-4">
                             <div class="col-6 pr-2">
@@ -102,7 +102,7 @@
 {{-- recaptcha scripts start --}}
 
 <script>
-    @if($web_config['recaptcha']['status'] == '1')
+    @if(recaptcha_enabled())
         $("#seller_login_form").on('submit', function (e) {
             var response = grecaptcha.getResponse($('#recaptcha_element_seller_login').attr('data-login-id'));
             if (response.length === 0) {
@@ -110,7 +110,7 @@
                 toastr.error("{{translate('Please_check_the_recaptcha')}}");
             }
         });
-    @else
+    @elseif(!is_local_test_host())
         function re_captcha_seller_login() {
             $url = "{{ URL('/seller/auth/code/captcha') }}";
             $url = $url + "/" + Math.random()+'?captcha_session_id=default_recaptcha_id_seller_login';

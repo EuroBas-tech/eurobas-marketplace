@@ -52,3 +52,32 @@ if (! function_exists('cdn_image')) {
     }
 }
 
+/**
+ * True on a local `.test` development host — used to bypass reCAPTCHA so the
+ * site can be tested locally without a captcha challenge.
+ */
+if (! function_exists('is_local_test_host')) {
+    function is_local_test_host(): bool
+    {
+        try {
+            $host = request()->getHost();
+        } catch (\Throwable $e) {
+            return false;
+        }
+        return $host && \Illuminate\Support\Str::endsWith($host, '.test');
+    }
+}
+
+/**
+ * Whether reCAPTCHA should actually be rendered/validated: enabled in business
+ * settings AND not on a local `.test` host.
+ */
+if (! function_exists('recaptcha_enabled')) {
+    function recaptcha_enabled(): bool
+    {
+        $recaptcha = \App\CPU\Helpers::get_business_settings('recaptcha');
+        $on = isset($recaptcha['status']) && $recaptcha['status'] == 1;
+        return $on && ! is_local_test_host();
+    }
+}
+

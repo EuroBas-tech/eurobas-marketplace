@@ -58,7 +58,9 @@ class LoginController extends Controller
 
         $recaptcha = Helpers::get_business_settings('recaptcha');
 
-        if (isset($recaptcha) && $recaptcha['status'] == 1) {
+        if (is_local_test_host()) {
+            // Local .test development host — skip captcha for seller login.
+        } elseif (isset($recaptcha) && $recaptcha['status'] == 1) {
             $request->validate([
                 'g-recaptcha-response' => [
                     function ($attribute, $value, $fail) {

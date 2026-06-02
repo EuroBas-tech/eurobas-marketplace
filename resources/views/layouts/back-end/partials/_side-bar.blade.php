@@ -373,6 +373,22 @@
                             </span>
                             </a>
                         </li>
+                        {{-- Milestone 2: User Reports (chat / seller) --}}
+                        <li class="navbar-vertical-aside-has-menu {{Request::is('admin/user-reports*')?'active':''}}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{route('admin.user-reports.list')}}"
+                                title="{{translate('user_reports')}}">
+                                <i class="tio-user-outlined nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                <span class="position-relative">
+                                    {{translate('user_reports')}}
+                                    @if(\App\Model\UserReport::where('status','pending')->count()>0)
+                                        <span class="btn-status btn-xs-status btn-status-danger position-absolute top-0 menu-status"></span>
+                                    @endif
+                                </span>
+                            </span>
+                            </a>
+                        </li>
                         @endif
                         <!--support section ends here-->
 

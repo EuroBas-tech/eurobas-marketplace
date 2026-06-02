@@ -60,6 +60,7 @@ return [
     'shop_view_page'=>'theme-views.seller-views.shopview',
     'faq'=>'theme-views.pages.help-topics',
     'about_us'=>'theme-views.pages.about-us',
+    'customer_login'=>'theme-views.customer-views.auth.login',
     'recover_password'=>'theme-views.customer-views.auth.recover-password',
     'otp_verification'=>'theme-views.customer-views.auth.verify-otp',
     'reset_password'=>'theme-views.customer-views.auth.reset-password',
