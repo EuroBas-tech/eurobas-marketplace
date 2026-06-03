@@ -226,11 +226,16 @@
 
 <!-- ======= All Modals ======= -->
 
-<!-- Register Modal -->
-@include('theme-views.layouts.partials.modal._register')
+{{-- The login/register popups are redundant on the dedicated auth pages and only
+     add extra reCAPTCHA instances there (a memory/crash risk on mobile Safari),
+     so they're skipped on customer auth routes. --}}
+@unless(request()->routeIs('customer.auth.*'))
+    <!-- Register Modal -->
+    @include('theme-views.layouts.partials.modal._register')
 
-<!-- Login Modal -->
-@include('theme-views.layouts.partials.modal._login')
+    <!-- Login Modal -->
+    @include('theme-views.layouts.partials.modal._login')
+@endunless
 
 <!-- Mobile modal stability fix -->
 @include('theme-views.layouts.partials.modal._modal-stability')

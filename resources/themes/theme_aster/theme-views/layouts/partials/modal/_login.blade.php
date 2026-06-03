@@ -103,55 +103,17 @@
 
 @push('script')
     @if(recaptcha_enabled())
-    {{-- Google reCAPTCHA v2 Scripts - Optimized for More Challenges --}}
+    {{-- Google reCAPTCHA v2 --}}
     <script type="text/javascript">
         var onloadCallbackCustomerLogin = function () {
-            // Add some randomization to potentially trigger more challenges
-            var randomParam = Math.random().toString(36).substring(7);
-
             let login_id = grecaptcha.render('recaptcha_element_customer_login', {
                 'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}',
                 'size': 'normal',
                 'theme': 'light',
-                'tabindex': 0,
-                'isolated': true,
-                'callback': function(response) {
-                    console.log('reCAPTCHA completed: ' + randomParam);
-                },
-                'expired-callback': function() {
-                    // Auto-reset on expiry to get new challenge
-                    setTimeout(function() {
-                        grecaptcha.reset(login_id);
-                    }, 500);
-                },
-                'error-callback': function() {
-                    // Auto-reset on error to get new challenge
-                    setTimeout(function() {
-                        grecaptcha.reset(login_id);
-                    }, 1000);
-                }
+                'tabindex': 0
             });
             $('#recaptcha_element_customer_login').attr('data-login-id', login_id);
-
-            // Subtle techniques to potentially increase challenge probability
-            // Add some mouse movement simulation
-            var recaptchaElement = document.getElementById('recaptcha_element_customer_login');
-            if (recaptchaElement) {
-                // Simulate natural user behavior patterns
-                setTimeout(function() {
-                    var event = new Event('mouseover');
-                    recaptchaElement.dispatchEvent(event);
-                }, Math.random() * 1000 + 500);
-            }
         };
-
-        // Additional entropy for session
-        (function() {
-            var userAgent = navigator.userAgent;
-            var screenRes = screen.width + 'x' + screen.height;
-            var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            // These variables add entropy without being intrusive
-        })();
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit&hl=en" async defer></script>
     @endif

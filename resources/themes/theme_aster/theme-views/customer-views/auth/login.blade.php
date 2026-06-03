@@ -175,10 +175,7 @@
                     'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}',
                     'size': 'normal',
                     'theme': 'light',
-                    'tabindex': 0,
-                    'isolated': true,
-                    'expired-callback': function() { setTimeout(function() { grecaptcha.reset(login_id); }, 500); },
-                    'error-callback': function() { setTimeout(function() { grecaptcha.reset(login_id); }, 1000); }
+                    'tabindex': 0
                 });
                 $('#recaptcha_element_customer_login_page').attr('data-login-id', login_id);
             };
