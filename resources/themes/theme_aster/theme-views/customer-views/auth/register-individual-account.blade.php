@@ -14,14 +14,25 @@
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
     <style>
+        /* Keep the form near the top; let the page flow naturally to the footer. */
+        .auth-wrap {
+            min-height: calc(100vh - 320px);
+        }
         .card-custom-shadow {
-            box-shadow: 1px 1px 4px #00000024, -1px 1px 4px #00000024;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+            border: 1px solid #e7e9ec;
         }
         .select2-container .select2-selection--single .select2-selection__rendered {
             overflow: visible !important;
         }
-        select ,input[type="text"], input[type="number"]{
-            height: 39px !important;
+        .auth-wrap .form-control,
+        .auth-wrap select,
+        .auth-wrap input[type="text"],
+        .auth-wrap input[type="email"],
+        .auth-wrap input[type="number"],
+        .auth-wrap input[type="password"] {
+            height: 48px !important;
+            padding: .65rem .9rem;
         }
 
         .cke_notification .cke_notification_warning {
@@ -49,12 +60,12 @@
 
 @section('content')
     <!-- Main Content -->
-    <main class="main-content d-flex flex-column gap-3 pt-5 mb-4 vh-100">
+    <main class="main-content auth-wrap py-4 py-md-5 mb-4">
         <div class="container">
             <div class="row justify-content-center">
                 <!-- Sidebar-->
                 <div class="col-lg-5 col-md-7 col-sm-10 col-12">
-                    <div class="card h-lg-100 card-custom-shadow">
+                    <div class="card card-custom-shadow">
                         <div class="card-body p-4 pb-3">
                             <div>
                                 <form method="POST" id="register-store-form" enctype="multipart/form-data">

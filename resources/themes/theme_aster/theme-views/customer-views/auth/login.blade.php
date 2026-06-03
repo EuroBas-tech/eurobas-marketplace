@@ -8,25 +8,36 @@
     <meta property="og:url" content="{{env('APP_URL')}}">
 
     <style>
-        .card-custom-shadow {
-            box-shadow: 1px 1px 4px #00000024, -1px 1px 4px #00000024;
+        /* Auth page: keep the card near the top and let the page flow naturally to
+           the footer (no forced full-viewport height that pushes content down). */
+        .auth-wrap {
+            min-height: calc(100vh - 320px); /* fills enough so the footer sits low */
         }
-        select, input[type="text"], input[type="email"], input[type="password"] {
-            height: 39px !important;
+        .card-custom-shadow {
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+            border: 1px solid #e7e9ec;
+        }
+        .auth-wrap .form-control,
+        .auth-wrap select,
+        .auth-wrap input[type="text"],
+        .auth-wrap input[type="email"],
+        .auth-wrap input[type="password"] {
+            height: 48px !important;
+            padding: .65rem .9rem;
         }
     </style>
 @endpush
 
 @section('content')
     <!-- Main Content -->
-    <main class="main-content d-flex flex-column gap-3 pt-5 mb-4 vh-100">
+    <main class="main-content auth-wrap py-4 py-md-5 mb-4">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-7 col-sm-10 col-12">
-                    <div class="card h-lg-100 card-custom-shadow">
+                    <div class="card card-custom-shadow">
                         <div class="card-body p-4 pb-3">
 
-                            <div class="mb-4 text-center">
+                            <div class="mb-3 text-center">
                                 <img
                                     width="180"
                                     src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}"
@@ -34,8 +45,7 @@
                                     alt="" class="dark-support"/>
                             </div>
                             <div class="mb-4 text-center">
-                                <h2 class="mb-1">{{ translate('login') }}</h2>
-                                <p class="text-muted mb-0">{{ translate('login_to_continue') }}</p>
+                                <h2 class="mb-0">{{ translate('login') }}</h2>
                             </div>
 
                             <form method="POST" id="customer_login_page_form" action="{{route('customer.auth.login')}}" autocomplete="off">
