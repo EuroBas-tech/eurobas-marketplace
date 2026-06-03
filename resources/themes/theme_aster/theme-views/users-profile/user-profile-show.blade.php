@@ -110,23 +110,6 @@
                                     </div>
                                     <div class="d-flex flex-column gap-1" >
                                         <h3 class="text-white profile-name mb-0">{{$user_profile->name}}</h3>
-                                        {{-- Milestone 3: seller average rating --}}
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="star-rating text-gold" style="font-size: 14px;">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= $seller_summary['avg'])
-                                                        <i class="bi bi-star-fill"></i>
-                                                    @elseif ($seller_summary['avg'] != 0 && $i <= (int)$seller_summary['avg'] + 1 && $seller_summary['avg'] >= ((int)$seller_summary['avg'] + .30))
-                                                        <i class="bi bi-star-half"></i>
-                                                    @else
-                                                        <i class="bi bi-star text-white-50"></i>
-                                                    @endif
-                                                @endfor
-                                            </span>
-                                            <span class="text-white fw-semibold fs-12" id="seller-rating-text">
-                                                {{ $seller_summary['avg'] }} ({{ $seller_summary['count'] }} {{ translate('reviews') }})
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -167,42 +150,6 @@
                                         <i class="bi bi-star-fill"></i> {{ translate('rate_seller') }}
                                     </button>
                                 @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Milestone 3: Seller reviews list --}}
-                @if($seller_reviews->count() > 0)
-                <div class="col-12">
-                    <div class="card card-border aside-shadow">
-                        <div class="card-body">
-                            <h5 class="mb-3 d-flex align-items-center gap-2">
-                                <i class="bi bi-star-fill text-gold"></i>
-                                {{ translate('seller_reviews') }}
-                                <span class="badge bg-primary">{{ $seller_summary['count'] }}</span>
-                            </h5>
-                            <div class="d-flex flex-column gap-3">
-                                @foreach($seller_reviews as $review)
-                                    <div class="border-bottom pb-3">
-                                        <div class="d-flex align-items-center gap-2 mb-1">
-                                            <img width="32" height="32" class="rounded-circle"
-                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                 src="{{ cloudfront('profile/images/'.($review->customer->image ?? 'default.png')) }}" alt="">
-                                            <span class="fw-medium">{{ $review->customer->name ?? translate('user') }}</span>
-                                            <span class="star-rating text-gold ms-1" style="font-size: 12px;">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
-                                                @endfor
-                                            </span>
-                                            <span class="text-muted fs-12 ms-auto">{{ $review->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        @if($review->comment)
-                                            <p class="mb-0 text-muted">{{ $review->comment }}</p>
-                                        @endif
-                                    </div>
-                                @endforeach
                             </div>
                         </div>
                     </div>

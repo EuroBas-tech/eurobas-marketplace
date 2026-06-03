@@ -51,18 +51,10 @@
         .chat-attachments { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .35rem; }
         .chat-attachments img { width: 110px; height: 90px; object-fit: cover; border-radius: .4rem; }
         .msg-del {
-            visibility: hidden; border: 0; background: transparent; color: inherit;
-            font-size: 12px; opacity: .7; padding: 0 .15rem; cursor: pointer;
+            border: 0; background: transparent; color: inherit;
+            font-size: 13px; opacity: .85; padding: 0 .15rem; cursor: pointer;
         }
-        .chat-bubble:hover .msg-del { visibility: visible; }
-        .chat-image-preview { display: flex; flex-wrap: wrap; gap: .35rem; }
-        .chat-image-preview .preview-item { position: relative; }
-        .chat-image-preview img { width: 48px; height: 48px; object-fit: cover; border-radius: .35rem; }
-        .chat-image-preview .remove-preview {
-            position: absolute; top: -6px; right: -6px; background: #dc3545; color: #fff;
-            border-radius: 50%; width: 16px; height: 16px; font-size: 11px; line-height: 16px;
-            text-align: center; cursor: pointer;
-        }
+        .msg-del:hover { opacity: 1; }
         @media (max-width: 575.98px) {
             .chat-bubble { max-width: 85%; }
             .chat-attachments img { width: 90px; height: 75px; }
@@ -74,12 +66,6 @@
             min-height: 0;
             padding-top: 0;
             padding-bottom: 0;
-        }
-        .type_msg .attach-btn {
-            display: flex;
-            align-items: center;
-            margin: 0;
-            line-height: 1;
         }
         .type_msg .focus-input {
             border: 0;
@@ -320,16 +306,11 @@
                                         </div>
 
                                         <div class="type_msg px-2">
-                                            <form class="mt-3" id="myForm" enctype="multipart/form-data">
+                                            <form class="mt-3" id="myForm">
                                                 @csrf
-                                                <div id="chatImagePreview" class="chat-image-preview px-2 mb-2"></div>
                                                 <div class="input_msg_write border rounded py-2 px-2 px-sm-3 d-flex align-items-center justify-content-between gap-2 {{ (isset($is_blocked) && $is_blocked) ? 'd-none' : '' }}" id="chat-input-wrap">
                                                     <div class="d-flex align-items-center gap-2 py-0 h-auto form-control focus-border rounded-10">
                                                         <input type="hidden" value="{{$chat_with}}" id="chat_with" name="chat_with">
-                                                        <label class="attach-btn cursor-pointer" title="{{translate('attach_image')}}">
-                                                            <i class="bi bi-image fs-18 text-primary"></i>
-                                                            <input type="file" id="chatImageInput" name="image[]" accept="image/*" multiple hidden>
-                                                        </label>
                                                         <textarea class="w-100 focus-input" id="msgInputValue" rows="1"
                                                         placeholder="{{translate('start_a_new_message')}}"></textarea>
                                                     </div>
@@ -433,65 +414,35 @@
             }
             if (msgInput) { msgInput.addEventListener('input', autoGrowMsg); }
 
-            // ── Image attach preview ──
-            let selectedFiles = [];
-            $('#chatImageInput').on('change', function () {
-                selectedFiles = Array.from(this.files);
-                renderPreview();
-            });
-            function renderPreview() {
-                let box = $('#chatImagePreview');
-                box.empty();
-                selectedFiles.forEach(function (file, idx) {
-                    let url = URL.createObjectURL(file);
-                    box.append(`<div class="preview-item">
-                        <img src="${url}" alt="">
-                        <span class="remove-preview" data-idx="${idx}">&times;</span>
-                    </div>`);
-                });
+            // ── Send message (text only) ──
+            // Escape user text before injecting into the DOM (server stores it raw).
+            function escapeHtml(str) {
+                return $('<div>').text(str).html();
             }
-            $('#chatImagePreview').on('click', '.remove-preview', function () {
-                selectedFiles.splice($(this).data('idx'), 1);
-                renderPreview();
-            });
-
-            // ── Send message (text + images) ──
             $("#myForm").on('submit', function (e) {
                 e.preventDefault();
 
                 var message = $('#msgInputValue').val().trim();
                 var chat_with = $('#chat_with').val();
-                if (message === '' && selectedFiles.length === 0) { return; }
-
-                var formData = new FormData();
-                formData.append('message', message);
-                formData.append('chat_with', chat_with);
-                selectedFiles.forEach(function (file) { formData.append('image[]', file); });
+                if (message === '') { return; }
 
                 $('#msgSendBtn').prop('disabled', true);
 
                 $.ajax({
                     type: "post",
                     url: "{{route('discussion_store')}}",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                    data: { message: message, chat_with: chat_with, _token: $('meta[name="_token"]').attr('content') },
                     success: function (response) {
                         $('#msgSendBtn').prop('disabled', false);
-                        let imgHtml = '';
-                        if (response.image && response.image.length) {
-                            imgHtml = '<div class="chat-attachments">';
-                            response.image.forEach(function (p) {
-                                imgHtml += `<a href="{{cloudfront('chatting')}}/${p}"><img src="{{cloudfront('chatting')}}/${p}" alt=""></a>`;
-                            });
-                            imgHtml += '</div>';
-                        }
-                        let textHtml = response.message ? `<div class="chat-text">${response.message}</div>` : '';
+                        let textHtml = response.message ? `<div class="chat-text">${escapeHtml(response.message)}</div>` : '';
+                        let delBtn = response.id
+                            ? `<button class="msg-del" title="{{translate('delete')}}" onclick="deleteMessage(${response.id}, this)"><i class="bi bi-trash"></i></button>`
+                            : '';
                         $(".chat-thread").append(`
                             <div class="chat-row mine">
                                 <div class="chat-bubble">
+                                    ${delBtn}
                                     ${textHtml}
-                                    ${imgHtml}
                                     <div class="chat-meta">
                                         <span>{{ \Carbon\Carbon::now()->format('h:i A') }}</span>
                                         <span class="chat-status"><i class="bi bi-check" title="{{translate('sent')}}"></i></span>
@@ -500,8 +451,6 @@
                             </div>`);
                         $('#msgInputValue').val('');
                         resetMsgHeight();
-                        selectedFiles = [];
-                        renderPreview();
                         scrollChatToBottom();
                     },
                     error: function (error) {

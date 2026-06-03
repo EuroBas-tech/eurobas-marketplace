@@ -1617,6 +1617,8 @@
                                         </div>
                                         <div>
                                             <h5 class="mb-1">{{$ad->user?->name}}</h5>
+                                            {{-- Seller rating — reflects the seller's reputation, shown on the listing --}}
+                                            @include('theme-views.partials._seller-rating-inline', ['seller_id' => $ad->user_id])
                                             <p class="fs-12 m-0">{{translate('Joined')}} {{date('M, Y',strtotime($ad->user?->created_at))}}</p>
                                             @php
                                                 $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();

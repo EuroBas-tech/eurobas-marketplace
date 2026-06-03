@@ -350,10 +350,11 @@ class ChattingController extends Controller
             }
         }
 
+        $chatting = null;
         if ($request->has('chat_with'))
         {
             $message = $request->message;
-            Chatting::create([
+            $chatting = Chatting::create([
                 'sender_id'          => auth('customer')->id(),
                 'receiver_id'        => $request->chat_with,
                 'message'          => $request->message,
@@ -365,7 +366,7 @@ class ChattingController extends Controller
             // Helpers::chatting_notification('message_from_customer','seller',$seller,$message_form);
         }
 
-        return response()->json(['message'=>$message,'image'=>$image]);
+        return response()->json(['id'=>$chatting?->id,'message'=>$message,'image'=>$image]);
     }
 
     /* ─── Milestone 2: Report / Block / Delete ─────────────────────────────── */
