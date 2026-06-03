@@ -104,7 +104,11 @@
 <script>
     @if(recaptcha_enabled())
         $("#seller_login_form").on('submit', function (e) {
-            var response = grecaptcha.getResponse($('#recaptcha_element_seller_login').attr('data-login-id'));
+            // grecaptcha is loaded lazily (only when a login/register popup opens), so guard against it being absent.
+            var seller_widget_id = $('#recaptcha_element_seller_login').attr('data-login-id');
+            var response = (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse && seller_widget_id !== undefined)
+                ? grecaptcha.getResponse(seller_widget_id)
+                : '';
             if (response.length === 0) {
                 e.preventDefault();
                 toastr.error("{{translate('Please_check_the_recaptcha')}}");

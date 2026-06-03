@@ -42,14 +42,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 
     <!-- Rubik Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-
-    <!-- Cairo Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 
     <!-- ======= BEGIN GLOBAL MANDATORY STYLES ======= -->
     <link rel="stylesheet" href="{{ theme_asset('assets/css/bootstrap.min.css') }}"/>
@@ -253,6 +246,9 @@
 
 <!-- Login Modal -->
 @include('theme-views.layouts.partials.modal._login')
+
+<!-- Lazy reCAPTCHA loader for the login/register popups (mobile-Safari crash fix) -->
+@include('theme-views.layouts.partials.modal._recaptcha-lazy')
 
 <!-- Mobile modal stability fix -->
 @include('theme-views.layouts.partials.modal._modal-stability')

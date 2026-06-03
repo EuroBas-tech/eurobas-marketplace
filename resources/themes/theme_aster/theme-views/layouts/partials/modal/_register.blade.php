@@ -156,9 +156,8 @@
 </div>
 
 @push('script')
-    @if(recaptcha_enabled())
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerRegi&render=explicit" async defer></script>
-    @endif
+    {{-- reCAPTCHA is loaded + rendered lazily on modal open by _recaptcha-lazy.blade.php
+         (avoids heavy iframes on page load that crash mobile Safari). --}}
 
     <script>
         $('#inputCheckd').change(function () {
@@ -171,20 +170,12 @@
         });
 
         @if(recaptcha_enabled())
-            var onloadCallbackCustomerRegi = function () {
-                let reg_id = grecaptcha.render('recaptcha_element_customer_regi', {
-                    'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}'
-                });
-                $('#recaptcha_element_customer_regi').attr('data-reg-id', reg_id);
-            };
-
             function recaptcha_f(){
-                let response = grecaptcha.getResponse($('#recaptcha_element_customer_regi').attr('data-reg-id'));
-                if (response.length === 0) {
-                    return false;
-                }else{
-                    return true;
-                }
+                if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse) { return false; }
+                let widgetId = $('#recaptcha_element_customer_regi').attr('data-reg-id');
+                if (widgetId === undefined) { return false; }
+                let response = grecaptcha.getResponse(widgetId);
+                return response.length !== 0;
             }
         @else
             function re_captcha_customer_regi() {

@@ -102,21 +102,8 @@
 </div>
 
 @push('script')
-    @if(recaptcha_enabled())
-    {{-- Google reCAPTCHA v2 --}}
-    <script type="text/javascript">
-        var onloadCallbackCustomerLogin = function () {
-            let login_id = grecaptcha.render('recaptcha_element_customer_login', {
-                'sitekey': '{{ \App\CPU\Helpers::get_business_settings('recaptcha')['site_key'] }}',
-                'size': 'normal',
-                'theme': 'light',
-                'tabindex': 0
-            });
-            $('#recaptcha_element_customer_login').attr('data-login-id', login_id);
-        };
-    </script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallbackCustomerLogin&render=explicit&hl=en" async defer></script>
-    @endif
+    {{-- reCAPTCHA is loaded + rendered lazily on modal open by _recaptcha-lazy.blade.php
+         (avoids heavy iframes on page load that crash mobile Safari). --}}
 
     <script>
         $("#customer_login_modal").submit(function (e) {
@@ -127,8 +114,11 @@
             @if(recaptcha_enabled())
                 var customer_recaptcha = true;
 
-                // Check Google reCAPTCHA v2 validation
-                var response_customer_login = grecaptcha.getResponse($('#recaptcha_element_customer_login').attr('data-login-id'));
+                // Check Google reCAPTCHA v2 validation (widget is rendered lazily on modal open).
+                var login_widget_id = $('#recaptcha_element_customer_login').attr('data-login-id');
+                var response_customer_login = (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse && login_widget_id !== undefined)
+                    ? grecaptcha.getResponse(login_widget_id)
+                    : '';
 
                 if (response_customer_login.length === 0) {
                     e.preventDefault();
