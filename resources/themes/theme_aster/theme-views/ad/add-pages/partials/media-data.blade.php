@@ -58,25 +58,6 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="form-group mb-4">
-                <label>{{translate('ad_thumbnail')}}</label>
-                <div class="d-flex flex-column gap-3">
-                    <div class="upload-file" style="width: min-content;">
-                        <input type="file" class="upload-file__input" name="image" aria-required="true" accept="image/*" onchange="validateThumbnailImage(this)">
-                        <div class="upload-file__img">
-                            <div class="temp-img-box">
-                                <div class="d-flex align-items-center flex-column gap-2">
-                                    <i class="bi bi-upload fs-30"></i>
-                                    <div class="fs-12 text-muted">{{translate('ad_image')}}</div>
-                                </div>
-                            </div>
-                            <img src="#" class="dark-support img-fit-contain border" alt="" hidden="">
-                        </div>
-                    </div>
-                    {{--<div class="text-muted">{{translate('Image_ratio_should_be')}} 1:1</div>--}}
-                </div>
-            </div>
-
-            <div class="form-group mb-4">
                 <label >{{ translate('ad_images') }}</label>
                 <div class="d-flex gap-3 flex-wrap mb-3" id="additional_Image_Section">
                     <div class="upload-file position-relative" style="width: min-content;">
