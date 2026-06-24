@@ -199,7 +199,6 @@ class AdController extends Controller
             'description' => 'required',
             'category_id' => 'required',
             'price_type' => 'required',
-            'image' => 'required',
             'price' => $request->price_type == 'fixed_price' || $request->price_type == 'asking_price' ? 'required|numeric|min:0|max:10000000000' : '',
             'contact_phone_number' => $request->show_phone_number && $request->show_phone_number == 'on' ? 'required|numeric' : '',
             'currency' => 'required',
@@ -216,7 +215,6 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
-            'image.required' => translate("Image is required"),
         ]);
         
         if ($validator->fails()) {
@@ -245,12 +243,17 @@ class AdController extends Controller
         $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
 
         $ad_images = [];
-        
+        $auto_thumbnail = null;
+
         if($request->hasFile('images')) {
             foreach ($request->images as $image) {
                 if ($image && $image->isValid()) {
                     $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
                     $ad_images[] = $image_name;
+                    // Use first uploaded image as thumbnail automatically
+                    if ($auto_thumbnail === null) {
+                        $auto_thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $image, 'def.jpg');
+                    }
                 }
             }
         }
@@ -343,8 +346,9 @@ class AdController extends Controller
         $ad->acceleration_0_100     = $request->acceleration_0_100;
         $ad->images = json_encode($ad_images);
 
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
+        // Thumbnail is automatically set from the first uploaded image
+        if ($auto_thumbnail !== null) {
+            $ad->thumbnail = $auto_thumbnail;
         }
 
         $ad->status = 0;
@@ -541,11 +545,17 @@ class AdController extends Controller
             count($request->old_images) > 0 ? 
         $request->old_images : [];
         
+        $new_thumbnail = null;
+
         if($request->hasFile('images')) {
             foreach ($request->images as $image) {
                 if ($image && $image->isValid()) {
                     $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
                     $ad_images[] = $image_name;
+                    // Use first new uploaded image as thumbnail automatically
+                    if ($new_thumbnail === null) {
+                        $new_thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $image, 'def.jpg');
+                    }
                 }
             }
         }
@@ -637,8 +647,10 @@ class AdController extends Controller
         $ad->shipbuilding_type = $request->shipbuilding_type;
 
         $ad->images = json_encode($ad_images);
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
+
+        // If new images uploaded, use first new image as thumbnail; otherwise keep existing thumbnail
+        if ($new_thumbnail !== null) {
+            $ad->thumbnail = $new_thumbnail;
         }
 
         $ad->save();
@@ -1773,17 +1785,3 @@ class AdController extends Controller
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
