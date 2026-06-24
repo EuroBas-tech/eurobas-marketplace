@@ -199,7 +199,8 @@ class AdController extends Controller
             'description' => 'required',
             'category_id' => 'required',
             'price_type' => 'required',
-            'image' => 'required',
+            'images' => 'nullable',
+            'images.*' => 'file|mimes:jpg,jpeg,png,webp,avif',
             'price' => $request->price_type == 'fixed_price' || $request->price_type == 'asking_price' ? 'required|numeric|min:0|max:10000000000' : '',
             'contact_phone_number' => $request->show_phone_number && $request->show_phone_number == 'on' ? 'required|numeric' : '',
             'currency' => 'required',
@@ -216,7 +217,6 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
-            'image.required' => translate("Image is required"),
         ]);
         
         if ($validator->fails()) {
@@ -224,6 +224,24 @@ class AdController extends Controller
                 'success' => false,
                 'message' => translate("Validation failed"),
                 'errors' => $validator->errors()->all()
+            ], 422);
+        }
+
+        // Verify at least one real image file was uploaded
+        $hasRealImage = false;
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $img) {
+                if ($img && $img->isValid()) {
+                    $hasRealImage = true;
+                    break;
+                }
+            }
+        }
+        if (!$hasRealImage) {
+            return response()->json([
+                'success' => false,
+                'message' => translate("Please upload at least one image"),
+                'errors'  => [translate("Please upload at least one image")]
             ], 422);
         }
         
@@ -245,14 +263,38 @@ class AdController extends Controller
         $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
 
         $ad_images = [];
-        
+        $uploaded_files = [];
+
         if($request->hasFile('images')) {
             foreach ($request->images as $image) {
                 if ($image && $image->isValid()) {
                     $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
                     $ad_images[] = $image_name;
+                    $uploaded_files[] = $image;
                 }
             }
+        }
+
+        // Build thumbnail from the chosen index (default 0 = first image), with crop
+        $thumbnail_index = (int) $request->input('thumbnail_index', 0);
+        if (!isset($uploaded_files[$thumbnail_index])) {
+            $thumbnail_index = 0;
+        }
+
+        $auto_thumbnail = null;
+        if (!empty($uploaded_files) && isset($uploaded_files[$thumbnail_index])) {
+            $thumb_file = $uploaded_files[$thumbnail_index];
+            $thumb_name = \Carbon\Carbon::now()->toDateString() . '-' . uniqid() . '.webp';
+            $thumb_dir  = 'ad/thumbnail/';
+            if (!\Illuminate\Support\Facades\Storage::disk()->exists($thumb_dir)) {
+                \Illuminate\Support\Facades\Storage::disk()->makeDirectory($thumb_dir);
+            }
+            $thumb_img = \Intervention\Image\Facades\Image::make($thumb_file)
+                ->fit(400, 400)
+                ->encode('webp', 90);
+            \Illuminate\Support\Facades\Storage::disk()->put($thumb_dir . $thumb_name, $thumb_img);
+            $thumb_img->destroy();
+            $auto_thumbnail = $thumb_name;
         }
 
         $ad_location_coordinates = $this->getLocationCoordinates($request->city);
@@ -343,8 +385,9 @@ class AdController extends Controller
         $ad->acceleration_0_100     = $request->acceleration_0_100;
         $ad->images = json_encode($ad_images);
 
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
+        // Thumbnail is automatically set from the first uploaded image
+        if ($auto_thumbnail !== null) {
+            $ad->thumbnail = $auto_thumbnail;
         }
 
         $ad->status = 0;
@@ -541,15 +584,65 @@ class AdController extends Controller
             count($request->old_images) > 0 ? 
         $request->old_images : [];
         
+        $new_uploaded_files = [];
+
         if($request->hasFile('images')) {
             foreach ($request->images as $image) {
                 if ($image && $image->isValid()) {
                     $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
                     $ad_images[] = $image_name;
+                    $new_uploaded_files[] = ['name' => $image_name, 'file' => $image];
                 }
             }
         }
-        
+
+        // thumbnail_index refers to position among ALL images (old + new)
+        $thumbnail_index = (int) $request->input('thumbnail_index', 0);
+        if ($thumbnail_index < 0 || $thumbnail_index >= count($ad_images)) {
+            $thumbnail_index = 0;
+        }
+
+        $chosen_image_name = $ad_images[$thumbnail_index] ?? null;
+
+        // Find if chosen image is a newly uploaded file
+        $chosen_new_file = null;
+        foreach ($new_uploaded_files as $nf) {
+            if ($nf['name'] === $chosen_image_name) {
+                $chosen_new_file = $nf['file'];
+                break;
+            }
+        }
+
+        // Build thumbnail with crop
+        if ($chosen_new_file !== null) {
+            // New image chosen — generate cropped thumbnail from the file
+            $thumb_name = \Carbon\Carbon::now()->toDateString() . '-' . uniqid() . '.webp';
+            $thumb_dir  = 'ad/thumbnail/';
+            if (!\Illuminate\Support\Facades\Storage::disk()->exists($thumb_dir)) {
+                \Illuminate\Support\Facades\Storage::disk()->makeDirectory($thumb_dir);
+            }
+            $thumb_img = \Intervention\Image\Facades\Image::make($chosen_new_file)
+                ->fit(400, 400)
+                ->encode('webp', 90);
+            \Illuminate\Support\Facades\Storage::disk()->put($thumb_dir . $thumb_name, $thumb_img);
+            $thumb_img->destroy();
+            $ad->thumbnail = $thumb_name;
+        } elseif ($chosen_image_name !== null && $chosen_image_name !== $ad->images) {
+            // Old image chosen — generate cropped thumbnail from stored file
+            $old_path = 'ad/' . $chosen_image_name;
+            if (\Illuminate\Support\Facades\Storage::disk()->exists($old_path)) {
+                $thumb_name = \Carbon\Carbon::now()->toDateString() . '-' . uniqid() . '.webp';
+                $thumb_dir  = 'ad/thumbnail/';
+                $thumb_img  = \Intervention\Image\Facades\Image::make(
+                    \Illuminate\Support\Facades\Storage::disk()->get($old_path)
+                )->fit(400, 400)->encode('webp', 90);
+                \Illuminate\Support\Facades\Storage::disk()->put($thumb_dir . $thumb_name, $thumb_img);
+                $thumb_img->destroy();
+                $ad->thumbnail = $thumb_name;
+            }
+        }
+        // else: keep existing thumbnail unchanged
+
         $ad->images = json_encode($ad_images);
 
         $ad->category_id            = $request->category_id;
@@ -635,11 +728,6 @@ class AdController extends Controller
         $ad->beds_number = $request->beds_number;
 
         $ad->shipbuilding_type = $request->shipbuilding_type;
-
-        $ad->images = json_encode($ad_images);
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
-        }
 
         $ad->save();
 
