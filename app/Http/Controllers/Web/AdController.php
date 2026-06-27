@@ -519,11 +519,13 @@ class AdController extends Controller
         }
 
         // First image is an existing one (e.g. reordered on edit): copy it into the
-        // thumbnail folder with public visibility so the card renders.
+        // thumbnail folder the same way ImageManager stores files — WITHOUT setting an
+        // explicit ACL. Passing a 'public' visibility throws on S3 buckets that have
+        // ACLs disabled ("bucket owner enforced"), which broke the Edit Listing page.
         $first = $ad_images[0];
 
-        if (Storage::disk()->exists('ad/' . $first)) {
-            Storage::disk()->put('ad/thumbnail/' . $first, Storage::disk()->get('ad/' . $first), 'public');
+        if (!Storage::disk()->exists('ad/thumbnail/' . $first) && Storage::disk()->exists('ad/' . $first)) {
+            Storage::disk()->put('ad/thumbnail/' . $first, Storage::disk()->get('ad/' . $first));
         }
 
         return $first;

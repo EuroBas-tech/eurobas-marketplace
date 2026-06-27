@@ -15,7 +15,14 @@ class ImageManager
             if(in_array($image->getClientOriginalExtension(), ['gif', 'svg'])){
                 $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
             }else{
-                $image_webp =  Image::make($image)->encode($format, 90);
+                $image_make = Image::make($image);
+                // Honour the EXIF orientation so portrait photos taken on phones keep
+                // their original orientation instead of appearing rotated/landscape
+                // after re-encoding (the tag is dropped during encode).
+                if (in_array(strtolower($image->getClientOriginalExtension()), ['jpg', 'jpeg'])) {
+                    try { $image_make->orientate(); } catch (\Throwable $e) {}
+                }
+                $image_webp =  $image_make->encode($format, 90);
                 $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $format;
             }
 
