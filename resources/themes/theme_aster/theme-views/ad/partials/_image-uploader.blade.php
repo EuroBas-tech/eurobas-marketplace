@@ -27,9 +27,6 @@
         <div class="ad-dropzone__content">
             <i class="bi bi-cloud-arrow-up ad-dropzone__icon"></i>
             <div class="ad-dropzone__title">{{ translate('drag_and_drop_your_image_here_or_click_to_browse') }}</div>
-            <div class="ad-dropzone__subtitle">
-                {{ translate('you_can_upload_up_to') }} {{ $maxImages }} {{ translate('images') }}
-            </div>
         </div>
     </div>
 
@@ -77,7 +74,6 @@
     .ad-dropzone.dragover { background: #e3edff; border-color: #1b54a8; }
     .ad-dropzone__icon { font-size: 2.6rem; color: #2c6ecb; display: block; line-height: 1; }
     .ad-dropzone__title { font-size: 1.1rem; color: #1f2937; margin-top: 12px; }
-    .ad-dropzone__subtitle { font-size: .9rem; color: #7c93b8; margin-top: 6px; }
 
     .ad-uploader__hint { margin: 18px 0 12px; color: #1f2937; font-size: .98rem; }
 

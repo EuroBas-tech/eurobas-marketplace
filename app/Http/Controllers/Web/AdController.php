@@ -246,7 +246,8 @@ class AdController extends Controller
         $ad->title = $request->title;
         $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
 
-        $ad_images = $this->build_ordered_ad_images($request);
+        $built_images = $this->build_ordered_ad_images($request);
+        $ad_images = $built_images['images'];
 
         if (empty($ad_images)) {
             return response()->json([
@@ -344,7 +345,7 @@ class AdController extends Controller
         $ad->acceleration_0_100     = $request->acceleration_0_100;
         $ad->images = json_encode($ad_images);
 
-        $ad->thumbnail = $this->resolve_thumbnail_from_images($ad_images);
+        $ad->thumbnail = $this->resolve_thumbnail($ad_images, $built_images['first_new_file']);
 
         $ad->status = 0;
 
@@ -473,6 +474,7 @@ class AdController extends Controller
         $new_files = $request->file('new_images', []) ?? [];
 
         $ad_images = [];
+        $first_new_file = null;
 
         foreach ((array) $order as $entry) {
             if (!is_string($entry)) {
@@ -482,6 +484,10 @@ class AdController extends Controller
             if (strpos($entry, 'new:') === 0) {
                 $key = substr($entry, 4);
                 if (isset($new_files[$key]) && $new_files[$key] && $new_files[$key]->isValid()) {
+                    // Remember the file that ends up first so we can build its thumbnail.
+                    if (empty($ad_images)) {
+                        $first_new_file = $new_files[$key];
+                    }
                     $ad_images[] = ImageManager::upload('ad/', 'webp', $new_files[$key], 'def.jpg');
                 }
             } elseif (strpos($entry, 'existing:') === 0) {
@@ -492,24 +498,32 @@ class AdController extends Controller
             }
         }
 
-        return $ad_images;
+        return ['images' => $ad_images, 'first_new_file' => $first_new_file];
     }
 
     /**
      * The first image is automatically used as the card / featured image.
-     * Thumbnails are served from ad/thumbnail/, so make sure a copy of the
-     * first image exists there and point the ad's thumbnail at it.
+     * Cards are served from ad/thumbnail/, so make sure a publicly readable
+     * thumbnail of the first image exists there and point the ad at it.
      */
-    private function resolve_thumbnail_from_images(array $ad_images)
+    private function resolve_thumbnail($ad_images, $first_new_file = null)
     {
         if (empty($ad_images)) {
             return null;
         }
 
+        // First image is a fresh upload: store its thumbnail the exact same proven
+        // way regular images are stored (guarantees the file exists and is served).
+        if ($first_new_file) {
+            return ImageManager::upload('ad/thumbnail/', 'webp', $first_new_file, 'def.jpg');
+        }
+
+        // First image is an existing one (e.g. reordered on edit): copy it into the
+        // thumbnail folder with public visibility so the card renders.
         $first = $ad_images[0];
 
-        if (!Storage::disk()->exists('ad/thumbnail/' . $first) && Storage::disk()->exists('ad/' . $first)) {
-            Storage::disk()->copy('ad/' . $first, 'ad/thumbnail/' . $first);
+        if (Storage::disk()->exists('ad/' . $first)) {
+            Storage::disk()->put('ad/thumbnail/' . $first, Storage::disk()->get('ad/' . $first), 'public');
         }
 
         return $first;
@@ -595,7 +609,8 @@ class AdController extends Controller
         $ad->title = $request->title;
         // $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
         
-        $ad_images = $this->build_ordered_ad_images($request);
+        $built_images = $this->build_ordered_ad_images($request);
+        $ad_images = $built_images['images'];
 
         if (empty($ad_images)) {
             return response()->json([
@@ -693,7 +708,7 @@ class AdController extends Controller
 
         $ad->images = json_encode($ad_images);
 
-        $ad->thumbnail = $this->resolve_thumbnail_from_images($ad_images);
+        $ad->thumbnail = $this->resolve_thumbnail($ad_images, $built_images['first_new_file']);
 
         $ad->save();
 
@@ -808,7 +823,7 @@ class AdController extends Controller
             ->with('video')
             ->first();
 
-            $gallery_images_number = count(json_decode($ad->images)) + 1;
+            $gallery_images_number = count(json_decode($ad->images));
 
             if($ad_promotional_video) { $gallery_images_number++; }
 

@@ -92,12 +92,6 @@
                             <span class="d-block">{{ translate('expires_at') }} : {{ $banner->expiration_date->format('d/m/Y') }}</span>
                             <span class="d-block" >({{$banner->expiration_date->locale($locale)->diffForHumans()}})</span>
                         </div>
-                        <div>
-                            <span>
-                            <span class="tio-visible nav-indicator-icon fs-15"></span>
-                            <span>{{ translate('views') }} : {{$banner->views_number}}</span>
-                            </span>
-                        </div>
                     </div>
                     <div class="d-flex gap-2 align-items-center justify-content-end">
                         <a href="{{route('edit.paid-banners', [$banner->id])}}" title="{{translate('Edit')}}"
