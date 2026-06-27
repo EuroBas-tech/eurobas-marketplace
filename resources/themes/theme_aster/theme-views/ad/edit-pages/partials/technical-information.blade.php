@@ -345,25 +345,7 @@
         @endif
         <div class="col-xl-4">
             <div class="form-group">
-                <label for="color">{{translate('color')}}</label>
-                @php
-                    $colors = [
-                        'black', 'white', 'silver', 'gray', 'blue', 'red', 'brown', 'beige',
-                        'green', 'orange', 'yellow', 'gold', 'purple', 'pink', 'turquoise',
-                        'darkred', 'navy', 'peru', 'olive', 'multicolor/custom'
-                    ];
-                @endphp
-                <select class="form-control" name="color" id="color">
-                    <option value=""> -- {{ translate('choose_color') }} -- </option>
-                        @foreach ($colors as $color)
-                            <option value="{{$color}}" {{ $ad['color'] == $color ? 'selected' : '' }}>
-                                {{ translate($color) }}
-                                @if (!$loop->last)
-                                    <span style="width: 10px;height: 10px;background: {{$color}};" ></span>
-                                @endif
-                            </option>
-                        @endforeach
-                </select>
+                @include('theme-views.ad.partials._color-picker', ['selectedColor' => $ad->color])
             </div>
         </div>
     </div>

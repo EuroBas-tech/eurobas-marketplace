@@ -49,7 +49,6 @@
                             </a>
                         </div>
                     </td>
-                    </tr>
                 </tr>
             @endforeach
         @endif
@@ -101,15 +100,8 @@
                         </div>
                     </div>
                     <div class="d-flex gap-2 align-items-center justify-content-end">
-                        <a href=""
-                            class="btn btn-outline-success rounded-circle btn-action add_to_compare "
-                            id="">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href=""
-                            class="btn btn-outline-primary rounded-circle btn-action add_to_compare "
-                            onclick=""
-                            id="">
+                        <a href="{{route('edit.paid-banners', [$banner->id])}}" title="{{translate('Edit')}}"
+                            class="btn btn-outline-primary rounded-circle btn-action add_to_compare ">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a href="javascript:" title="{{translate('Delete')}}"
@@ -123,9 +115,7 @@
         @endforeach
     @endif
     @if($banners->count()==0)
-        <tr class="dashed-border" >
-            <td class="dashed-border rounded" ><h5 class="text-center">{{translate('not_found_anything')}}</h5></td>
-        </tr>
+        <div class="dashed-border rounded p-3" ><h5 class="text-center">{{translate('not_found_anything')}}</h5></div>
     @endif
 </div>
 

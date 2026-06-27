@@ -87,7 +87,7 @@
 
     <script>
         window.onload = function () {
-            CKEDITOR.replace('description');
+            CKEDITOR.replace('description', window.adDescriptionEditorConfig || {});
         };
     </script>
 

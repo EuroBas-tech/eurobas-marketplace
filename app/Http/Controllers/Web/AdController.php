@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use App\Model\BusinessSetting;
 use App\Model\SubscriptionPackage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Model\UserCategoryInterest;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
@@ -187,8 +188,11 @@ class AdController extends Controller
             return $item;
         });
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value');
+        $maximum_ad_images_number = BusinessSetting::where('type', 'maximum_ad_images_number')->value('value');
+
         return view('theme-views.ad.edit-pages.edit-'.strtolower(str_replace(' ', '-', $ad->category->category_type)),
-        compact('ad', 'categories', 'brands', 'models','list_values'));
+        compact('ad', 'categories', 'brands', 'models', 'list_values', 'ad_images_size', 'maximum_ad_images_number'));
     }
 
     public function store(Request $request)
@@ -199,7 +203,6 @@ class AdController extends Controller
             'description' => 'required',
             'category_id' => 'required',
             'price_type' => 'required',
-            'image' => 'required',
             'price' => $request->price_type == 'fixed_price' || $request->price_type == 'asking_price' ? 'required|numeric|min:0|max:10000000000' : '',
             'contact_phone_number' => $request->show_phone_number && $request->show_phone_number == 'on' ? 'required|numeric' : '',
             'currency' => 'required',
@@ -216,7 +219,6 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
-            'image.required' => translate("Image is required"),
         ]);
         
         if ($validator->fails()) {
@@ -244,15 +246,14 @@ class AdController extends Controller
         $ad->title = $request->title;
         $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
 
-        $ad_images = [];
-        
-        if($request->hasFile('images')) {
-            foreach ($request->images as $image) {
-                if ($image && $image->isValid()) {
-                    $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
-                    $ad_images[] = $image_name;
-                }
-            }
+        $ad_images = $this->build_ordered_ad_images($request);
+
+        if (empty($ad_images)) {
+            return response()->json([
+                'success' => false,
+                'message' => translate("Validation failed"),
+                'errors' => [translate("Image is required")]
+            ], 422);
         }
 
         $ad_location_coordinates = $this->getLocationCoordinates($request->city);
@@ -343,9 +344,7 @@ class AdController extends Controller
         $ad->acceleration_0_100     = $request->acceleration_0_100;
         $ad->images = json_encode($ad_images);
 
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
-        }
+        $ad->thumbnail = $this->resolve_thumbnail_from_images($ad_images);
 
         $ad->status = 0;
 
@@ -457,6 +456,65 @@ class AdController extends Controller
 
     }
 
+    /**
+     * Build the ordered list of ad image filenames from the submitted
+     * image_order[] manifest and new_images[] uploads.
+     *
+     * Each image_order entry is either:
+     *   - "existing:<filename>"  (already-uploaded image, kept as-is)
+     *   - "new:<key>"            (a freshly uploaded file in new_images[<key>])
+     *
+     * The order of the returned array reflects the order the user arranged
+     * the images in, so the first element is the chosen card / featured image.
+     */
+    private function build_ordered_ad_images(Request $request)
+    {
+        $order = $request->input('image_order', []);
+        $new_files = $request->file('new_images', []) ?? [];
+
+        $ad_images = [];
+
+        foreach ((array) $order as $entry) {
+            if (!is_string($entry)) {
+                continue;
+            }
+
+            if (strpos($entry, 'new:') === 0) {
+                $key = substr($entry, 4);
+                if (isset($new_files[$key]) && $new_files[$key] && $new_files[$key]->isValid()) {
+                    $ad_images[] = ImageManager::upload('ad/', 'webp', $new_files[$key], 'def.jpg');
+                }
+            } elseif (strpos($entry, 'existing:') === 0) {
+                $filename = substr($entry, 9);
+                if ($filename !== '') {
+                    $ad_images[] = $filename;
+                }
+            }
+        }
+
+        return $ad_images;
+    }
+
+    /**
+     * The first image is automatically used as the card / featured image.
+     * Thumbnails are served from ad/thumbnail/, so make sure a copy of the
+     * first image exists there and point the ad's thumbnail at it.
+     */
+    private function resolve_thumbnail_from_images(array $ad_images)
+    {
+        if (empty($ad_images)) {
+            return null;
+        }
+
+        $first = $ad_images[0];
+
+        if (!Storage::disk()->exists('ad/thumbnail/' . $first) && Storage::disk()->exists('ad/' . $first)) {
+            Storage::disk()->copy('ad/' . $first, 'ad/thumbnail/' . $first);
+        }
+
+        return $first;
+    }
+
     public function getLocationCoordinates($city) {
 
         $apiKey = Helpers::get_business_settings('map_api_key_server');
@@ -537,19 +595,16 @@ class AdController extends Controller
         $ad->title = $request->title;
         // $ad->slug = Str::slug($ad->title, '-') . '-' . Str::random(6);
         
-        $ad_images = $request->old_images && 
-            count($request->old_images) > 0 ? 
-        $request->old_images : [];
-        
-        if($request->hasFile('images')) {
-            foreach ($request->images as $image) {
-                if ($image && $image->isValid()) {
-                    $image_name = ImageManager::upload('ad/', 'webp', $image, 'def.jpg');
-                    $ad_images[] = $image_name;
-                }
-            }
+        $ad_images = $this->build_ordered_ad_images($request);
+
+        if (empty($ad_images)) {
+            return response()->json([
+                'success' => false,
+                'message' => translate("Validation failed"),
+                'errors' => [translate("Image is required")]
+            ], 422);
         }
-        
+
         $ad->images = json_encode($ad_images);
 
         $ad->category_id            = $request->category_id;
@@ -637,9 +692,8 @@ class AdController extends Controller
         $ad->shipbuilding_type = $request->shipbuilding_type;
 
         $ad->images = json_encode($ad_images);
-        if($request->hasFile('image')) {
-            $ad->thumbnail = ImageManager::upload('ad/thumbnail/', 'webp', $request->file('image'), 'def.jpg');
-        }
+
+        $ad->thumbnail = $this->resolve_thumbnail_from_images($ad_images);
 
         $ad->save();
 

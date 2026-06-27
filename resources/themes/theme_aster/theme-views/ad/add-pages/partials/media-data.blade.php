@@ -58,29 +58,8 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="form-group mb-4">
-                <label >{{ translate('ad_images') }}</label>
-                <div class="d-flex gap-3 flex-wrap mb-3" id="additional_Image_Section">
-                    <div class="upload-file position-relative" style="width: min-content;">
-                        <input 
-                            type="file" 
-                            class="upload-file__input"  
-                            onchange="addMoreImage(this, '#additional_Image_Section')"
-                            name="images[]" 
-                            aria-required="true"
-                            multiple
-                            accept="image/*">
-                        <div class="upload-file__img">
-                            <div class="temp-img-box">
-                                <div class="d-flex align-items-center flex-column gap-2">
-                                    <i class="bi bi-upload fs-30"></i>
-                                    <div class="fs-12 text-muted">{{ translate('ad_images') }}</div>
-                                </div>
-                            </div>
-                            <img src="#" class="dark-support img-fit-contain border" alt="" hidden="">
-                        </div>
-                    </div>
-                </div>
-                {{--<div class="text-muted">{{ translate('Image_ratio_should_be') }} 1:1</div>--}}
+                <label>{{ translate('ad_images') }}</label>
+                @include('theme-views.ad.partials._image-uploader')
             </div>
 
             @if(\App\Model\SponsoredAdType::where('name', 'promotional_video')->value('status') == 1)
