@@ -20,15 +20,15 @@
         min-width: 160px;
     }
 
-    /* 1. Pulling the filter down to overlap the main banner */
-    .banner.w-100.sweet-shadow {
+   
+    section.banner {
         position: relative !important;
         margin-top: -50px !important; 
         z-index: 999 !important;
     }
     
-    /* 2. Adding rounded corners and professional shadow like AutoScout24 */
-    .card-mobl-border-0 {
+  
+    section.banner .card {
         border: none !important;
         border-radius: 12px !important;
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12) !important;
