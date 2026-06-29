@@ -171,7 +171,7 @@
 
 @section('content')
 
-    <main class="main-content d-flex flex-column gap-3 pt-0 pt-lg-3 pb-3">
+    <main class="main-content d-flex flex-column gap-3 pt-0 pb-3">
         <!-- Main Banner -->
         <div class="container" >
 
@@ -188,8 +188,8 @@
                     </div>
                 </div>
             @else
-                <div style="background-position: 50%;height: calc(95vh - 135px);max-height: 520px;"
-                    class="hero-background-image pt-2 rounded d-flex align-items-end mb-3">
+                <div style="background-position: 50% 40%; height: 320px; max-height: 320px;"
+                    class="hero-background-image rounded d-flex align-items-end mb-0">
                     <div class="d-flex mx-auto align-items-center justify-content-center
                         w-100 p-2 px-4 px-sm-5" style="border-radius: 4px 4px 0 0;">
                         @include('theme-views.partials._ad-filter')
@@ -299,9 +299,3 @@
         });
     </script>
 @endpush
-
-
-
-
-
-
