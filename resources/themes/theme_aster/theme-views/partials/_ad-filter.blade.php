@@ -20,48 +20,20 @@
         min-width: 160px;
     }
 
-    .filter-banner-section {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    /* 1. Pulling the filter down to overlap the main banner */
+    .banner.w-100.sweet-shadow {
         position: relative !important;
         margin-top: -50px !important; 
         z-index: 999 !important;
     }
     
-    .filter-card-full {
+    /* 2. Adding rounded corners and professional shadow like AutoScout24 */
+    .card-mobl-border-0 {
         border: none !important;
         border-radius: 12px !important;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12) !important;
         background-color: #ffffff !important;
-        width: 100% !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important; 
-    }
-
-    .custom-filter-height {
-        height: 48px !important;
-        display: flex;
-        align-items: center;
-        border-radius: 6px !important;
-    }
-    
-    select.custom-filter-height {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-
-    .btn-search-hero {
-        background-color: #0d6efd;
-        color: #ffffff;
-        font-weight: 600;
-        border: none;
-        height: 48px !important;
-        border-radius: 6px !important;
-        transition: background-color 0.2s ease-in-out;
-    }
-    .btn-search-hero:hover {
-        background-color: #0b5ed7;
-        color: #ffffff;
+        overflow: visible !important;
     }
 </style>
 
