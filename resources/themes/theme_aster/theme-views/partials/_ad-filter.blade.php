@@ -20,20 +20,20 @@
         min-width: 160px;
     }
 
-   
+    
     section.banner {
-        position: relative !important;
-        margin-top: -50px !important; 
-        z-index: 999 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
-  
+     
     section.banner .card {
         border: none !important;
         border-radius: 12px !important;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
         background-color: #ffffff !important;
-        overflow: visible !important;
     }
 </style>
 
