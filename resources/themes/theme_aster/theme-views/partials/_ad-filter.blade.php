@@ -1,4 +1,4 @@
- <style>
+<style>
     #dropdownMenuButton:hover,
     #dropdownMenuButton:focus,
     #dropdownMenuButton:active {
@@ -20,7 +20,7 @@
         min-width: 160px;
     }
 
-    
+   
     section.banner {
         width: 100% !important;
         max-width: 100% !important;
@@ -28,12 +28,59 @@
         padding: 0 !important;
     }
     
-     
+    
     section.banner .card {
         border: none !important;
-        border-radius: 12px !important;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+        border-radius: 16px !important;  
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;  
         background-color: #ffffff !important;
+        padding: 12px 8px !important; 
+    }
+
+    
+    section.banner .form-control,
+    section.banner .form-select,
+    section.banner select,
+    section.banner .nice-select {
+        height: 52px !important;  
+        border-radius: 8px !important;
+        border: 1px solid #e9ecef !important;  
+        background-color: #f8f9fa !important; 
+        font-size: 15px !important;
+        color: #212529 !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+
+     
+    section.banner .form-control:focus,
+    section.banner .form-select:focus {
+        background-color: #ffffff !important;
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
+    }
+
+     
+    section.banner .btn {
+        height: 52px !important;  
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+
+    
+    section.banner .btn-primary, 
+    section.banner .btn-main {
+        background-color: #0d6efd !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2) !important;
+    }
+    section.banner .btn-primary:hover {
+        background-color: #0b5ed7 !important;
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.3) !important;
     }
 </style>
 
