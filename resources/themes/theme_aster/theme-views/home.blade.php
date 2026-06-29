@@ -165,6 +165,15 @@
                 height: 280px;
             }
         }
+
+        /* الكود المضاف لإنزال الفلتر وفصله هيكلياً عن البنر بطريقة احترافية ودائمة */
+        .filter-overlap-container {
+            width: 100% !important;
+            margin-top: -65px !important;
+            position: relative !important;
+            z-index: 999 !important;
+            padding: 0 48px !important;
+        }
     </style>
 
 @endpush
@@ -172,16 +181,13 @@
 @section('content')
 
     <main class="main-content d-flex flex-column gap-3 pt-0 pb-3">
-        <!-- Main Banner -->
         <div class="container" >
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
                 <div class="mobile-hero-wrapper">
-                    <!-- Background Card -->
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image"></div>
-                    <!-- Filter Under Card -->
                     <div class="d-flex mx-auto align-items-center justify-content-center
                         w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
@@ -189,11 +195,11 @@
                 </div>
             @else
                 <div style="background-position: 50% 40%; height: 320px; max-height: 320px;"
-                    class="hero-background-image rounded d-flex align-items-end mb-0">
-                    <div class="d-flex mx-auto align-items-center justify-content-center
-                        w-100 p-2 px-4 px-sm-5" style="border-radius: 4px 4px 0 0;">
-                        @include('theme-views.partials._ad-filter')
-                    </div>
+                    class="hero-background-image rounded mb-0">
+                </div>
+
+                <div class="filter-overlap-container">
+                    @include('theme-views.partials._ad-filter')
                 </div>
             @endif
         </div>
@@ -213,7 +219,6 @@
             </div>
         @endif
 
-        <!-- Recommended For You -->
         @include('theme-views.partials._recommended-product')
 
     </main>
