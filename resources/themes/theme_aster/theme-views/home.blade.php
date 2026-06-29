@@ -169,7 +169,7 @@
         /* الكود المضاف لإنزال الفلتر وفصله هيكلياً عن البنر بطريقة احترافية ودائمة */
         .filter-overlap-container {
             width: 100% !important;
-            margin-top: -15px !important;
+            margin-top: -35px !important;
             position: relative !important;
             z-index: 999 !important;
             padding: 0 48px !important;
