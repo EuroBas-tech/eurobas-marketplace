@@ -31,29 +31,47 @@
     
     section.banner .card {
         border: none !important;
-        border-radius: 16px !important;  
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;  
+        border-radius: 16px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
         background-color: #ffffff !important;
-        padding: 12px 8px !important; 
+        padding: 12px 8px !important;
     }
 
     
     section.banner .form-control,
     section.banner .form-select,
     section.banner select,
-    section.banner .nice-select {
+    section.banner .nice-select,
+    section.banner .select2-container--default .select2-selection--single {
         height: 52px !important;  
         border-radius: 8px !important;
-        border: 1px solid #e9ecef !important;  
-        background-color: #f8f9fa !important; 
+        border: 1px solid #e9ecef !important;
+        background-color: #f8f9fa !important;
         font-size: 15px !important;
         color: #212529 !important;
+        display: flex !important;
+        align-items: center !important;
         transition: all 0.2s ease-in-out !important;
     }
 
-     
+   
+    section.banner .select2-container .select2-selection--single .select2-selection__rendered {
+        line-height: 52px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        color: #212529 !important;
+        border: none !important; 
+        background: transparent !important;
+    }
+    section.banner .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 52px !important; 
+        top: 0 !important;
+    }
+
+    
     section.banner .form-control:focus,
-    section.banner .form-select:focus {
+    section.banner .form-select:focus,
+    section.banner .select2-container--open .select2-selection--single {
         background-color: #ffffff !important;
         border-color: #0d6efd !important;
         box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
@@ -61,7 +79,7 @@
 
      
     section.banner .btn {
-        height: 52px !important;  
+        height: 52px !important;
         border-radius: 8px !important;
         font-weight: 600 !important;
         font-size: 15px !important;
@@ -71,7 +89,7 @@
         transition: all 0.2s ease-in-out !important;
     }
 
-    
+     
     section.banner .btn-primary, 
     section.banner .btn-main {
         background-color: #0d6efd !important;
