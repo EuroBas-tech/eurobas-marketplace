@@ -33,6 +33,7 @@
         }
         .select2.select2-container {
             display: block !important;
+            width: 100% !important;  
         }
 
         .select2-container--default .select2-selection--single {
@@ -101,71 +102,26 @@
         }
 
         /* ======================================================== */
-        /* التعديل الجمالي المطور للفلتر الجانبي (EuroBas Style) */
+        /* تصحيح وتحسين المظهر البصري الخارجي الآمن للفلتر الجانبي */
         /* ======================================================== */
-        
-        
-        aside .card-border.aside-shadow {
-            border: none !important;
-            border-radius: 16px !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
-        }
-
-        
-        aside .form-control,
-        aside .form-select,
-        aside select,
-        aside .nice-select,
-        aside .select2-container--default .select2-selection--single {
-            height: 48px !important; 
-            border-radius: 8px !important;
-            border: 1px solid #e9ecef !important;
+        aside #filter-form .form-control,
+        aside #filter-form .form-select,
+        aside #filter-form select,
+        aside #filter-form .select2-container--default .select2-selection--single {
+            width: 100% !important;  
             background-color: #f8f9fa !important;  
-            font-size: 14px !important;
-            color: #212529 !important;
-            display: flex !important;
-            align-items: center !important;
-            transition: all 0.2s ease-in-out !important;
-        }
-
-    
-        aside .form-control, aside .form-select {
-            margin-bottom: 0 !important; 
-        }
-
-    
-        aside .select2-container .select2-selection--single .select2-selection__rendered {
-            line-height: 48px !important;
-            padding-left: 12px !important;
-            padding-right: 12px !important;
-            color: #212529 !important;
-            border: none !important;
-            background: transparent !important;
-        }
-        aside .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 48px !important;
-            top: 0 !important;
+            border: 1px solid #e9ecef !important;  
+            border-radius: 8px !important;  
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
 
         
-        aside .form-control:focus,
-        aside .form-select:focus,
-        aside .select2-container--open .select2-selection--single {
-            background-color: #ffffff !important;
+        aside #filter-form .form-control:focus,
+        aside #filter-form .form-select:focus,
+        aside #filter-form .select2-container--open .select2-selection--single {
             border-color: #0d6efd !important;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
-        }
-
-        
-        aside .btn:not(#clear-filters) {
-            height: 48px !important;
-            border-radius: 8px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15) !important;
+            background-color: #ffffff !important;
         }
     </style>
 
