@@ -122,6 +122,19 @@
                     </button>
                 </div>
 
+                <div class="card-body d-flex flex-column">
+                    <form id="filter-form">
+                        @csrf
+                        <div>
+                            <h4 class="mb-3" >
+                                <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
+                                (<span class="fw-bold fs-15" id="ads-count-number">{{$initial_filter_count}}</span>)
+                            </h4>
+                        </div>
+                        <button type="button" id="clear-filters" class="btn btn-outline-danger d-inline mb-3 px-1 py-1" >
+                            <i class="bi bi-x-lg"></i>
+                            <span class="mx-1" >{{translate('clear_filter')}}</span>
+                        </button>
                         
                         <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
                             @if(request('category_id') && request('category_id') != 0)
