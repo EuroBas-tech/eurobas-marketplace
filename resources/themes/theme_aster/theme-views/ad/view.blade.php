@@ -3,140 +3,139 @@
 @section('title',' '.translate('Filter'))
 
 @push('css_or_js')
-    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']}}"/>
-    <meta property="og:title" content="Products of {{$web_config['name']}} "/>
-    <meta property="og:url" content="{{env('APP_URL')}}">
-    <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
+    <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']}}"/>
+    <meta property="og:title" content="Products of {{$web_config['name']}} "/>
+    <meta property="og:url" content="{{env('APP_URL')}}">
+    <meta property="og:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']}}"/>
-    <meta property="twitter:title" content="Products of {{$web_config['name']}}"/>
-    <meta property="twitter:url" content="{{env('APP_URL')}}">
-    <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
+    <meta property="twitter:card" content="{{cloudfront('company')}}/{{$web_config['web_logo']}}"/>
+    <meta property="twitter:title" content="Products of {{$web_config['name']}}"/>
+    <meta property="twitter:url" content="{{env('APP_URL')}}">
+    <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
-    <style>
-        .select2-container--default .select2-selection--single .select2-selection__placeholder {
-            color: black !important;
-        }
-        .select2-selection__clear {
-            display: none !important;
-        }
-        .select2-container--default .select2-search--dropdown .select2-search__field {
-            border: 1px solid gray !important;
-            border-radius: 4px !important;
-        }
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            border: 1px solid #dbdbdb !important;
-            border-radius: 6px !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 37px !important;
-        }
-        .select2.select2-container {
-            display: block !important;
-        }
+    <style>
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: black !important;
+        }
+        .select2-selection__clear {
+            display: none !important;
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: 1px solid gray !important;
+            border-radius: 4px !important;
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            border: 1px solid #dbdbdb !important;
+            border-radius: 6px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 37px !important;
+        }
+        .select2.select2-container {
+            display: block !important;
+        }
 
-        .select2-container--default .select2-selection--single {
-            border: none !important;
-        }
-        .select2-dropdown {
-            top: 12px !important;
-        }
-        .select2-container--default .select2-search--dropdown .select2-search__field {
-            height: 36px !important;
-        }
+        .select2-container--default .select2-selection--single {
+            border: none !important;
+        }
+        .select2-dropdown {
+            top: 12px !important;
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            height: 36px !important;
+        }
 
-        #status-box .dropdown-menu {
-            width: 100% !important;
-            min-width: 100% !important;
-            max-width: 100% !important;
-            transform: none !important;
-            inset: auto !important;
-            position: absolute !important;
-            left: 0 !important;
-            right: 0 !important;
-            margin-top: 0 !important;
-            box-sizing: border-box;
-            box-shadow: 0px 0px 2px black;
-            border-radius: 0 0 5px 5px;
-        }
+        #status-box .dropdown-menu {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            transform: none !important;
+            inset: auto !important;
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            margin-top: 0 !important;
+            box-sizing: border-box;
+            box-shadow: 0px 0px 2px black;
+            border-radius: 0 0 5px 5px;
+        }
 
-        .modal-backdrop {
-            display: none !important;
-        }
+        .modal-backdrop {
+            display: none !important;
+        }
 
-        .modal-dialog {
-            max-width: var(--bs-modal-width);
-            margin-right: auto;
-            margin-left: auto;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal-dialog {
+            max-width: var(--bs-modal-width);
+            margin-right: auto;
+            margin-left: auto;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        #location_map_canvas {
-            position: relative;
-        }
+        #location_map_canvas {
+            position: relative;
+        }
 
-        #pac-input {
-            position: absolute !important;
-            top: 14px !important;
-            left: 50% !important;
-            transform: translateX(-50%);
-            z-index: 5;
-            width: 60%;
-            height: 34px;
-            max-width: 180px;
-            border: 1px gray solid;
-        }
+        #pac-input {
+            position: absolute !important;
+            top: 14px !important;
+            left: 50% !important;
+            transform: translateX(-50%);
+            z-index: 5;
+            width: 60%;
+            height: 34px;
+            max-width: 180px;
+            border: 1px gray solid;
+        }
 
-        .banner-sidebar {
-            position: sticky;
-            top: 55px;
-            align-self: flex-start;
-        }
+        .banner-sidebar {
+            position: sticky;
+            top: 55px;
+            align-self: flex-start;
+        }
 
-        .aside-margin-top {
-            margin-top: 40px;
-        }
+        .aside-margin-top {
+            margin-top: 40px;
+        }
 
-    </style>
+    </style>
 
 @endpush
 
 @section('content')
 
-    <!-- Aside Toggle Button -->
-    <div class="aside-toggle-btn d-block d-lg-none bg-light filter-menu-toggle rounded-0 rounded-end">
-        <span class="bg-orange rounded d-flex cursor-pointer text-white align-items-center justify-content-center" >
-            <i class="bi bi-funnel fs-16"></i>
-        </span>
-    </div>
+    <!-- Aside Toggle Button -->
+    <div class="aside-toggle-btn d-block d-lg-none bg-light filter-menu-toggle rounded-0 rounded-end">
+        <span class="bg-orange rounded d-flex cursor-pointer text-white align-items-center justify-content-center" >
+            <i class="bi bi-funnel fs-16"></i>
+        </span>
+    </div>
 
-    <div class="d-flex p-4 gap-4" >
-        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0 @if(auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city)) aside-margin-top @endif">
-            <div class="card-border aside-shadow rounded p-3 bg-white custom-scroll" >
-                <div class="d-lg-none close-filter" >
-                    <button class="filter-aside-close border-0 bg-primary text-white rounded-circle pt-1">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
+    <div class="d-flex p-4 gap-4" >
+        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0 @if(auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city)) aside-margin-top @endif">
+            <div class="card-border aside-shadow rounded p-3 bg-white custom-scroll" >
+                <div class="d-lg-none close-filter" >
+                    <button class="filter-aside-close border-0 bg-primary text-white rounded-circle pt-1">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
 
-                <div class="card-body d-flex flex-column">
-                    <form id="filter-form">
-                        @csrf
-                        <div>
-                            <h4 class="mb-3" >
-                                <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
-                                (<span class="fw-bold fs-15" id="ads-count-number">{{$initial_filter_count}}</span>)
-                            </h4>
-                        </div>
-                        <button type="button" id="clear-filters" class="btn btn-outline-danger d-inline mb-3 px-1 py-1" >
-                            <i class="bi bi-x-lg"></i>
-                            <span class="mx-1" >{{translate('clear_filter')}}</span>
-                        </button>
-
-
+                <div class="card-body d-flex flex-column">
+                    <form id="filter-form">
+                        @csrf
+                        <div>
+                            <h4 class="mb-3" >
+                                <span class="fw-lighter fs-15" >{{translate('results_for_this_filter')}}</span>
+                                (<span class="fw-bold fs-15" id="ads-count-number">{{$initial_filter_count}}</span>)
+                            </h4>
+                        </div>
+                        <button type="button" id="clear-filters" class="btn btn-outline-danger d-inline mb-3 px-1 py-1" >
+                            <i class="bi bi-x-lg"></i>
+                            <span class="mx-1" >{{translate('clear_filter')}}</span>
+                        </button>
+                        
                         <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
                             @if(request('category_id') && request('category_id') != 0)
                                 <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
