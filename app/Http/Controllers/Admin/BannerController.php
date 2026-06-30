@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Banner;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BannerController extends Controller
 {
@@ -91,6 +92,8 @@ class BannerController extends Controller
         $banner->photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
         $banner->save();
 
+        Cache::forget('main_banners');
+
         Toastr::success(translate('banner_added_successfully'));
         return back();
     }
@@ -101,6 +104,9 @@ class BannerController extends Controller
             $banner = Banner::find($request->id);
             $banner->published = $request->status ?? 0;
             $banner->save();
+
+            Cache::forget('main_banners');
+
             $data = $request->status ?? 0;
             return response()->json($data);
         }
@@ -137,6 +143,8 @@ class BannerController extends Controller
         }
         $banner->save();
 
+        Cache::forget('main_banners');
+
         Toastr::success(translate('banner_updated_successfully'));
         return back();
     }
@@ -146,6 +154,9 @@ class BannerController extends Controller
         $br = Banner::find($request->id);
         ImageManager::delete('/banner/' . $br['photo']);
         Banner::where('id', $request->id)->delete();
+
+        Cache::forget('main_banners');
+
         return response()->json();
     }
 }
