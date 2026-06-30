@@ -33,7 +33,6 @@
         }
         .select2.select2-container {
             display: block !important;
-            width: 100% !important;  
         }
 
         .select2-container--default .select2-selection--single {
@@ -101,34 +100,13 @@
             margin-top: 40px;
         }
 
-        /* ======================================================== */
-        /* تصحيح وتحسين المظهر البصري الخارجي الآمن للفلتر الجانبي */
-        /* ======================================================== */
-        aside #filter-form .form-control,
-        aside #filter-form .form-select,
-        aside #filter-form select,
-        aside #filter-form .select2-container--default .select2-selection--single {
-            width: 100% !important;  
-            background-color: #f8f9fa !important;  
-            border: 1px solid #e9ecef !important;  
-            border-radius: 8px !important;  
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-
-        
-        aside #filter-form .form-control:focus,
-        aside #filter-form .form-select:focus,
-        aside #filter-form .select2-container--open .select2-selection--single {
-            border-color: #0d6efd !important;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15) !important;
-            background-color: #ffffff !important;
-        }
     </style>
 
 @endpush
 
 @section('content')
 
+    <!-- Aside Toggle Button -->
     <div class="aside-toggle-btn d-block d-lg-none bg-light filter-menu-toggle rounded-0 rounded-end">
         <span class="bg-orange rounded d-flex cursor-pointer text-white align-items-center justify-content-center" >
             <i class="bi bi-funnel fs-16"></i>
@@ -157,6 +135,7 @@
                             <i class="bi bi-x-lg"></i>
                             <span class="mx-1" >{{translate('clear_filter')}}</span>
                         </button>
+
 
                         <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
                             @if(request('category_id') && request('category_id') != 0)
