@@ -100,13 +100,79 @@
             margin-top: 40px;
         }
 
+        /* ======================================================== */
+        /* التعديل الجمالي المطور للفلتر الجانبي (EuroBas Style) */
+        /* ======================================================== */
+        
+        
+        aside .card-border.aside-shadow {
+            border: none !important;
+            border-radius: 16px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        
+        aside .form-control,
+        aside .form-select,
+        aside select,
+        aside .nice-select,
+        aside .select2-container--default .select2-selection--single {
+            height: 48px !important; 
+            border-radius: 8px !important;
+            border: 1px solid #e9ecef !important;
+            background-color: #f8f9fa !important;  
+            font-size: 14px !important;
+            color: #212529 !important;
+            display: flex !important;
+            align-items: center !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+
+    
+        aside .form-control, aside .form-select {
+            margin-bottom: 0 !important; 
+        }
+
+    
+        aside .select2-container .select2-selection--single .select2-selection__rendered {
+            line-height: 48px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+            color: #212529 !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        aside .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 48px !important;
+            top: 0 !important;
+        }
+
+        
+        aside .form-control:focus,
+        aside .form-select:focus,
+        aside .select2-container--open .select2-selection--single {
+            background-color: #ffffff !important;
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+        }
+
+        
+        aside .btn:not(#clear-filters) {
+            height: 48px !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease-in-out !important;
+        }
     </style>
 
 @endpush
 
 @section('content')
 
-    <!-- Aside Toggle Button -->
     <div class="aside-toggle-btn d-block d-lg-none bg-light filter-menu-toggle rounded-0 rounded-end">
         <span class="bg-orange rounded d-flex cursor-pointer text-white align-items-center justify-content-center" >
             <i class="bi bi-funnel fs-16"></i>
@@ -135,6 +201,25 @@
                             <i class="bi bi-x-lg"></i>
                             <span class="mx-1" >{{translate('clear_filter')}}</span>
                         </button>
+
+                        <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
+                            @if(request('category_id') && request('category_id') != 0)
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
+                                data-id="category" role="button">
+                                    <span>{{translate('category')}}</span>
+                                    <span class="ms-1 fs-15">&times;</span>
+                                </span>
+                            @endif
+
+                            @if(request('brand_id') && request('brand_id') != 'all')
+                                <span class="d-flex align-items-center gap-1 bg-primary text-light rounded
+                                p-1 px-2 fs-13 fw-medium me-2 mb-2 active-filter-item"
+                                data-id="brands" role="button">
+                                    <span>{{translate('brand')}}</span>
+                                    <span class="ms-1 fs-15">&times;</span>
+                                </span>
+                            @endif
 
                         <div class="mb-2 d-flex gap-1 flex-wrap" id="active-filters">
                             @if(request('category_id') && request('category_id') != 0)
