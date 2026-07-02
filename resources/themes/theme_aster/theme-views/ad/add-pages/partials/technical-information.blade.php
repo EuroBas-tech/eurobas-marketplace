@@ -338,7 +338,7 @@
                 </div>
             </div>
         @endif
-        <div class="col-xl-4 mb-3">
+        <div class="col-xl-12 mb-3">
             <div class="form-group">
                 @include('theme-views.ad.partials._color-picker', ['selectedColor' => old('color')])
             </div>
