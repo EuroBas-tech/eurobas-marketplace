@@ -343,7 +343,7 @@
                 </div>
             </div>
         @endif
-        <div class="col-xl-4">
+        <div class="col-xl-12">
             <div class="form-group">
                 @include('theme-views.ad.partials._color-picker', ['selectedColor' => $ad->color])
             </div>
