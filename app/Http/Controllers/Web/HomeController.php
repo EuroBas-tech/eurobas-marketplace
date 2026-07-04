@@ -63,8 +63,11 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             ->get();
         });
 
-        $banner = $banners->firstWhere('lang', $locale)
-        ?? $banners->firstWhere('lang', 'Both');
+        // Case-insensitive match: supports both old ('En') and new ('en') lang codes
+        $banner = $banners->first(function ($b) use ($locale) {
+                return strtolower($b->lang) === strtolower($locale);
+            })
+            ?? $banners->firstWhere('lang', 'Both');
 
          $customerId = auth('customer')->id();
          $guestId    = $customerId ? null : Helpers::deviceId();
