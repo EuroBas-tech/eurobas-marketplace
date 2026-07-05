@@ -6,16 +6,20 @@ use App\CPU\Helpers;
 use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
 use App\Model\Banner;
-use App\Model\Translation;
-use App\Model\BusinessSetting;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class BannerController extends Controller
 {
+
     function list(Request $request)
     {
+
+        $banner_types = [];
+        $lang = $request['lang'] ?? null;
+        $for_mobile = $request['for_mobile'] ?? null;
+        
         $banner_types = [
             "Main Banner", 
             "Popup Banner", 
@@ -40,65 +44,53 @@ class BannerController extends Controller
             $banners = Banner::orderBy('priority', 'desc');
         }
 
-        if (!is_null($request['lang'])) {
-            $banners->where('lang', $request['lang']);
-            $query_param['lang'] = $request['lang'];
+        if (!is_null($lang)) {
+            $banners->where('lang', $lang);
+            $query_param['lang'] = $lang;
         }
 
-        if (!is_null($request['for_mobile'])) {
-            $banners->where('for_mobile', $request['for_mobile']);
-            $query_param['for_mobile'] = $request['for_mobile'];
+        if (!is_null($for_mobile)) {
+            $banners->where('for_mobile', $for_mobile);
+            $query_param['for_mobile'] = $for_mobile;
         }
 
         $banners = $banners
-            ->where('theme', 'theme_aster')
-            ->whereIn('banner_type', $banner_types)
-            ->orderBy('priority', 'asc')
-            ->paginate(Helpers::pagination_limit(), ['*'], 'page')
-            ->appends($query_param);
+        ->where('theme', 'theme_aster')
+        ->whereIn('banner_type', $banner_types)
+        ->orderBy('priority', 'asc')
+        ->paginate(Helpers::pagination_limit(), ['*'], 'page')
+        ->appends($query_param);
 
-        return view('admin-views.banner.view', compact('banners', 'search', 'request'));
+        return view('admin-views.banner.view', compact('banners', 'search','lang','for_mobile'));
     }
 
     public function store(Request $request)
     {
+
         $request->validate([
             'url' => 'nullable',
-            'image' => 'required'
+        ], [
+            'url.required' => 'url is required!',
+            'image.required' => 'Image is required!',
+
         ]);
 
         $banner = new Banner;
         $banner->banner_type = $request->banner_type;
-        
-        if ($request->banner_type == 'Main Banner') {
-            $banner->resource_type = $request->resource_type;
-            if ($request->resource_type == 'product') {
-                $banner->resource_id = $request->product_id;
-            } elseif ($request->resource_type == 'category') {
-                $banner->resource_id = $request->category_id;
-            } elseif ($request->resource_type == 'shop') {
-                $banner->resource_id = $request->shop_id;
-            } elseif ($request->resource_type == 'brand') {
-                $banner->resource_id = $request->brand_id;
-            }
-        } else {
-            $banner->resource_type = null;
-            $banner->resource_id = null;
-        }
-
-        // حفظ النص باللغة الافتراضية
-        $banner->title = $request->title[array_search('en', $request->lang)] ?? $request->title[0];
-        $banner->sub_title = $request->sub_title[array_search('en', $request->lang)] ?? $request->sub_title[0];
-        
+        $banner->resource_type = null;
+        $banner->resource_id = null;
+        $banner->title = $request->title;
         $banner->theme = 'theme_aster';
+        $banner->sub_title = $request->sub_title;
         $banner->button_text = $request->button_text;
         $banner->background_color = $request->background_color;
         $banner->url = $request->url;
-        $banner->lang = $request->lang_input ?? 'Both';
+        $banner->lang = $request->lang;
         $banner->for_mobile = $request->for_mobile;
         $banner->priority = $request->priority;
         $banner->photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
 
+        // Text overlay fields — only save if columns exist (after migration)
         if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
             $banner->show_text     = $request->has('show_text') ? 1 : 0;
             $banner->text_position = $request->text_position ?? 'center';
@@ -108,35 +100,24 @@ class BannerController extends Controller
 
         $banner->save();
 
-        // حفظ الترجمات المتعددة
-        foreach ($request->lang as $index => $key) {
-            if (isset($request->title[$index]) && $request->title[$index] != '') {
-                Translation::updateOrInsert(
-                    [
-                        'translationable_type' => 'App\Model\Banner',
-                        'translationable_id'   => $banner->id,
-                        'locale'               => $key,
-                        'key'                  => 'title'
-                    ],
-                    ['value' => $request->title[$index]]
-                );
-            }
-            if (isset($request->sub_title[$index]) && $request->sub_title[$index] != '') {
-                Translation::updateOrInsert(
-                    [
-                        'translationable_type' => 'App\Model\Banner',
-                        'translationable_id'   => $banner->id,
-                        'locale'               => $key,
-                        'key'                  => 'sub_title'
-                    ],
-                    ['value' => $request->sub_title[$index]]
-                );
-            }
-        }
-
         Cache::forget('main_banners');
+
         Toastr::success(translate('banner_added_successfully'));
         return back();
+    }
+
+    public function status(Request $request)
+    {
+        if ($request->ajax()) {
+            $banner = Banner::find($request->id);
+            $banner->published = $request->status ?? 0;
+            $banner->save();
+
+            Cache::forget('main_banners');
+
+            $data = $request->status ?? 0;
+            return response()->json($data);
+        }
     }
 
     public function edit($id)
@@ -149,38 +130,27 @@ class BannerController extends Controller
     {
         $request->validate([
             'url' => 'nullable',
+        ], [
+            'url.required' => 'url is required!',
         ]);
 
         $banner = Banner::find($id);
         $banner->banner_type = $request->banner_type;
-        
-        if ($request->banner_type == 'Main Banner') {
-            $banner->resource_type = $request->resource_type;
-            if ($request->resource_type == 'product') {
-                $banner->resource_id = $request->product_id;
-            } elseif ($request->resource_type == 'category') {
-                $banner->resource_id = $request->category_id;
-            } elseif ($request->resource_type == 'shop') {
-                $banner->resource_id = $request->shop_id;
-            } elseif ($request->resource_type == 'brand') {
-                $banner->resource_id = $request->brand_id;
-            }
-        }
-
-        $banner->title = $request->title[array_search('en', $request->lang)] ?? $request->title[0];
-        $banner->sub_title = $request->sub_title[array_search('en', $request->lang)] ?? $request->sub_title[0];
-        
+        $banner->resource_type = $request->resource_type;
+        $banner->resource_id = $request[$request->resource_type . '_id'];
+        $banner->title = $request->title;
+        $banner->sub_title = $request->sub_title;
         $banner->button_text = $request->button_text;
         $banner->background_color = $request->background_color;
-        $banner->lang = $request->lang_input ?? 'Both';
+        $banner->lang = $request->lang;
         $banner->for_mobile = $request->for_mobile;
         $banner->url = $request->url;
         $banner->priority = $request->priority;
-        
         if ($request->file('image')) {
             $banner->photo = ImageManager::update('banner/', $banner['photo'], 'webp', $request->file('image'));
         }
 
+        // Text overlay fields — only save if columns exist (after migration)
         if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
             $banner->show_text     = $request->has('show_text') ? 1 : 0;
             $banner->text_position = $request->text_position ?? 'center';
@@ -190,45 +160,10 @@ class BannerController extends Controller
 
         $banner->save();
 
-        foreach ($request->lang as $index => $key) {
-            if (isset($request->title[$index]) && $request->title[$index] != '') {
-                Translation::updateOrInsert(
-                    [
-                        'translationable_type' => 'App\Model\Banner',
-                        'translationable_id'   => $banner->id,
-                        'locale'               => $key,
-                        'key'                  => 'title'
-                    ],
-                    ['value' => $request->title[$index]]
-                );
-            }
-            if (isset($request->sub_title[$index]) && $request->sub_title[$index] != '') {
-                Translation::updateOrInsert(
-                    [
-                        'translationable_type' => 'App\Model\Banner',
-                        'translationable_id'   => $banner->id,
-                        'locale'               => $key,
-                        'key'                  => 'sub_title'
-                    ],
-                    ['value' => $request->sub_title[$index]]
-                );
-            }
-        }
-
         Cache::forget('main_banners');
+
         Toastr::success(translate('banner_updated_successfully'));
         return back();
-    }
-
-    public function status(Request $request)
-    {
-        if ($request->ajax()) {
-            $banner = Banner::find($request->id);
-            $banner->published = $request->status ?? 0;
-            $banner->save();
-            Cache::forget('main_banners');
-            return response()->json($request->status ?? 0);
-        }
     }
 
     public function delete(Request $request)
@@ -236,7 +171,9 @@ class BannerController extends Controller
         $br = Banner::find($request->id);
         ImageManager::delete('/banner/' . $br['photo']);
         Banner::where('id', $request->id)->delete();
+
         Cache::forget('main_banners');
+
         return response()->json();
     }
 }
