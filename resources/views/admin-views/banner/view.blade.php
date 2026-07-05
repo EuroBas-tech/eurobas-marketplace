@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="name" class="title-color text-capitalize">{{ translate('banner_URL')}}</label>
-                                        <input type="url" name="url" class="form-control" id="url" required placeholder="{{ translate('Enter_url') }}">
+                                        <input type="url" name="url" class="form-control" id="url" placeholder="{{ translate('Enter_url') }}">
                                     </div>
 
                                     <div class="form-group mb-0 d--none" id="resource-category">
@@ -127,6 +127,52 @@
                                     @endif
                                     <!-- For Theme Fashion - New input Field - End -->
 
+                                    <!-- For Theme Aster - Text Overlay - Start -->
+                                    @if(theme_root_path() == 'theme_aster')
+                                    <div class="input_field_for_main_banner">
+                                        <hr>
+                                        <h6 class="title-color text-capitalize mb-3">{{ translate('Text_Overlay_on_Banner') }}</h6>
+
+                                        <div class="form-group mb-3">
+                                            <label class="title-color d-flex align-items-center gap-2">
+                                                <input type="checkbox" name="show_text" value="1" id="show_text_check">
+                                                {{ translate('Show_text_on_banner') }}
+                                            </label>
+                                        </div>
+
+                                        <div id="text-overlay-fields" style="display:none;">
+                                            <div class="form-group mb-3">
+                                                <label class="title-color text-capitalize">{{ translate('text_position') }}</label>
+                                                <select name="text_position" class="form-control">
+                                                    <option value="top">{{ translate('Top') }}</option>
+                                                    <option value="center" selected>{{ translate('Center') }}</option>
+                                                    <option value="bottom">{{ translate('Bottom') }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label class="title-color text-capitalize">{{ translate('text_size') }}</label>
+                                                <select name="text_size" class="form-control">
+                                                    <option value="small">{{ translate('Small') }}</option>
+                                                    <option value="medium">{{ translate('Medium') }}</option>
+                                                    <option value="large" selected>{{ translate('Large') }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label class="title-color text-capitalize">{{ translate('text_color') }}</label>
+                                                <select name="text_color" class="form-control">
+                                                    <option value="white" selected>{{ translate('White') }}</option>
+                                                    <option value="orange">{{ translate('Orange') }}</option>
+                                                    <option value="blue">{{ translate('Blue') }}</option>
+                                                    <option value="gold">{{ translate('Gold') }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <!-- For Theme Aster - Text Overlay - End -->
+
                                 </div>
                                 <div class="col-md-6 d-flex flex-column justify-content-center">
                                     <div>
@@ -154,6 +200,30 @@
                                         </div>
                                         @endif
                                         <!-- For Theme Fashion - New input Field - End -->
+
+                                        <!-- For Theme Aster - Title Fields - Start -->
+                                        @if(theme_root_path() == 'theme_aster')
+                                        <div class="input_field_for_main_banner" id="aster-title-fields" style="display:none;">
+                                            <div class="form-group mt-3">
+                                                <label for="title" class="title-color text-capitalize">
+                                                    {{ translate('Banner_Title') }}
+                                                    <small class="text-muted">({{ translate('translation_key') }})</small>
+                                                </label>
+                                                <input type="text" name="title" class="form-control" id="title"
+                                                    placeholder="{{ translate('e.g. banner_home_title') }}">
+                                                <small class="text-muted">{{ translate('enter_translation_key_then_translate_from_translation_panel') }}</small>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <label for="sub_title" class="title-color text-capitalize">
+                                                    {{ translate('Banner_Sub_Title') }}
+                                                    <small class="text-muted">({{ translate('translation_key') }})</small>
+                                                </label>
+                                                <input type="text" name="sub_title" class="form-control" id="sub_title"
+                                                    placeholder="{{ translate('e.g. banner_home_subtitle') }}">
+                                            </div>
+                                        </div>
+                                        @endif
+                                        <!-- For Theme Aster - Title Fields - End -->
 
                                     </div>
                                 </div>
@@ -500,10 +570,30 @@
 
             if (input_value == "Main Banner") {
                 $('.input_field_for_main_banner').removeClass('d-none');
+                @if(theme_root_path() == 'theme_aster')
+                // re-check show_text state
+                if ($('#show_text_check').is(':checked')) {
+                    $('#text-overlay-fields').show();
+                    $('#aster-title-fields').show();
+                }
+                @endif
             } else {
                 $('.input_field_for_main_banner').addClass('d-none');
             }
         });
     </script>
+    @if(theme_root_path() == 'theme_aster')
+    <script>
+        $('#show_text_check').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#text-overlay-fields').show();
+                $('#aster-title-fields').show();
+            } else {
+                $('#text-overlay-fields').hide();
+                $('#aster-title-fields').hide();
+            }
+        });
+    </script>
+    @endif
     <!-- New Added JS - End -->
 @endpush
