@@ -68,8 +68,7 @@ class BannerController extends Controller
     {
 
         $request->validate([
-            'url' => 'required',
-            'image' => 'required',
+            'url' => 'nullable',
         ], [
             'url.required' => 'url is required!',
             'image.required' => 'Image is required!',
@@ -90,6 +89,15 @@ class BannerController extends Controller
         $banner->for_mobile = $request->for_mobile;
         $banner->priority = $request->priority;
         $banner->photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
+
+        // Text overlay fields — only save if columns exist (after migration)
+        if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
+            $banner->show_text     = $request->has('show_text') ? 1 : 0;
+            $banner->text_position = $request->text_position ?? 'center';
+            $banner->text_size     = $request->text_size ?? 'large';
+            $banner->text_color    = $request->text_color ?? 'white';
+        }
+
         $banner->save();
 
         Cache::forget('main_banners');
@@ -121,7 +129,7 @@ class BannerController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'url' => 'required',
+            'url' => 'nullable',
         ], [
             'url.required' => 'url is required!',
         ]);
@@ -141,6 +149,15 @@ class BannerController extends Controller
         if ($request->file('image')) {
             $banner->photo = ImageManager::update('banner/', $banner['photo'], 'webp', $request->file('image'));
         }
+
+        // Text overlay fields — only save if columns exist (after migration)
+        if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
+            $banner->show_text     = $request->has('show_text') ? 1 : 0;
+            $banner->text_position = $request->text_position ?? 'center';
+            $banner->text_size     = $request->text_size ?? 'large';
+            $banner->text_color    = $request->text_color ?? 'white';
+        }
+
         $banner->save();
 
         Cache::forget('main_banners');
