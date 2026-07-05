@@ -7,6 +7,7 @@ use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
 use App\Model\Banner;
 use App\Model\Translation;
+use App\Model\BusinessSetting;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -68,10 +69,24 @@ class BannerController extends Controller
 
         $banner = new Banner;
         $banner->banner_type = $request->banner_type;
-        $banner->resource_type = null;
-        $banner->resource_id = null;
         
-        // حفظ النص باللغة الافتراضية للموقع داخل جدول البنرات
+        if ($request->banner_type == 'Main Banner') {
+            $banner->resource_type = $request->resource_type;
+            if ($request->resource_type == 'product') {
+                $banner->resource_id = $request->product_id;
+            } elseif ($request->resource_type == 'category') {
+                $banner->resource_id = $request->category_id;
+            } elseif ($request->resource_type == 'shop') {
+                $banner->resource_id = $request->shop_id;
+            } elseif ($request->resource_type == 'brand') {
+                $banner->resource_id = $request->brand_id;
+            }
+        } else {
+            $banner->resource_type = null;
+            $banner->resource_id = null;
+        }
+
+        // حفظ النص باللغة الافتراضية
         $banner->title = $request->title[array_search('en', $request->lang)] ?? $request->title[0];
         $banner->sub_title = $request->sub_title[array_search('en', $request->lang)] ?? $request->sub_title[0];
         
@@ -93,7 +108,7 @@ class BannerController extends Controller
 
         $banner->save();
 
-        // حفظ الترجمات المتعددة في جدول اللغات للموقع
+        // حفظ الترجمات المتعددة
         foreach ($request->lang as $index => $key) {
             if (isset($request->title[$index]) && $request->title[$index] != '') {
                 Translation::updateOrInsert(
@@ -139,7 +154,19 @@ class BannerController extends Controller
         $banner = Banner::find($id);
         $banner->banner_type = $request->banner_type;
         
-        // تحديث النص باللغة الافتراضية
+        if ($request->banner_type == 'Main Banner') {
+            $banner->resource_type = $request->resource_type;
+            if ($request->resource_type == 'product') {
+                $banner->resource_id = $request->product_id;
+            } elseif ($request->resource_type == 'category') {
+                $banner->resource_id = $request->category_id;
+            } elseif ($request->resource_type == 'shop') {
+                $banner->resource_id = $request->shop_id;
+            } elseif ($request->resource_type == 'brand') {
+                $banner->resource_id = $request->brand_id;
+            }
+        }
+
         $banner->title = $request->title[array_search('en', $request->lang)] ?? $request->title[0];
         $banner->sub_title = $request->sub_title[array_search('en', $request->lang)] ?? $request->sub_title[0];
         
@@ -163,7 +190,6 @@ class BannerController extends Controller
 
         $banner->save();
 
-        // تحديث الترجمات المتعددة في جدول اللغات للموقع
         foreach ($request->lang as $index => $key) {
             if (isset($request->title[$index]) && $request->title[$index] != '') {
                 Translation::updateOrInsert(
