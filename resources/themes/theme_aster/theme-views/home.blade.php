@@ -195,7 +195,35 @@
                 </div>
             @else
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px;"
-                    class="hero-background-image rounded mb-0">
+                    class="hero-background-image rounded mb-0" style="position:relative;">
+
+                    @if(isset($banner) && isset($banner->show_text) && $banner->show_text && ($banner->title || $banner->sub_title))
+                        @php
+                            $isRtl     = in_array(app()->getLocale(), ['ar','he','fa','ur','yi','ps','sd','ku']);
+                            $pos       = $banner->text_position ?? 'center';
+                            $size      = $banner->text_size     ?? 'large';
+                            $color     = $banner->text_color    ?? 'white';
+                            $colorMap  = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
+                            $hexColor  = $colorMap[$color] ?? '#ffffff';
+                            $titleSize = ['small'=>'clamp(13px,2vw,18px)','medium'=>'clamp(16px,2.5vw,24px)','large'=>'clamp(18px,3vw,32px)'][$size] ?? 'clamp(18px,3vw,32px)';
+                            $subSize   = ['small'=>'clamp(11px,1.5vw,14px)','medium'=>'clamp(12px,1.8vw,17px)','large'=>'clamp(13px,2vw,20px)'][$size] ?? 'clamp(13px,2vw,20px)';
+                            $vAlign    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'][$pos] ?? 'center';
+                            $hPos      = $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;';
+                            $tAlign    = $isRtl ? 'right' : 'left';
+                            $dir       = $isRtl ? 'rtl' : 'ltr';
+                        @endphp
+                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $vAlign }};padding:clamp(12px,3%,40px);pointer-events:none;border-radius:inherit;">
+                            <div style="{{ $hPos }}max-width:40%;text-align:{{ $tAlign }};direction:{{ $dir }};color:{{ $hexColor }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
+                                @if($banner->title)
+                                    <div style="font-size:{{ $titleSize }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{{ translate($banner->title) }}</div>
+                                @endif
+                                @if($banner->sub_title)
+                                    <div style="font-size:{{ $subSize }};opacity:0.88;line-height:1.5;">{{ translate($banner->sub_title) }}</div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
 
                 <div class="filter-overlap-container">
