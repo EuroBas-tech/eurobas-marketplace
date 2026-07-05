@@ -8,7 +8,6 @@
 
 @section('content')
     <div class="content container-fluid">
-        <!-- Page Title -->
         <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
             <h2 class="h1 mb-1 text-capitalize d-flex align-items-center gap-2">
                 <img width="20" src="{{asset('/assets/back-end/img/banner.png')}}" alt="">
@@ -21,7 +20,6 @@
                     </svg>
                 </div>
 
-
                 <div class="dropdown-menu dropdown-menu-right bg-aliceblue border border-color-primary-light p-4 dropdown-w-lg-30">
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <img width="20" src="{{asset('/assets/back-end/img/note.png')}}" alt="">
@@ -31,9 +29,6 @@
                 </div>
             </div>
         </div>
-        <!-- End Page Title -->
-
-        <!-- Content Row -->
         <div class="row pb-4 d--none" id="main-banner"
              style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
             <div class="col-md-12">
@@ -62,10 +57,14 @@
 
                                   <div class="form-group " id="resource-lang" >
                                         <label for="lang" class="title-color text-capitalize">{{\App\CPU\translate('lang')}}</label>
-                                        <select class="js-example-responsive form-control w-100"    name="lang" >
-                                                <option value="Both">Both
-                                                @foreach(json_decode(\App\Model\BusinessSetting::where('type', 'language')->select('value')->first()->value, true) as $lang)
-                                                    <option value="{{$lang['code']}}" {{ $lang['code'] == $banners['lang'] ? 'selected' : '' }}>{{$lang['code']}}
+                                        <select class="js-example-responsive form-control w-100"    name="lang_input" >
+                                                <option value="Both">Both</option>
+                                                @php
+                                                    $langs_settings = json_decode(\App\Model\BusinessSetting::where('type', 'language')->select('value')->first()->value, true);
+                                                    $default_lang = count($langs_settings) > 0 ? $langs_settings[0]['code'] : 'en';
+                                                @endphp
+                                                @foreach($langs_settings as $lang)
+                                                    <option value="{{$lang['code']}}">{{$lang['code']}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
@@ -73,9 +72,9 @@
                                     <div class="form-group" id="resource-mobile" >
                                         <label for="for_mobile">{{\App\CPU\translate('onlymobile')}}</label>
                                         <select style="width: 100%" class="js-example-responsive form-control" name="for_mobile" required>
-                                            <option value="2" {{$banners['for_mobile']=='2'?'selected':''}}>{{\App\CPU\translate('both')}}</option>
-                                            <option value="1" {{$banners['for_mobile']=='1'?'selected':''}}>{{\App\CPU\translate('Just in mobile')}}</option>
-                                            <option value="0" {{$banners['for_mobile']=='0'?'selected':''}}>{{\App\CPU\translate('Just in desktop')}}</option>
+                                            <option value="2">{{\App\CPU\translate('both')}}</option>
+                                            <option value="1">{{\App\CPU\translate('Just in mobile')}}</option>
+                                            <option value="0">{{\App\CPU\translate('Just in desktop')}}</option>
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
@@ -114,7 +113,6 @@
                                         </select>
                                     </div>
 
-                                    <!-- For Theme Fashion - New input Field - Start -->
                                     @if(theme_root_path() == 'theme_fashion')
                                     <div class="form-group mt-4 input_field_for_main_banner">
                                         <label for="button_text" class="title-color text-capitalize">{{ translate('Button_Text')}}</label>
@@ -125,9 +123,6 @@
                                         <input type="color" name="background_color" class="form-control form-control_color w-100" id="background_color" value="#fee440">
                                     </div>
                                     @endif
-                                    <!-- For Theme Fashion - New input Field - End -->
-
-                                    <!-- For Theme Aster - Text Overlay - Start -->
                                     @if(theme_root_path() == 'theme_aster')
                                     <div class="input_field_for_main_banner">
                                         <hr>
@@ -171,9 +166,7 @@
                                         </div>
                                     </div>
                                     @endif
-                                    <!-- For Theme Aster - Text Overlay - End -->
-
-                                </div>
+                                    </div>
                                 <div class="col-md-6 d-flex flex-column justify-content-center">
                                     <div>
                                         <center class="mx-auto">
@@ -188,42 +181,49 @@
                                         </label>
                                         <span class="title-color" id="theme_ratio">( {{translate('ratio')}} 4:1 )</span>
                                         <p>{{ translate('banner_Image_ratio_is_not_same_for_all_sections_in_website') }}. {{ translate('please_review_the_ratio_before_upload') }}</p>
-                                        <!-- For Theme Fashion - New input Field - Start -->
-                                        @if(theme_root_path() == 'theme_fashion')
-                                        <div class="form-group mt-4 input_field_for_main_banner">
-                                            <label for="title" class="title-color text-capitalize">{{ translate('Title')}}</label>
-                                            <input type="text" name="title" class="form-control" id="title" placeholder="{{ translate('Enter_banner_title') }}">
-                                        </div>
-                                        <div class="form-group mb-0 input_field_for_main_banner">
-                                            <label for="sub_title" class="title-color text-capitalize">{{ translate('Sub_Title')}}</label>
-                                            <input type="text" name="sub_title" class="form-control" id="sub_title" placeholder="{{ translate('Enter_banner_sub_title') }}">
-                                        </div>
-                                        @endif
-                                        <!-- For Theme Fashion - New input Field - End -->
+                                        
+                                        <div class="input_field_for_main_banner">
+                                            <ul class="nav nav-tabs w-fit-content mb-4 lang-custom-tabs d-none">
+                                                @foreach($langs_settings as $lang)
+                                                    <li class="nav-item">
+                                                        <a class="nav-link lang-link-custom {{$lang['code'] == $default_lang ? 'active':''}}" href="#" data-lang-id="{{$lang['code']}}">{{ $lang['name'] . '(' . strtoupper($lang['code']) . ')' }}</a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
 
-                                        <!-- For Theme Aster - Title Fields - Start -->
-                                        @if(theme_root_path() == 'theme_aster')
-                                        <div class="input_field_for_main_banner" id="aster-title-fields" style="display:none;">
-                                            <div class="form-group mt-3">
-                                                <label for="title" class="title-color text-capitalize">
-                                                    {{ translate('Banner_Title') }}
-                                                    <small class="text-muted">({{ translate('translation_key') }})</small>
-                                                </label>
-                                                <input type="text" name="title" class="form-control" id="title"
-                                                    placeholder="{{ translate('e.g. banner_home_title') }}">
-                                                <small class="text-muted">{{ translate('enter_translation_key_then_translate_from_translation_panel') }}</small>
-                                            </div>
-                                            <div class="form-group mb-0">
-                                                <label for="sub_title" class="title-color text-capitalize">
-                                                    {{ translate('Banner_Sub_Title') }}
-                                                    <small class="text-muted">({{ translate('translation_key') }})</small>
-                                                </label>
-                                                <input type="text" name="sub_title" class="form-control" id="sub_title"
-                                                    placeholder="{{ translate('e.g. banner_home_subtitle') }}">
-                                            </div>
+                                            @foreach($langs_settings as $lang)
+                                                <div class="lang-form-custom panel-lang-form-custom {{$lang['code'] != $default_lang ? 'd-none':''}}" id="form-{{$lang['code']}}">
+                                                    @if(theme_root_path() == 'theme_fashion')
+                                                    <div class="form-group mt-4">
+                                                        <label for="title" class="title-color text-capitalize">{{ translate('Title')}} ({{strtoupper($lang['code'])}})</label>
+                                                        <input type="text" name="title[]" class="form-control" placeholder="{{ translate('Enter_banner_title') }}">
+                                                    </div>
+                                                    <div class="form-group mb-0">
+                                                        <label for="sub_title" class="title-color text-capitalize">{{ translate('Sub_Title')}} ({{strtoupper($lang['code'])}})</label>
+                                                        <input type="text" name="sub_title[]" class="form-control" placeholder="{{ translate('Enter_banner_sub_title') }}">
+                                                    </div>
+                                                    @endif
+
+                                                    @if(theme_root_path() == 'theme_aster')
+                                                    <div class="input_field_for_main_banner" id="aster-title-fields-{{$lang['code']}}" style="display:none;">
+                                                        <div class="form-group mt-3">
+                                                            <label for="title" class="title-color text-capitalize">
+                                                                {{ translate('Banner_Title') }} ({{strtoupper($lang['code'])}})
+                                                            </label>
+                                                            <input type="text" name="title[]" class="form-control" placeholder="{{ translate('e.g. banner_home_title') }}">
+                                                        </div>
+                                                        <div class="form-group mb-0">
+                                                            <label for="sub_title" class="title-color text-capitalize">
+                                                                {{ translate('Banner_Sub_Title') }} ({{strtoupper($lang['code'])}})
+                                                            </label>
+                                                            <input type="text" name="sub_title[]" class="form-control" placeholder="{{ translate('e.g. banner_home_subtitle') }}">
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    <input type="hidden" name="lang[]" value="{{$lang['code']}}">
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        @endif
-                                        <!-- For Theme Aster - Title Fields - End -->
 
                                     </div>
                                 </div>
@@ -294,16 +294,13 @@
                                                 </div>
                                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                                         <select class="form-control" name="lang" id="lang">
-
                                                             <option value="">{{ translate('All Languages') }}</option>
-                                                            <option value="En" {{ $lang == 'en' ? 'selected':'' }}>English</option>
+                                                            <option value="en" {{ $lang == 'en' ? 'selected':'' }}>English</option>
                                                             <option value="nl" {{ $lang == 'nl' ? 'selected':'' }}>Dutch</option>
                                                             <option value="de" {{ $lang == 'de' ? 'selected':'' }}>German</option>
-                                                            <!-- أضف المزيد من اللغات حسب الحاجة -->
                                                         </select>
                                                     </div>
 
-                                                    <!-- إضافة فلتر for_mobile -->
                                                     <div class="col-sm-3 col-md-6 col-lg-3">
                                                         <select class="form-control" name="for_mobile" id="for_mobile">
                                                             <option value="">{{ translate('All Devices') }}</option>
@@ -367,9 +364,6 @@
                                             @case(null)
                                             null
                                             @break
-
-
-
                                         @endswitch</td>
                                         <td>
                                             <form action="{{route('admin.banner.status')}}" method="post" id="banner_status{{$banner['id']}}_form" class="banner_status_form">
@@ -403,7 +397,6 @@
 
                     <div class="table-responsive mt-4">
                         <div class="px-4 d-flex justify-content-lg-end">
-                            <!-- Pagination -->
                             {{$banners->links()}}
                         </div>
                     </div>
@@ -442,7 +435,6 @@
                         backgroundPosition: "center",
                         backgroundSize: "contain",
                         backgroundRepeat: "no-repeat",
-                        // aspectRatio: 4 / 1,
                     });
                     $('.input_image').addClass('hide-before-content')
                 };
@@ -474,12 +466,10 @@
         });
 
         $(".js-example-responsive").select2({
-            // dir: "rtl",
             width: 'resolve'
         });
 
         function display_data(data) {
-
             $('#resource-product').hide()
             $('#resource-brand').hide()
             $('#resource-category').hide()
@@ -509,7 +499,6 @@
 
         $('.banner_status_form').on('submit', function(event){
             event.preventDefault();
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -562,24 +551,39 @@
             })
         });
     </script>
-    <!-- Page level plugins -->
-    <!-- New Added JS - Start -->
     <script>
         $('#banner_type_select').on('change',function(){
             let input_value = $(this).val();
 
             if (input_value == "Main Banner") {
                 $('.input_field_for_main_banner').removeClass('d-none');
+                $('.lang-custom-tabs').removeClass('d-none');
                 @if(theme_root_path() == 'theme_aster')
-                // re-check show_text state
                 if ($('#show_text_check').is(':checked')) {
                     $('#text-overlay-fields').show();
-                    $('#aster-title-fields').show();
+                    $('[id^="aster-title-fields-"]').show();
                 }
                 @endif
             } else {
                 $('.input_field_for_main_banner').addClass('d-none');
+                $('.lang-custom-tabs').addClass('d-none');
             }
+        });
+
+        $(document).ready(function(){
+            let init_type = $('#banner_type_select').val();
+            if(init_type == "Main Banner") {
+                $('.lang-custom-tabs').removeClass('d-none');
+            }
+        });
+
+        $(".lang-link-custom").click(function(e){
+            e.preventDefault();
+            $('.lang-link-custom').removeClass('active');
+            $(this).addClass('active');
+            let targetLang = $(this).attr('data-lang-id');
+            $('.lang-form-custom').addClass('d-none');
+            $('#form-'+targetLang).removeClass('d-none');
         });
     </script>
     @if(theme_root_path() == 'theme_aster')
@@ -587,13 +591,12 @@
         $('#show_text_check').on('change', function() {
             if ($(this).is(':checked')) {
                 $('#text-overlay-fields').show();
-                $('#aster-title-fields').show();
+                $('[id^="aster-title-fields-"]').show();
             } else {
                 $('#text-overlay-fields').hide();
-                $('#aster-title-fields').hide();
+                $('[id^="aster-title-fields-"]').hide();
             }
         });
     </script>
     @endif
-    <!-- New Added JS - End -->
 @endpush
