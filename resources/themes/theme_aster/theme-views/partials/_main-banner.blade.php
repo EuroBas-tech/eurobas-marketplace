@@ -58,15 +58,45 @@
                                     data-swiper-navigation-prev="true">
                                     <div class="swiper-wrapper">
                                         @foreach ($main_banner as $key => $banner)
-                                            @if(($banner->lang=="Both" || $banner->lang==app()->getLocale()) &&  ($banner->for_mobile==0 || $banner->for_mobile==2  ))
+                                            @if(($banner->lang=="Both" || strtolower($banner->lang)==strtolower(app()->getLocale())) &&  ($banner->for_mobile==0 || $banner->for_mobile==2  ))
 
-                                                <div class="swiper-slide">
+                                                <div class="swiper-slide" style="position:relative;">
                                                     <a href="{{ $banner['url'] }}" class="h-100">
                                                         <img src="{{ cloudfront('banner') }}/{{ $banner['photo'] }}"
                                                             loading="lazy"
                                                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder-2_1.png') }}'"
                                                             alt="" class="dark-support rounded responsive-banner-image">
                                                     </a>
+
+                                                    @if(isset($banner->show_text) && $banner->show_text && ($banner->title || $banner->sub_title))
+                                                        @php
+                                                            $isRtl  = in_array(app()->getLocale(), ['ar','he','fa','ur','yi','ps','sd','ku']);
+                                                            $pos    = $banner->text_position ?? 'center';
+                                                            $size   = $banner->text_size     ?? 'large';
+                                                            $color  = $banner->text_color    ?? 'white';
+                                                            $colorMap = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
+                                                            $hexColor   = $colorMap[$color] ?? '#ffffff';
+                                                            $titleSizes = ['small'=>'clamp(13px,2vw,18px)','medium'=>'clamp(16px,2.5vw,24px)','large'=>'clamp(18px,3vw,32px)'];
+                                                            $subSizes   = ['small'=>'clamp(11px,1.5vw,14px)','medium'=>'clamp(12px,1.8vw,17px)','large'=>'clamp(13px,2vw,20px)'];
+                                                            $titleSize  = $titleSizes[$size] ?? 'clamp(18px,3vw,32px)';
+                                                            $subSize    = $subSizes[$size]   ?? 'clamp(13px,2vw,20px)';
+                                                            $vAlign     = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'][$pos] ?? 'center';
+                                                            $hPos       = $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;';
+                                                            $tAlign     = $isRtl ? 'right' : 'left';
+                                                            $dir        = $isRtl ? 'rtl' : 'ltr';
+                                                        @endphp
+                                                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $vAlign }};pointer-events:none;padding:clamp(12px,3%,40px);">
+                                                            <div style="{{ $hPos }}max-width:40%;text-align:{{ $tAlign }};direction:{{ $dir }};color:{{ $hexColor }};text-shadow:0 1px 6px rgba(0,0,0,0.55);word-break:break-word;">
+                                                                @if($banner->title)
+                                                                    <div style="font-size:{{ $titleSize }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{{ translate($banner->title) }}</div>
+                                                                @endif
+                                                                @if($banner->sub_title)
+                                                                    <div style="font-size:{{ $subSize }};opacity:0.88;line-height:1.5;">{{ translate($banner->sub_title) }}</div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                 </div>
 
                                             @endif
