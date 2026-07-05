@@ -69,6 +69,31 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             })
             ?? $banners->firstWhere('lang', 'Both');
 
+        // Pre-calculate text overlay values in Controller (avoids @php in blade)
+        $bannerText = null;
+        if ($banner && isset($banner->show_text) && $banner->show_text && ($banner->title || $banner->sub_title)) {
+            $rtlLocales = ['ar','he','fa','ur','yi','ps','sd','ku'];
+            $isRtl      = in_array($locale, $rtlLocales);
+            $pos        = $banner->text_position ?? 'center';
+            $size       = $banner->text_size     ?? 'large';
+            $color      = $banner->text_color    ?? 'white';
+            $colorMap   = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
+            $titleSizes = ['small'=>'clamp(13px,2vw,18px)','medium'=>'clamp(16px,2.5vw,24px)','large'=>'clamp(18px,3vw,32px)'];
+            $subSizes   = ['small'=>'clamp(11px,1.5vw,14px)','medium'=>'clamp(12px,1.8vw,17px)','large'=>'clamp(13px,2vw,20px)'];
+            $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
+            $bannerText = [
+                'title'      => $banner->title,
+                'sub_title'  => $banner->sub_title,
+                'hexColor'   => $colorMap[$color]   ?? '#ffffff',
+                'titleSize'  => $titleSizes[$size]  ?? 'clamp(18px,3vw,32px)',
+                'subSize'    => $subSizes[$size]    ?? 'clamp(13px,2vw,20px)',
+                'vAlign'     => $vAligns[$pos]      ?? 'center',
+                'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
+                'tAlign'     => $isRtl ? 'right' : 'left',
+                'dir'        => $isRtl ? 'rtl' : 'ltr',
+            ];
+        }
+
          $customerId = auth('customer')->id();
          $guestId    = $customerId ? null : Helpers::deviceId();
          $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
@@ -255,6 +280,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 'home_categories',
                 'decimal_point_settings',
                 'banner',
+                'bannerText',
                 'brands',
                 'categories',
                 'models',
