@@ -194,8 +194,20 @@
                     </div>
                 </div>
             @else
-                <div style="background-position: 50% 40%; height: 340px; max-height: 340px;"
+                <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
+                    @if($bannerText)
+                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:clamp(12px,3%,40px);pointer-events:none;">
+                            <div style="{{ $bannerText['hPos'] }}max-width:40%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
+                                @if($bannerText['title'])
+                                    <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{{ translate($bannerText['title']) }}</div>
+                                @endif
+                                @if($bannerText['sub_title'])
+                                    <div style="font-size:{{ $bannerText['subSize'] }};opacity:0.88;line-height:1.5;">{{ translate($bannerText['sub_title']) }}</div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="filter-overlap-container">
