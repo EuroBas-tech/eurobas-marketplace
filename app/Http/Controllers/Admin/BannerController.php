@@ -90,13 +90,10 @@ class BannerController extends Controller
         $banner->priority = $request->priority;
         $banner->photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
 
-        // Text overlay fields — only save if columns exist (after migration)
-        if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
-            $banner->show_text     = $request->has('show_text') ? 1 : 0;
-            $banner->text_position = $request->text_position ?? 'center';
-            $banner->text_size     = $request->text_size ?? 'large';
-            $banner->text_color    = $request->text_color ?? 'white';
-        }
+        $banner->show_text     = $request->has('show_text') ? 1 : 0;
+        $banner->text_position = $request->text_position ?? 'center';
+        $banner->text_size     = $request->text_size ?? 'large';
+        $banner->text_color    = $request->text_color ?? 'white';
 
         $banner->save();
 
@@ -150,13 +147,10 @@ class BannerController extends Controller
             $banner->photo = ImageManager::update('banner/', $banner['photo'], 'webp', $request->file('image'));
         }
 
-        // Text overlay fields — only save if columns exist (after migration)
-        if (\Illuminate\Support\Facades\Schema::hasColumn('banners', 'show_text')) {
-            $banner->show_text     = $request->has('show_text') ? 1 : 0;
-            $banner->text_position = $request->text_position ?? 'center';
-            $banner->text_size     = $request->text_size ?? 'large';
-            $banner->text_color    = $request->text_color ?? 'white';
-        }
+        $banner->show_text     = $request->has('show_text') ? 1 : 0;
+        $banner->text_position = $request->text_position ?? 'center';
+        $banner->text_size     = $request->text_size ?? 'large';
+        $banner->text_color    = $request->text_color ?? 'white';
 
         $banner->save();
 
