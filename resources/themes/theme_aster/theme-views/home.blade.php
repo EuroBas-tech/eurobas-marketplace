@@ -187,7 +187,20 @@
 
             @if($isMobile)
                 <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image"></div>
+                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
+                        @if($bannerText)
+                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:12px 16px;pointer-events:none;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:75%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 6px rgba(0,0,0,0.6);word-break:break-word;">
+                                    @if($bannerText['title'])
+                                        <div style="font-size:clamp(16px,4.5vw,24px);font-weight:500;line-height:1.2;margin-bottom:0.3em;">{!! translate($bannerText['title']) !!}</div>
+                                    @endif
+                                    @if($bannerText['sub_title'])
+                                        <div style="font-size:clamp(12px,3vw,16px);opacity:0.88;line-height:1.4;">{!! translate($bannerText['sub_title']) !!}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                     <div class="d-flex mx-auto align-items-center justify-content-center
                         w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
@@ -200,10 +213,10 @@
                         <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:clamp(12px,3%,40px);pointer-events:none;">
                             <div style="{{ $bannerText['hPos'] }}max-width:40%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
                                 @if($bannerText['title'])
-                                    <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{{ translate($bannerText['title']) }}</div>
+                                    <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{!! translate($bannerText['title']) !!}</div>
                                 @endif
                                 @if($bannerText['sub_title'])
-                                    <div style="font-size:{{ $bannerText['subSize'] }};opacity:0.88;line-height:1.5;">{{ translate($bannerText['sub_title']) }}</div>
+                                    <div style="font-size:{{ $bannerText['subSize'] }};opacity:0.88;line-height:1.5;">{!! translate($bannerText['sub_title']) !!}</div>
                                 @endif
                             </div>
                         </div>
