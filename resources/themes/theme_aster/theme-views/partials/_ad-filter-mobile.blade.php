@@ -1,38 +1,82 @@
 <style>
+   
     #dropdownMenuButton:hover,
     #dropdownMenuButton:focus,
     #dropdownMenuButton:active {
         background-color: white !important;
-        border-color: #ced4da !important;
+        border-color: #0d6efd !important;
         color: inherit !important;
-        box-shadow: none !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
     }
 
     .font-size-16 {
         font-size: 16px;
     }
+    
+    /* الخانات الكبيرة المتناسقة مع تأثير الظل الأزرق الاحترافي عند الضغط */
+    .custom-mobile-input {
+        height: 52px !important; /* حجم أكبر ومريح جداً للضغط */
+        border-radius: 10px !important; /* زوايا دائرية ناعمة واحترافية */
+        border: 1px solid #ced4da !important;
+        transition: all 0.2s ease-in-out !important;
+        font-size: 16px !important;
+        background-color: #fff !important;
+    }
+
+    /* تأثير الظل الأزرق عند تفاعل المستخدم مع الخانة */
+    .custom-mobile-input:focus, 
+    .custom-mobile-input:active,
+    .form-control:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+        outline: 0 !important;
+    }
+
+    /* تنسيق أزرار البحث والفلتر المتقدم أسفل الخانات */
+    .filter-buttons button {
+        height: 52px !important;
+        border-radius: 10px !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+    }
 </style>
 
-<section class="banner w-100 sweet-shadow">
-    <div class="card moble-border-0">
-        <div class="p-0">
-            <div class="row g-3 justify-content-center">
-                <div class="col-xl-12">
-                    <div class="rounded">
-                        <div class="tab-content px-3">
-                            <div class="tab-pane fade show active">
-                                <form class="form-data" method="GET">
-                                    <div class="row pb-1 pt-3">
+<!-- البنر والفلتر ممتدان بعرض الشاشة بالكامل من الحافة إلى الحافة -->
+<section class="banner w-100 p-0 m-0">
+    <div class="card border-0 rounded-0 w-100 m-0">
+        <div class="p-0 w-100">
+            <div class="row g-0 justify-content-center w-100 m-0">
+                <div class="col-12 p-0">
+                    <div class="rounded-0 w-100">
+                        <div class="tab-content px-3 w-100">
+                            <div class="tab-pane fade show active w-100">
+                                <form class="form-data w-100" method="GET">
+                                    <div class="row pb-2 pt-3 g-0 w-100">
                                         <div class="col-12">
-                                            <div class="row align-items-center justify-content-between gap-2">
-                                                <div class="col-xl-10 col-md-12 col-sm-12 col-12">
-                                                    <div class="row g-2">
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 mt-1">
+                                            <div class="row align-items-center justify-content-between g-3">
+                                                <div class="col-12">
+                                                    <div class="row g-3">
+                                                        
+                                                        <!-- 1. حقل الدولة (الموقع) - عرض كامل مع الظل الأزرق -->
+                                                        <div class="col-12" data-category-type="all">
                                                             <div class="form-group">
-                                                                <div class="dropup mb-1">
+                                                                <select class="form-control filter-input custom-mobile-input emoji-font country-select" name="country" id="country_select">
+                                                                    @foreach (SYSTEM_COUNTRIES as $country)
+                                                                        <option class="emoji-font" value="{{ $country['name'] }}" dir="ltr">
+                                                                            <bdi>{{ $country['emoji'] }} {{ $country['name'] }}</bdi>
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 2. حقل القسم (Category) - عرض كامل مع الظل الأزرق -->
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <div class="dropup">
                                                                     <input class="filter-input" type="hidden" name="category_id" id="selectedCategoryId" value="0">
-                                                                    <button style="border: 1px solid #ced4da;border-radius: 7px;" class="btn btn-outline-secondary w-100 input-responsive-height custom-input-height justify-content-start" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <span id="selectedCategoryText" class="fw-normal font-size-16" >
+                                                                    <button class="btn btn-outline-secondary w-100 custom-mobile-input justify-content-start d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <span id="selectedCategoryText" class="fw-normal font-size-16">
                                                                             {{translate('category')}}
                                                                         </span>
                                                                     </button>
@@ -61,22 +105,11 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 mt-1" data-category-type="all">
-                                                            <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height emoji-font country-select" name="country" id="country_select">
-                                                                    @foreach (SYSTEM_COUNTRIES as $country)
-                                                                        <option class="emoji-font" value="{{ $country['name'] }}" dir="ltr">
-                                                                            <bdi>{{ $country['emoji'] }} {{ $country['name'] }}</bdi>
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2" data-category-type="vehicles"
+                                                        <!-- 3. حقل الماركة (Brand) - عرض كامل مع الظل الأزرق -->
+                                                        <div class="col-12" data-category-type="vehicles"
                                                         data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand">
+                                                                <select class="form-control filter-input custom-mobile-input brand-select" name="brand_id" id="brand">
                                                                     <option value="all">{{translate('brand')}}</option>
                                                                     @foreach($brands as $brand)
                                                                         <option
@@ -90,10 +123,58 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2"
-                                                            data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
+                                                        <!-- 4. حقل السعر (Price) - عرض كامل مع الظل الأزرق -->
+                                                        <div class="col-12" data-category-type="all" >
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
+                                                                <select class="form-control filter-input custom-mobile-input" name="price_range" id="price_range_select">
+                                                                    <option value="all">{{translate('price_up_to')}}</option>
+                                                                    <option value="500">500€</option>
+                                                                    <option value="1000">1,000€</option>
+                                                                    <option value="1500">1,500€</option>
+                                                                    <option value="2000">2,000€</option>
+                                                                    <option value="2500">2,500€</option>
+                                                                    <option value="3000">3,000€</option>
+                                                                    <option value="3500">3,500€</option>
+                                                                    <option value="4000">4,000€</option>
+                                                                    <option value="4500">4,500€</option>
+                                                                    <option value="5000">5,000€</option>
+                                                                    <option value="5500">5,500€</option>
+                                                                    <option value="6000">6,000€</option>
+                                                                    <option value="6500">6,500€</option>
+                                                                    <option value="7000">7,000€</option>
+                                                                    <option value="7500">7,500€</option>
+                                                                    <option value="8000">8,000€</option>
+                                                                    <option value="8500">8,500€</option>
+                                                                    <option value="9000">9,000€</option>
+                                                                    <option value="9500">9,500€</option>
+                                                                    <option value="10000">10,000€</option>
+                                                                    <option value="12500">12,500€</option>
+                                                                    <option value="15000">15,000€</option>
+                                                                    <option value="17500">17,500€</option>
+                                                                    <option value="20000">20,000€</option>
+                                                                    <option value="30000">30,000€</option>
+                                                                    <option value="40000">40,000€</option>
+                                                                    <option value="50000">50,000€</option>
+                                                                    <option value="60000">60,000€</option>
+                                                                    <option value="70000">70,000€</option>
+                                                                    <option value="80000">80,000€</option>
+                                                                    <option value="90000">90,000€</option>
+                                                                    <option value="100000">100,000€</option>
+                                                                    <option value="125000">125,000€</option>
+                                                                    <option value="150000">150,000€</option>
+                                                                    <option value="175000">175,000€</option>
+                                                                    <option value="200000">200,000€</option>
+                                                                    <option value="300000">300,000€</option>
+                                                                    <option value="400000">400,000€</option>
+                                                                    <option value="500000">500,000€</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- الحقول الديناميكية (تظهر بعرض كامل أنيق عند استدعائها) -->
+                                                        <div class="col-12" data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input model-select" name="model_id" id="model">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
                                                                         <option data-brand-id="{{ $model['brand_id'] }}"
@@ -107,9 +188,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="bicycles" style="display: none;">
+                                                        <div class="col-12" data-category-type="vehicles" data-for="bicycles" style="display: none;">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="bicycle_type" id="bicycle_type">
+                                                                <select class="form-control filter-input custom-mobile-input" name="bicycle_type" id="bicycle_type">
                                                                     <option value="all">{{ translate('bicycle_type') }}</option>
                                                                     <option {{ old('bicycle_type') == 'road' ? 'selected' : ''}} value="road">{{ translate('road') }}</option>
                                                                     <option {{ old('bicycle_type') == 'mountain' ? 'selected' : ''}} value="mountain">{{ translate('mountain') }}</option>
@@ -127,9 +208,9 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="bicycles" style="display: none;">
+                                                        <div class="col-12" data-category-type="vehicles" data-for="bicycles" style="display: none;">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="bicycle_size" id="bicycle_size">
+                                                                <select class="form-control filter-input custom-mobile-input" name="bicycle_size" id="bicycle_size">
                                                                     <option value="all">{{ translate('bicycle_size') }}</option>
                                                                     <option {{ old('bicycle_size') == '12' ? 'selected' : ''}} value="12">12</option>
                                                                     <option {{ old('bicycle_size') == '14' ? 'selected' : ''}} value="14">14</option>
@@ -150,9 +231,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="construction_year" id="construction_year_select">
+                                                        <div class="col-12" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="construction_year" id="construction_year_select">
                                                                     <option value="all">{{translate('year_from')}}</option>
                                                                     @for ($year = date('Y'); $year >= 1940; $year--)
                                                                         <option value="{{ $year }}">{{ $year }}</option>
@@ -161,9 +242,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="furniture" data-for="furniture" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="furniture_material" id="furniture_material">
+                                                        <div class="col-12" data-category-type="furniture" data-for="furniture" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="furniture_material" id="furniture_material">
                                                                     <option value="all">{{ translate('furniture_material') }}</option>
                                                                     <option value="wood">{{ translate('wood') }}</option>
                                                                     <option value="leather">{{ translate('leather') }}</option>
@@ -181,9 +262,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="furniture" data-for="furniture" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="furniture_type" id="furniture_type">
+                                                        <div class="col-12" data-category-type="furniture" data-for="furniture" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="furniture_type" id="furniture_type">
                                                                     <option value="all">{{ translate('furniture_type') }}</option>
                                                                     <option value="sofa">{{ translate('sofa') }}</option>
                                                                     <option value="bed">{{ translate('bed') }}</option>
@@ -216,9 +297,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home garden" data-for="home-garden" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="home_garden_material" id="material">
+                                                        <div class="col-12" data-category-type="home garden" data-for="home-garden" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="home_garden_material" id="material">
                                                                     <option value="all">{{ translate('material') }}</option>
                                                                     <option value="wood">{{ translate('wood') }}</option>
                                                                     <option value="leather">{{ translate('leather') }}</option>
@@ -236,9 +317,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="shipbuilding_type" id="type">
+                                                        <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="shipbuilding_type" id="type">
                                                                     <option value="all">{{ translate('vessel_type') }}</option>
                                                                     <option {{ old('type') == 'yacht' ? 'selected' : ''}} value="yacht">{{ translate('yacht') }}</option>
                                                                     <option {{ old('type') == 'fishing_boat' ? 'selected' : ''}} value="fishing_boat">{{ translate('fishing_boat') }}</option>
@@ -265,9 +346,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="engines_number" id="engines_number">
+                                                        <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="engines_number" id="engines_number">
                                                                     <option value="all">{{translate('number_of_engines')}}</option>
                                                                     <option value="1">1</option>
                                                                     <option value="2">2</option>
@@ -279,9 +360,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="cabins_number" id="cabins_number">
+                                                        <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="cabins_number" id="cabins_number">
                                                                     <option value="all">{{translate('number_of_cabins')}}</option>
                                                                     <option {{ old('cabins_number') == '1'  ?  'selected' : ''}} value="1">1</option>
                                                                     <option {{ old('cabins_number') == '2'  ?  'selected' : ''}} value="2">2</option>
@@ -307,9 +388,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home garden" data-for="home-garden" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="usage" id="usage">
+                                                        <div class="col-12" data-category-type="home garden" data-for="home-garden" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="usage" id="usage">
                                                                     <option value="all">{{ translate('usage') }}</option>
                                                                     <option {{ old('indoor') == 'new' ? 'selected' : ''}} value="indoor">{{translate('indoor')}}</option>
                                                                     <option {{ old('outdoor') == 'used' ? 'selected' : ''}} value="outdoor">{{translate('outdoor')}}</option>
@@ -317,9 +398,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="machine_type" id="machine_type">
+                                                        <div class="col-12" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="machine_type" id="machine_type">
                                                                     <option value="all">{{ translate('machine_type') }}</option>
                                                                     <option value="cutting">{{ translate('cutting') }}</option>
                                                                     <option value="forming">{{ translate('forming') }}</option>
@@ -346,9 +427,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="power_source" id="power_source">
+                                                        <div class="col-12" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="power_source" id="power_source">
                                                                     <option value="all">{{ translate('power_source') }}</option>
                                                                     <option value="electric">{{translate('electric')}}</option>
                                                                     <option value="diesel">{{translate('diesel')}}</option>
@@ -357,9 +438,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="home_appliance_type" id="home_appliance_type">
+                                                        <div class="col-12" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="home_appliance_type" id="home_appliance_type">
                                                                     <option value="all">{{ translate('appliance_type') }}</option>
                                                                     <option value="refrigerator">{{ translate('refrigerator') }}</option>
                                                                     <option value="washing_machine">{{ translate('washing_machine') }}</option>
@@ -382,9 +463,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="electronics" data-for="electronics" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="electronic_type" id="electronic_type">
+                                                        <div class="col-12" data-category-type="electronics" data-for="electronics" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="electronic_type" id="electronic_type">
                                                                     <option value="all">{{ translate('type') }}</option>
                                                                     <option {{ old('electronic_type') == 'tv' ? 'selected' : ''}} value="tv">{{ translate('tv') }}</option>
                                                                     <option {{ old('electronic_type') == 'laptop' ? 'selected' : ''}} value="laptop">{{ translate('laptop') }}</option>
@@ -410,9 +491,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="real estate" data-for="real-estate" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="listing_type" id="listing_type">
+                                                        <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="listing_type" id="listing_type">
                                                                     <option value="all">{{ translate('listing_type') }}</option>
                                                                     <option {{ old('listing_type') == 'for_sale' ? 'selected' : ''}} value="for_sale">{{ translate('for_sale') }}</option>
                                                                     <option {{ old('listing_type') == 'for_rent' ? 'selected' : ''}} value="for_rent">{{ translate('for_rent') }}</option>
@@ -422,9 +503,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="real estate" data-for="real-estate" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="property_type" id="property_type">
+                                                        <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="property_type" id="property_type">
                                                                     <option value="all">{{ translate('property_type') }}</option> 
                                                                     <option {{ old('property_type') == 'apartment' ? 'selected' : ''}} value="apartment">{{ translate('apartment') }}</option>
                                                                     <option {{ old('property_type') == 'villa' ? 'selected' : ''}} value="villa">{{ translate('villa') }}</option>
@@ -445,9 +526,9 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="real estate" data-for="real-estate" style="display: none;">
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16" name="floor" id="floor">
+                                                        <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                                                            <div class="form-group">
+                                                                <select class="form-control filter-input custom-mobile-input" name="floor" id="floor">
                                                                     <option value="all">{{ translate('choose_floor') }}</option>
                                                                     <option {{ old('floor') == 'basement' ? 'selected' : ''}} value="basement">{{ translate('basement') }}</option>
                                                                     <option {{ old('floor') == 'ground' ? 'selected' : ''}} value="ground">{{ translate('ground') }}</option>
@@ -458,57 +539,13 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="all" >
-                                                            <div class="form-group mb-3">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="price_range" id="price_range_select">
-                                                                    <option value="all">{{translate('price_up_to')}}</option>
-                                                                    <option value="500">500€</option>
-                                                                    <option value="1000">1,000€</option>
-                                                                    <option value="1500">1,500€</option>
-                                                                    <option value="2000">2,000€</option>
-                                                                    <option value="2500">2,500€</option>
-                                                                    <option value="3000">3,000€</option>
-                                                                    <option value="3500">3,500€</option>
-                                                                    <option value="4000">4,000€</option>
-                                                                    <option value="4500">4,500€</option>
-                                                                    <option value="5000">5,000€</option>
-                                                                    <option value="5500">5,500€</option>
-                                                                    <option value="6000">6,000€</option>
-                                                                    <option value="6500">6,500€</option>
-                                                                    <option value="7000">7,000€</option>
-                                                                    <option value="7500">7,500€</option>
-                                                                    <option value="8000">8,000€</option>
-                                                                    <option value="8500">8,500€</option>
-                                                                    <option value="9000">9,000€</option>
-                                                                    <option value="9500">9,500€</option>
-                                                                    <option value="10000">10,000€</option>
-                                                                    <option value="12000">12,500€</option>
-                                                                    <option value="15000">15,000€</option>
-                                                                    <option value="17500">17,500€</option>
-                                                                    <option value="20000">20,000€</option>
-                                                                    <option value="30000">30,000€</option>
-                                                                    <option value="40000">40,000€</option>
-                                                                    <option value="50000">50,000€</option>
-                                                                    <option value="60000">60,000€</option>
-                                                                    <option value="70000">70,000€</option>
-                                                                    <option value="80000">80,000€</option>
-                                                                    <option value="90000">90,000€</option>
-                                                                    <option value="100000">100,000€</option>
-                                                                    <option value="125000">125,000€</option>
-                                                                    <option value="150000">150,000€</option>
-                                                                    <option value="175000">175,000€</option>
-                                                                    <option value="200000">200,000€</option>
-                                                                    <option value="300000">300,000€</option>
-                                                                    <option value="400000">400,000€</option>
-                                                                    <option value="500000">500,000€</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-auto col-xl-auto col-md-12 col-sm-12 col-12 flex-grow-1">
+                                                
+                                                <!-- أزرار الإجراءات الفلتر والفلتر المتقدم متناسقة -->
+                                                <div class="col-12">
                                                     <div class="form-group d-flex filter-buttons gap-2 mb-2">
-                                                        <button type="submit" class="btn btn-primary font-size-16 custom-width-50-mobile px-sm-3 px-0 input-responsive-height"
+                                                        <button type="submit" class="btn btn-primary custom-width-50-mobile px-sm-3 px-0 flex-grow-1"
                                                             onclick="formUrlChange(this)"
                                                             data-action="{{ route('show-ads-filter') }}"
                                                             data-filter-count="filter-count">
@@ -516,13 +553,13 @@
                                                                 {{ \App\Model\Ad::count() }}
                                                             </span>
                                                             <span>{{ translate('result') }}</span>
-                                                            <div class="filter_count_loader spinner-border d-none" style="width: 18px;height: 18px;" role="status">
+                                                            <div class="filter_count_loader spinner-border d-none" style="width: 18px; height: 18px;" role="status">
                                                                 <span class="visually-hidden"></span>
                                                             </div>
                                                         </button>
                                                         <button type="button"
                                                         data-bs-toggle="modal" data-bs-target="#advancedFilterModal"
-                                                        class="d-flex align-items-center gap-1 font-size-16 btn btn-outline-primary input-responsive-height custom-width-50-mobile px-sm-3 px-0">
+                                                        class="d-flex align-items-center justify-content-center gap-1 btn btn-outline-primary custom-width-50-mobile px-sm-3 px-0 flex-grow-1">
                                                             <i class="bi bi-funnel"></i>
                                                             <span>{{translate('advanced_filter')}}</span>
                                                         </button>
@@ -566,7 +603,6 @@
         });
     });
     document.addEventListener('DOMContentLoaded', function() {
-        // This ensures Bootstrap's tab functionality is properly initialized
         var tabElements = document.querySelectorAll('[data-bs-toggle="tab"]');
         tabElements.forEach(function(tabElement) {
             new bootstrap.Tab(tabElement);
@@ -607,20 +643,15 @@
             const categorySlug = $(this).data('slug')
                 ?? $(this).text().trim().toLowerCase().replace(/&/g, '').replace(/\s+/g, '-');
 
-            // ✅ Get text, truncate to 12 chars, add "…" if longer
             let text = $(this).text().trim();
             let shortText = text.length > 12 ? text.substring(0, 12) + '…' : text;
 
-            $('#selectedCategoryText').text(shortText);  // show truncated text
+            $('#selectedCategoryText').text(shortText);
             $('#selectedCategoryId').val(categoryId);
 
-            // Hide and disable all except `all`
             $('[data-category-type]').not('[data-category-type="all"]').hide().find('select, input, textarea').prop('disabled', true);
-
-            // ✅ Always show "all" filters (like price/country)
             $('[data-category-type="all"]').show().find('select, input, textarea').prop('disabled', false);
 
-            // Show matching filters
             $('[data-category-type]').each(function () {
                 const types = $(this).data('category-type').toString().split(',');
                 const forList = ($(this).attr('data-for') || '').split(',').map(s => s.trim());
@@ -646,7 +677,6 @@
         const $modelSelect = $('#model');
         const $categoryInput = $('#selectedCategoryId');
 
-        // Initialize Select2
         $brandSelect.select2({
             placeholder: "{{ translate('brand') }}",
             allowClear: true
@@ -729,7 +759,6 @@
 
         $brandSelect.on('change', filterModels);
 
-        // Initial setup (optional)
         filterBrandsAndModels();
     });
 </script>
