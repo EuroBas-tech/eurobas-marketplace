@@ -3,11 +3,11 @@
     .mobile-filter-container {
         background: #ffffff;
         border-radius: 12px;
-        padding: 14px 10px;
+        padding: 16px 14px;
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     }
     
-    /* توحيد مقاسات وأبعاد الخانات لتصبح مريحة جداً للإصبع */
+    
     .mobile-custom-input {
         height: 52px !important;
         border: 1px solid #ced4da !important;
@@ -18,10 +18,10 @@
         background-color: #fff !important;
         display: flex;
         align-items: center;
-        width: 100%;
+        width: 100% !important;
     }
 
-    /* تأثير الوهج الأزرق الاحترافي بمجرد التفعيل أو الضغط */
+   
     .mobile-custom-input:focus, 
     .mobile-custom-input:active,
     .country-select:focus,
@@ -46,7 +46,7 @@
         font-size: 15px !important;
     }
 
-    /* جعل الفلتر والبنر يمتدان بكامل عرض الشاشة على الموبايل بدون فراغات مشوهة */
+    
     @media (max-width: 576px) {
         .banner.w-100 {
             padding-left: 0 !important;
@@ -58,22 +58,20 @@
             border-radius: 0 !important;
             background: transparent !important;
         }
-        /* دمج تصميم الـ Select2 ليتطابق مع بقية الخانات بارتفاع 52px */
+       
         .select2-container--default .select2-selection--single {
             height: 52px !important;
             border-radius: 10px !important;
             border: 1px solid #ced4da !important;
             display: flex !important;
             align-items: center !important;
+            width: 100% !important;
         }
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 50px !important;
         }
         .select2-container {
             width: 100% !important;
-        }
-        .custom-width-50-mobile {
-            width: 50% !important;
         }
     }
 </style>
@@ -85,9 +83,11 @@
                 <div class="container-fluid px-2">
                     <div class="mobile-filter-container mt-2">
                         
-                        <div class="row g-2">
+                        
+                        <div class="row g-3">
                             
-                            <div class="col-6">
+                            <!-- 1. القسم (Category) -->
+                            <div class="col-12">
                                 <div class="form-group mb-0">
                                     <div class="dropup">
                                         <input class="filter-input" type="hidden" name="category_id" id="selectedCategoryId" value="0">
@@ -104,7 +104,7 @@
                                                     data-slug="">
                                                     {{ translate('category') }}
                                                 </a>
-                                        </li>
+                                            </li>
                                             @foreach($categories->where('position', 1) as $category)
                                                 <li class="p-0">
                                                     <a onclick="triggerFilterManually(this)" class="dropdown-item font-size-16 d-flex align-items-center category-option p-2 gap-2" href="#"
@@ -121,7 +121,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="all">
+                            <!-- 2. الدولة (Country) -->
+                            <div class="col-12" data-category-type="all">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input emoji-font country-select" name="country" id="country_select">
                                         @foreach (SYSTEM_COUNTRIES as $country)
@@ -133,9 +134,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
+                            
+                            <div class="col-12" data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                 <div class="form-group mb-0">
-                                    <select class="form-control filter-input mobile-custom-input brand-select" name="brand_id" id="brand">
+                                    <select class="form-control filter-input mobile-custom-input brand-select" name="brand_id" id="brand" style="width: 100%;">
                                         <option value="all">{{translate('brand')}}</option>
                                         @foreach($brands as $brand)
                                             <option {{ $brand['id'] == ($data['brand_id'] ?? '') || $brand['id'] == old('brand_id') ? 'selected' : ''}} value="{{ $brand['id'] }}" data-brand-categories="{{ implode(', ', $brand['categories']) }}" >
@@ -146,9 +148,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
+                            
+                            <div class="col-12" data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                 <div class="form-group mb-0">
-                                    <select class="form-control filter-input mobile-custom-input model-select" name="model_id" id="model">
+                                    <select class="form-control filter-input mobile-custom-input model-select" name="model_id" id="model" style="width: 100%;">
                                         <option value="all">{{translate('model')}}</option>
                                         @foreach($models as $model)
                                             <option data-brand-id="{{ $model['brand_id'] }}" data-model-categories="{{ implode(', ', $model['categories']) }}" {{ $model['id'] == ($data['model_id'] ?? '') || $model['id'] == old('model_id') ? 'selected' : ''}} value="{{ $model['id'] }}">
@@ -159,7 +162,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="vehicles" data-for="bicycles" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="vehicles" data-for="bicycles" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="bicycle_type" id="bicycle_type">
                                         <option value="all">{{ translate('bicycle_type') }}</option>
@@ -180,7 +184,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="vehicles" data-for="bicycles" style="display: none;">
+                          
+                            <div class="col-12" data-category-type="vehicles" data-for="bicycles" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="bicycle_size" id="bicycle_size">
                                         <option value="all">{{ translate('bicycle_size') }}</option>
@@ -203,7 +208,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
+                            
+                            <div class="col-12" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="construction_year" id="construction_year_select">
                                         <option value="all">{{translate('year_from')}}</option>
@@ -214,7 +220,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="furniture" data-for="furniture" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="furniture" data-for="furniture" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="furniture_material" id="furniture_material">
                                         <option value="all">{{ translate('furniture_material') }}</option>
@@ -234,7 +241,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="furniture" data-for="furniture" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="furniture" data-for="furniture" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="furniture_type" id="furniture_type">
                                         <option value="all">{{ translate('furniture_type') }}</option>
@@ -269,7 +277,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="home garden" data-for="home-garden" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="home garden" data-for="home-garden" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="home_garden_material" id="material">
                                         <option value="all">{{ translate('material') }}</option>
@@ -289,7 +298,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                           
+                            <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="shipbuilding_type" id="type">
                                         <option value="all">{{ translate('vessel_type') }}</option>
@@ -318,7 +328,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="engines_number" id="engines_number">
                                         <option value="all">{{translate('number_of_engines')}}</option>
@@ -332,7 +343,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
+                           
+                            <div class="col-12" data-category-type="shipbuilding marine" data-for="ships-yachts" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="cabins_number" id="cabins_number">
                                         <option value="all">{{translate('number_of_cabins')}}</option>
@@ -360,7 +372,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="home garden" data-for="home-garden" style="display: none;">
+                          
+                            <div class="col-12" data-category-type="home garden" data-for="home-garden" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="usage" id="usage">
                                         <option value="all">{{ translate('usage') }}</option>
@@ -370,7 +383,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="machine_type" id="machine_type">
                                         <option value="all">{{ translate('machine_type') }}</option>
@@ -399,7 +413,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="industrial machines" data-for="industrial-machines" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="power_source" id="power_source">
                                         <option value="all">{{ translate('power_source') }}</option>
@@ -410,7 +425,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="home appliances" data-for="home-appliances" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="home_appliance_type" id="home_appliance_type">
                                         <option value="all">{{ translate('appliance_type') }}</option>
@@ -435,7 +451,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="electronics" data-for="electronics" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="electronics" data-for="electronics" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="electronic_type" id="electronic_type">
                                         <option value="all">{{ translate('type') }}</option>
@@ -463,7 +480,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                            
+                            <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="listing_type" id="listing_type">
                                         <option value="all">{{ translate('listing_type') }}</option>
@@ -475,7 +493,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                             
+                            <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="property_type" id="property_type">
                                         <option value="all">{{ translate('property_type') }}</option> 
@@ -498,7 +517,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="real estate" data-for="real-estate" style="display: none;">
+                           
+                            <div class="col-12" data-category-type="real estate" data-for="real-estate" style="display: none;">
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="floor" id="floor">
                                         <option value="all">{{ translate('choose_floor') }}</option>
@@ -511,7 +531,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" data-category-type="all" >
+                           
+                            <div class="col-12" data-category-type="all" >
                                 <div class="form-group mb-0">
                                     <select class="form-control filter-input mobile-custom-input" name="price_range" id="price_range_select">
                                         <option value="all">{{translate('price_up_to')}}</option>
@@ -560,8 +581,9 @@
 
                         </div>
 
-                        <div class="row g-2 mt-2">
-                            <div class="col-6 flex-grow-1 custom-width-50-mobile">
+                        
+                        <div class="row g-2 mt-3">
+                            <div class="col-6">
                                 <button type="submit" class="btn btn-primary font-size-16 w-100 d-flex align-items-center justify-content-center gap-1" style="height: 52px; border-radius: 10px;"
                                     onclick="formUrlChange(this)"
                                     data-action="{{ route('show-ads-filter') }}"
@@ -575,7 +597,7 @@
                                     </div>
                                 </button>
                             </div>
-                            <div class="col-6 flex-grow-1 custom-width-50-mobile">
+                            <div class="col-6">
                                 <button type="button"
                                     data-bs-toggle="modal" data-bs-target="#advancedFilterModal"
                                     class="btn btn-outline-primary font-size-16 w-100 d-flex align-items-center justify-content-center gap-1" style="height: 52px; border-radius: 10px;">
@@ -595,8 +617,10 @@
     </div>
 </section>
 
+<!-- استدعاء سكريبت JQuery -->
 <script src="{{ theme_asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 
+ 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var swiper = new Swiper(".banner-swiper", {
@@ -624,6 +648,7 @@
     });
 </script>
 
+ 
 <script>
     $(document).ready(function () {
         const selectedCategoryId = $('#selectedCategoryId').val();
@@ -685,6 +710,7 @@
     });
 </script>
 
+ 
 <script>
     $(document).ready(function () {
         const $brandSelect = $('#brand');
