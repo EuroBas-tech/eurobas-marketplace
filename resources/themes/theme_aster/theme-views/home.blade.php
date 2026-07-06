@@ -189,13 +189,13 @@
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
-                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:12px 16px;pointer-events:none;">
-                                <div style="{{ $bannerText['hPos'] }}max-width:75%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 6px rgba(0,0,0,0.6);word-break:break-word;">
+                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:16px 20px;pointer-events:none;overflow:hidden;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:80%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 6px rgba(0,0,0,0.65);word-break:break-word;">
                                     @if($bannerText['title'])
-                                        <div style="font-size:clamp(16px,4.5vw,24px);font-weight:500;line-height:1.2;margin-bottom:0.3em;">{!! translate($bannerText['title']) !!}</div>
+                                        <div style="font-size:clamp(20px,5.5vw,30px);font-weight:600;line-height:1.2;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title'])) !!}</div>
                                     @endif
                                     @if($bannerText['sub_title'])
-                                        <div style="font-size:clamp(12px,3vw,16px);opacity:0.88;line-height:1.4;">{!! translate($bannerText['sub_title']) !!}</div>
+                                        <div style="font-size:clamp(14px,3.5vw,18px);opacity:0.9;line-height:1.4;font-weight:400;">{!! html_entity_decode(translate($bannerText['sub_title'])) !!}</div>
                                     @endif
                                 </div>
                             </div>
@@ -210,13 +210,13 @@
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
-                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:clamp(12px,3%,40px);pointer-events:none;">
-                            <div style="{{ $bannerText['hPos'] }}max-width:40%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
+                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:clamp(20px,5%,60px);pointer-events:none;overflow:hidden;">
+                            <div style="{{ $bannerText['hPos'] }}max-width:45%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
                                 @if($bannerText['title'])
-                                    <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:500;line-height:1.25;margin-bottom:0.4em;">{!! translate($bannerText['title']) !!}</div>
+                                    <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:600;line-height:1.2;margin-bottom:0.35em;">{!! html_entity_decode(translate($bannerText['title'])) !!}</div>
                                 @endif
                                 @if($bannerText['sub_title'])
-                                    <div style="font-size:{{ $bannerText['subSize'] }};opacity:0.88;line-height:1.5;">{!! translate($bannerText['sub_title']) !!}</div>
+                                    <div style="font-size:{{ $bannerText['subSize'] }};opacity:0.9;line-height:1.5;font-weight:400;">{!! html_entity_decode(translate($bannerText['sub_title'])) !!}</div>
                                 @endif
                             </div>
                         </div>
