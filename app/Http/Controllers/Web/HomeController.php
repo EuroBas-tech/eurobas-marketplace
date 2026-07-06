@@ -78,16 +78,24 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             $size       = $banner->text_size     ?? 'large';
             $color      = $banner->text_color    ?? 'white';
             $colorMap   = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
-            $titleSizes = ['small'=>'clamp(20px,3.5vw,36px)','medium'=>'clamp(26px,4.5vw,48px)','large'=>'clamp(32px,5.5vw,64px)'];
-            $subSizes   = ['small'=>'clamp(14px,2vw,20px)','medium'=>'clamp(16px,2.5vw,26px)','large'=>'clamp(18px,3vw,32px)'];
+            $titleSizes = [
+                'small'  => 'clamp(16px,2.5vw,24px)',
+                'medium' => 'clamp(20px,3vw,32px)',
+                'large'  => 'clamp(24px,3.5vw,42px)',
+            ];
+            $subSizes = [
+                'small'  => 'clamp(12px,1.5vw,16px)',
+                'medium' => 'clamp(14px,1.8vw,20px)',
+                'large'  => 'clamp(16px,2vw,24px)',
+            ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
             $bannerText = [
                 'title'      => $banner->title,
                 'sub_title'  => $banner->sub_title,
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
-                'titleSize'  => $titleSizes[$size]  ?? 'clamp(18px,3vw,32px)',
-                'subSize'    => $subSizes[$size]    ?? 'clamp(13px,2vw,20px)',
-                'vAlign'     => $vAligns[$pos]      ?? 'center',
+                'titleSize'  => $titleSizes[$size]  ?? 'clamp(24px,3.5vw,42px)',
+                'subSize'    => $subSizes[$size]     ?? 'clamp(16px,2vw,24px)',
+                'vAlign'     => $vAligns[$pos]       ?? 'center',
                 'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
                 'tAlign'     => $isRtl ? 'right' : 'left',
                 'dir'        => $isRtl ? 'rtl' : 'ltr',
