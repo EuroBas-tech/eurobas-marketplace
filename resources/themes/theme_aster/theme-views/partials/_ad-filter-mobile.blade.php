@@ -1,4 +1,5 @@
-<style>
+ <style> 
+     
     #dropdownMenuButton:hover,
     #dropdownMenuButton:focus,
     #dropdownMenuButton:active {
@@ -12,47 +13,115 @@
         font-size: 16px;
     }
 
-    /* الستايل الجديد المضاف لضمان تمدد كل الحقول والبنر بعرض الشاشة بالكامل في الموبايل */
+    
     @media (max-width: 576px) {
+       
         .banner {
             width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-        .moble-border-0 {
-            border: none !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
+            padding: 0 8px !important;
             margin: 0 !important;
-            width: 100% !important;
-        }
-        .tab-content.px-3 {
-            padding-left: 8px !important;
-            padding-right: 8px !important;
+            box-sizing: border-box !important;
         }
         
-        /* إجبار حقول الـ Select2 (البراند والموديل) على العرض الكامل المنسق والارتفاع المطابق للبقية */
+        .moble-border-0 {
+            border: none !important;
+            border-radius: 8px !important;
+            margin: 0 !important;
+            width: 100% !important;
+            overflow: hidden;
+        }
+
+        .tab-content.px-3 {
+            padding-left: 4px !important;
+            padding-right: 4px !important;
+        }
+
+         
+        .form-data .row.g-2 {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important; 
+        }
+
+         
+        .form-data .col-xl-4, 
+        .form-data .col-md-4, 
+        .form-data .col-sm-12, 
+        .form-data .col-12,
+        .form-data .col-sm-6,
+        .form-data .col-6 {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        
+        .form-control, 
+        .filter-input, 
+        .custom-input-height, 
+        #dropdownMenuButton {
+            height: 45px !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 8px !important;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+        }
+
+         
+        .form-control:focus,
+        #dropdownMenuButton:focus,
+        .select2-container--default .select2-selection--single:focus {
+            border-color: #86b7fe !important;
+            outline: 0 !important;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+        }
+
+        
         .select2-container {
             width: 100% !important;
             display: block !important;
         }
+
         .select2-container--default .select2-selection--single {
-            height: 42px !important;
+            height: 45px !important;
             border: 1px solid #ced4da !important;
-            border-radius: 7px !important;
+            border-radius: 8px !important;
             display: flex !important;
             align-items: center !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
+
         .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 42px !important;
+            line-height: 45px !important;
             padding-left: 12px !important;
             font-size: 16px !important;
             color: #495057 !important;
+            text-align: right; 
         }
+
         .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 42px !important;
+            height: 45px !important;
+        }
+
+        
+        .filter-buttons {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            gap: 10px !important;
+            margin-top: 5px;
+        }
+
+        .filter-buttons button {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            height: 45px !important;
+            border-radius: 8px !important;
         }
     }
 </style>
