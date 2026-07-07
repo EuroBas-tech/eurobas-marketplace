@@ -79,14 +79,14 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             $color      = $banner->text_color    ?? 'white';
             $colorMap   = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
             $titleSizes = [
-                'small'  => 'clamp(16px,2.5vw,24px)',
-                'medium' => 'clamp(20px,3vw,32px)',
-                'large'  => 'clamp(24px,3.5vw,42px)',
+                'small'  => 'clamp(18px,2.8vw,26px)',
+                'medium' => 'clamp(22px,3.2vw,36px)',
+                'large'  => 'clamp(26px,3.8vw,46px)',
             ];
             $subSizes = [
-                'small'  => 'clamp(12px,1.5vw,16px)',
-                'medium' => 'clamp(14px,1.8vw,20px)',
-                'large'  => 'clamp(16px,2vw,24px)',
+                'small'  => 'clamp(13px,1.6vw,18px)',
+                'medium' => 'clamp(15px,2vw,22px)',
+                'large'  => 'clamp(17px,2.2vw,26px)',
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
             $bannerText = [
