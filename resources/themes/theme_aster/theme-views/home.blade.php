@@ -190,12 +190,12 @@
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
                             <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:16px 20px;pointer-events:none;overflow:hidden;">
-                                <div style="{{ $bannerText['hPos'] }}max-width:80%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 6px rgba(0,0,0,0.65);word-break:break-word;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
                                     @if($bannerText['title'])
-                                        <div style="font-size:clamp(20px,5.5vw,30px);font-weight:600;line-height:1.2;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title'])) !!}</div>
+                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title'])) !!}</div>
                                     @endif
                                     @if($bannerText['sub_title'])
-                                        <div style="font-size:clamp(14px,3.5vw,18px);opacity:0.9;line-height:1.4;font-weight:400;">{!! html_entity_decode(translate($bannerText['sub_title'])) !!}</div>
+                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title'])) !!}</div>
                                     @endif
                                 </div>
                             </div>
@@ -211,7 +211,7 @@
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
                         <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:clamp(20px,5%,60px);pointer-events:none;overflow:hidden;">
-                            <div style="{{ $bannerText['hPos'] }}max-width:45%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;">
+                            <div style="{{ $bannerText['hPos'] }}max-width:45%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.55);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
                                 @if($bannerText['title'])
                                     <div style="font-size:{{ $bannerText['titleSize'] }};font-weight:600;line-height:1.2;margin-bottom:0.35em;">{!! html_entity_decode(translate($bannerText['title'])) !!}</div>
                                 @endif
