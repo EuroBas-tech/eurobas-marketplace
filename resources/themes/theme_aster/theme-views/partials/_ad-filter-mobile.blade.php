@@ -11,6 +11,50 @@
     .font-size-16 {
         font-size: 16px;
     }
+
+    /* الستايل الجديد المضاف لضمان تمدد كل الحقول والبنر بعرض الشاشة بالكامل في الموبايل */
+    @media (max-width: 576px) {
+        .banner {
+            width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .moble-border-0 {
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+        .tab-content.px-3 {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+        
+        /* إجبار حقول الـ Select2 (البراند والموديل) على العرض الكامل المنسق والارتفاع المطابق للبقية */
+        .select2-container {
+            width: 100% !important;
+            display: block !important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 42px !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 7px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 42px !important;
+            padding-left: 12px !important;
+            font-size: 16px !important;
+            color: #495057 !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 42px !important;
+        }
+    }
 </style>
 
 <section class="banner w-100 sweet-shadow">
@@ -27,7 +71,7 @@
                                             <div class="row align-items-center justify-content-between gap-2">
                                                 <div class="col-xl-10 col-md-12 col-sm-12 col-12">
                                                     <div class="row g-2">
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 mt-1">
+                                                        <div class="col-xl-4 col-md-4 col-sm-12 col-12 px-1 mt-1">
                                                             <div class="form-group">
                                                                 <div class="dropup mb-1">
                                                                     <input class="filter-input" type="hidden" name="category_id" id="selectedCategoryId" value="0">
@@ -61,7 +105,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 mt-1" data-category-type="all">
+                                                        <div class="col-xl-4 col-md-4 col-sm-12 col-12 px-1 mt-1" data-category-type="all">
                                                             <div class="form-group">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height emoji-font country-select" name="country" id="country_select">
                                                                     @foreach (SYSTEM_COUNTRIES as $country)
@@ -73,7 +117,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2" data-category-type="vehicles"
+                                                        <div class="col-xl-4 col-md-4 col-sm-12 col-12 px-1 input-responsive-height mt-1 mb-2" data-category-type="vehicles"
                                                         data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand">
@@ -90,7 +134,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2"
+                                                        <div class="col-xl-4 col-md-4 col-sm-12 col-12 px-1 input-responsive-height mt-1 mb-2"
                                                             data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
@@ -150,7 +194,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
+                                                        <div class="d-none" data-category-type="vehicles" data-for="cars, trucks, buses, classic-cars, supercars, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="construction_year" id="construction_year_select">
                                                                     <option value="all">{{translate('year_from')}}</option>
@@ -458,7 +502,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="all" >
+                                                        <div class="d-none" data-category-type="all" >
                                                             <div class="form-group mb-3">
                                                                 <select class="form-control filter-input input-responsive-height font-size-16 custom-input-height" name="price_range" id="price_range_select">
                                                                     <option value="all">{{translate('price_up_to')}}</option>
@@ -506,7 +550,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-auto col-xl-auto col-md-12 col-sm-12 col-12 flex-grow-1">
+                                                <div class="col-12 col-xl-auto col-md-12 col-sm-12 col-12 flex-grow-1">
                                                     <div class="form-group d-flex filter-buttons gap-2 mb-2">
                                                         <button type="submit" class="btn btn-primary font-size-16 custom-width-50-mobile px-sm-3 px-0 input-responsive-height"
                                                             onclick="formUrlChange(this)"
@@ -636,6 +680,12 @@
                     $(this).toggle(shouldShow).find('select, input, textarea').prop('disabled', !shouldShow);
                 }
             });
+
+            // تحديث فوري وعرض كامل لحقول Select2 عند تغيير الأقسام لمنع انكماشها
+            setTimeout(function() {
+                $('#brand').select2({ width: '100%' });
+                $('#model').select2({ width: '100%' });
+            }, 50);
         });
     });
 </script>
