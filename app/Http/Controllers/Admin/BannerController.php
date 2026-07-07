@@ -75,27 +75,30 @@ class BannerController extends Controller
 
         ]);
 
-        $banner = new Banner;
-        $banner->banner_type = $request->banner_type;
-        $banner->resource_type = null;
-        $banner->resource_id = null;
-        $banner->title = $request->title;
-        $banner->theme = 'theme_aster';
-        $banner->sub_title = $request->sub_title;
-        $banner->button_text = $request->button_text;
-        $banner->background_color = $request->background_color;
-        $banner->url = $request->url;
-        $banner->lang = $request->lang;
-        $banner->for_mobile = $request->for_mobile;
-        $banner->priority = $request->priority;
-        $banner->photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
+        $photo = ImageManager::upload('banner/', 'webp', $request->file('image'), 'def.jpg');
 
-        $banner->show_text     = $request->has('show_text') ? 1 : 0;
-        $banner->text_position = $request->text_position ?? 'center';
-        $banner->text_size     = $request->text_size ?? 'large';
-        $banner->text_color    = $request->text_color ?? 'white';
-
-        $banner->save();
+        Banner::insert([
+            'banner_type'      => $request->banner_type,
+            'resource_type'    => null,
+            'resource_id'      => null,
+            'title'            => $request->title,
+            'theme'            => 'theme_aster',
+            'sub_title'        => $request->sub_title,
+            'button_text'      => $request->button_text,
+            'background_color' => $request->background_color,
+            'url'              => $request->url,
+            'lang'             => $request->lang,
+            'for_mobile'       => $request->for_mobile,
+            'priority'         => $request->priority,
+            'photo'            => $photo,
+            'show_text'        => $request->has('show_text') ? 1 : 0,
+            'text_position'    => $request->text_position ?? 'center',
+            'text_size'        => $request->text_size ?? 'large',
+            'text_color'       => $request->text_color ?? 'white',
+            'published'        => 1,
+            'created_at'       => now(),
+            'updated_at'       => now(),
+        ]);
 
         Cache::forget('main_banners');
 
@@ -132,27 +135,30 @@ class BannerController extends Controller
         ]);
 
         $banner = Banner::find($id);
-        $banner->banner_type = $request->banner_type;
-        $banner->resource_type = $request->resource_type;
-        $banner->resource_id = $request[$request->resource_type . '_id'];
-        $banner->title = $request->title;
-        $banner->sub_title = $request->sub_title;
-        $banner->button_text = $request->button_text;
-        $banner->background_color = $request->background_color;
-        $banner->lang = $request->lang;
-        $banner->for_mobile = $request->for_mobile;
-        $banner->url = $request->url;
-        $banner->priority = $request->priority;
+
+        $updateData = [
+            'banner_type'      => $request->banner_type,
+            'resource_type'    => $request->resource_type,
+            'resource_id'      => $request[$request->resource_type . '_id'],
+            'title'            => $request->title,
+            'sub_title'        => $request->sub_title,
+            'button_text'      => $request->button_text,
+            'background_color' => $request->background_color,
+            'lang'             => $request->lang,
+            'for_mobile'       => $request->for_mobile,
+            'url'              => $request->url,
+            'priority'         => $request->priority,
+            'show_text'        => $request->has('show_text') ? 1 : 0,
+            'text_position'    => $request->text_position ?? 'center',
+            'text_size'        => $request->text_size ?? 'large',
+            'text_color'       => $request->text_color ?? 'white',
+        ];
+
         if ($request->file('image')) {
-            $banner->photo = ImageManager::update('banner/', $banner['photo'], 'webp', $request->file('image'));
+            $updateData['photo'] = ImageManager::update('banner/', $banner['photo'], 'webp', $request->file('image'));
         }
 
-        $banner->show_text     = $request->has('show_text') ? 1 : 0;
-        $banner->text_position = $request->text_position ?? 'center';
-        $banner->text_size     = $request->text_size ?? 'large';
-        $banner->text_color    = $request->text_color ?? 'white';
-
-        $banner->save();
+        Banner::where('id', $id)->update($updateData);
 
         Cache::forget('main_banners');
 
