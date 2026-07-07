@@ -86,7 +86,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             $subSizes = [
                 'small'  => 'clamp(13px,1.6vw,18px)',
                 'medium' => 'clamp(15px,2vw,22px)',
-                'large'  => 'clamp(17px,2.2vw,26px)',
+                'large'  => 'clamp(20px,2.5vw,32px)',
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
         $bannerText = [
@@ -94,7 +94,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 'sub_title'  => html_entity_decode(translate($banner->sub_title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
                 'titleSize'  => $titleSizes[$size]  ?? 'clamp(32px,3.8vw,52px)',
-                'subSize'    => $subSizes[$size]     ?? 'clamp(17px,2.2vw,26px)',
+                'subSize'    => $subSizes[$size]     ?? 'clamp(20px,2.5vw,32px)',
                 'vAlign'     => $vAligns[$pos]       ?? 'center',
                 'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
                 'tAlign'     => $isRtl ? 'right' : 'left',
