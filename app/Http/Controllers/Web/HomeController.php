@@ -90,8 +90,8 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
             $bannerText = [
-                'title'      => $banner->title,
-                'sub_title'  => $banner->sub_title,
+                'title'      => html_entity_decode($banner->title ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                'sub_title'  => html_entity_decode($banner->sub_title ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
                 'titleSize'  => $titleSizes[$size]  ?? 'clamp(24px,3.5vw,42px)',
                 'subSize'    => $subSizes[$size]     ?? 'clamp(16px,2vw,24px)',
