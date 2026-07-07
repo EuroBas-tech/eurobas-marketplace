@@ -80,8 +80,8 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             $colorMap   = ['white'=>'#ffffff','orange'=>'#FF6B35','blue'=>'#60B8FF','gold'=>'#FFD700'];
             $titleSizes = [
                 'small'  => 'clamp(18px,2.8vw,26px)',
-                'medium' => 'clamp(22px,3.2vw,36px)',
-                'large'  => 'clamp(26px,3.8vw,46px)',
+                'medium' => 'clamp(26px,3.2vw,40px)',
+                'large'  => 'clamp(32px,3.8vw,52px)',
             ];
             $subSizes = [
                 'small'  => 'clamp(13px,1.6vw,18px)',
@@ -89,12 +89,12 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 'large'  => 'clamp(17px,2.2vw,26px)',
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
-            $bannerText = [
-                'title'      => html_entity_decode($banner->title ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'),
-                'sub_title'  => html_entity_decode($banner->sub_title ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        $bannerText = [
+                'title'      => html_entity_decode(translate($banner->title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                'sub_title'  => html_entity_decode(translate($banner->sub_title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
-                'titleSize'  => $titleSizes[$size]  ?? 'clamp(24px,3.5vw,42px)',
-                'subSize'    => $subSizes[$size]     ?? 'clamp(16px,2vw,24px)',
+                'titleSize'  => $titleSizes[$size]  ?? 'clamp(32px,3.8vw,52px)',
+                'subSize'    => $subSizes[$size]     ?? 'clamp(17px,2.2vw,26px)',
                 'vAlign'     => $vAligns[$pos]       ?? 'center',
                 'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
                 'tAlign'     => $isRtl ? 'right' : 'left',
