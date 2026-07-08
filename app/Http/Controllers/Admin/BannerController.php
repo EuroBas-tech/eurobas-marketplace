@@ -95,7 +95,7 @@ class BannerController extends Controller
             'text_position'    => $request->text_position ?? 'center',
             'text_size'        => $request->text_size ?? 'large',
             'text_color'       => $request->text_color ?? 'white',
-            'published'        => 1,
+            'published'        => 0,
             'created_at'       => now(),
             'updated_at'       => now(),
         ]);
