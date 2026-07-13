@@ -360,6 +360,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
         Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
             Route::get('/', 'AccountingController@index')->name('index');
+            Route::get('platform-finance', 'AccountingController@platform_finance')->name('platform-finance');
                         
             Route::get('costs-and-expenses', 'AccountingController@get_costs')->name('costs-and-expenses');
             Route::post('store-costs-and-expenses', 'AccountingController@store_costs')->name('store-costs-and-expenses');
@@ -372,6 +373,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             
             Route::get('admin-wallet-actions-pdf', 'AccountingController@admin_wallet_actions_pdf')->name('admin-wallet-actions-pdf');
             Route::get('admin-earning-pdf', 'AccountingController@admin_earning_pdf')->name('admin-earning-pdf');
+            Route::get('platform-finance-pdf', 'AccountingController@platform_finance_pdf')->name('platform-finance-pdf');
+            Route::get('platform-finance-excel', 'AccountingController@platform_finance_excel')->name('platform-finance-excel');
+            Route::get('tax-report-pdf', 'AccountingController@tax_report_pdf')->name('tax-report-pdf');
+            Route::get('admin-earning-excel', 'AccountingController@platform_finance_excel')->name('admin-earning-excel-export');
             
         });
 
