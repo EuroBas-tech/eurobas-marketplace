@@ -31,7 +31,7 @@
         font-weight: 800;
         letter-spacing: -0.02em;
         margin-top: 8px;
-        color: #0f172a !important; /* أسود داكن جداً */
+        color: #0f172a !important; /* أسود داكن جداً للوضوح */
     }
     
     /* نصوص سوداء وواضحة جداً بدلاً من الرمادي */
@@ -107,17 +107,30 @@
         background-color: #ffffff;
     }
     .custom-form-control:focus {
-        border-color: #0f172a;
-        box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+        border-color: #0052cc;
+        box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
     }
     .btn-outline-primary {
-        color: #0f172a !important;
-        border-color: #cbd5e1 !important;
+        color: #0052cc !important;
+        border-color: #cbdfff !important;
         background: #ffffff;
     }
     .btn-outline-primary:hover {
-        background: #f8fafc !important;
-        border-color: #0f172a !important;
+        background: #f0f7ff !important;
+        border-color: #0052cc !important;
+    }
+    /* الزر الأزرق للفلتر */
+    .btn-custom-blue {
+        background-color: #0052cc !important;
+        color: #ffffff !important;
+        border: none;
+        padding: 11px;
+        border-radius: 8px;
+        font-weight: 700;
+        transition: background-color 0.2s ease;
+    }
+    .btn-custom-blue:hover {
+        background-color: #0043a4 !important;
     }
 </style>
 @endpush
@@ -161,7 +174,7 @@
                         <input type="date" name="to" value="{{ $to }}" id="to_date" class="form-control custom-form-control">
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <button type="submit" class="btn btn-dark w-100" style="padding: 11px; border-radius: 8px; font-weight: 700; background: #0f172a; border: none;">
+                        <button type="submit" class="btn btn-custom-blue w-100">
                             <i class="tio-filter-list me-1"></i>{{ translate('filter') }}
                         </button>
                     </div>
