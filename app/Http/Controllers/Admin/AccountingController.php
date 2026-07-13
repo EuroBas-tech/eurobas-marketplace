@@ -1482,18 +1482,6 @@ class AccountingController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     // ══════════════════════════════════════════════════════
     // NEW — Platform Finance (Sponsored Ads / Paid Banners)
     // Added for EuroBas marketplace accounting
