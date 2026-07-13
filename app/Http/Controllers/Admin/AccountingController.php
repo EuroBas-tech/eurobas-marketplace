@@ -1481,25 +1481,7 @@ class AccountingController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ══════════════════════════════════════════════════════
-    // NEW — Platform Finance (Sponsored Ads / Paid Banners)
-    // Added for EuroBas marketplace accounting
-    // Does NOT touch any existing functions above
-    // ══════════════════════════════════════════════════════
-
+    // EU VAT rates
     const EU_VAT_RATES = [
         'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
         'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
@@ -1509,24 +1491,28 @@ class AccountingController extends Controller
         'SI'=>22,'SK'=>20,
     ];
 
-    public function platform_finance(Request $request)
+    // ── MAIN DASHBOARD ─────────────────────────────
+    public function index(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
         $from      = $request->input('from');
         $to        = $request->input('to');
-        $txAll     = $this->platformTxQuery($date_type, $from, $to)->get();
 
+        $txAll = $this->txQuery($date_type, $from, $to)->get();
+
+        // Revenue
         $grossRevenue  = $txAll->sum('gross_amount');
         $gatewayFees   = $txAll->sum('gateway_fee');
         $vatCollected  = $txAll->sum('vat_amount');
         $netRevenue    = $txAll->sum('net_amount');
-        $stripeTotal   = $txAll->where('gateway','stripe')->sum('gross_amount');
-        $paypalTotal   = $txAll->where('gateway','paypal')->sum('gross_amount');
-        $stripeFees    = $txAll->where('gateway','stripe')->sum('gateway_fee');
-        $paypalFees    = $txAll->where('gateway','paypal')->sum('gateway_fee');
-        $euRevenue     = $txAll->where('is_eu',1)->sum('gross_amount');
-        $nonEuRevenue  = $txAll->where('is_eu',0)->sum('gross_amount');
 
+        // Gateway breakdown
+        $stripeTotal = $txAll->where('gateway','stripe')->sum('gross_amount');
+        $paypalTotal = $txAll->where('gateway','paypal')->sum('gross_amount');
+        $stripeFees  = $txAll->where('gateway','stripe')->sum('gateway_fee');
+        $paypalFees  = $txAll->where('gateway','paypal')->sum('gateway_fee');
+
+        // Package breakdown
         $packageBreakdown = $txAll->groupBy('package_type')
             ->map(fn($g) => [
                 'type'  => $g->first()->package_type ?? 'Unknown',
@@ -1535,6 +1521,11 @@ class AccountingController extends Controller
                 'net'   => $g->sum('net_amount'),
             ])->values();
 
+        // EU vs Non-EU
+        $euRevenue    = $txAll->where('is_eu',1)->sum('gross_amount');
+        $nonEuRevenue = $txAll->where('is_eu',0)->sum('gross_amount');
+
+        // VAT per EU country (for OSS)
         $vatByCountry = $txAll->where('is_eu',1)
             ->groupBy('user_country')
             ->map(fn($g) => [
@@ -1545,17 +1536,20 @@ class AccountingController extends Controller
                 'count'      => $g->count(),
             ])->values();
 
-        $costsQuery = Cost::query();
-        $costsQuery = $this->date_wise_common_filter($costsQuery, $date_type, $from, $to);
-        $costsAndExpenses = $costsQuery->sum('amount');
+        // Costs & Expenses
+        $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
 
+        // Net Profit
         $netProfit = $netRevenue - $costsAndExpenses;
         $txCount   = $txAll->count();
 
-        $recentTx = $this->platformTxQuery($date_type, $from, $to)
-            ->orderByDesc('created_at')->limit(10)->get();
+        // Recent 10 transactions
+        $recentTx = $this->txQuery($date_type, $from, $to)
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
 
-        return view('admin-views.accounting.platform-finance', compact(
+        return view('admin-views.accounting.index', compact(
             'grossRevenue','gatewayFees','vatCollected','netRevenue',
             'stripeTotal','paypalTotal','stripeFees','paypalFees',
             'packageBreakdown','euRevenue','nonEuRevenue',
@@ -1564,109 +1558,205 @@ class AccountingController extends Controller
         ));
     }
 
-    public function platform_finance_pdf(Request $request)
-    {
-        $date_type        = $request->input('date_type', 'this_year');
-        $from             = $request->input('from');
-        $to               = $request->input('to');
-        $txAll            = $this->platformTxQuery($date_type, $from, $to)->get();
-        $grossRevenue     = $txAll->sum('gross_amount');
-        $gatewayFees      = $txAll->sum('gateway_fee');
-        $vatCollected     = $txAll->sum('vat_amount');
-        $netRevenue       = $txAll->sum('net_amount');
-        $euRevenue        = $txAll->where('is_eu',1)->sum('gross_amount');
-        $nonEuRevenue     = $txAll->where('is_eu',0)->sum('gross_amount');
-        $costsAndExpenses = Cost::whereYear('created_at', date('Y'))->sum('amount');
-        $netProfit        = $netRevenue - $costsAndExpenses;
-        $vatByCountry     = $txAll->where('is_eu',1)->groupBy('user_country')
-            ->map(fn($g) => [
-                'country'    => $g->first()->user_country,
-                'vat_rate'   => $g->first()->vat_rate,
-                'gross'      => $g->sum('gross_amount'),
-                'vat_amount' => $g->sum('vat_amount'),
-                'count'      => $g->count(),
-            ])->values();
-
-        $company   = $this->companyInfoNew();
-        $mpdf_view = \Illuminate\Support\Facades\View::make(
-            'admin-views.accounting.pdf.platform-finance-pdf',
-            compact('grossRevenue','gatewayFees','vatCollected','netRevenue',
-                'vatByCountry','costsAndExpenses','netProfit',
-                'euRevenue','nonEuRevenue','date_type','from','to') + $company
-        );
-        \App\CPU\Helpers::gen_mpdf($mpdf_view, 'platform_finance_', rand(1000,9999).time());
-    }
-
-    public function tax_report_pdf(Request $request)
-    {
-        $date_type    = $request->input('date_type', 'this_year');
-        $from         = $request->input('from');
-        $to           = $request->input('to');
-        $txAll        = $this->platformTxQuery($date_type, $from, $to)->get();
-        $euTx         = $txAll->where('is_eu',1);
-        $vatByCountry = $euTx->groupBy('user_country')
-            ->map(fn($g) => [
-                'country'    => $g->first()->user_country,
-                'vat_rate'   => $g->first()->vat_rate,
-                'gross'      => $g->sum('gross_amount'),
-                'vat_amount' => $g->sum('vat_amount'),
-                'count'      => $g->count(),
-            ])->values();
-        $totalEuGross = $euTx->sum('gross_amount');
-        $totalVat     = $euTx->sum('vat_amount');
-        $nonEuRevenue = $txAll->where('is_eu',0)->sum('gross_amount');
-        $company      = $this->companyInfoNew();
-        $mpdf_view    = \Illuminate\Support\Facades\View::make(
-            'admin-views.accounting.pdf.tax-report-pdf',
-            compact('vatByCountry','totalEuGross','totalVat','nonEuRevenue','date_type','from','to') + $company
-        );
-        \App\CPU\Helpers::gen_mpdf($mpdf_view, 'vat_tax_report_', rand(1000,9999).time());
-    }
-
-    public function platform_finance_excel(Request $request)
+    // ── COSTS & EXPENSES ───────────────────────────
+    public function get_costs(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
         $from      = $request->input('from');
         $to        = $request->input('to');
-        $txAll     = $this->platformTxQuery($date_type, $from, $to)->orderByDesc('created_at')->get();
-        if ($txAll->isEmpty()) return back();
-        $data = $txAll->map(fn($tx) => [
-            'Date'           => \Carbon\Carbon::parse($tx->created_at)->format('Y-m-d'),
-            'Package Type'   => $tx->package_type ?? '-',
-            'Gateway'        => strtoupper($tx->gateway ?? '-'),
-            'Transaction ID' => $tx->transaction_id ?? '-',
-            'Country'        => $tx->user_country ?? '-',
-            'EU'             => $tx->is_eu ? 'Yes' : 'No',
-            'VAT Rate'       => ($tx->vat_rate ?? 0).'%',
-            'Gross (€)'      => number_format($tx->gross_amount ?? 0, 2),
-            'Gateway Fee(€)' => number_format($tx->gateway_fee  ?? 0, 2),
-            'VAT (€)'        => number_format($tx->vat_amount   ?? 0, 2),
-            'Net (€)'        => number_format($tx->net_amount   ?? 0, 2),
-        ]);
-        return (new \Rap2hpoutre\FastExcel\FastExcel($data))->download('platform_finance.xlsx');
+        $search    = $request->input('search');
+
+        $costs = $this->dateFilter(
+            Cost::when($search, fn($q) =>
+                $q->where('title','like',"%{$search}%")
+                  ->orWhere('description','like',"%{$search}%")
+            ),
+            $date_type, $from, $to
+        )->orderByDesc('id')->paginate(Helpers::pagination_limit());
+
+        return view('admin-views.accounting.get-costs-and-expenses',
+            compact('costs','date_type','from','to','search'));
     }
 
-    private function platformTxQuery(string $dateType, $from, $to)
+    public function store_costs(Request $request)
     {
-        $query = \Illuminate\Support\Facades\DB::table('admin_wallet_actions')
-            ->whereNotNull('gateway')
-            ->whereNotNull('transaction_id')
-            ->where('gross_amount', '>', 0);
-        return $query
-            ->when($dateType === 'this_year',  fn($q) => $q->whereYear('created_at', date('Y')))
-            ->when($dateType === 'this_month', fn($q) => $q->whereYear('created_at', date('Y'))->whereMonth('created_at', date('m')))
-            ->when($dateType === 'this_week',  fn($q) => $q->whereBetween('created_at', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]))
-            ->when($dateType === 'custom_date' && $from && $to, fn($q) => $q->whereDate('created_at','>=',$from)->whereDate('created_at','<=',$to));
+        $request->validate([
+            'title'       => 'required|string',
+            'description' => 'required|string',
+            'amount'      => 'required|numeric|min:0',
+        ]);
+
+        Cost::create([
+            'title'       => $request->title,
+            'description' => $request->description,
+            'amount'      => Convert::usd($request->amount),
+        ]);
+
+        Toastr::success(translate('cost_added_successfully'));
+        return back();
     }
 
-    private function companyInfoNew(): array
+    public function update_costs(Request $request)
+    {
+        $request->validate([
+            'title'       => 'required|string',
+            'description' => 'required|string',
+            'amount'      => 'required|numeric|min:0',
+        ]);
+
+        Cost::where('id', $request->id)->update([
+            'title'       => $request->title,
+            'description' => $request->description,
+            'amount'      => Convert::usd($request->amount),
+        ]);
+
+        Toastr::success(translate('cost_updated_successfully'));
+        return back();
+    }
+
+    public function delete_costs(Request $request)
+    {
+        Cost::where('id', $request->id)->delete();
+        Toastr::success(translate('cost_deleted_successfully'));
+        return back();
+    }
+
+    // ── PDF EXPORTS ────────────────────────────────
+
+    public function platform_finance_pdf(Request $request)
+    {
+        $date_type = $request->input('date_type', 'this_year');
+        $from      = $request->input('from');
+        $to        = $request->input('to');
+
+        $txAll = $this->txQuery($date_type, $from, $to)->get();
+
+        $data = [
+            'grossRevenue'     => $txAll->sum('gross_amount'),
+            'gatewayFees'      => $txAll->sum('gateway_fee'),
+            'vatCollected'     => $txAll->sum('vat_amount'),
+            'netRevenue'       => $txAll->sum('net_amount'),
+            'costsAndExpenses' => $this->costQuery($date_type,$from,$to)->sum('amount'),
+            'vatByCountry'     => $txAll->where('is_eu',1)->groupBy('user_country')
+                ->map(fn($g) => [
+                    'country'    => $g->first()->user_country,
+                    'vat_rate'   => $g->first()->vat_rate,
+                    'gross'      => $g->sum('gross_amount'),
+                    'vat_amount' => $g->sum('vat_amount'),
+                ])->values(),
+            'date_type' => $date_type, 'from' => $from, 'to' => $to,
+        ];
+        $data['netProfit'] = $data['netRevenue'] - $data['costsAndExpenses'];
+
+        $mpdf_view = View::make('admin-views.accounting.pdf.admin-earning-pdf',
+            $data + $this->companyInfo());
+
+        Helpers::gen_mpdf($mpdf_view, 'platform_finance_', rand(1000,9999).time());
+    }
+
+    public function tax_report_pdf(Request $request)
+    {
+        $date_type = $request->input('date_type', 'this_year');
+        $from      = $request->input('from');
+        $to        = $request->input('to');
+
+        $txAll         = $this->txQuery($date_type, $from, $to)->get();
+        $euTx          = $txAll->where('is_eu',1);
+
+        $vatByCountry  = $euTx->groupBy('user_country')
+            ->map(fn($g) => [
+                'country'    => $g->first()->user_country,
+                'vat_rate'   => $g->first()->vat_rate,
+                'gross'      => $g->sum('gross_amount'),
+                'vat_amount' => $g->sum('vat_amount'),
+                'count'      => $g->count(),
+            ])->values();
+
+        $data = [
+            'vatByCountry'  => $vatByCountry,
+            'totalEuGross'  => $euTx->sum('gross_amount'),
+            'totalVat'      => $euTx->sum('vat_amount'),
+            'nonEuRevenue'  => $txAll->where('is_eu',0)->sum('gross_amount'),
+            'date_type'     => $date_type, 'from' => $from, 'to' => $to,
+        ];
+
+        $mpdf_view = View::make('admin-views.accounting.pdf.admin-earning-pdf',
+            $data + $this->companyInfo());
+
+        Helpers::gen_mpdf($mpdf_view, 'vat_tax_report_', rand(1000,9999).time());
+    }
+
+    public function pdf_costs_and_expenses(Request $request)
+    {
+        $cost      = Cost::find($request->id);
+        $mpdf_view = View::make('admin-views.accounting.pdf.cost-wise-pdf',
+            compact('cost') + $this->companyInfo());
+        Helpers::gen_mpdf($mpdf_view, 'cost_', rand(1000,9999).time());
+    }
+
+    public function cost_summary_pdf(Request $request)
+    {
+        $date_type  = $request->input('date_type', 'this_year');
+        $from       = $request->input('from');
+        $to         = $request->input('to');
+        $search     = $request->input('search');
+
+        $costs = $this->dateFilter(
+            Cost::when($search, fn($q) =>
+                $q->where('title','like',"%{$search}%")
+                  ->orWhere('description','like',"%{$search}%")
+            ),
+            $date_type, $from, $to
+        )->orderByDesc('id')->get();
+
+        $amount_sum = $costs->sum('amount');
+        $mpdf_view  = View::make('admin-views.accounting.pdf.cost-summary',
+            compact('costs','amount_sum','date_type','from','to') + $this->companyInfo());
+
+        Helpers::gen_mpdf($mpdf_view, 'cost_summary_', rand(1000,9999).time());
+    }
+
+    // ── HELPERS ────────────────────────────────────
+
+    private function txQuery(string $dateType, $from, $to)
+    {
+        return $this->dateFilter(
+            DB::table('admin_wallet_actions')
+                ->whereNotNull('gateway')
+                ->whereNotNull('transaction_id')
+                ->where('gross_amount', '>', 0),
+            $dateType, $from, $to
+        );
+    }
+
+    private function costQuery(string $dateType, $from, $to)
+    {
+        return $this->dateFilter(Cost::query(), $dateType, $from, $to);
+    }
+
+    public function dateFilter($query, string $dateType, $from, $to)
+    {
+        return $query
+            ->when($dateType === 'this_year',
+                fn($q) => $q->whereYear('created_at', date('Y')))
+            ->when($dateType === 'this_month',
+                fn($q) => $q->whereYear('created_at', date('Y'))
+                             ->whereMonth('created_at', date('m')))
+            ->when($dateType === 'this_week',
+                fn($q) => $q->whereBetween('created_at',
+                    [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]))
+            ->when($dateType === 'custom_date' && $from && $to,
+                fn($q) => $q->whereDate('created_at', '>=', $from)
+                             ->whereDate('created_at', '<=', $to));
+    }
+
+    private function companyInfo(): array
     {
         return [
-            'company_name'     => \App\Model\BusinessSetting::where('type','company_name')->value('value')     ?? 'EuroBas',
-            'company_email'    => \App\Model\BusinessSetting::where('type','company_email')->value('value')    ?? '',
-            'company_phone'    => \App\Model\BusinessSetting::where('type','company_phone')->value('value')    ?? '',
-            'company_web_logo' => \App\Model\BusinessSetting::where('type','company_web_logo')->value('value') ?? '',
+            'company_name'     => BusinessSetting::where('type','company_name')->value('value')     ?? 'EuroBas',
+            'company_email'    => BusinessSetting::where('type','company_email')->value('value')    ?? '',
+            'company_phone'    => BusinessSetting::where('type','company_phone')->value('value')    ?? '',
+            'company_web_logo' => BusinessSetting::where('type','company_web_logo')->value('value') ?? '',
         ];
     }
-
 }
