@@ -1,336 +1,117 @@
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ 'Admin earning pdf - '.time() }}</title>
-    <meta http-equiv="Content-Type" content="text/html;"/>
     <meta charset="UTF-8">
-    <style media="all">
-        * {
-            margin: 0;
-            padding: 0;
-            line-height: 1.3;
-            color: #111118;
-        }
-
-        body {
-            font-size: .75rem;
-            display: flex;
-            flex-direction:column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 25px 15px;
-            text-align: left;
-            padding: 0 10px;
-            margin: 0;
-            font-weight: 500;
-            line-height: 133.9%;
-            font-family: 'Fira Mono', monospace;
-        }
-
-        img {
-            max-width: 100%;
-        }
-        table {
-            width: 100%;
-        }
-
-        table thead th {
-            padding: 8px;
-            font-size: 11px;
-            text-align: left;
-        }
-
-        table tbody th,
-        table tbody td {
-            padding: 8px;
-            font-size: 11px;
-        }
-
-        .py-30 {
-            padding-top: 30px;
-            padding-bottom: 30px;
-        }
-        .py-4 {
-            padding-top: 24px;
-            padding-bottom: 24px;
-        }
-        .d-flex {
-            display: flex;
-        }
-        .gap-2 {
-            gap: 8px;
-        }
-
-
-        .text-left {
-            text-align: left;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .content-position {
-            max-width: 595px;
-            padding: 25px 40px 0;
-            margin: 0 auto;
-            background: #fff;
-            /* box-shadow: 0 0 15px #11111110; */
-            /* border-radius: 10px 10px 0 0; */
-        }
-        .content-footer:first-child,
-        .content-position:first-child {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        .content-footer:last-child,
-        .content-position:last-child {
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        .text-white {
-            color: white !important;
-        }
-
-        .bs-0 {
-            border-spacing: 0;
-        }
-        .h2 {
-            font-size: 1.5em;
-            margin-block-start: 0.83em;
-            margin-block-end: 0.83em;
-            margin-inline-start: 0px;
-            margin-inline-end: 0px;
-            font-weight: bold;
-        }
-        .h3 {
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .h4 {
-            margin-block-start: 1.33em;
-            margin-block-end: 1.33em;
-            margin-inline-start: 0px;
-            margin-inline-end: 0px;
-            font-weight: bold;
-            font-family: 'Inter', sans-serif;
-        }
-        .inter {
-            font-family: 'Inter', sans-serif;
-        }
-        .bg-light {
-            background-color: #F7F7F7;
-        }
-        .footer{
-            position: fixed;
-            bottom: 0;
-            width: 27%;
-        }
-        .fira {
-            font-family: 'Fira Mono', monospace;
-        }
-        .logo{
-            max-width: 180px
-        }
-        .p-0 {
-            padding: 0;
-        }
-        .bold{
-            font-weight: 700;
-        }
-        .mb-10{
-            margin-bottom: 15px;
-        }
-        .block{
-            display: block;
-        }
-        .h-5 {
-            height: 5px;
-        }
-        .black {
-            color: #000000
-        }
-        .pt-0{
-            padding-top: 0;
-        }
-        .w-75px {
-            width: 75px;
-        }
-        table {
-            text-align: left;
-        }
-
-        .__product-table {
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-            color: #111118;
-            border-collapse: separate;
-            border-spacing: 1px;
-        }
-        .__product-table td {
-            background: #FAFAFA;
-        }
-        .__product-table thead th {
-            background: #0177CD;
-            color: #fff;
-            font-weight: 500;
-            font-size: 11px;
-            line-height: 13px;
-            padding-top: 7px;
-            padding-bottom: 7px;
-        }
-        .text-center{
-            text-align: center;
-        }
-        .pl-0 {
-            padding-left: 0 !important;
-        }
-        .pr-0 {
-            padding-right: 0 !important;
-        }
-        @media (max-width:460px) {
-            .content-position{
-                padding: 20px 0 0 !important
-            }
-        }
-        @media (max-width:400px) {
-            .h3 {
-                font-size: 14px;
-            }
-            .logo {
-                width: 100px;
-            }
-            th {
-                vertical-align:top;
-            }
-        }
-        .bg-section {
-            background: #FAFAFA;
-        }
-        .add-info-border-top-bottom tr:first-child td {
-            border-top: 1px solid #A3B9D2 !important;
-        }
-        .add-info-border-top-bottom tr:last-child td {
-            border-bottom: 1px solid #A3B9D2 !important;
-        }
-        .text-base {
-            color: #0177CD
-        }
-        .content-footer {
-            max-width: 595px;
-            margin: 0 auto;
-            /* border-radius: 0 0 10px 10px; */
-            /* box-shadow: 0 0 15px #11111110; */
-        }
-        .content-footer tr td {
-            background: #ECF0F2;
-            border-radius: 0 0 10px 10px;
-        }
-        a {
-            display: inline-block;
-            text-decoration: none;
-        }
+    <title>EuroBas — Platform Finance Report</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'DejaVu Sans', Arial, sans-serif; font-size:11px; color:#111; padding:20px; }
+        .header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #0f4c81; padding-bottom:12px; margin-bottom:16px; }
+        .logo-area h1 { font-size:20px; color:#0f4c81; font-weight:700; }
+        .logo-area p  { font-size:10px; color:#666; }
+        .report-info  { text-align:right; font-size:10px; color:#555; }
+        .section-title { font-size:12px; font-weight:700; color:#0f4c81; border-bottom:1px solid #cde; padding-bottom:4px; margin:16px 0 8px; text-transform:uppercase; letter-spacing:.04em; }
+        .stat-grid { display:table; width:100%; border-collapse:collapse; margin-bottom:4px; }
+        .stat-cell { display:table-cell; width:25%; border:1px solid #e0e4ea; padding:8px 10px; vertical-align:top; }
+        .stat-label { font-size:9px; color:#888; text-transform:uppercase; letter-spacing:.04em; }
+        .stat-value { font-size:15px; font-weight:700; margin-top:3px; }
+        .green { color:#1D9E75; }
+        .red   { color:#c53030; }
+        .blue  { color:#2b6cb0; }
+        table  { width:100%; border-collapse:collapse; font-size:10px; }
+        th { background:#f0f4f8; padding:6px 8px; text-align:left; font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:#555; border-bottom:1px solid #ddd; }
+        td { padding:6px 8px; border-bottom:1px solid #eee; }
+        tr:nth-child(even) td { background:#fafafa; }
+        .total-row td { font-weight:700; background:#f0f4f8 !important; border-top:1px solid #ccc; }
+        .footer { margin-top:24px; padding-top:10px; border-top:1px solid #ddd; font-size:9px; color:#aaa; text-align:center; }
+        .badge { display:inline-block; padding:1px 6px; border-radius:8px; font-size:9px; font-weight:600; }
+        .badge-eu  { background:#d1e7dd; color:#0a6640; }
+        .badge-row { background:#fff3cd; color:#856404; }
     </style>
-
-
 </head>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-    <table class="content-position">
-        <tr>
-            <td>
-                <table class="bs-0">
-                    <tr>
-                        <th class="h3 p-0 text-left">
-                            {{translate('admin_earning_pdf')}}
-                        </th>
-                        <th class="p-0 text-right">
-                            <img class="logo" src="{{cloudfront("company/dark-logo.png")}}" alt="">
-                        </th>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="pt-0">
-                <table class="bs-0">
-                    <tr>
-                        <td class="p-0 text-left">
-                            <b class="bold black">{{translate('date')}}</b> : {{ date('F d, Y') }} <span class="block h-5"></span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
 
-    <table class="table">
-      <thead class="thead-dark">
+{{-- Header --}}
+<div class="header">
+    <div class="logo-area">
+        <h1>EuroBas.com</h1>
+        <p>Europe's Premium Marketplace</p>
+        @if(!empty($company_email))<p>{{ $company_email }}</p>@endif
+    </div>
+    <div class="report-info">
+        <strong>Platform Finance Report</strong><br>
+        Generated: {{ now()->format('d M Y, H:i') }}<br>
+        Period: {{ ucwords(str_replace('_',' ', $date_type ?? 'this_year')) }}
+        @if(!empty($from) && !empty($to))
+            <br>{{ $from }} → {{ $to }}
+        @endif
+    </div>
+</div>
+
+{{-- Summary Stats --}}
+<div class="section-title">Financial Summary</div>
+<div class="stat-grid">
+    <div class="stat-cell">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value blue">€{{ number_format($grossRevenue ?? 0, 2) }}</div>
+    </div>
+    <div class="stat-cell">
+        <div class="stat-label">Gateway Fees</div>
+        <div class="stat-value red">−€{{ number_format($gatewayFees ?? 0, 2) }}</div>
+    </div>
+    <div class="stat-cell">
+        <div class="stat-label">Costs & Expenses</div>
+        <div class="stat-value red">−€{{ number_format($costsAndExpenses ?? 0, 2) }}</div>
+    </div>
+    <div class="stat-cell">
+        <div class="stat-label">Net Profit</div>
+        <div class="stat-value green">€{{ number_format($netProfit ?? 0, 2) }}</div>
+    </div>
+</div>
+
+{{-- VAT Section --}}
+@if(!empty($vatByCountry) && $vatByCountry->count() > 0)
+<div class="section-title">VAT Report — EU (OSS)</div>
+<table>
+    <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">{{ translate('duration') }}</th>
-          <th scope="col">{{ translate('commission_earning') }}</th>
-          <th scope="col">{{ translate('discount_given') }}</th>
-          <th scope="col">{{ translate('tax_collected') }}</th>
-          <th scope="col">{{ translate('costs_and_expenses') }}</th>
-          <th scope="col">{{ translate('total_earning') }}</th>
+            <th>Country</th>
+            <th>VAT Rate</th>
+            <th>Gross Revenue</th>
+            <th>VAT to Pay</th>
+            <th>Transactions</th>
         </tr>
-      </thead>
-      <tbody>
-        @foreach($data as $item)
-            <tr>
-              <th scope="row">1</th>
-              <td>{{ $item['duration'] }}</td>
-              <td>{{ $item['commission_earning'] }}</td>
-              <td>{{ $item['discount_given'] }}</td>
-              <td>{{ $item['tax_collected'] }}</td>
-              <td>{{ $item['costs_and_expenses'] }}</td>
-              <td>{{ $item['total_earning'] }}</td>
-            </tr>
+    </thead>
+    <tbody>
+        @foreach($vatByCountry as $row)
+        <tr>
+            <td><strong>{{ $row['country'] }}</strong></td>
+            <td>{{ $row['vat_rate'] }}%</td>
+            <td>€{{ number_format($row['gross'], 2) }}</td>
+            <td style="color:#c53030;font-weight:600;">€{{ number_format($row['vat_amount'], 2) }}</td>
+            <td>{{ $row['count'] }}</td>
+        </tr>
         @endforeach
-      </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
-
-
-
-    <br><br><br><br><br><br><br><br>
-    <table class="">
-        <tr>
-            <th class="content-position-y bg-light py-4 footer">
-                <div class="d-flex justify-content-center gap-2">
-                    <div class="mb-2">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                        {{translate('email')}}
-                        : {{ $company_email }}
-                    </div>
-                </div>
-                <div class="mb-2">
-                    {{url('/')}}
-                </div>
-                <div>
-                    {{translate('all_copy_right_reserved_©_'.date('Y').'_').$company_name}}
-                </div>
-            </th>
+        <tr class="total-row">
+            <td colspan="2">TOTAL EU VAT</td>
+            <td>€{{ number_format($vatByCountry->sum('gross'), 2) }}</td>
+            <td style="color:#c53030;">€{{ number_format($vatByCountry->sum('vat_amount'), 2) }}</td>
+            <td>{{ $vatByCountry->sum('count') }}</td>
         </tr>
-    </table>
+        @if(!empty($nonEuRevenue))
+        <tr>
+            <td colspan="2">Outside EU (0%)</td>
+            <td>€{{ number_format($nonEuRevenue, 2) }}</td>
+            <td>€0.00</td>
+            <td>—</td>
+        </tr>
+        @endif
+    </tbody>
+</table>
+@endif
+
+<div class="footer">
+    EuroBas.com · This report is generated automatically · {{ now()->format('Y') }}
+</div>
+
 </body>
 </html>
