@@ -12,8 +12,9 @@ use App\Model\BusinessSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Brian2694\Toastr\Facades\Toastr;
+use Brian2694\Toastr\Toastr; // تم ضبطها لتتوافق مع نظامك الحالي
 use App\Http\Controllers\Controller;
+use Carbon\CarbonPeriod;
 
 class AccountingController extends Controller
 {
@@ -33,6 +34,13 @@ class AccountingController extends Controller
         $date_type = $request->input('date_type', 'this_year');
         $from      = $request->input('from');
         $to        = $request->input('to');
+
+        // جلب فلتر التاريخ الأساسي لتوافق ملف الـ Blade والمخططات
+        $filter_data = $this->earning_common_filter($request);
+
+        if($date_type == 'this_year' || $date_type == 'custom_date' && (Carbon::parse($from)->diffInDays(Carbon::parse($to)) > 365) || $date_type == 'different_year') {
+            return $this->earning_different_year($request, $filter_data);
+        }
 
         $txAll = $this->txQuery($date_type, $from, $to)->get();
 
@@ -85,12 +93,35 @@ class AccountingController extends Controller
             ->limit(10)
             ->get();
 
+        // تجهيز المخطط البياني (Chart) بناءً على المعاملات الجديدة المفلترة
+        $chart_data = [];
+        $period = CarbonPeriod::create($filter_data['start_date'], $filter_data['end_date']);
+        foreach ($period as $date) {
+            $day = $date->format('d');
+            $month = $date->format('m');
+            $year = $date->format('Y');
+
+            $day_gross = $txAll->filter(function($tx) use ($day, $month, $year) {
+                $txDate = Carbon::parse($tx->created_at);
+                return $txDate->format('d') == $day && $txDate->format('m') == $month && $txDate->format('Y') == $year;
+            })->sum('gross_amount');
+
+            if($date_type == 'this_month' || $date_type == 'custom_date' && (Carbon::parse($from)->diffInDays(Carbon::parse($to)) <= 365)) {
+                $chart_data['earnings'][$date->format('d-M')] = $day_gross;
+            } else if($date_type == 'this_week') {
+                $chart_data['earnings'][$date->format('D')] = $day_gross;
+            } else {
+                $chart_data['earnings'][$date->format('d-M')] = $day_gross;
+            }
+        }
+
+        // إرسال البيانات المحدثة إلى القالب الجديد index.blade.php
         return view('admin-views.accounting.index', compact(
             'grossRevenue','gatewayFees','vatCollected','netRevenue',
             'stripeTotal','paypalTotal','stripeFees','paypalFees',
             'packageBreakdown','euRevenue','nonEuRevenue',
             'vatByCountry','costsAndExpenses','netProfit',
-            'txCount','recentTx','date_type','from','to'
+            'txCount','recentTx','date_type','from','to', 'chart_data'
         ));
     }
 
@@ -128,7 +159,7 @@ class AccountingController extends Controller
             'amount'      => Convert::usd($request->amount),
         ]);
 
-        Toastr::success(translate('cost_added_successfully'));
+        Toastr::success(Helpers::translate('cost_added_successfully'));
         return back();
     }
 
@@ -146,14 +177,14 @@ class AccountingController extends Controller
             'amount'      => Convert::usd($request->amount),
         ]);
 
-        Toastr::success(translate('cost_updated_successfully'));
+        Toastr::success(Helpers::translate('cost_updated_successfully'));
         return back();
     }
 
     public function delete_costs(Request $request)
     {
         Cost::where('id', $request->id)->delete();
-        Toastr::success(translate('cost_deleted_successfully'));
+        Toastr::success(Helpers::translate('cost_deleted_successfully'));
         return back();
     }
 
@@ -252,7 +283,7 @@ class AccountingController extends Controller
         Helpers::gen_mpdf($mpdf_view, 'cost_summary_', rand(1000,9999).time());
     }
 
-    // ── HELPERS ────────────────────────────────────
+    // ── HELPERS & FILTERS REQUIRED BY SYSTEM ────────────────────────────────────
 
     private function txQuery(string $dateType, $from, $to)
     {
@@ -284,6 +315,81 @@ class AccountingController extends Controller
             ->when($dateType === 'custom_date' && $from && $to,
                 fn($q) => $q->whereDate('created_at', '>=', $from)
                              ->whereDate('created_at', '<=', $to));
+    }
+
+    // دالة الفلترة المضافة لضمان عمل القوالب الجديدة والتقويم الزمني بدون انهيار
+    public function earning_common_filter($request){
+        $from = $request['from'];
+        $to = $request['to'];
+        $date_type = $request['date_type'] ?? 'this_year';
+
+        if ($date_type == 'this_year') {
+            $start_date = date('Y-01-01');
+            $end_date = date('Y-12-31');
+        } else if ($date_type == 'this_month') {
+            $start_date = date('Y-m-01');
+            $end_date = date('Y-m-t');
+        } else if ($date_type == 'this_week') {
+            $start_date = Carbon::now()->startOfWeek()->format('Y-m-d');
+            $end_date = Carbon::now()->endOfWeek()->format('Y-m-d');
+        } else if ($date_type == 'custom_date') {
+            $start_date = $from;
+            $end_date = $to;
+        }
+
+        return [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ];
+    }
+
+    // دالة الفلترة السنوية للمخططات البيانية مضافة ليتوافق نظام العرض الجديد والقديم
+    public function earning_different_year($request, $data){
+        $from = $request['from'];
+        $to = $request['to'];
+        $date_type = $request['date_type'] ?? 'this_year';
+
+        if ($date_type == 'this_year') {
+            $start_date = date('Y-01-01');
+            $end_date = date('Y-12-31');
+        } else if ($date_type == 'custom_date') {
+            $start_date = $from;
+            $end_date = $to;
+        }
+
+        $from_year = date('Y', strtotime($start_date));
+        $to_year = date('Y', strtotime($end_date));
+
+        $txAll = $this->txQuery($date_type, $from, $to)->get();
+        $gross_revenue_array = [];
+
+        for ($inc = $from_year; $inc <= $to_year; $inc++) {
+            $gross_revenue_array[$inc] = $txAll->filter(function($tx) use ($inc) {
+                return Carbon::parse($tx->created_at)->format('Y') == $inc;
+            })->sum('gross_amount');
+        }
+
+        // إرسال المصفوفة المتوافقة مع المخطط السنوي للـ View
+        return view('admin-views.accounting.index', [
+            'grossRevenue' => $txAll->sum('gross_amount'),
+            'gatewayFees'  => $txAll->sum('gateway_fee'),
+            'vatCollected' => $txAll->sum('vat_amount'),
+            'netRevenue'   => $txAll->sum('net_amount'),
+            'costsAndExpenses' => $this->costQuery($date_type,$from,$to)->sum('amount'),
+            'stripeTotal'  => $txAll->where('gateway','stripe')->sum('gross_amount'),
+            'paypalTotal'  => $txAll->where('gateway','paypal')->sum('gross_amount'),
+            'stripeFees'   => $txAll->where('gateway','stripe')->sum('gateway_fee'),
+            'paypalFees'   => $txAll->where('gateway','paypal')->sum('gateway_fee'),
+            'packageBreakdown' => collect([]),
+            'euRevenue'    => $txAll->where('is_eu',1)->sum('gross_amount'),
+            'nonEuRevenue' => $txAll->where('is_eu',0)->sum('gross_amount'),
+            'vatByCountry' => collect([]),
+            'netProfit'    => $txAll->sum('net_amount') - $this->costQuery($date_type,$from,$to)->sum('amount'),
+            'txCount'      => $txAll->count(),
+            'recentTx'     => $txAll->take(10),
+            'date_type'    => $date_type, 'from' => $from, 'to' => $to,
+            'chart_data'   => ['earnings' => $gross_revenue_array]
+        ]);
     }
 
     private function companyInfo(): array
