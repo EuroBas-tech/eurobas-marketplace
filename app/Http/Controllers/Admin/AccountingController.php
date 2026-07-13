@@ -1481,6 +1481,25 @@ class AccountingController extends Controller
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ══════════════════════════════════════════════════════
+    // NEW — Platform Finance (Sponsored Ads / Paid Banners)
+    // Added for EuroBas marketplace accounting
+    // Does NOT touch any existing functions above
+    // ══════════════════════════════════════════════════════
+
     const EU_VAT_RATES = [
         'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
         'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
