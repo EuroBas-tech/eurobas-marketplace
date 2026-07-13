@@ -12,13 +12,13 @@ use App\Model\BusinessSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Brian2694\Toastr\Toastr;
+use Toastr; 
 use App\Http\Controllers\Controller;
 use Carbon\CarbonPeriod;
 
 class AccountingController extends Controller
 {
-    
+     
     const EU_VAT_RATES = [
         'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
         'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
@@ -28,29 +28,32 @@ class AccountingController extends Controller
         'SI'=>22,'SK'=>20,
     ];
 
-     
+    
     public function index(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
         $from      = $request->input('from');
         $to        = $request->input('to');
 
-     
-        $txAll = $this->txQuery($date_type, $from, $to)->get();
+        
+        $txAll = collect([]);
+        if (DB::getSchemaBuilder()->hasTable('admin_wallet_actions')) {
+            $txAll = $this->txQuery($date_type, $from, $to)->get();
+        }
 
-    
+         
         $grossRevenue  = $txAll->sum('gross_amount');
         $gatewayFees   = $txAll->sum('gateway_fee');
         $vatCollected  = $txAll->sum('vat_amount');
         $netRevenue    = $txAll->sum('net_amount');
 
-        // تفصيل الأرباح والرسوم حسب بوابات الدفع المستخدمة (Stripe & PayPal)
+        
         $stripeTotal = $txAll->where('gateway','stripe')->sum('gross_amount');
         $paypalTotal = $txAll->where('gateway','paypal')->sum('gross_amount');
         $stripeFees  = $txAll->where('gateway','stripe')->sum('gateway_fee');
         $paypalFees  = $txAll->where('gateway','paypal')->sum('gateway_fee');
 
-        // حساب مبيعات الحزم والاشتراكات وتقسيماتها المطلوبة في الـ Blade
+        
         $packageBreakdown = $txAll->groupBy('package_type')
             ->map(fn($g) => [
                 'type'  => $g->first()->package_type ?? 'Unknown',
@@ -59,11 +62,11 @@ class AccountingController extends Controller
                 'net'   => $g->sum('net_amount'),
             ])->values();
 
-        // توزيع الأرباح جغرافياً (داخل الاتحاد الأوروبي وخارجه)
+         
         $euRevenue    = $txAll->where('is_eu', 1)->sum('gross_amount');
         $nonEuRevenue = $txAll->where('is_eu', 0)->sum('gross_amount');
 
-        // تقرير نظام نافذة OSS الضريبية للدول الأوروبية (تم تعديلها لتظل كمجموعة Collection من أجل دالة count)
+        
         $vatByCountry = $txAll->where('is_eu', 1)
             ->groupBy('user_country')
             ->map(fn($g) => [
@@ -74,13 +77,16 @@ class AccountingController extends Controller
                 'count'      => $g->count(),
             ]);
 
-        // جلب إجمالي المصاريف الإدارية المضافة
-        $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
+        
+        $costsAndExpenses = 0;
+        if (DB::getSchemaBuilder()->hasTable('costs')) {
+            $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
+        }
 
-        // صافي الأرباح النهائي والمستهدف
+        
         $netProfit = $netRevenue - $costsAndExpenses;
         
-        // إجمالي الحركات وأحدث 10 حركات لعرضها في الجدول
+        
         $txCount  = $txAll->count();
         $recentTx = $txAll->take(10);
 
@@ -93,7 +99,7 @@ class AccountingController extends Controller
         ));
     }
 
-    // ── قسم إدارة المصاريف والتكاليف ──
+    
     public function get_costs(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
@@ -101,19 +107,26 @@ class AccountingController extends Controller
         $to        = $request->input('to');
         $search    = $request->input('search');
 
-        $costs = $this->dateFilter(
-            Cost::when($search, fn($q) =>
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-            ),
-            $date_type, $from, $to
-        )->orderByDesc('id')->paginate(Helpers::pagination_limit());
+        $costs = collect([]);
+        if (DB::getSchemaBuilder()->hasTable('costs')) {
+            $costs = $this->dateFilter(
+                Cost::when($search, fn($q) =>
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%")
+                ),
+                $date_type, $from, $to
+            )->orderByDesc('id')->paginate(Helpers::pagination_limit());
+        }
 
         return view('admin-views.accounting.get-costs-and-expenses', compact('costs', 'date_type', 'from', 'to', 'search'));
     }
 
-    // لتفادي أي خطأ في ملفات الراوت (admin.php) التي تستدعي الاسم القصير
+    // ربط مسميات الـ Routes المختلفة لضمان عدم انهيار الـ Blade أو القائمة الجانبية
     public function costs(Request $request) {
+        return $this->get_costs($request);
+    }
+
+    public function costs_and_expenses(Request $request) {
         return $this->get_costs($request);
     }
 
@@ -125,13 +138,14 @@ class AccountingController extends Controller
             'amount'      => 'required|numeric|min:0',
         ]);
 
-        Cost::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'amount'      => Convert::usd($request->amount),
-        ]);
-
-        Toastr::success(Helpers::translate('cost_added_successfully'));
+        if (DB::getSchemaBuilder()->hasTable('costs')) {
+            Cost::create([
+                'title'       => $request->title,
+                'description' => $request->description,
+                'amount'      => Convert::usd($request->amount),
+            ]);
+            Toastr::success(Helpers::translate('cost_added_successfully'));
+        }
         return back();
     }
 
@@ -143,20 +157,23 @@ class AccountingController extends Controller
             'amount'      => 'required|numeric|min:0',
         ]);
 
-        Cost::where('id', $request->id)->update([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'amount'      => Convert::usd($request->amount),
-        ]);
-
-        Toastr::success(Helpers::translate('cost_updated_successfully'));
+        if (DB::getSchemaBuilder()->hasTable('costs')) {
+            Cost::where('id', $request->id)->update([
+                'title'       => $request->title,
+                'description' => $request->description,
+                'amount'      => Convert::usd($request->amount),
+            ]);
+            Toastr::success(Helpers::translate('cost_updated_successfully'));
+        }
         return back();
     }
 
     public function delete_costs(Request $request)
     {
-        Cost::where('id', $request->id)->delete();
-        Toastr::success(Helpers::translate('cost_deleted_successfully'));
+        if (DB::getSchemaBuilder()->hasTable('costs')) {
+            Cost::where('id', $request->id)->delete();
+            Toastr::success(Helpers::translate('cost_deleted_successfully'));
+        }
         return back();
     }
 
@@ -167,8 +184,11 @@ class AccountingController extends Controller
         $from      = $request->input('from');
         $to        = $request->input('to');
 
-        $txAll = $this->txQuery($date_type, $from, $to)->get();
-        $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
+        $txAll = collect([]);
+        if (DB::getSchemaBuilder()->hasTable('admin_wallet_actions')) {
+            $txAll = $this->txQuery($date_type, $from, $to)->get();
+        }
+        $costsAndExpenses = DB::getSchemaBuilder()->hasTable('costs') ? $this->costQuery($date_type, $from, $to)->sum('amount') : 0;
         $netRevenue = $txAll->sum('net_amount');
 
         $data = [
@@ -198,7 +218,10 @@ class AccountingController extends Controller
         $from      = $request->input('from');
         $to        = $request->input('to');
 
-        $txAll = $this->txQuery($date_type, $from, $to)->get();
+        $txAll = collect([]);
+        if (DB::getSchemaBuilder()->hasTable('admin_wallet_actions')) {
+            $txAll = $this->txQuery($date_type, $from, $to)->get();
+        }
         $euTx  = $txAll->where('is_eu', 1);
 
         $vatByCountry = $euTx->groupBy('user_country')
