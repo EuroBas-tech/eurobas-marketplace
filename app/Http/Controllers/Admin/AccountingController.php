@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Brian2694\Toastr\Toastr;  
 use App\Http\Controllers\Controller;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class AccountingController extends Controller
 {
-      
+
     const EU_VAT_RATES = [
         'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
         'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
@@ -26,7 +27,7 @@ class AccountingController extends Controller
         'SI'=>22,'SK'=>20,
     ];
 
- 
+    
     public function index(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
@@ -48,7 +49,7 @@ class AccountingController extends Controller
         $stripeFees  = $txAll->where('gateway','stripe')->sum('gateway_fee');
         $paypalFees  = $txAll->where('gateway','paypal')->sum('gateway_fee');
 
-
+    
         $packageBreakdown = $txAll->groupBy('package_type')
             ->map(fn($g) => [
                 'type'  => $g->first()->package_type ?? 'Premium Ad',
@@ -57,10 +58,12 @@ class AccountingController extends Controller
                 'net'   => $g->sum('net_amount'),
             ])->values();
 
-        $euRevenue    = $txAll->where('is_eu',1)->sum('gross_amount');
-        $nonEuRevenue = $txAll->where('is_eu',0)->sum('gross_amount');
+        
+        $euRevenue    = $txAll->where('is_eu', 1)->sum('gross_amount');
+        $nonEuRevenue = $txAll->where('is_eu', 0)->sum('gross_amount');
 
-        $vatByCountry = $txAll->where('is_eu',1)
+    
+        $vatByCountry = $txAll->where('is_eu', 1)
             ->groupBy('user_country')
             ->map(fn($g) => [
                 'country'    => $g->first()->user_country,
@@ -70,14 +73,14 @@ class AccountingController extends Controller
                 'count'      => $g->count(),
             ])->values();
 
-    
+        
         $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
 
     
         $netProfit = $netRevenue - $costsAndExpenses;
         $txCount   = $txAll->count();
 
-    
+        
         $recentTx = $this->txQuery($date_type, $from, $to)
             ->orderByDesc('created_at')
             ->limit(10)
@@ -92,8 +95,8 @@ class AccountingController extends Controller
         ));
     }
 
-     
-      
+    
+    
     public function get_costs(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
@@ -113,48 +116,52 @@ class AccountingController extends Controller
             compact('costs','date_type','from','to','search'));
     }
 
-     
-    
+      
+      
     public function store_costs(Request $request)
     {
+        
+        $amount_value = $request->input('amount') ?? $request->input('cost');
+        $request->merge(['amount' => $amount_value]);
+
         $request->validate([
             'title'       => 'required|string',
             'description' => 'required|string',
             'amount'      => 'required|numeric|min:0',
         ]);
 
-    
         $cost = new Cost();
         $cost->title       = $request->title;
         $cost->description = $request->description;
-        $cost->amount      = $request->amount; 
+        $cost->amount      = $amount_value; 
         $cost->save();
 
-         
+    
         try {
             Toastr::success(translate('cost_added_successfully'));
-        } catch (\Exception $e) {
-             
-        }
+        } catch (\Exception $e) {}
 
         return back();
     }
-   
+
+    
       
     public function update_costs(Request $request)
     {
+        $amount_value = $request->input('amount') ?? $request->input('cost');
+        $request->merge(['amount' => $amount_value]);
+
         $request->validate([
             'title'       => 'required|string',
             'description' => 'required|string',
             'amount'      => 'required|numeric|min:0',
         ]);
 
-        
         $cost = Cost::find($request->id);
         if ($cost) {
             $cost->title       = $request->title;
             $cost->description = $request->description;
-            $cost->amount      = $request->amount;  
+            $cost->amount      = $amount_value;  
             $cost->save();
         }
 
@@ -165,7 +172,7 @@ class AccountingController extends Controller
         return back();
     }
 
-     
+      
     public function delete_costs(Request $request)
     {
         $cost = Cost::find($request->id);
@@ -180,7 +187,7 @@ class AccountingController extends Controller
         return back();
     }
 
-    
+
 
     public function platform_finance_pdf(Request $request)
     {
@@ -274,6 +281,7 @@ class AccountingController extends Controller
 
         Helpers::gen_mpdf($mpdf_view, 'cost_summary_', rand(1000,9999).time());
     }
+
 
 
     private function txQuery(string $dateType, $from, $to)
