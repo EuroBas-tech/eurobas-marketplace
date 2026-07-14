@@ -27,14 +27,14 @@
         font-weight: 800;
     }
     .stat-value {
-        font-size: 26px;
+        font-size: 18px; 
         font-weight: 800;
         letter-spacing: -0.02em;
         margin-top: 8px;
-        color: #0f172a !important; /* أسود داكن جداً للوضوح */
+        color: #0f172a !important;  
     }
     
-    /* نصوص سوداء وواضحة جداً بدلاً من الرمادي */
+    
     .text-black-bold {
         color: #0f172a !important;
         font-weight: 700 !important;
