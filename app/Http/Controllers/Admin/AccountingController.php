@@ -11,12 +11,12 @@ use App\Model\BusinessSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Brian2694\Toastr\Facades\Toastr;
+use Brian2694\Toastr\Toastr;  
 use App\Http\Controllers\Controller;
 
 class AccountingController extends Controller
 {
-    // EU VAT rates
+      
     const EU_VAT_RATES = [
         'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
         'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
@@ -26,28 +26,29 @@ class AccountingController extends Controller
         'SI'=>22,'SK'=>20,
     ];
 
-    // ── MAIN DASHBOARD   
+ 
     public function index(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
         $from      = $request->input('from');
         $to        = $request->input('to');
 
+    
         $txAll = $this->txQuery($date_type, $from, $to)->get();
 
-        // Revenue  
+        
         $grossRevenue  = $txAll->sum('gross_amount');
         $gatewayFees   = $txAll->sum('gateway_fee');
         $vatCollected  = $txAll->sum('vat_amount');
         $netRevenue    = $txAll->sum('net_amount');
 
-        // Gateway breakdown
+    
         $stripeTotal = $txAll->where('gateway','stripe')->sum('gross_amount');
         $paypalTotal = $txAll->where('gateway','paypal')->sum('gross_amount');
         $stripeFees  = $txAll->where('gateway','stripe')->sum('gateway_fee');
         $paypalFees  = $txAll->where('gateway','paypal')->sum('gateway_fee');
 
-        // Package breakdown
+
         $packageBreakdown = $txAll->groupBy('package_type')
             ->map(fn($g) => [
                 'type'  => $g->first()->package_type ?? 'Premium Ad',
@@ -56,11 +57,9 @@ class AccountingController extends Controller
                 'net'   => $g->sum('net_amount'),
             ])->values();
 
-        // EU vs Non-EU
         $euRevenue    = $txAll->where('is_eu',1)->sum('gross_amount');
         $nonEuRevenue = $txAll->where('is_eu',0)->sum('gross_amount');
 
-        // VAT per EU country (for OSS)
         $vatByCountry = $txAll->where('is_eu',1)
             ->groupBy('user_country')
             ->map(fn($g) => [
@@ -71,14 +70,14 @@ class AccountingController extends Controller
                 'count'      => $g->count(),
             ])->values();
 
-        // Costs & Expenses (المصاريف باليورو)
+    
         $costsAndExpenses = $this->costQuery($date_type, $from, $to)->sum('amount');
 
-        // Net Profit
+    
         $netProfit = $netRevenue - $costsAndExpenses;
         $txCount   = $txAll->count();
 
-        // Recent 10 transactions
+    
         $recentTx = $this->txQuery($date_type, $from, $to)
             ->orderByDesc('created_at')
             ->limit(10)
@@ -93,7 +92,8 @@ class AccountingController extends Controller
         ));
     }
 
-    // ── COSTS & EXPENSES (المصاريف والمدفوعات - الصادر يدوياً) ───────────────────────────
+     
+      
     public function get_costs(Request $request)
     {
         $date_type = $request->input('date_type', 'this_year');
@@ -113,6 +113,8 @@ class AccountingController extends Controller
             compact('costs','date_type','from','to','search'));
     }
 
+     
+    
     public function store_costs(Request $request)
     {
         $request->validate([
@@ -121,17 +123,24 @@ class AccountingController extends Controller
             'amount'      => 'required|numeric|min:0',
         ]);
 
-        // يتم الحفظ مباشرة باليورو دون أي تحويل عملات لضمان تسجيل سليم
-        Cost::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'amount'      => $request->amount,
-        ]);
+    
+        $cost = new Cost();
+        $cost->title       = $request->title;
+        $cost->description = $request->description;
+        $cost->amount      = $request->amount; 
+        $cost->save();
 
-        Toastr::success(translate('cost_added_successfully'));
+         
+        try {
+            Toastr::success(translate('cost_added_successfully'));
+        } catch (\Exception $e) {
+             
+        }
+
         return back();
     }
-
+   
+      
     public function update_costs(Request $request)
     {
         $request->validate([
@@ -140,25 +149,38 @@ class AccountingController extends Controller
             'amount'      => 'required|numeric|min:0',
         ]);
 
-        // التحديث مباشرة باليورو
-        Cost::where('id', $request->id)->update([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'amount'      => $request->amount,
-        ]);
+        
+        $cost = Cost::find($request->id);
+        if ($cost) {
+            $cost->title       = $request->title;
+            $cost->description = $request->description;
+            $cost->amount      = $request->amount;  
+            $cost->save();
+        }
 
-        Toastr::success(translate('cost_updated_successfully'));
+        try {
+            Toastr::success(translate('cost_updated_successfully'));
+        } catch (\Exception $e) {}
+
         return back();
     }
 
+     
     public function delete_costs(Request $request)
     {
-        Cost::where('id', $request->id)->delete();
-        Toastr::success(translate('cost_deleted_successfully'));
+        $cost = Cost::find($request->id);
+        if ($cost) {
+            $cost->delete();
+        }
+
+        try {
+            Toastr::success(translate('cost_deleted_successfully'));
+        } catch (\Exception $e) {}
+
         return back();
     }
 
-    // ── PDF EXPORTS ────────────────────────────────
+    
 
     public function platform_finance_pdf(Request $request)
     {
@@ -253,7 +275,6 @@ class AccountingController extends Controller
         Helpers::gen_mpdf($mpdf_view, 'cost_summary_', rand(1000,9999).time());
     }
 
-    // ── HELPERS ────────────────────────────────────
 
     private function txQuery(string $dateType, $from, $to)
     {
