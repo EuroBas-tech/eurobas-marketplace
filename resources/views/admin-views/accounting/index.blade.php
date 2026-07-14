@@ -27,7 +27,7 @@
         font-weight: 800;
     }
     .stat-value {
-        font-size: 18px; 
+        font-size: 16px; 
         font-weight: 800;
         letter-spacing: -0.02em;
         margin-top: 8px;
