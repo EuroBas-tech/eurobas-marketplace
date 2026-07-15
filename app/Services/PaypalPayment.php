@@ -171,6 +171,9 @@ class PaypalPayment
                     'payment_transaction_id' => $sale->getId(),
                 ]);
 
+                // Record in accounting after confirmed approved
+                $this->recordToAccounting($model, $sale->getId(), 'paypal');
+
                 Log::info('Payment completed successfully', [
                     'sponsor_id' => $model->id,
                     'transaction_id' => $sale->getId(),
@@ -202,4 +205,87 @@ class PaypalPayment
             return false;
         }
     }
+
+    protected function recordToAccounting($model, $transactionId, $gateway)
+    {
+        try {
+            $grossAmount = (float) $model->price;
+            if ($grossAmount <= 0) return;
+
+            // PayPal fee: 3.49% + €0.49
+            $gatewayFee = round(($grossAmount * 0.0349) + 0.49, 2);
+            $netAmount  = round($grossAmount - $gatewayFee, 2);
+
+            $euVatRates = [
+                'AT'=>20,'BE'=>21,'BG'=>20,'CY'=>19,'CZ'=>21,
+                'DE'=>19,'DK'=>25,'EE'=>22,'ES'=>21,'FI'=>24,
+                'FR'=>20,'GR'=>24,'HR'=>25,'HU'=>27,'IE'=>23,
+                'IT'=>22,'LT'=>21,'LU'=>17,'LV'=>21,'MT'=>18,
+                'NL'=>21,'PL'=>23,'PT'=>23,'RO'=>19,'SE'=>25,
+                'SI'=>22,'SK'=>20,
+            ];
+
+            $userCountry = '';
+            if (isset($model->ad) && $model->ad && isset($model->ad->user) && $model->ad->user) {
+                $userCountry = strtoupper($model->ad->user->country ?? '');
+            }
+
+            $isEu      = array_key_exists($userCountry, $euVatRates);
+            $vatRate   = $isEu ? $euVatRates[$userCountry] : 0;
+            $vatAmount = $isEu ? round($grossAmount * ($vatRate / 100), 2) : 0;
+            $packageType = $model->type ?? class_basename($model);
+
+            $adminWallet = \App\Model\AdminWallet::where('admin_id', 1)->first();
+            if (!$adminWallet) {
+                $walletId = \Illuminate\Support\Facades\DB::table('admin_wallets')->insertGetId([
+                    'admin_id'=>1,'withdrawn'=>0,'commission_earned'=>0,
+                    'delivery_charge_earned'=>0,'pending_amount'=>0,
+                    'total_earning'=>0,'collected_cash'=>0,
+                    'total_tax_collected'=>0,
+                    'created_at'=>now(),'updated_at'=>now(),
+                ]);
+            } else {
+                $walletId = $adminWallet->id;
+            }
+
+            \Illuminate\Support\Facades\DB::table('admin_wallets')->where('admin_id',1)->update([
+                'commission_earned'   => \Illuminate\Support\Facades\DB::raw("commission_earned + {$netAmount}"),
+                'collected_cash'      => \Illuminate\Support\Facades\DB::raw("collected_cash + {$grossAmount}"),
+                'total_tax_collected' => \Illuminate\Support\Facades\DB::raw("total_tax_collected + {$vatAmount}"),
+                'updated_at'          => now(),
+            ]);
+
+            \Illuminate\Support\Facades\DB::table('admin_wallet_actions')->insert([
+                'admin_wallet_id'     => $walletId,
+                'order_id'            => $model->id,
+                'gateway'             => $gateway,
+                'transaction_id'      => $transactionId,
+                'package_type'        => $packageType,
+                'gross_amount'        => $grossAmount,
+                'gateway_fee'         => $gatewayFee,
+                'vat_amount'          => $vatAmount,
+                'net_amount'          => $netAmount,
+                'user_country'        => $userCountry,
+                'is_eu'               => $isEu ? 1 : 0,
+                'vat_rate'            => $vatRate,
+                'commission_earned'   => $netAmount,
+                'collected_cash'      => $grossAmount,
+                'total_tax_collected' => $vatAmount,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ]);
+
+            \Illuminate\Support\Facades\Log::info('Accounting recorded ('.$gateway.')', [
+                'sponsor_id'=>$model->id,'gross'=>$grossAmount,
+                'fee'=>$gatewayFee,'vat'=>$vatAmount,'net'=>$netAmount,
+                'country'=>$userCountry,'is_eu'=>$isEu,
+            ]);
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Accounting record failed ('.$gateway.')', [
+                'sponsor_id'=>$model->id,'error'=>$e->getMessage(),
+            ]);
+        }
+    }
+
 }
