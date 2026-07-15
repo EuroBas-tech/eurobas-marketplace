@@ -257,7 +257,7 @@ class PaypalPayment
 
             \Illuminate\Support\Facades\DB::table('admin_wallet_actions')->insert([
                 'admin_wallet_id'     => $walletId,
-                'order_id'            => $model->id,
+                'order_id'            => null,
                 'gateway'             => $gateway,
                 'transaction_id'      => $transactionId,
                 'package_type'        => $packageType,
