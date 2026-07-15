@@ -225,10 +225,68 @@ class PaypalPayment
                 'SI'=>22,'SK'=>20,
             ];
 
+             
             $userCountry = '';
-            if (isset($model->ad) && $model->ad && isset($model->ad->user) && $model->ad->user) {
-                $userCountry = strtoupper($model->ad->user->country ?? '');
+            $user = null;
+
+            
+            if (isset($model->user) && $model->user) {
+                $user = $model->user;
+            } 
+            
+            elseif (isset($model->ad) && $model->ad && isset($model->ad->user) && $model->ad->user) {
+                $user = $model->ad->user;
             }
+
+            if ($user) {
+                
+                $rawCountry = strtoupper(trim($user->country ?? ''));
+
+                
+                $countryMap = [
+                    'NETHERLANDS'    => 'NL',
+                    'GERMANY'        => 'DE',
+                    'BELGIUM'        => 'BE',
+                    'FRANCE'         => 'FR',
+                    'SPAIN'          => 'ES',
+                    'ITALY'          => 'IT',
+                    'GREECE'         => 'GR',
+                    'PORTUGAL'       => 'PT',
+                    'DENMARK'        => 'DK',
+                    'FINLAND'        => 'FI',
+                    'AUSTRIA'        => 'AT',
+                    'BULGARIA'       => 'BG',
+                    'CYPRUS'         => 'CY',
+                    'CZECH REPUBLIC' => 'CZ',
+                    'CZECHIA'        => 'CZ',
+                    'ESTONIA'        => 'EE',
+                    'CROATIA'        => 'HR',
+                    'HUNGARY'        => 'HU',
+                    'IRELAND'        => 'IE',
+                    'LITHUANIA'      => 'LT',
+                    'LUXEMBOURG'     => 'LU',
+                    'LATVIA'         => 'LV',
+                    'MALTA'          => 'MT',
+                    'POLAND'         => 'PL',
+                    'ROMANIA'        => 'RO',
+                    'SWEDEN'         => 'SE',
+                    'SLOVENIA'       => 'SI',
+                    'SLOVAKIA'       => 'SK',
+                    'ALBANIA'        => 'AL',
+                    'TURKEY'         => 'TR',
+                    'SERBIA'         => 'RS',
+                    'SWITZERLAND'    => 'CH',
+                    'UNITED KINGDOM' => 'GB',
+                ];
+
+                if (array_key_exists($rawCountry, $countryMap)) {
+                    $userCountry = $countryMap[$rawCountry];
+                } else {
+                    
+                    $userCountry = substr($rawCountry, 0, 2);
+                }
+            }
+            
 
             $isEu      = array_key_exists($userCountry, $euVatRates);
             $vatRate   = $isEu ? $euVatRates[$userCountry] : 0;
