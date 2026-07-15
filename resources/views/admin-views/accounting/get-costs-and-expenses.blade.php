@@ -142,7 +142,7 @@
                                         <td>{{$key + 1}}</td>
                                         <td>{{ substr($cost->title, 0, 60) }}{{ strlen($cost->title) >= 60 ? '...' : '' }}</td>
                                         <td>{{ substr($cost->description, 0, 60) }}{{ strlen($cost->description) >= 60 ? '...' : '' }}</td>
-                                        <td>{{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($cost->amount)) }}</td>
+                                        <td>{{'€'.number_format($cost->amount, 2) }}</td>
                                         <td>{{ $cost->created_at }} ({{ $cost->created_at->diffForHumans() }})</td>
                                         <td class="text-center d-flex align-items-center">
                                             <form method="POST" action="{{ route('admin.accounting.pdf-costs-and-expenses') }}">
@@ -201,7 +201,7 @@
                                                                         <div class="d-flex align-items-center justify-content-between" >
                                                                             <label for="amount">{{ translate('amount') }}</label>
                                                                         </div>
-                                                                        <input class="form-control" id="amount" placeholder="{{ translate('add_a_cost_amount') }}" value="{{ \App\CPU\BackEndHelper::usd_to_currency($cost->amount) }}" type="number" step="0.01" name="amount" >
+                                                                        <input class="form-control" id="amount" placeholder="{{ translate('add_a_cost_amount') }}" value="{{ $cost->amount }}" type="number" step="0.01" name="amount" >
                                                                     </div>
 
                                                                     <button class="btn btn--primary" type="submit">{{translate('save')}}</button>
@@ -334,4 +334,3 @@
         }
     </script>
 @endpush
-
