@@ -16,6 +16,11 @@ chmod -R 775 /var/www/public
 
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/resources/lang /var/www/public
 
+# mPDF temp directory — required for PDF generation
+mkdir -p /var/www/vendor/mpdf/mpdf/tmp/mpdf
+chmod -R 775 /var/www/vendor/mpdf/mpdf/tmp
+chown -R www-data:www-data /var/www/vendor/mpdf/mpdf/tmp
+
 # 4. Clear old Laravel cache
 php artisan config:clear
 php artisan route:clear
