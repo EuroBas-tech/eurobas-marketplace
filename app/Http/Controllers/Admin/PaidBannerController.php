@@ -11,16 +11,15 @@ use Illuminate\Support\Facades\Cache;
 
 class PaidBannerController extends Controller
 {
-
-        public function list(Request $request) {
+    public function list(Request $request) {
         $query_param = [];
         $search = $request['search'];
 
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
 
-            $paid_banners = PaidBanner::where('status', 1)
-            ->where('is_paid', 1)
+        
+            $paid_banners = PaidBanner::where('is_paid', 1)
             ->with(['user'])
             ->where(function ($q) use ($key) {
                 foreach ($key as $value) {
@@ -34,8 +33,8 @@ class PaidBannerController extends Controller
             
             $query_param = ['search' => $request['search']];
         } else {
+            
             $paid_banners = PaidBanner::with(['user'])
-            ->where('status', 1)
             ->where('is_paid', 1);
         }
         
@@ -45,6 +44,7 @@ class PaidBannerController extends Controller
     
     public function status_update(Request $request)
     {
+        
         PaidBanner::where(['id' => $request['id']])->update([
             'status' => $request['status'] ?? 0
         ]);
@@ -52,7 +52,7 @@ class PaidBannerController extends Controller
         Cache::forget('main_banners');
 
         Toastr::success(translate('banner_status_updated_successfully'));
-        return back();
+        return back();  
     }
 
     public function delete(Request $request, $id) {
@@ -64,6 +64,4 @@ class PaidBannerController extends Controller
         Toastr::success(translate('banner_deleted_successfully'));
         return back();
     }
-
-
 }
