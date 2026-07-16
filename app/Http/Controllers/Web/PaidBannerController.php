@@ -191,13 +191,22 @@ class PaidBannerController extends Controller
             );
         }
 
+    
         if ($package) {
-            $paidBanner->fill([
-                'package_id'        => $request->package_id,
-                'price'             => $package->price,
-                'duration_in_days'  => $package->duration_in_days,
-                'expiration_date'   => now()->addHours($package->duration_in_days * 24),
-            ]);
+            
+            if ($paidBanner->expiration_date < now()) {
+                $paidBanner->fill([
+                    'package_id'        => $request->package_id,
+                    'price'             => $package->price,
+                    'duration_in_days'  => $package->duration_in_days,
+                    'expiration_date'   => now()->addHours($package->duration_in_days * 24),
+                ]);
+            } else {
+                
+                $paidBanner->fill([
+                    'category_id' => $request->category_id,
+                ]);
+            }
         }
 
         $paidBanner->save();
