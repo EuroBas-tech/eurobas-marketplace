@@ -168,29 +168,40 @@
 
 @push('script_2')
     <script>
-
-        function update_banner_status(form) {
+        // دالة مخصصة لإرسال فورم تحديث الحالة فقط وبشكل آمن تماماً
+        function update_banner_status(formElement) {
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // توكن الأمان الصحيح من أعلى الصفحة
                 }
             });
             $.ajax({
-                url: form.attr('action'),
+                url: formElement.attr('action'),
                 method: 'POST',
-                data: form.serialize(),
+                data: formElement.serialize(),
                 success: function (data) {
                     toastr.success("{{translate('status_updated_successfully')}}");
                 },
                 error: function (xhr) {
                     toastr.error("{{translate('something_went_wrong')}}");
+                    // في حال حدوث خطأ نعيد تحديث الصفحة لإرجاع الزر لوضعه الأصلي
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
                 }
             });
         }
 
-        
-        $('.switcher_input').on('change', function() {
-            let form = $(this).closest('form');
+        // الاستماع فقط لحدث تقديم فورم الحالة وتجنب تداخل الأزرار الأخرى
+        $('.paid_banner_status_form').on('submit', function(event) {
+            event.preventDefault(); // منع المتصفح من إعادة تحميل الصفحة بشكل تقليدي
+            update_banner_status($(this));
+        });
+
+        // تشغيل الإرسال بمجرد تغيير الـ Switcher بعد تأكيد الـ Modal
+        $('.switcher_input').on('change', function(event) {
+            event.preventDefault();
+            let form = $(this).closest('form.paid_banner_status_form');
             update_banner_status(form);
         });
     </script>
