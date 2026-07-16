@@ -9,7 +9,6 @@
 @section('content')
     <div class="content container-fluid">
 
-        <!-- Page Title -->
         <div class="mb-4">
             <h2 class="h1 mb-0 text-capitalize d-flex align-items-center gap-2">
                 <img width="20" src="{{asset('/assets/back-end/img/paid-banner.png')}}" alt="">
@@ -17,15 +16,10 @@
                 <span class="badge badge-soft-dark radius-50">{{\App\Model\PaidBanner::count()}}</span>
             </h2>
         </div>
-        <!-- End Page Title -->
-
-        <!-- Card -->
         <div class="card">
-            <!-- Header -->
             <div class="px-3 py-4">
                 <div class="row gy-2 align-items-center">
                     <div class="col-sm-8 col-md-6 col-lg-4">
-                        <!-- Search -->
                         <form action="{{ url()->current() }}" method="GET">
                             <div class="input-group input-group-merge input-group-custom">
                                 <div class="input-group-prepend">
@@ -39,8 +33,7 @@
                                 <button type="submit" class="btn btn--primary">{{translate('search')}}</button>
                             </div>
                         </form>
-                        <!-- End Search -->
-                    </div>
+                        </div>
                     <div class="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                         <div class="d-flex justify-content-sm-end">
                             <button type="button" class="btn btn-outline--primary" data-toggle="dropdown">
@@ -59,11 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Row -->
-            </div>
-            <!-- End Header -->
-
-            <!-- Table -->
+                </div>
             <div class="table-responsive datatable-custom">
                 <table
                     style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
@@ -145,26 +134,19 @@
                                         @if($paid_banner['id'] != '0')
                                             <a title="{{translate('delete')}}"
                                             class="btn btn-outline-danger btn-sm delete square-btn" href="javascript:"
-                                            onclick="form_alert('paid-banner-{{$paid_banner['id']}}','{{translate('want_to_delete_this_paid_banner').'?'}}')">
+                                            onclick="confirm_and_delete_banner('{{$paid_banner['id']}}')">
                                                 <i class="tio-delete"></i>
                                             </a>
                                         @endif
                                     </div>
-                                    <form action="{{route('admin.paid-banner.delete',[$paid_banner['id']])}}" method="post" id="paid-banner-{{$paid_banner['id']}}">
-                                        @csrf
-                                        @method('delete')
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <!-- End Table -->
-
             <div class="table-responsive mt-4">
                 <div class="px-4 d-flex justify-content-lg-end">
-                    <!-- Pagination -->
                     {!! $paid_banners->links() !!}
                 </div>
             </div>
@@ -175,33 +157,56 @@
                          alt="Image Description">
                     <p class="mb-0">{{translate('no_data_to_show')}}</p>
                 </div>
-        @endif
-        <!-- End Footer -->
+            @endif
         </div>
-        <!-- End Card -->
-    </div>
+        </div>
+
+    @foreach($paid_banners as $paid_banner)
+        <form action="{{route('admin.paid-banner.delete',[$paid_banner['id']])}}" method="post" id="delete-form-paid-banner-{{$paid_banner['id']}}" style="display: none;">
+            @csrf
+            @method('delete')
+        </form>
+    @endforeach
+
 @endsection
 
 @push('script_2')
     <script>
-        $('.paid_banner_status_form').on('submit', function(event){
-            event.preventDefault();
+        // دالة مخصصة لطلب الحذف لتعمل بشكل منعزل وآمن تماماً
+        function confirm_and_delete_banner(id) {
+            form_alert('delete-form-paid-banner-' + id, '{{translate("want_to_delete_this_paid_banner")."?"}}');
+        }
 
-            console.log('test');
-
+        // دالة تحديث الحالة عبر AJAX
+        function update_banner_status(formElement) {
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $.ajax({
-                url: $(this).attr('action'),
+                url: formElement.attr('action'),
                 method: 'POST',
-                data: $(this).serialize(),
+                data: formElement.serialize(),
                 success: function (data) {
                     toastr.success("{{translate('status_updated_successfully')}}");
+                },
+                error: function (xhr) {
+                    toastr.error("{{translate('something_went_wrong')}}");
                 }
             });
+        }
+
+        // الاستماع الحصري لفورم الحالة فقط
+        $(document).on('submit', '.paid_banner_status_form', function(e) {
+            e.preventDefault();
+            update_banner_status($(this));
+        });
+
+        $(document).on('change', '.switcher_input', function(e) {
+            e.preventDefault();
+            let form = $(this).closest('form.paid_banner_status_form');
+            update_banner_status(form);
         });
     </script>
-@endpush
+</push>
