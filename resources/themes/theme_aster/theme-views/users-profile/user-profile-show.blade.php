@@ -6,7 +6,7 @@
     <style>
         .cover-image-size {
             width: 100% !important;
-            block-size: 15rem !important;
+            height: 320px !important;
             object-fit: cover;
         }
         .profile-image-size {
@@ -94,9 +94,9 @@
     </div>
 
     <!-- Main Content -->
-    <main class="main-content d-flex flex-column gap-3 py-3 mb-4">
+   <main class="main-content d-flex flex-column gap-0 pt-0 pb-3 mb-4">
         <div class="container">
-            <div class="row g-4 px-sm-4 px-0">
+            <div class="row g-0 px-sm-4 px-0">
                 <!-- Full-width row item (col-12) -->
                 <div class="col-12">
                     <div class="card">
@@ -104,7 +104,7 @@
                             <div class="position-relative" >
                                 <img class="cover-image-size rounded" src="{{$user_profile['cover_image'] ? cloudfront('profile/covers/'.$user_profile['cover_image']) : theme_asset('assets/img/avatar/def-cover-image.jpg') }}" alt="profile_cover_image">
 
-                                <div class="d-flex align-items-center gap-3 position-absolute bottom-0 start-0 p-3">
+                                 <div class="d-flex align-items-center gap-3 position-absolute bottom-0 start-0 px-3 pb-2">
                                     <div class="text-center" >
                                         <img class="rounded profile-image-size" src="{{$user_profile['image'] ? cloudfront('profile/images/'.$user_profile['image']) : theme_asset('assets/img/avatar/def-image.jpg') }}" alt="profile_image">
                                     </div>
