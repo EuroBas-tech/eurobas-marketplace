@@ -45,7 +45,8 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label for="bio">{{translate('bio')}}</label>
-                                                <textarea id="bio" class="form-control input-height" name="bio" placeholder="{{translate('describe_your_business')}}">{{ $customerDetail['bio'] }}</textarea>
+                                                <!-- تم جعل مربع النص عادي وبسيط بارتفاع 4 أسطر ليناسب الكتابة المباشرة بدون أي رموز تداخل -->
+                                                <textarea id="bio" rows="4" class="form-control" name="bio" placeholder="{{translate('describe_your_business')}}">{{ $customerDetail['bio'] }}</textarea>
                                             </div>
                                         </div>
 
@@ -82,7 +83,7 @@
                                                             ['code' => '+359', 'flag' => '🇧🇬', 'name' => 'Bulgaria'],
                                                             ['code' => '+421', 'flag' => '🇸🇰', 'name' => 'Slovakia'],
                                                             ['code' => '+352', 'flag' => '🇱🇺', 'name' => 'Luxembourg'],
-                                                            ['code' => '+386', 'flag' => '🇸🇮', 'name' => 'Slovenia'],
+                                                            ['code' => '+386', 'flag' => '🇸جيلوفينيا', 'name' => 'Slovenia'],
                                                             ['code' => '+41', 'flag' => '🇨🇭', 'name' => 'Switzerland'],
                                                             ['code' => '+47', 'flag' => '🇳🇴', 'name' => 'Norway'],
                                                             ['code' => '+354', 'flag' => '🇮🇸', 'name' => 'Iceland'],
@@ -100,9 +101,9 @@
                                                             ['code' => '+375', 'flag' => '🇧🇾', 'name' => 'Belarus'],
                                                             ['code' => '+86', 'flag' => '🇨🇳', 'name' => 'China'],
                                                             ['code' => '+7', 'flag' => '🇷🇺', 'name' => 'Russia'],
-                                                            ['code' => '+383', 'flag' => '🇽🇰', 'name' => 'Kosovo'],
+                                                            ['code' => '+383', 'flag' => '🇽🇽', 'name' => 'Kosovo'],
                                                             ['code' => '+377', 'flag' => '🇲🇨', 'name' => 'Monaco'],
-                                                            ['code' => '+357', 'flag' => '🇨🇾', 'name' => 'Cyprus'],
+                                                            ['code' => '+357', 'flag' => '🇨 Cyprus', 'name' => 'Cyprus'],
                                                             ['code' => '+423', 'flag' => '🇱🇮', 'name' => 'Liechtenstein'],
                                                             ['code' => '+356', 'flag' => '🇲🇹', 'name' => 'Malta'],
                                                             ['code' => '+382', 'flag' => '🇲🇪', 'name' => 'Montenegro'],
@@ -330,14 +331,7 @@
 
 @push('script')
 
-
-    <script>
-        $(document).ready(function() {
-            window.onload = function () {
-                CKEDITOR.replace('bio');
-            };
-        });
-    </script>
+    <!-- تم حذف سكربت تهيئة CKEditor الخاص بحقل الـ bio ليبقى مربع نص عادي وسريع الاستجابة -->
 
     <script>
         $(window).on("load", function () {
@@ -865,4 +859,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" defer></script>
 @endpush
-
