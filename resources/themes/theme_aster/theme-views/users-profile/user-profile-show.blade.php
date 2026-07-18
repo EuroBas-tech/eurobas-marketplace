@@ -591,15 +591,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade {{ request('tap') == 'profile' ? 'show active' : '' }}" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-    <div class="card bg-transparent border-0">
-        <div class="card-body p-0 pt-3">
+                       <div class="tab-pane fade {{ request('tap') == 'profile' ? 'show active' : '' }}" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                      <div class="card bg-transparent border-0">
+                     <div class="card-body p-0 pt-3">
             
-            <!-- قسم إجمالي الإعلانات المنسق -->
-            <div class="mb-4">
+        
+                 <div class="mb-4">
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
-                        <div class="card product-card-shadow border-0 bg-white p-3 rounded-3">
+                        <div class="card product-card-shadow border-0 bg-white p-3 rounded-3 shadow-sm">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="bg-primary-light p-2 rounded-3 text-primary">
@@ -614,15 +614,12 @@
                 </div>
             </div>
 
-            <!-- قسم السيرة الذاتية (Bio) بتصميم احترافي -->
+            <!-- قسم السيرة الذاتية (Bio) المحسّن بخط أسود مريح للعين ودون عناوين زائدة -->
             @if(!empty($user_profile->bio))
             <div class="row mb-4">
-                <div class="col-lg-8 col-md-10 col-12">
-                    <div class="bio-text bg-white p-4 rounded-3 shadow-sm border-start border-primary border-3">
-                        <h5 class="text-secondary fw-bold mb-2">
-                            <i class="bi bi-person-text me-2 text-primary"></i>{{ translate('about_me') }}
-                        </h5>
-                        <div class="text-muted line-height-15 fs-15">
+                <div class="col-12">
+                    <div class="p-4 bg-white rounded-3 shadow-sm border custom-bio-container">
+                        <div class="custom-bio-text">
                             {!! $user_profile->bio !!}
                         </div>
                     </div>
@@ -630,24 +627,19 @@
             </div>
             @endif
 
-            <!-- قسم معلومات الاتصال والبيانات الشخصية بالأيقونات الاحترافية -->
+            <!-- قسم معلومات الاتصال والبيانات الشخصية بالأيقونات الاحترافية وبدون عنوان رئيسي -->
             <div class="row g-3 mb-4">
-                <div class="col-12">
-                    <h5 class="fw-bold text-dark mb-2">
-                        <i class="bi bi-info-circle-fill text-primary me-2"></i>{{ translate('contact_information') }}
-                    </h5>
-                </div>
-
+                
                 <!-- البريد الإلكتروني -->
                 @if($user_profile->show_email_address == 1)
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-info-light text-info p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-envelope-fill text-info"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-info-light text-info p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-envelope-fill"></i>
                         </div>
-                        <div>
-                            <small class="text-muted d-block fs-12">{{ translate('email') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->email}}</span>
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('email') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">{{$user_profile->email}}</span>
                         </div>
                     </div>
                 </div>
@@ -656,13 +648,13 @@
                 <!-- رقم الهاتف -->
                 @if($user_profile->show_phone_number == 1)
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-success-light text-success p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-telephone-fill text-success"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-success-light text-success p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-telephone-fill"></i>
                         </div>
                         <div>
-                            <small class="text-muted d-block fs-12">{{ translate('phone') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('phone') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
                         </div>
                     </div>
                 </div>
@@ -671,40 +663,40 @@
                 <!-- الدولة والمدينة -->
                 @if($user_profile->show_location_data == 1)
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-danger-light text-danger p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-geo-alt-fill text-danger"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-danger-light text-danger p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-geo-alt-fill"></i>
                         </div>
-                        <div>
-                            <small class="text-muted d-block fs-12">{{ translate('location') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->country}}, {{$user_profile->city}}</span>
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('location') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">{{$user_profile->country}}, {{$user_profile->city}}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- الرمز البريدي -->
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-warning-light text-warning p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-mailbox2 text-warning"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-warning-light text-warning p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-mailbox2"></i>
                         </div>
                         <div>
-                            <small class="text-muted d-block fs-12">{{ translate('postal_code') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->postal_code ?? '---'}}</span>
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('postal_code') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom">{{$user_profile->postal_code ?? '---'}}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- عنوان الشارع -->
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-secondary-light text-secondary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-map-fill text-secondary"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-secondary-light text-secondary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-map-fill"></i>
                         </div>
-                        <div>
-                            <small class="text-muted d-block fs-12">{{ translate('street_address') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark text-truncate d-inline-block" style="max-width: 180px;" title="{{ $user_profile->street_address }}">
-                                {{ substr($user_profile->street_address, 0, 150) }}{{ strlen($user_profile->street_address) > 150 ? '...' : '' }}
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('street_address') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block" title="{{ $user_profile->street_address }}">
+                                {{ $user_profile->street_address ?? '---' }}
                             </span>
                         </div>
                     </div>
@@ -713,15 +705,14 @@
 
                 <!-- تاريخ التسجيل -->
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                            <i class="bi bi-calendar-event-fill text-primary"></i>
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-contact-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-calendar-event-fill"></i>
                         </div>
-                        <div>
-                            <small class="text-muted d-block fs-12">{{ translate('registered_at') }}</small>
-                            <span class="mb-0 fw-semibold fs-14 text-dark">
-                                {{ $user_profile->created_at ? $user_profile->created_at->format('d F Y') : '---' }} 
-                                <small class="text-muted fs-11">({{ $user_profile->created_at ? $user_profile->created_at->diffForHumans() : '' }})</small>
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('registered_at') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">
+                                {{ $user_profile->created_at ? $user_profile->created_at->format('d F Y') : '---' }}
                             </span>
                         </div>
                     </div>
@@ -731,16 +722,16 @@
             <!-- قسم التصنيفات المنشورة -->
             @if($user_categories->count() > 0)
                 <div class="mb-4 mt-4">
-                    <h4 class="fw-bold text-dark mb-3">{{translate('we_publishing_on_this_categories')}}</h4>
+                    <h4 class="fw-bold text-dark mb-3 fs-16">{{translate('we_publishing_on_this_categories')}}</h4>
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center gap-3 flex-wrap">
                                 @foreach($user_categories as $category)
-                                    <div class="text-center p-2 bg-white rounded-3 shadow-sm border" style="min-width: 90px;">
+                                    <div class="text-center p-2 bg-white rounded-3 shadow-sm border" style="min-width: 95px;">
                                         <div class="mb-1">
                                             <img class="small-responsive-icon" src="{{cloudfront('category')}}/{{ $category->icon }}" alt="category-icon" width="30px">
                                         </div>
-                                        <span class="fw-normal fs-12 text-secondary">{{$category->name}}</span>
+                                        <span class="fw-semibold fs-12 text-dark-custom">{{$category->name}}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -752,7 +743,7 @@
             <!-- قسم العلامات التجارية -->
             @if($user_brands->count() > 0)
                 <div class="mb-4">
-                    <h4 class="fw-bold text-dark mb-3">{{translate('and_this_brands')}}</h4>
+                    <h4 class="fw-bold text-dark mb-3 fs-16">{{translate('and_this_brands')}}</h4>
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -760,7 +751,7 @@
                                     <div class="p-2 bg-white rounded-3 shadow-sm border d-flex align-items-center justify-content-center" style="width: 80px; height: 60px;">
                                         <img class="small-responsive-icon" src="{{cloudfront('brand')}}/{{ $brand->image }}" alt="brand-icon" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                     </div>
-                                @endforeach
+                                 @endforeach
                               </div>
                           </div>
                         </div>
@@ -775,14 +766,53 @@
   </div>
 </main>
 
-<style>
-.bg-primary-light { background-color: rgba(13, 110, 253, 0.08) !important; }
-.bg-info-light { background-color: rgba(13, 202, 240, 0.08) !important; }
-.bg-success-light { background-color: rgba(25, 135, 84, 0.08) !important; }
-.bg-danger-light { background-color: rgba(220, 53, 69, 0.08) !important; }
-.bg-warning-light { background-color: rgba(255, 193, 7, 0.08) !important; }
-.bg-secondary-light { background-color: rgba(108, 117, 125, 0.08) !important; }
-</style> 
+ <style>
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.06) !important; }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.06) !important; }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.06) !important; }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.06) !important; }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.06) !important; }
+.bg-secondary-light { background-color: rgba(108, 117, 125, 0.06) !important; }
+
+.justify-content-center-box {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.text-dark-custom {
+    color: #1e293b !important;
+}
+
+.custom-bio-container {
+    border-left: 4px solid #0d6efd !important;
+    background-color: #ffffff;
+}
+
+.custom-bio-text {
+    color: #0f172a !important;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.custom-contact-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08)!important;
+}
+
+.fs-16 {
+    font-size: 1.05rem !important;
+}
+</style>
     <!-- End Main Content -->
 
     @if(auth('customer')->check() && auth('customer')->id() != $user_profile->id)
