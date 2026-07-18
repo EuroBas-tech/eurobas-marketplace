@@ -592,122 +592,197 @@
                             </div>
                         </div>
                         <div class="tab-pane fade {{ request('tap') == 'profile' ? 'show active' : '' }}" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                            <div class="card bg-transparent">
-                                <div class="card-body">
-                                    <div class="mb-4">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="card product-card-shadow">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <div class="d-flex flex-column gap-2" >
-                                                                <img width="40px" src="{{ theme_asset('assets/img/icons/vehicle-icon.png') }}" alt="">
-                                                                <h3 class="mb-0 text-primary">{{translate('ads_number')}}</h3>
-                                                            </div>
-                                                            <p class="fs-28 fw-medium">{{$user_ads_count}}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="card bg-transparent border-0">
+        <div class="card-body p-0 pt-3">
+            
+            <!-- قسم إجمالي الإعلانات المنسق -->
+            <div class="mb-4">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card product-card-shadow border-0 bg-white p-3 rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary-light p-2 rounded-3 text-primary">
+                                        <img width="35px" src="{{ theme_asset('assets/img/icons/vehicle-icon.png') }}" alt="Ads">
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-8 col-12 mb-4" >
-                                            <h4 class="bio-text text-secondary line-height-15" >
-                                                {!! $user_profile->bio !!}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center gap-4 mb-4">
-                                        <div class="col-auto" >
-                                            @if($user_profile->show_email_address == 1)
-                                                <div class="d-flex align-items-center gap-2 mb-2" >
-                                                    <i class="bi bi-envelope fs-16 text-primary"></i>
-                                                    <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->email}}</p>
-                                                </div>
-                                            @endif
-
-                                            @if($user_profile->show_location_data == 1)
-                                                <div class="d-flex align-items-center gap-2 mb-2" >
-                                                    <i class="bi bi-geo-alt fs-16 text-primary"></i>
-                                                    <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->country}}, {{$user_profile->city}}</p>
-                                                </div>
-                                            @endif
-
-                                            @if($user_profile->show_location_data == 1)
-                                                <div class="d-flex align-items-center gap-2 mb-2" >
-                                                    <i class="bi bi-mailbox fs-16 text-primary"></i>
-                                                    <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->postal_code}}</p>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="col-auto" >
-                                            @if($user_profile->show_phone_number == 1)
-                                                <div class="d-flex align-items-center gap-2 mb-2" >
-                                                    <i class="bi bi-telephone fs-16 text-primary"></i>
-                                                    <p class="mb-0 fw-normal fs-14 text-dark">{{$user_profile->phone_code}}{{$user_profile->phone}}</p>
-                                                </div>
-                                            @endif
-
-                                            @if($user_profile->show_location_data == 1)
-                                                <div class="d-flex align-items-start gap-2 mb-2" >
-                                                    <i class="bi bi-pin-map fs-16 text-primary"></i>
-                                                    <p class="mb-0 fw-normal fs-14 text-dark">{{ substr($user_profile->street_address,0,150) }}{{strlen($user_profile->street_address) > 150 ? '...' : ''}}</p>
-                                                </div>
-                                            @endif
-                                            <div class="d-flex align-items-start gap-2 mb-2" >
-                                                <i class="bi bi-calendar4 fs-16 text-primary"></i>
-                                                <p class="mb-0 fw-normal fs-14 text-dark">{{ $user_profile->created_at->format('d F Y') }} ({{ $user_profile->created_at->diffForHumans() }})</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @if($user_categories->count() > 0)
-                                        <div class="mb-4">
-                                            <h3 class="mb-2" >{{translate('we_publishing_on_this_categories')}}</h3>
-                                            <div>
-                                                <div class="row align-items-center gap-3 flex-wrap" >
-                                                    <div class="col-md-8 col-sm-12 col-12">
-                                                        <div class="d-flex align-items-center gap-3 flex-wrap" >
-                                                            @foreach($user_categories as $category)
-                                                                <div class="text-center" >
-                                                                    <div>
-                                                                        <img class="small-responsive-icon" src="{{cloudfront('category')}}/{{ $category->icon }}" alt="category-icon">
-                                                                    </div>
-                                                                    <span class="fw-normal fs-12">{{$category->name}}</span>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                    @if($user_brands->count() > 0)
-                                        <div class="mb-4">
-                                            <h3 class="mb-4" >{{translate('and_this_brands')}}</h3>
-
-                                            <div class="row align-items-center gap-3 flex-wrap" >
-                                                <div class="col-md-8 col-sm-12 col-12">
-                                                    <div class="d-flex align-items-center gap-3 flex-wrap" >
-                                                        @foreach($user_brands as $brand)
-                                                            <div>
-                                                                <img class="small-responsive-icon" src="{{cloudfront('brand')}}/{{ $brand->image }}" alt="category-icon">
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
+                                    <h5 class="mb-0 text-dark fw-bold">{{translate('ads_number')}}</h5>
                                 </div>
+                                <span class="fs-24 fw-bold text-primary">{{$user_ads_count}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+
+            <!-- قسم السيرة الذاتية (Bio) بتصميم احترافي -->
+            @if(!empty($user_profile->bio))
+            <div class="row mb-4">
+                <div class="col-lg-8 col-md-10 col-12">
+                    <div class="bio-text bg-white p-4 rounded-3 shadow-sm border-start border-primary border-3">
+                        <h5 class="text-secondary fw-bold mb-2">
+                            <i class="bi bi-person-text me-2 text-primary"></i>{{ translate('about_me') }}
+                        </h5>
+                        <div class="text-muted line-height-15 fs-15">
+                            {!! $user_profile->bio !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- قسم معلومات الاتصال والبيانات الشخصية بالأيقونات الاحترافية -->
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <h5 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-info-circle-fill text-primary me-2"></i>{{ translate('contact_information') }}
+                    </h5>
+                </div>
+
+                <!-- البريد الإلكتروني -->
+                @if($user_profile->show_email_address == 1)
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-info-light text-info p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-envelope-fill text-info"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('email') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->email}}</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <!-- رقم الهاتف -->
+                @if($user_profile->show_phone_number == 1)
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-success-light text-success p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-telephone-fill text-success"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('phone') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <!-- الدولة والمدينة -->
+                @if($user_profile->show_location_data == 1)
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-danger-light text-danger p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-geo-alt-fill text-danger"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('location') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->country}}, {{$user_profile->city}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الرمز البريدي -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-warning-light text-warning p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-mailbox2 text-warning"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('postal_code') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark">{{$user_profile->postal_code ?? '---'}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- عنوان الشارع -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-secondary-light text-secondary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-map-fill text-secondary"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('street_address') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark text-truncate d-inline-block" style="max-width: 180px;" title="{{ $user_profile->street_address }}">
+                                {{ substr($user_profile->street_address, 0, 150) }}{{ strlen($user_profile->street_address) > 150 ? '...' : '' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <!-- تاريخ التسجيل -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-calendar-event-fill text-primary"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12">{{ translate('registered_at') }}</small>
+                            <span class="mb-0 fw-semibold fs-14 text-dark">
+                                {{ $user_profile->created_at ? $user_profile->created_at->format('d F Y') : '---' }} 
+                                <small class="text-muted fs-11">({{ $user_profile->created_at ? $user_profile->created_at->diffForHumans() : '' }})</small>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم التصنيفات المنشورة -->
+            @if($user_categories->count() > 0)
+                <div class="mb-4 mt-4">
+                    <h4 class="fw-bold text-dark mb-3">{{translate('we_publishing_on_this_categories')}}</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                @foreach($user_categories as $category)
+                                    <div class="text-center p-2 bg-white rounded-3 shadow-sm border" style="min-width: 90px;">
+                                        <div class="mb-1">
+                                            <img class="small-responsive-icon" src="{{cloudfront('category')}}/{{ $category->icon }}" alt="category-icon" width="30px">
+                                        </div>
+                                        <span class="fw-normal fs-12 text-secondary">{{$category->name}}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- قسم العلامات التجارية -->
+            @if($user_brands->count() > 0)
+                <div class="mb-4">
+                    <h4 class="fw-bold text-dark mb-3">{{translate('and_this_brands')}}</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                @foreach($user_brands as $brand)
+                                    <div class="p-2 bg-white rounded-3 shadow-sm border d-flex align-items-center justify-content-center" style="width: 80px; height: 60px;">
+                                        <img class="small-responsive-icon" src="{{cloudfront('brand')}}/{{ $brand->image }}" alt="brand-icon" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                    </div>
+                                @endforeach
+                              </div>
+                          </div>
+                        </div>
+                     </div>
+                   @endif
+                 </div>
+             </div>
+            </div>
+         </div>
+       </div>
+    </div>
+  </div>
+</main>
+
+<style>
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.08) !important; }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.08) !important; }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.08) !important; }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.08) !important; }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.08) !important; }
+.bg-secondary-light { background-color: rgba(108, 117, 125, 0.08) !important; }
+</style> 
     <!-- End Main Content -->
 
     @if(auth('customer')->check() && auth('customer')->id() != $user_profile->id)
