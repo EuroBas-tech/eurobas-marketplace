@@ -591,11 +591,10 @@
                                 </div>
                             </div>
                         </div>
-                       <div class="tab-pane fade {{ request('tap') == 'profile' ? 'show active' : '' }}" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                       <div class="card bg-transparent border-0">
+                      <div class="tab-pane fade {{ request('tap') == 'profile' ? 'show active' : '' }}" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                      <div class="card bg-transparent border-0">
                       <div class="card-body p-0 pt-3">
             
-            <!-- قسم إجمالي الإعلانات المنسق -->
             <div class="mb-4">
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
@@ -614,7 +613,7 @@
                 </div>
             </div>
 
-            
+        
             @if(!empty($user_profile->bio))
             <div class="row mb-4">
                 <div class="col-lg-6 col-md-8 col-12">
@@ -634,7 +633,7 @@
                 @if($user_profile->show_email_address == 1)
                 <div class="col-md-4 col-sm-6">
                     <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                        <div class="bg-info-light text-info rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-envelope-fill"></i>
                         </div>
                         <div class="text-truncate">
@@ -645,11 +644,11 @@
                 </div>
                 @endif
 
-             
+            
                 @if($user_profile->show_phone_number == 1)
                 <div class="col-md-4 col-sm-6">
                     <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                        <div class="bg-success-light text-success rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-telephone-fill"></i>
                         </div>
                         <div>
@@ -660,11 +659,11 @@
                 </div>
                 @endif
 
-              
+               
                 @if($user_profile->show_location_data == 1)
                 <div class="col-md-4 col-sm-6">
                     <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                        <div class="bg-danger-light text-danger rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-geo-alt-fill"></i>
                         </div>
                         <div class="text-truncate">
@@ -677,7 +676,7 @@
                
                 <div class="col-md-4 col-sm-6">
                     <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                        <div class="bg-warning-light text-warning rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-mailbox2"></i>
                         </div>
                         <div>
@@ -687,15 +686,15 @@
                     </div>
                 </div>
 
-                
+            
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-start gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-secondary-light text-secondary rounded-circle fs-20 d-flex align-items-center justify-content-center-box mt-1">
                             <i class="bi bi-map-fill"></i>
                         </div>
-                        <div class="text-truncate">
+                        <div class="flex-grow-1 min-w-0 style-long-text">
                             <small class="text-muted d-block fs-12 mb-1">{{ translate('street_address') }}</small>
-                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block" title="{{ $user_profile->street_address }}">
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-break">
                                 {{ $user_profile->street_address ?? '---' }}
                             </span>
                         </div>
@@ -703,10 +702,10 @@
                 </div>
                 @endif
 
-             
+              
                 <div class="col-md-4 col-sm-6">
                     <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
-                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                        <div class="bg-primary-light text-primary rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-calendar-event-fill"></i>
                         </div>
                         <div class="text-truncate">
@@ -719,7 +718,7 @@
                 </div>
             </div>
 
-            
+           
             @if($user_categories->count() > 0)
                 <div class="mb-4 mt-4">
                     <h4 class="fw-bold text-dark mb-3 fs-16">{{translate('we_publishing_on_this_categories')}}</h4>
@@ -767,9 +766,12 @@
 </main>
 
  <style>
-.bg-primary-light { 
-    background-color: rgba(13, 110, 253, 0.07) !important; 
-}
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.08) !important; }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.08) !important; }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.08) !important; }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.08) !important; }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.08) !important; }
+.bg-secondary-light { background-color: rgba(108, 117, 125, 0.08) !important; }
 
 .justify-content-center-box {
     width: 45px;
@@ -784,12 +786,12 @@
     color: #1e293b !important;
 }
 
- 
+
 .custom-bio-card {
     border-left: 4px solid #0d6efd !important;
     background-color: #ffffff;
-    padding: 30px 24px !important;  
-    min-height: 120px;  
+    padding: 30px 24px !important;
+    min-height: 120px;
     display: flex;
     align-items: center;
 }
@@ -802,22 +804,27 @@
     word-break: break-word;
 }
 
- 
+
 .custom-main-card {
-    padding: 1rem !important; /* إرجاع الحجم الكبير (p-3) */
-    border-left: 3px solid rgba(13, 110, 253, 0.4) !important;  
-    transition: all 0.2s ease;
+    padding: 1rem !important;
+    border-left: 3px solid rgba(13, 110, 253, 0.3) !important;
+    min-height: 82px; 
 }
 
-.custom-main-card:hover {
-    border-left-color: #0d6efd !important;  
-    transform: translateY(-1px);
+
+.style-long-text {
+    white-space: normal !important;
+}
+
+.text-break {
+    word-break: break-word !important;
 }
 
 .fs-16 {
     font-size: 1.05rem !important;
 }
 </style>
+ 
     <!-- End Main Content -->
 
     @if(auth('customer')->check() && auth('customer')->id() != $user_profile->id)
