@@ -595,11 +595,11 @@
                        <div class="card bg-transparent border-0">
                       <div class="card-body p-0 pt-3">
             
-        
-               <div class="mb-4">
+            <!-- قسم إجمالي الإعلانات المنسق -->
+            <div class="mb-4">
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
-                        <div class="card product-card-shadow border-0 bg-white p-3 rounded-3 shadow-sm">
+                        <div class="card product-card-shadow border-0 bg-white p-3 rounded-3 shadow-sm border-start border-primary border-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="bg-primary-light p-2 rounded-3 text-primary">
@@ -614,11 +614,11 @@
                 </div>
             </div>
 
-        
+            
             @if(!empty($user_profile->bio))
             <div class="row mb-4">
-                <div class="col-12">
-                    <div class="bg-white rounded-3 shadow-sm border custom-bio-container">
+                <div class="col-lg-6 col-md-8 col-12">
+                    <div class="bg-white rounded-3 shadow-sm border custom-bio-card">
                         <div class="custom-bio-text">
                             {!! $user_profile->bio !!}
                         </div>
@@ -627,75 +627,75 @@
             </div>
             @endif
 
-        
+            
             <div class="row g-3 mb-4">
                 
-            
+                
                 @if($user_profile->show_email_address == 1)
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-info-light text-info rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-envelope-fill"></i>
                         </div>
-                        <div class="text-truncate leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('email') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom text-truncate d-block">{{$user_profile->email}}</span>
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('email') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">{{$user_profile->email}}</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+             
+                @if($user_profile->show_phone_number == 1)
+                <div class="col-md-4 col-sm-6">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('phone') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
                         </div>
                     </div>
                 </div>
                 @endif
 
               
-                @if($user_profile->show_phone_number == 1)
-                <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-success-light text-success rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
-                            <i class="bi bi-telephone-fill"></i>
-                        </div>
-                        <div class="leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('phone') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-               
                 @if($user_profile->show_location_data == 1)
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-danger-light text-danger rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-geo-alt-fill"></i>
                         </div>
-                        <div class="text-truncate leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('location') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom text-truncate d-block">{{$user_profile->country}}, {{$user_profile->city}}</span>
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('location') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">{{$user_profile->country}}, {{$user_profile->city}}</span>
                         </div>
                     </div>
                 </div>
 
                
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-warning-light text-warning rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-mailbox2"></i>
                         </div>
-                        <div class="leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('postal_code') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom">{{$user_profile->postal_code ?? '---'}}</span>
+                        <div>
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('postal_code') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom">{{$user_profile->postal_code ?? '---'}}</span>
                         </div>
                     </div>
                 </div>
 
-            
+                
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-secondary-light text-secondary rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-map-fill"></i>
                         </div>
-                        <div class="text-truncate leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('street_address') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom text-truncate d-block" title="{{ $user_profile->street_address }}">
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('street_address') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block" title="{{ $user_profile->street_address }}">
                                 {{ $user_profile->street_address ?? '---' }}
                             </span>
                         </div>
@@ -705,13 +705,13 @@
 
              
                 <div class="col-md-4 col-sm-6">
-                    <div class="d-flex align-items-center gap-3 bg-white p-2 px-3 rounded-3 shadow-sm border custom-contact-card">
-                        <div class="bg-primary-light text-primary rounded-circle fs-18 d-flex align-items-center justify-content-center-box">
+                    <div class="d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm border custom-main-card">
+                        <div class="bg-primary-light text-primary p-2 rounded-circle fs-20 d-flex align-items-center justify-content-center-box">
                             <i class="bi bi-calendar-event-fill"></i>
                         </div>
-                        <div class="text-truncate leading-tight">
-                            <small class="text-muted d-block fs-11">{{ translate('registered_at') }}</small>
-                            <span class="mb-0 fw-semibold fs-13 text-dark-custom text-truncate d-block">
+                        <div class="text-truncate">
+                            <small class="text-muted d-block fs-12 mb-1">{{ translate('registered_at') }}</small>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom text-truncate d-block">
                                 {{ $user_profile->created_at ? $user_profile->created_at->format('d F Y') : '---' }}
                             </span>
                         </div>
@@ -722,7 +722,7 @@
             
             @if($user_categories->count() > 0)
                 <div class="mb-4 mt-4">
-                    <h4 class="fw-bold text-dark mb-3 fs-15">{{translate('we_publishing_on_this_categories')}}</h4>
+                    <h4 class="fw-bold text-dark mb-3 fs-16">{{translate('we_publishing_on_this_categories')}}</h4>
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -740,10 +740,10 @@
                 </div>
             @endif
 
-            
+        
             @if($user_brands->count() > 0)
                 <div class="mb-4">
-                    <h4 class="fw-bold text-dark mb-3 fs-15">{{translate('and_this_brands')}}</h4>
+                    <h4 class="fw-bold text-dark mb-3 fs-16">{{translate('and_this_brands')}}</h4>
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -751,7 +751,7 @@
                                     <div class="p-2 bg-white rounded-3 shadow-sm border d-flex align-items-center justify-content-center" style="width: 80px; height: 60px;">
                                         <img class="small-responsive-icon" src="{{cloudfront('brand')}}/{{ $brand->image }}" alt="brand-icon" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                     </div>
-                                @endforeach     
+                                @endforeach
                               </div>
                           </div>
                         </div>
@@ -767,16 +767,13 @@
 </main>
 
  <style>
-.bg-primary-light { background-color: rgba(13, 110, 253, 0.06) !important; }
-.bg-info-light { background-color: rgba(13, 202, 240, 0.06) !important; }
-.bg-success-light { background-color: rgba(25, 135, 84, 0.06) !important; }
-.bg-danger-light { background-color: rgba(220, 53, 69, 0.06) !important; }
-.bg-warning-light { background-color: rgba(255, 193, 7, 0.06) !important; }
-.bg-secondary-light { background-color: rgba(108, 117, 125, 0.06) !important; }
+.bg-primary-light { 
+    background-color: rgba(13, 110, 253, 0.07) !important; 
+}
 
 .justify-content-center-box {
-    width: 36px;
-    height: 36px;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -784,35 +781,41 @@
 }
 
 .text-dark-custom {
-    color: #334155 !important;
-}
-
-.leading-tight {
-    line-height: 1.2 !important;
+    color: #1e293b !important;
 }
 
  
-.custom-bio-container {
+.custom-bio-card {
     border-left: 4px solid #0d6efd !important;
     background-color: #ffffff;
-    padding: 24px 20px !important; 
-    min-height: 85px; 
+    padding: 30px 24px !important;  
+    min-height: 120px;  
+    display: flex;
+    align-items: center;
 }
 
 .custom-bio-text {
     color: #0f172a !important;
-    font-size: 15px;  
+    font-size: 15px;
     font-weight: 500;
     line-height: 1.6;
     word-break: break-word;
 }
 
-.custom-contact-card {
-    min-height: 58px;
+ 
+.custom-main-card {
+    padding: 1rem !important; /* إرجاع الحجم الكبير (p-3) */
+    border-left: 3px solid rgba(13, 110, 253, 0.4) !important;  
+    transition: all 0.2s ease;
 }
 
-.fs-15 {
-    font-size: 0.95rem !important;
+.custom-main-card:hover {
+    border-left-color: #0d6efd !important;  
+    transform: translateY(-1px);
+}
+
+.fs-16 {
+    font-size: 1.05rem !important;
 }
 </style>
     <!-- End Main Content -->
