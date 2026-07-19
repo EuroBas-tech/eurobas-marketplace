@@ -579,8 +579,15 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
         let base_url = $('meta[name="base-url"]').attr("content");
         
         if (title.length > 0) {
+            
+            let currentLang = getCurrentLanguage();
+            
+        
+            let localePrefix = (currentLang === 'en') ? '' : '/' + currentLang;
+
             $.get({
-                url: base_url + "/searched-ads",
+            
+                url: base_url + localePrefix + "/searched-ads",
                 dataType: "json",
                 data: { title },
                 beforeSend: function () {
@@ -602,7 +609,6 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
 });
 
 /** end website main search  **/
-
 
 function couponCode() {
     $.ajaxSetup({
