@@ -22,3 +22,8 @@ composer-setup.php
 .DS_Store
 proposal.html
 EuroBas_Proposal_Phase3.pdf
+
+# Client-facing planning docs & reports (working files, not part of the codebase)
+/CLIENT_REPLY_*.md
+/Eurobas_Milestone_1_Report.pdf
+/Eurobas_Mobile_App_Action_Plan.pdf

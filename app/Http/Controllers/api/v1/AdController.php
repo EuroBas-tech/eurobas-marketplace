@@ -227,7 +227,13 @@ class AdController extends Controller
     }
 
     public function ads_filter(Request $request) {
-        return response()->json($this->buildAdsFilterQuery($request)->paginate($request->input('limit', 10)), 200);
+        // Stable, deterministic order so paginated pages never overlap or skip
+        // rows (an unordered query returns rows in an undefined order that can
+        // shift between page fetches — causing duplicate keys on the client).
+        return response()->json(
+            $this->buildAdsFilterQuery($request)->orderByDesc('id')->paginate($request->input('limit', 10)),
+            200
+        );
     }
 
     public function filter_count(Request $request) {
@@ -399,6 +405,18 @@ class AdController extends Controller
     }
 
     public function ad_query_filter($query, $request) {
+        // Free-text search from the mobile app's search box. Matches the listing
+        // title, or the brand / model name. Accepts `search` (mobile) or `title`
+        // (web parity); no-op when empty, so existing callers are unaffected.
+        $keyword = trim((string) ($request->input('search') ?? $request->input('title') ?? ''));
+        if ($keyword !== '') {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                  ->orWhereHas('brand', fn($b) => $b->where('name', 'like', "%{$keyword}%"))
+                  ->orWhereHas('model', fn($m) => $m->where('name', 'like', "%{$keyword}%"));
+            });
+        }
+
         if ($request['category_id'] != 'all' && $request['category_id']) {
             $query->where('category_id', $request['category_id']);
         }
