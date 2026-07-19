@@ -349,6 +349,18 @@ class AppTranslationsSeeder extends Seeder
             'ja' => '—', 'ko' => '—', 'lt' => '—', 'nn' => '—', 'pl' => '—', 'ro' => '—', 'ru' => '—', 'sk' => '—',
             'sl' => '—', 'sq' => '—', 'sr' => '—', 'sv' => '—', 'tr' => '—', 'uk' => '—', 'zh' => '—',
         ],
+        // Dedicated nav-tab label — the website's shared 'profile' key means
+        // "Seller Profile", so the app tab uses its own key for plain "Profile".
+        'profile_tab' => [
+            'en' => 'Profile', 'nl' => 'Profiel', 'de' => 'Profil', 'fr' => 'Profil',
+            'es' => 'Perfil', 'it' => 'Profilo', 'pt' => 'Perfil', 'ar' => 'الملف الشخصي',
+            'bg' => 'Профил', 'bs' => 'Profil', 'cs' => 'Profil', 'da' => 'Profil',
+            'el' => 'Προφίλ', 'fi' => 'Profiili', 'hr' => 'Profil', 'hu' => 'Profil',
+            'ja' => 'プロフィール', 'ko' => '프로필', 'lt' => 'Profilis', 'nn' => 'Profil',
+            'pl' => 'Profil', 'ro' => 'Profil', 'ru' => 'Профиль', 'sk' => 'Profil',
+            'sl' => 'Profil', 'sq' => 'Profili', 'sr' => 'Профил', 'sv' => 'Profil',
+            'tr' => 'Profil', 'uk' => 'Профіль', 'zh' => '个人资料',
+        ],
     ];
 
     /** app key => existing website key whose values (all locales) to reuse verbatim. */
