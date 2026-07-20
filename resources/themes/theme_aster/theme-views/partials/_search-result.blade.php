@@ -70,7 +70,7 @@
     @if(!empty($ads))
         @foreach($ads as $ad)
             <li class="list-group-item p-2">
-                <a class="font-size-16 d-flex align-items-center gap-2" href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
+             <a class="font-size-16 d-flex align-items-center gap-2" href="{{ LaravelLocalization::getLocalizedURL(session('local') ?? app()->getLocale(), route('ads-show', ['slug' => $ad->slug])) }}">
                     <div>
                         <img class="rounded search-image"
                         src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail) }}" alt="ad_image">
