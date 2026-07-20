@@ -1,9 +1,15 @@
-<ul class="list-group list-group-flush " >
-    @foreach($products as $product)
-        <li class="list-group-item">
-            <a href="{{route('product',$product->slug)}}" >
-                {{$product['name']}}
-            </a>
+<ul class="list-group list-group-flush">
+    @if(isset($ads) && count($ads) > 0)
+        @foreach($ads as $ad)
+            <li class="list-group-item">
+                <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
+                    {{ $ad['title'] }}
+                </a>
+            </li>
+        @endforeach
+    @else
+        <li class="list-group-item text-center">
+            {{ translate('not_found_anything') }}
         </li>
-    @endforeach
+    @endif
 </ul>
