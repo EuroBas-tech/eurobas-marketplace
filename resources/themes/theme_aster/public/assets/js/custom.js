@@ -578,16 +578,9 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
         let title = $input.val();
         let base_url = $('meta[name="base-url"]').attr("content");
         
-        if (title.length > 0) {
-            
-            let currentLang = getCurrentLanguage();
-            
-        
-            let localePrefix = (currentLang === 'en') ? '' : '/' + currentLang;
-
+       if (title.length > 0) {
             $.get({
-            
-                url: base_url + localePrefix + "/searched-ads",
+                url: base_url + "/searched-ads",
                 dataType: "json",
                 data: { title },
                 beforeSend: function () {
@@ -608,8 +601,8 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
     typingTimerMap.set(searchBoxId, timer);
 });
 
-/** end website main search  **/
-
+     /** end website main search  **/
+         
 function couponCode() {
     $.ajaxSetup({
         headers: {
