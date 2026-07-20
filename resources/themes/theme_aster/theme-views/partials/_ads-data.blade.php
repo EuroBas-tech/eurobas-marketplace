@@ -7,7 +7,7 @@
                     <td>
                         <div class="media gap-3 align-items-center mn-w200">
                             <div class="avatar border rounded" style="--size: 5rem">
-                                <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
+                                <a href="{{route('ads-show', $ad->slug)}}">
                                     <img
                                     src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                                     onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
@@ -16,9 +16,10 @@
                             </div>
                             <div class="media-body">
                                 <div class="d-flex align-items-center gap-1">
-                                    <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
+                                    <a href="{{route('ads-show', $ad->slug)}}">
                                         <h6 class="text-capitalize">{{$ad['title']}}</h6>
                                     </a>
+                                    <!-- <h6 class="text-danger" >({{ translate('sponsored') }})</h6> -->
                                 </div>
                                 <div>
                                     <span>{{ translate('brand') }} : {{ $ad->brand->name ?? '/' }}</span>
@@ -43,12 +44,15 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-end gap-2 align-items-center">
-                            <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}"
-                                class="btn btn-outline-success rounded-circle btn-action add_to_compare ">
+                            <a href="{{route('ads-show', $ad->slug)}}"
+                                class="btn btn-outline-success rounded-circle btn-action add_to_compare "
+                                id="">
                                 <i class="bi bi-eye"></i>
                             </a>
                             <a href="{{ route('ads-edit', $ad->id) }}"
-                                class="btn btn-outline-primary rounded-circle btn-action add_to_compare ">
+                                class="btn btn-outline-primary rounded-circle btn-action add_to_compare "
+                                onclick=""
+                                id="">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                             <a href="javascript:" title="{{translate('Delete')}}"
@@ -58,6 +62,7 @@
                             </a>
                         </div>
                     </td>
+                    </tr>
                 </tr>
             @endforeach
         @endif
@@ -75,7 +80,7 @@
         @foreach($ads as $key=>$ad)
             <div class="media gap-3 bg-light p-3 rounded">
                 <div class="avatar border rounded" style="--size: 5.75rem">
-                    <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
+                    <a href="{{route('ads-show', $ad->slug)}}">
                         <img style="block-size: 5rem;"
                             src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
                             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
@@ -83,8 +88,9 @@
                     </a>
                 </div>
                 <div class="media-body d-flex flex-column gap-1">
-                    <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}">
-                        <h6 class="text-capitalize">{{$ad['title']}}</h6>
+                    <a href="{{route('ads-show', $ad->slug)}}">
+                        <h6 class="text-capitalize"
+                        >{{$ad['title']}}</h6>
                     </a>
                     <div>
                         {{ translate('price') }} : {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($ad->price))}}
@@ -96,12 +102,15 @@
                         <span>{{ translate('year') }} : {{$ad->year  ?? '/' }}</span>
                     </div>
                     <div class="d-flex gap-2 align-items-center justify-content-end">
-                        <a href="{{ url(app()->getLocale() . '/ads/show/' . $ad->slug) }}"
-                            class="btn btn-outline-success rounded-circle btn-action add_to_compare ">
+                        <a href="{{route('ads-show', $ad->slug)}}"
+                            class="btn btn-outline-success rounded-circle btn-action add_to_compare "
+                            id="">
                             <i class="bi bi-eye"></i>
                         </a>
                         <a href="{{ route('ads-edit', $ad->id) }}"
-                            class="btn btn-outline-primary rounded-circle btn-action add_to_compare ">
+                            class="btn btn-outline-primary rounded-circle btn-action add_to_compare "
+                            onclick=""
+                            id="">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a href="javascript:" title="{{translate('Delete')}}"
@@ -113,6 +122,11 @@
                 </div>
             </div>
         @endforeach
+    @endif
+    @if($ads->count()==0)
+        <tr class="dashed-border" >
+            <td class="dashed-border rounded" ><h5 class="text-center">{{translate('not_found_anything')}}</h5></td>
+        </tr>
     @endif
 </div>
 
