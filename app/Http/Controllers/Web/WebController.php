@@ -246,19 +246,20 @@ class WebController extends Controller
         return view('web-views.seller-profile', compact('seller_info'));
     }
 
-    public function searched_ads(Request $request)
+     public function searched_ads(Request $request)
     {
         $request->validate([
             'title' => 'required',
         ], [
             'title.required' => 'ads title is required!',
         ]);
-
+ 
         $result = ProductManager::search_ads_web($request['title']);
-        $ads = $result['ads'];
-
+        $ads    = $result['ads'];
+        $locale = $request->input('locale', app()->getLocale());
+ 
         return response()->json([
-            'result' => view(VIEW_FILE_NAMES['product_search_result'], compact('ads'))->render(),
+            'result' => view(VIEW_FILE_NAMES['product_search_result'], compact('ads', 'locale'))->render(),
         ]);
     }
 
