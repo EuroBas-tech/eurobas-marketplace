@@ -179,7 +179,7 @@
     @endif
 </head>
 <!-- Body-->
-<body class="toolbar-enabled" data-lang="{{ session('local') }}" >
+<body class="toolbar-enabled"  data-lang="{{ app()->getLocale() }}" >
 <script>
     function setThemeMode() {
         if (localStorage.getItem('theme') === null) {
