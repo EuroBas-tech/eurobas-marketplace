@@ -213,10 +213,17 @@ const languageMapping = {
 };
 
 // Get current language directly from Laravel session
-function getCurrentLanguage() {
+ function getCurrentLanguage() {
     const lang = document.body.getAttribute('data-lang');
-    return lang || 'en';
+    // Map locale codes to URL prefixes (matching laravellocalization config)
+    const localeUrlMap = {
+        'zh': 'zh-Hans',
+        'nn': 'no'
+    };
+    const resolved = lang ? (localeUrlMap[lang] || lang) : 'en';
+    return resolved;
 }
+ 
 
 // Function to get speech recognition language code
 function getSpeechRecognitionLanguage() {
