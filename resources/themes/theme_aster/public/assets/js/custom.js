@@ -585,7 +585,7 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
                 url: base_url + localePrefix + "/searched-ads",
                 
                 dataType: "json",
-                data: { title },
+                data: { title, locale: currentLang },
                 beforeSend: function () {
                     $container.find("#loading").addClass("d-grid");
                 },
