@@ -578,11 +578,14 @@ $(document).on('keyup', '.search-bar-input-mobile', function() {
         let title = $input.val();
         let base_url = $('meta[name="base-url"]').attr("content");
         
-        if (title.length > 0) {
+         if (title.length > 0) {
+            let currentLang = getCurrentLanguage();
+            let localePrefix = (currentLang === 'en') ? '' : '/' + currentLang;
             $.get({
-                url: base_url + "/searched-ads",
+                url: base_url + localePrefix + "/searched-ads",
                 dataType: "json",
-                data: { title },
+                data: { title, locale: currentLang },
+                
                 beforeSend: function () {
                     $container.find("#loading").addClass("d-grid");
                 },
