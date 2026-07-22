@@ -25,7 +25,15 @@ class CustomerMiddleware
 
             auth()->guard('customer')->logout();
         }
+
+        // If already on login page — do NOT redirect again (prevents mobile Safari loop)
+        if ($request->routeIs('customer.auth.login')) {
+            return $next($request);
+        }
+
         Toastr::info(translate('login_first_for_next_steps'));
-        return redirect()->route('customer.auth.login');
+        return redirect()->route('customer.auth.login', [
+            'redirect_to' => $request->fullUrl()
+        ]);
     }
 }
