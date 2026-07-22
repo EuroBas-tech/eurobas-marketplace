@@ -19,13 +19,10 @@
     <!-- Dynamic Hreflang Tags -->
     <link rel="alternate" hreflang="en" href="{{ url('/') }}" >
 
-    @foreach(LaravelLocalization::getSupportedLocales() as $lang => $props)
-        @php
-            $url = LaravelLocalization::getLocalizedURL($lang);
-            $parts = explode('/', $url);
-            $prefix = end($parts);
-        @endphp
-        <link rel="alternate" hreflang="{{ $prefix }}" href="{{ url($prefix) }}">
+     @foreach(LaravelLocalization::getSupportedLocales() as $lang => $props)
+        @if($lang !== config('laravellocalization.defaultLocale', 'en'))
+        <link rel="alternate" hreflang="{{ $lang }}" href="{{ url($lang) }}">
+        @endif
     @endforeach
 
     <!-- Favicon -->
