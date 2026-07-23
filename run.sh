@@ -33,9 +33,7 @@ php artisan view:cache || true
 # Fix views directory permissions after view:cache
 chmod -R 777 /var/www/storage/framework/views/
 chown -R www-data:www-data /var/www/storage/framework/views/
-# 7. Restart PHP-FPM gracefully to activate OPcache
-pkill -USR2 php-fpm || true
-# 8. Symlink
+# 7. Symlink
 ln -sf /var/www/public /var/www/public/public
-# 9. Start supervisor
+# 8. Start supervisor
 exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
