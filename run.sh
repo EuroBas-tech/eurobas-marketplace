@@ -29,12 +29,11 @@ php artisan migrate --path=database/migrations/2026_05_30_100004_create_seller_r
 
 # 6. Build Laravel caches for performance
 php artisan config:cache
-php artisan route:cache
 php artisan view:cache || true
 # Fix views directory permissions after view:cache
 chmod -R 777 /var/www/storage/framework/views/
 chown -R www-data:www-data /var/www/storage/framework/views/
-# 7. Restart PHP-FPM gracefully to activate OPcache (speeds up PHP by 30-50%)
+# 7. Restart PHP-FPM gracefully to activate OPcache
 pkill -USR2 php-fpm || true
 # 8. Symlink
 ln -sf /var/www/public /var/www/public/public
