@@ -214,24 +214,22 @@ class HomeController extends Controller
 
         $now = now();
 
-        /** ✅ تحسين جلب الإعلانات: تحديد 20 إعلان فقط لكل قسم مباشرة من قاعدة البيانات */
-        $categories = Category::homeEnabled()
-            ->with(['ads' => function ($q) use ($now) {
-                $q->active()
+        /** ✅ جلب الفئات المفعلة فقط للصفحة الرئيسية */
+        $categories = Category::homeEnabled()->get();
+
+        /** ✅ جلب أحدث 20 إعلان لكل فئة بشكل مستقل ودون تداخل بين الفئات */
+        $categories->transform(function ($category) use ($now) {
+            $adsQuery = $category->ads()
+                ->active()
                 ->when(session('show_by_country'),
                     fn ($qq) => $qq->country(session('show_by_country')['name'])
                 )
                 ->with(['brand', 'sponsor', 'wish_list'])
                 ->latest()
-                ->take(20); // جلب 20 إعلان فقط لكل قسم من الداتا بيز مباشرة بدلاً من تحميل جميع الإعلانات
-            }])
-            ->get();
+                ->take(20)
+                ->get();
 
-        /** ✅ تحديد علامات الرعاية والظهور الأول على الـ 20 إعلان المجلوبة فقط */
-        $categories->each(function ($category) use ($now) {
-
-            $ads = $category->ads->map(function ($ad) use ($now) {
-
+            $ads = $adsQuery->map(function ($ad) use ($now) {
                 $ad->has_first_results = $ad->sponsor
                     ->where('type', 'appearance_in_first_results')
                     ->where('is_paid', 1)
@@ -247,10 +245,13 @@ class HomeController extends Controller
                 return $ad;
             });
 
+            // إعادة ربط الإعلانات الـ 20 الخاصة بهذا القسم وترتيب المميز منها أولاً
             $category->setRelation(
                 'ads',
                 $ads->sortByDesc('has_first_results')->values()
             );
+
+            return $category;
         });
 
         $brands = Cache::rememberForever('brands', function () {
