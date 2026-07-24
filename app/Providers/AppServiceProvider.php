@@ -94,6 +94,7 @@ class AppServiceProvider extends ServiceProvider
                 'copyright_text' => Helpers::get_settings($web, 'company_copyright_text'),
                 'decimal_point_settings' => !empty(\App\CPU\Helpers::get_business_settings('decimal_point_settings')) ? \App\CPU\Helpers::get_business_settings('decimal_point_settings') : 0,
                 
+                'seller_registration' => 0,
                 'wallet_status' => Helpers::get_business_settings('wallet_status'),
                 'loyalty_point_status' => Helpers::get_business_settings('loyalty_point_status'),
                 'guest_checkout_status' => Helpers::get_business_settings('guest_checkout'),
@@ -118,7 +119,7 @@ class AppServiceProvider extends ServiceProvider
                     $social_login_text = true;
                 }
 
-            
+                
                 $social_media = Cache::remember('app_social_media', 86400, function () {
                     return SocialMedia::where('active_status', 1)->get();
                 });
@@ -130,7 +131,7 @@ class AppServiceProvider extends ServiceProvider
                     'currencies' => Cache::remember('currencies_static', 604800, function () {
                         return Currency::where('status', 1)->get();
                     }),
-                    'main_categories' => Category::priority()->get(), // بدون كاش لضمان دقة الترجمات 100%
+                    'main_categories' => Category::priority()->get(),
                     'business_mode' => Helpers::get_business_settings('business_mode'),
                     'social_media' => $social_media,
                     'ios' => Helpers::get_business_settings('download_app_apple_stroe'),
@@ -173,7 +174,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            // Get language setting with caching
+            
             $language = Cache::rememberForever('language', function () {
                 return BusinessSetting::where('type', 'language')->first();
             });
