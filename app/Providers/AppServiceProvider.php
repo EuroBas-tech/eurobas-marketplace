@@ -36,7 +36,6 @@ ini_set('post_max_size','200M');
 
 class AppServiceProvider extends ServiceProvider
 {
-
     use AddonHelper;
     use ThemeHelper;
 
@@ -50,7 +49,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(\Amirami\Localizator\ServiceProvider::class);
         }
-
     }
 
     /**
@@ -58,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-
     public function boot()
     {
         app()->setLocale(LaravelLocalization::getCurrentLocale());
@@ -68,26 +65,23 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        Config::set('addon_admin_routes',$this->get_addon_admin_routes());
-        Config::set('get_payment_publish_status',$this->get_payment_publish_status());
+        Config::set('addon_admin_routes', $this->get_addon_admin_routes());
+        Config::set('get_payment_publish_status', $this->get_payment_publish_status());
+        Config::set('get_theme_routes', $this->get_theme_routes());
 
-        Config::set('get_theme_routes',$this->get_theme_routes());
+        if (Schema::hasTable('business_settings')) {
 
-            if (Schema::hasTable('business_settings')) {
-
-             $web = Cache::remember('business_settings', 3600, function () {
-              return BusinessSetting::select('type', 'value')->get();
+            $web = Cache::remember('business_settings', 3600, function () {
+                return BusinessSetting::select('type', 'value')->get();
             });
-                    
-             
 
             $settings = Helpers::get_settings($web, 'colors');
-            $data = json_decode($settings['value'], true);
+            $data = json_decode($settings['value'] ?? '{}', true);
 
             $web_config = [
-                'primary_color' => $data['primary'],
-                'secondary_color' => $data['secondary'],
-                'primary_color_light' => isset($data['primary_light']) ? $data['primary_light'] : '',
+                'primary_color' => $data['primary'] ?? '',
+                'secondary_color' => $data['secondary'] ?? '',
+                'primary_color_light' => $data['primary_light'] ?? '',
                 'name' => Helpers::get_settings($web, 'company_name'),
                 'phone' => Helpers::get_settings($web, 'company_phone'),
                 'web_logo' => Helpers::get_settings($web, 'company_web_logo'),
@@ -98,96 +92,68 @@ class AppServiceProvider extends ServiceProvider
                 'footer_logo' => Helpers::get_settings($web, 'company_footer_logo'),
                 'copyright_text' => Helpers::get_settings($web, 'company_copyright_text'),
                 'decimal_point_settings' => !empty(\App\CPU\Helpers::get_business_settings('decimal_point_settings')) ? \App\CPU\Helpers::get_business_settings('decimal_point_settings') : 0,
-                'seller_registration' => optional(BusinessSetting::where('type', 'seller_registration')->first())->value ?? null,
+                
                 'wallet_status' => Helpers::get_business_settings('wallet_status'),
                 'loyalty_point_status' => Helpers::get_business_settings('loyalty_point_status'),
                 'guest_checkout_status' => Helpers::get_business_settings('guest_checkout'),
             ];
 
-                if (!Request::is('admin') && !Request::is('admin/*') && !Request::is('seller/*')) {
+            if (!Request::is('admin') && !Request::is('admin/*') && !Request::is('seller/*')) {
 
-                    $recaptcha = Helpers::get_business_settings('recaptcha');
-                    $socials_login = Helpers::get_business_settings('social_login');
-                    $social_login_text = false;
-                    $apple_login = Helpers::get_business_settings('apple_login');
-                    
+                $recaptcha = Helpers::get_business_settings('recaptcha');
+                $socials_login = Helpers::get_business_settings('social_login');
+                $social_login_text = false;
+                $apple_login = Helpers::get_business_settings('apple_login');
+                
+                if (is_array($socials_login)) {
                     foreach ($socials_login as $socialLoginService) {
                         if (isset($socialLoginService) && $socialLoginService['status'] == true) {
                             $social_login_text = true;
                         }
                     }
-                            
-                    if(isset($apple_login) && $apple_login[0]['status'] == true) {
-                        $social_login_text = true;
-                    }
-
-                    $web_config += [
-                        'cookie_setting' => Helpers::get_settings($web, 'cookie_setting'),
-                        'announcement' => Helpers::get_business_settings('announcement'),
-                        'currency_model' => Helpers::get_business_settings('currency_model'),
-                        'currencies' => Cache::remember('currencies_static', 604800, function () {
-                         return Currency::where('status', 1)->get();
-                          }),
-                        'main_categories' => Category::priority()->get(),
-                        'business_mode' => Helpers::get_business_settings('business_mode'),
-                        'social_media' => SocialMedia::where('active_status', 1)->get(),
-                        'ios' => Helpers::get_business_settings('download_app_apple_stroe'),
-                        'android' => Helpers::get_business_settings('download_app_google_stroe'),
-                        'refund_policy' => Helpers::get_business_settings('refund-policy'),
-                        'return_policy' => Helpers::get_business_settings('return-policy'),
-                        'cancellation_policy' => Helpers::get_business_settings('cancellation-policy'),
-                        'brand_setting' => Helpers::get_business_settings('product_brand'),
-                        'discount_product' => 0, // تم إيقافه لزيادة السرعة؛ لا توجد عروض حالياً من الإدارة
-                        'recaptcha' => $recaptcha,
-                        'socials_login' => $socials_login,
-                        'apple_login' => $apple_login,
-                        'social_login_text' => $social_login_text,
-                    ];
-
-                    if (theme_root_path() == "theme_fashion") {
-
-                        $features_section = [
-                            'features_section_top' => Helpers::get_business_settings('features_section_top') ?? [],
-                            'features_section_middle' => Helpers::get_business_settings('features_section_middle') ?? [],
-                            'features_section_bottom' => Helpers::get_business_settings('features_section_bottom') ?? [],
-                        ];
-
-                        $tags = Tag::orderBy('visit_count', 'desc')->take(15)->get();
-
-                        $total_discount_products = Product::active()->where('discount', '!=', '0')->count();
-
-                        $web_config += [
-                            'tags' => $tags,
-                            'features_section' => $features_section,
-                            'total_discount_products' => $total_discount_products,
-                            'products_stock_limit' => Helpers::get_settings($web, 'stock_limit')->value,
-                        ];
-                    }
+                }
+                        
+                if (isset($apple_login) && isset($apple_login[0]['status']) && $apple_login[0]['status'] == true) {
+                    $social_login_text = true;
                 }
 
-           // Get language setting with caching
-              $language = Cache::rememberForever('language', function () {
-                    return BusinessSetting::where('type', 'language')->first();
+                $social_media = Cache::remember('app_social_media', 86400, function () {
+                    return SocialMedia::where('active_status', 1)->get();
                 });
-                  
-                
-                //currency
-                // \App\CPU\Helpers::currency_load();
 
-                View::share(['web_config' => $web_config, 'language' => $language]);
-
-                Schema::defaultStringLength(191);
+                $web_config += [
+                    'cookie_setting' => Helpers::get_settings($web, 'cookie_setting'),
+                    'announcement' => Helpers::get_business_settings('announcement'),
+                    'currency_model' => Helpers::get_business_settings('currency_model'),
+                    'currencies' => Cache::remember('currencies_static', 604800, function () {
+                        return Currency::where('status', 1)->get();
+                    }),
+                    'main_categories' => Category::priority()->get(),
+                    'business_mode' => Helpers::get_business_settings('business_mode'),
+                    'social_media' => $social_media,
+                    'ios' => Helpers::get_business_settings('download_app_apple_stroe'),
+                    'android' => Helpers::get_business_settings('download_app_google_stroe'),
+                    'refund_policy' => Helpers::get_business_settings('refund-policy'),
+                    'return_policy' => Helpers::get_business_settings('return-policy'),
+                    'cancellation_policy' => Helpers::get_business_settings('cancellation-policy'),
+                    'brand_setting' => Helpers::get_business_settings('product_brand'),
+                    'discount_product' => 0,
+                    'recaptcha' => $recaptcha,
+                    'socials_login' => $socials_login,
+                    'apple_login' => $apple_login,
+                    'social_login_text' => $social_login_text,
+                ];
             }
 
-        /**
-         * Paginate a standard Laravel Collection.
-         *
-         * @param int $perPage
-         * @param int $total
-         * @param int $page
-         * @param string $pageName
-         * @return array
-         */
+            // Get language setting with caching
+            $language = Cache::rememberForever('language', function () {
+                return BusinessSetting::where('type', 'language')->first();
+            });
+
+            View::share(['web_config' => $web_config, 'language' => $language]);
+
+            Schema::defaultStringLength(191);
+        }
 
         Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page') {
             $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
@@ -203,7 +169,6 @@ class AppServiceProvider extends ServiceProvider
                 ]
             );
         });
-
 
         if (!session()->has('country_shipping')) {
             session(['country_shipping' => 'All']);
