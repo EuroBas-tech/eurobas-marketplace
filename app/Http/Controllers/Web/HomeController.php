@@ -40,22 +40,18 @@ class HomeController extends Controller
 
     public function index()
     {
-        
-  $locale = app()->getLocale(); 
+        $locale = app()->getLocale(); 
 
-$home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
-    return Category::with(['translations' => function ($query) use ($locale) {
-                $query->where('locale', $locale);
-            }])
-            ->where('home_status', true)
-            ->priority()
-            ->latest()
-            ->take(16)
-            ->get();
-});
-         
-
-        $locale = app()->getLocale();
+        $home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
+            return Category::with(['translations' => function ($query) use ($locale) {
+                        $query->where('locale', $locale);
+                    }])
+                    ->where('home_status', true)
+                    ->priority()
+                    ->latest()
+                    ->take(16)
+                    ->get();
+        });
 
         $banners = Cache::rememberForever('main_banners', function () {
             return Banner::where('banner_type', 'Main Banner')
@@ -89,7 +85,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 'large'  => 'clamp(20px,2.5vw,32px)',
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
-        $bannerText = [
+            $bannerText = [
                 'title'      => html_entity_decode(translate($banner->title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'sub_title'  => html_entity_decode(translate($banner->sub_title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
@@ -102,32 +98,31 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
             ];
         }
 
-         $customerId = auth('customer')->id();
-         $guestId    = $customerId ? null : Helpers::deviceId();
-         $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
-         $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
+        $customerId = auth('customer')->id();
+        $guestId    = $customerId ? null : Helpers::deviceId();
+        $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+        $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
 
         $interestData = Cache::remember($cacheKey, $cacheTTL, function () use ($customerId, $guestId) {
+            $query = \App\Model\UserCategoryInterest::query()
+                ->when(
+                    $customerId,
+                    fn($q) => $q->where('user_id', $customerId),
+                    fn($q) => $q->where('guest_id', $guestId)
+                );
 
-         $query = \App\Model\UserCategoryInterest::query()
-            ->when(
-            $customerId,
-            fn($q) => $q->where('user_id', $customerId),
-            fn($q) => $q->where('guest_id', $guestId)
-          );
+            $interests = $query
+                ->orderByDesc('score')
+                ->get();
 
-          $interests = $query
-          ->orderByDesc('score')
-          ->get();
+            return [
+                'userInterests' => $interests,
+                'favCategoryId' => optional($interests->first())->category_id
+            ];
+        });
 
-        return [
-           'userInterests' => $interests,
-           'favCategoryId' => optional($interests->first())->category_id
-       ];
-   });
-
-       $userInterests = $interestData['userInterests'];
-       $favCategoryId = $interestData['favCategoryId'];
+        $userInterests = $interestData['userInterests'];
+        $favCategoryId = $interestData['favCategoryId'];
 
         // Get total matching banners count
         $totalBanners = PaidBanner::with('package.features', 'category')
@@ -219,19 +214,20 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
         $now = now();
 
-        /** ✅ تحميل الإعلانات بدون limit */
+        /** ✅ تحسين جلب الإعلانات: تحديد 20 إعلان فقط لكل قسم مباشرة من قاعدة البيانات */
         $categories = Category::homeEnabled()
-        ->with(['ads' => function ($q) use ($now) {
-            $q->active()
-            ->when(session('show_by_country'),
-                fn ($qq) => $qq->country(session('show_by_country')['name'])
-            )
-            ->with(['brand', 'sponsor', 'wish_list'])
-            ->latest();
-        }])
-        ->get();
+            ->with(['ads' => function ($q) use ($now) {
+                $q->active()
+                ->when(session('show_by_country'),
+                    fn ($qq) => $qq->country(session('show_by_country')['name'])
+                )
+                ->with(['brand', 'sponsor', 'wish_list'])
+                ->latest()
+                ->take(20); // جلب 20 إعلان فقط لكل قسم من الداتا بيز مباشرة بدلاً من تحميل جميع الإعلانات
+            }])
+            ->get();
 
-        /** ✅ هنا نتحكم بالعدد والترتيب بدون كسر eager loading */
+        /** ✅ تحديد علامات الرعاية والظهور الأول على الـ 20 إعلان المجلوبة فقط */
         $categories->each(function ($category) use ($now) {
 
             $ads = $category->ads->map(function ($ad) use ($now) {
@@ -253,7 +249,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
             $category->setRelation(
                 'ads',
-                $ads->sortByDesc('has_first_results')->take( 20)->values()
+                $ads->sortByDesc('has_first_results')->values()
             );
         });
 
