@@ -36,6 +36,7 @@ ini_set('post_max_size','200M');
 
 class AppServiceProvider extends ServiceProvider
 {
+
     use AddonHelper;
     use ThemeHelper;
 
@@ -81,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
             $web_config = [
                 'primary_color' => $data['primary'] ?? '',
                 'secondary_color' => $data['secondary'] ?? '',
-                'primary_color_light' => $data['primary_light'] ?? '',
+                'primary_color_light' => isset($data['primary_light']) ? $data['primary_light'] : '',
                 'name' => Helpers::get_settings($web, 'company_name'),
                 'phone' => Helpers::get_settings($web, 'company_phone'),
                 'web_logo' => Helpers::get_settings($web, 'company_web_logo'),
@@ -117,6 +118,7 @@ class AppServiceProvider extends ServiceProvider
                     $social_login_text = true;
                 }
 
+            
                 $social_media = Cache::remember('app_social_media', 86400, function () {
                     return SocialMedia::where('active_status', 1)->get();
                 });
@@ -128,7 +130,7 @@ class AppServiceProvider extends ServiceProvider
                     'currencies' => Cache::remember('currencies_static', 604800, function () {
                         return Currency::where('status', 1)->get();
                     }),
-                    'main_categories' => Category::priority()->get(),
+                    'main_categories' => Category::priority()->get(), // بدون كاش لضمان دقة الترجمات 100%
                     'business_mode' => Helpers::get_business_settings('business_mode'),
                     'social_media' => $social_media,
                     'ios' => Helpers::get_business_settings('download_app_apple_stroe'),
@@ -143,6 +145,32 @@ class AppServiceProvider extends ServiceProvider
                     'apple_login' => $apple_login,
                     'social_login_text' => $social_login_text,
                 ];
+
+                if (theme_root_path() == "theme_fashion") {
+
+                    $features_section = [
+                        'features_section_top' => Helpers::get_business_settings('features_section_top') ?? [],
+                        'features_section_middle' => Helpers::get_business_settings('features_section_middle') ?? [],
+                        'features_section_bottom' => Helpers::get_business_settings('features_section_bottom') ?? [],
+                    ];
+
+                    
+                    $tags = Cache::remember('app_top_tags', 604800, function () {
+                        return Tag::orderBy('visit_count', 'desc')->take(15)->get();
+                    });
+
+                    
+                    $total_discount_products = Cache::remember('app_total_discount_products', 604800, function () {
+                        return Product::active()->where('discount', '!=', '0')->count();
+                    });
+
+                    $web_config += [
+                        'tags' => $tags,
+                        'features_section' => $features_section,
+                        'total_discount_products' => $total_discount_products,
+                        'products_stock_limit' => Helpers::get_settings($web, 'stock_limit')->value ?? 0,
+                    ];
+                }
             }
 
             // Get language setting with caching
