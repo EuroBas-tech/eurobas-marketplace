@@ -214,18 +214,17 @@ class HomeController extends Controller
 
         $now = now();
 
-        /** ✅ جلب الأقسام التابعة للصفحة الرئيسية */
+        /** جلب الأقسام التابعة للصفحة الرئيسية */
         $categories = Category::homeEnabled()->get();
 
-        /** ✅ تحميل 20 إعلان لكل قسم مع جلب كامل الملحقات (صور + فيديوهات + سبونسر + ماركة) برمجياً دون تحميل سيرفر قاعدة البيانات */
+        /** تحميل 20 إعلان لكل قسم بصورة مستقرة مع حماية العلاقات */
         $categories->transform(function ($category) use ($now) {
             $adsQuery = $category->ads()
                 ->active()
                 ->when(session('show_by_country'),
                     fn ($qq) => $qq->country(session('show_by_country')['name'])
                 )
-                // جلب كافة العلاقات والملحقات لمنع اختفاء الصور والبطء أثناء التمرير
-                ->with(['brand', 'sponsor', 'wish_list', 'attachment', 'images'])
+                ->with(['brand', 'sponsor', 'wish_list'])
                 ->latest()
                 ->take(20)
                 ->get();
@@ -246,7 +245,6 @@ class HomeController extends Controller
                 return $ad;
             });
 
-            // تعيين العلاقات المجهزة مباشرة (20 إعلان مرتّبة حسَب التميز)
             $category->setRelation(
                 'ads',
                 $ads->sortByDesc('has_first_results')->values()
