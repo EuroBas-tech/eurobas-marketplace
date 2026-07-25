@@ -56,9 +56,17 @@ class LoginController extends Controller
         // Milestone 1: Dedicated login page.
         // Determine a safe post-login redirect target and persist it for the submit() step.
         $redirect = $request->get('redirect_to') ?: url()->previous();
-        if (!$redirect || Str::contains($redirect, ['auth/login', 'auth/sign-up', 'auth/recover-password'])) {
+
+        
+        if (!$redirect || Str::contains($redirect, ['auth/login', 'auth/sign-up', 'auth/recover-password', 'customer/auth'])) {
             $redirect = route('home');
         }
+
+        
+        if ($redirect === url()->current() || $redirect === route('customer.auth.login')) {
+            $redirect = route('home');
+        }
+
         session()->put('keep_return_url', $redirect);
 
         if(theme_root_path() == 'default'){
