@@ -40,7 +40,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $locale = app()->getLocale(); 
+        $locale = app()->getLocale();
 
         $home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
             return Category::with(['translations' => function ($query) use ($locale) {
@@ -90,7 +90,7 @@ class HomeController extends Controller
                 'sub_title'  => html_entity_decode(translate($banner->sub_title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
                 'titleSize'  => $titleSizes[$size]  ?? 'clamp(32px,3.8vw,52px)',
-                'subSize'    => $subSizes[$size]     ?? 'clamp(20px,2.5vw,32px)',
+                'subSize'    => $subSizes[$size]    ?? 'clamp(20px,2.5vw,32px)',
                 'vAlign'     => $vAligns[$pos]       ?? 'center',
                 'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
                 'tAlign'     => $isRtl ? 'right' : 'left',
@@ -214,17 +214,18 @@ class HomeController extends Controller
 
         $now = now();
 
-        /** ✅ جلب الفئات المفعلة فقط للصفحة الرئيسية */
+        /** ✅ جلب الأقسام التابعة للصفحة الرئيسية */
         $categories = Category::homeEnabled()->get();
 
-        /** ✅ جلب أحدث 20 إعلان لكل فئة بشكل مستقل ودون تداخل بين الفئات */
+        /** ✅ تحميل 20 إعلان لكل قسم مع جلب كامل الملحقات (صور + فيديوهات + سبونسر + ماركة) برمجياً دون تحميل سيرفر قاعدة البيانات */
         $categories->transform(function ($category) use ($now) {
             $adsQuery = $category->ads()
                 ->active()
                 ->when(session('show_by_country'),
                     fn ($qq) => $qq->country(session('show_by_country')['name'])
                 )
-                ->with(['brand', 'sponsor', 'wish_list'])
+                // جلب كافة العلاقات والملحقات لمنع اختفاء الصور والبطء أثناء التمرير
+                ->with(['brand', 'sponsor', 'wish_list', 'attachment', 'images'])
                 ->latest()
                 ->take(20)
                 ->get();
@@ -245,7 +246,7 @@ class HomeController extends Controller
                 return $ad;
             });
 
-            // إعادة ربط الإعلانات الـ 20 الخاصة بهذا القسم وترتيب المميز منها أولاً
+            // تعيين العلاقات المجهزة مباشرة (20 إعلان مرتّبة حسَب التميز)
             $category->setRelation(
                 'ads',
                 $ads->sortByDesc('has_first_results')->values()
