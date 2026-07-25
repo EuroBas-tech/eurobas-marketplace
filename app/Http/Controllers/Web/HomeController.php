@@ -40,18 +40,22 @@ class HomeController extends Controller
 
     public function index()
     {
-        $locale = app()->getLocale();
+        
+  $locale = app()->getLocale(); 
 
-        $home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
-            return Category::with(['translations' => function ($query) use ($locale) {
-                        $query->where('locale', $locale);
-                    }])
-                    ->where('home_status', true)
-                    ->priority()
-                    ->latest()
-                    ->take(16)
-                    ->get();
-        });
+$home_categories = Cache::rememberForever('categories_' . $locale, function () use ($locale) {
+    return Category::with(['translations' => function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            }])
+            ->where('home_status', true)
+            ->priority()
+            ->latest()
+            ->take(16)
+            ->get();
+});
+         
+
+        $locale = app()->getLocale();
 
         $banners = Cache::rememberForever('main_banners', function () {
             return Banner::where('banner_type', 'Main Banner')
@@ -85,12 +89,12 @@ class HomeController extends Controller
                 'large'  => 'clamp(20px,2.5vw,32px)',
             ];
             $vAligns    = ['top'=>'flex-start','center'=>'center','bottom'=>'flex-end'];
-            $bannerText = [
+        $bannerText = [
                 'title'      => html_entity_decode(translate($banner->title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'sub_title'  => html_entity_decode(translate($banner->sub_title ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'hexColor'   => $colorMap[$color]   ?? '#ffffff',
                 'titleSize'  => $titleSizes[$size]  ?? 'clamp(32px,3.8vw,52px)',
-                'subSize'    => $subSizes[$size]    ?? 'clamp(20px,2.5vw,32px)',
+                'subSize'    => $subSizes[$size]     ?? 'clamp(20px,2.5vw,32px)',
                 'vAlign'     => $vAligns[$pos]       ?? 'center',
                 'hPos'       => $isRtl ? 'right:0;left:auto;' : 'left:0;right:auto;',
                 'tAlign'     => $isRtl ? 'right' : 'left',
@@ -98,31 +102,32 @@ class HomeController extends Controller
             ];
         }
 
-        $customerId = auth('customer')->id();
-        $guestId    = $customerId ? null : Helpers::deviceId();
-        $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
-        $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
+         $customerId = auth('customer')->id();
+         $guestId    = $customerId ? null : Helpers::deviceId();
+         $cacheKey   = 'user_interests_' . ($customerId ?? $guestId);
+         $cacheTTL   = $customerId ? now()->addHours(2) : now()->addMinutes(10);
 
         $interestData = Cache::remember($cacheKey, $cacheTTL, function () use ($customerId, $guestId) {
-            $query = \App\Model\UserCategoryInterest::query()
-                ->when(
-                    $customerId,
-                    fn($q) => $q->where('user_id', $customerId),
-                    fn($q) => $q->where('guest_id', $guestId)
-                );
 
-            $interests = $query
-                ->orderByDesc('score')
-                ->get();
+         $query = \App\Model\UserCategoryInterest::query()
+            ->when(
+            $customerId,
+            fn($q) => $q->where('user_id', $customerId),
+            fn($q) => $q->where('guest_id', $guestId)
+          );
 
-            return [
-                'userInterests' => $interests,
-                'favCategoryId' => optional($interests->first())->category_id
-            ];
-        });
+          $interests = $query
+          ->orderByDesc('score')
+          ->get();
 
-        $userInterests = $interestData['userInterests'];
-        $favCategoryId = $interestData['favCategoryId'];
+        return [
+           'userInterests' => $interests,
+           'favCategoryId' => optional($interests->first())->category_id
+       ];
+   });
+
+       $userInterests = $interestData['userInterests'];
+       $favCategoryId = $interestData['favCategoryId'];
 
         // Get total matching banners count
         $totalBanners = PaidBanner::with('package.features', 'category')
@@ -214,22 +219,23 @@ class HomeController extends Controller
 
         $now = now();
 
-        /** جلب الأقسام التابعة للصفحة الرئيسية */
-        $categories = Category::homeEnabled()->get();
+        /** ✅ تحميل الإعلانات بدون limit */
+        $categories = Category::homeEnabled()
+        ->with(['ads' => function ($q) use ($now) {
+            $q->active()
+            ->when(session('show_by_country'),
+                fn ($qq) => $qq->country(session('show_by_country')['name'])
+            )
+            ->with(['brand', 'sponsor', 'wish_list'])
+            ->latest();
+        }])
+        ->get();
 
-        /** تحميل 20 إعلان لكل قسم بصورة مستقرة مع حماية العلاقات */
-        $categories->transform(function ($category) use ($now) {
-            $adsQuery = $category->ads()
-                ->active()
-                ->when(session('show_by_country'),
-                    fn ($qq) => $qq->country(session('show_by_country')['name'])
-                )
-                ->with(['brand', 'sponsor', 'wish_list'])
-                ->latest()
-                ->take(20)
-                ->get();
+        /** ✅ هنا نتحكم بالعدد والترتيب بدون كسر eager loading */
+        $categories->each(function ($category) use ($now) {
 
-            $ads = $adsQuery->map(function ($ad) use ($now) {
+            $ads = $category->ads->map(function ($ad) use ($now) {
+
                 $ad->has_first_results = $ad->sponsor
                     ->where('type', 'appearance_in_first_results')
                     ->where('is_paid', 1)
@@ -247,10 +253,8 @@ class HomeController extends Controller
 
             $category->setRelation(
                 'ads',
-                $ads->sortByDesc('has_first_results')->values()
+                $ads->sortByDesc('has_first_results')->take( 20)->values()
             );
-
-            return $category;
         });
 
         $brands = Cache::rememberForever('brands', function () {
