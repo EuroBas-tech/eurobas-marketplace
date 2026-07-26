@@ -114,7 +114,7 @@
         </div>
         <div class="product__thumbnail position-relative">
             <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
-            onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
+            onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
             class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2" alt="">
             @if($ad->has_urgent_sale_sticker == 1)
                 <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
@@ -270,49 +270,19 @@
         margin-top: auto !important;
     }
 
-/* Modern Skeleton Loading for Product Images */
-.product-image-skeleton-wrapper {
-    position: relative;
+/* Product image container - fixed height, no skeleton */
+.product-image-container {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    background: #f8f9fa;
 }
 
-.product-image-skeleton-placeholder {
+.product-image-container img {
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: product-skeleton-shimmer 3s ease-in-out infinite;
-    border-radius: inherit;
-}
-
-.product-image-skeleton-loaded {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 2;
-}
-
-.product-image-skeleton-loaded.product-skeleton-show {
-    opacity: 1;
-}
-
-.product-image-skeleton-wrapper.product-skeleton-loaded-state .product-image-skeleton-placeholder {
-    display: none;
-}
-
-@keyframes product-skeleton-shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+    object-fit: cover;
+    display: block;
 }
 
 </style>
@@ -336,17 +306,12 @@
             </a>
         </div>
         <div class="product__thumbnail position-relative">
-            <div class="product-image-skeleton-wrapper" id="skeleton-wrapper-{{$ad->id}}">
-                <!-- Skeleton placeholder -->
-                <div class="product-image-skeleton-placeholder custom-bottom-border-radius">
-                </div>
-
-                <!-- Actual image -->
+            <div class="product-image-container custom-bottom-border-radius">
                 <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
-                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'" loading="lazy"
-                class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2 product-image-skeleton-loaded"
-                alt=""
-                onload="this.classList.add('product-skeleton-show'); document.getElementById('skeleton-wrapper-{{$ad->id}}').classList.add('product-skeleton-loaded-state');">
+                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                loading="lazy"
+                class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2"
+                alt="">
             </div>
             @if($ad->has_urgent_sale_sticker == 1)
                 <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
@@ -406,4 +371,3 @@
 
 
 --}}
-
