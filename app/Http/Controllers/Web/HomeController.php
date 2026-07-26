@@ -227,7 +227,8 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 fn ($qq) => $qq->country(session('show_by_country')['name'])
             )
             ->with(['brand', 'sponsor', 'wish_list'])
-            ->latest();
+            ->latest() 
+            ->limit(40);
         }])
         ->get();
 
