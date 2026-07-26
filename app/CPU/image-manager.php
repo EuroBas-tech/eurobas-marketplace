@@ -23,7 +23,14 @@ class ImageManager
                 // PHP "exif" extension is not installed (Intervention's orientate()
                 // throws without it, which silently left images rotated on production).
                 self::applyOrientation($image_make, $image);
-                $image_webp =  $image_make->encode($format, 90);
+                // Resize if wider than 1600px — keeps quality without huge file sizes
+                if ($image_make->width() > 1600) {
+                    $image_make->resize(1600, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+                $image_webp = $image_make->encode($format, 75);
                 $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $format;
             }
 
