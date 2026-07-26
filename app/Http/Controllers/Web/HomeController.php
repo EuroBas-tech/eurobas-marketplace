@@ -219,30 +219,31 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
         $now = now();
 
-        /** ✅ تحميل الإعلانات بدون limit */
-        $categories = Category::homeEnabled()
-        ->with(['ads' => function ($q) use ($now) {
-            $q->active()
-            ->when(session('show_by_country'),
-                fn ($qq) => $qq->country(session('show_by_country')['name'])
-            )
-            ->with(['brand', 'sponsor', 'wish_list'])
-            ->latest() 
-            ->limit(40);
-        }])
-        ->get();
+        // جلب الفئات أولاً بدون إعلانات
+        $categories = Category::homeEnabled()->get();
 
-        /** ✅ هنا نتحكم بالعدد والترتيب بدون كسر eager loading */
-        $categories->each(function ($category) use ($now) {
+        // جلب أفضل 20 إعلان لكل فئة بشكل مستقل — مع limit حقيقي في قاعدة البيانات
+        $showByCountry = session('show_by_country');
 
-            $ads = $category->ads->map(function ($ad) use ($now) {
+        $categories->each(function ($category) use ($now, $showByCountry) {
+
+            // جلب 40 إعلان فقط من DB — يكفي للفرز واختيار أفضل 20
+            $ads = $category->ads()
+                ->active()
+                ->when($showByCountry, fn($q) => $q->country($showByCountry['name']))
+                ->with(['brand', 'sponsor', 'wish_list'])
+                ->latest()
+                ->limit(40)
+                ->get();
+
+            $ads = $ads->map(function ($ad) use ($now) {
 
                 $ad->has_first_results = $ad->sponsor
                     ->where('type', 'appearance_in_first_results')
                     ->where('is_paid', 1)
                     ->where('expiration_date', '>', $now)
                     ->isNotEmpty() ? 1 : 0;
-                    
+
                 $ad->has_urgent_sale_sticker = $ad->sponsor
                     ->where('type', 'urgent_sale_sticker')
                     ->where('is_paid', 1)
@@ -254,7 +255,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
             $category->setRelation(
                 'ads',
-                $ads->sortByDesc('has_first_results')->take( 20)->values()
+                $ads->sortByDesc('has_first_results')->take(20)->values()
             );
         });
 
