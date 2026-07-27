@@ -43,7 +43,7 @@ class PaidBannerController extends Controller
     public function store(Request $request) {
         
         $request->validate([
-            'banner_image' => 'required|image',
+            'banner_image' => 'required|image|max:4096',
             'package_id' => 'required|numeric|exists:subscription_packages,id',
         ]);
 
@@ -97,6 +97,7 @@ class PaidBannerController extends Controller
         }
 
         Cache::forget('main_banners');
+        session(['home_slider_offset' => 0]); // Reset so user sees their new banner immediately
         
         Toastr::success(translate('banner_added_successfully'));
         return redirect()->route('home');
@@ -123,7 +124,7 @@ class PaidBannerController extends Controller
     public function update(Request $request) {
 
         $request->validate([
-            'banner_image' => 'image',
+            'banner_image' => 'image|max:4096',
             'banner_id' => 'required|exists:paid_banners,id',
             'package_id' => 'exists:subscription_packages,id',
         ]);
@@ -180,7 +181,9 @@ class PaidBannerController extends Controller
         }
 
         $paidBanner->banner_url = isset($ad) && $ad->slug ? route('ads-show',$ad->slug) : $paidBanner->banner_url;
-        $paidBanner->category_id = $request->category_id;
+        if ($request->filled('category_id')) {
+            $paidBanner->category_id = $request->category_id;
+        }
 
         if ($request->hasFile('banner_image')) {
             $paidBanner->banner_image = ImageManager::upload(
@@ -212,6 +215,7 @@ class PaidBannerController extends Controller
         $paidBanner->save();
 
         Cache::forget('main_banners');
+        session(['home_slider_offset' => 0]); // Reset so user sees their banner immediately
 
         Toastr::success(translate('banner_updated_successfully'));
 
