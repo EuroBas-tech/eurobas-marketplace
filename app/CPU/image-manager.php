@@ -23,9 +23,9 @@ class ImageManager
                 // PHP "exif" extension is not installed (Intervention's orientate()
                 // throws without it, which silently left images rotated on production).
                 self::applyOrientation($image_make, $image);
-                // Resize if wider than 1600px — keeps quality without huge file sizes
-                if ($image_make->width() > 1600) {
-                    $image_make->resize(1600, null, function ($constraint) {
+                // Resize if wider than 1200px — keeps quality without huge file sizes
+                if ($image_make->width() > 1200) {
+                    $image_make->resize(1200, null, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
@@ -42,6 +42,24 @@ class ImageManager
                 Storage::disk()->put($dir . $imageName, file_get_contents($image));
             }else{
                 Storage::disk()->put($dir . $imageName, $image_webp);
+
+                // Generate thumbnail for ad images (used in home page cards)
+                if (str_starts_with($dir, 'ad/') && !str_starts_with($dir, 'ad/thumbnail/')) {
+                    $thumbDir = 'ad/thumbnail/';
+                    if (!Storage::disk()->exists($thumbDir)) {
+                        Storage::disk()->makeDirectory($thumbDir);
+                    }
+                    $thumb = Image::make($image);
+                    self::applyOrientation($thumb, $image);
+                    $thumb->fit(600, 450, function ($constraint) {
+                        $constraint->upsize();
+                    });
+                    $thumbWebp = $thumb->encode($format, 70);
+                    Storage::disk()->put($thumbDir . $imageName, $thumbWebp);
+                    $thumbWebp->destroy();
+                    $thumb->destroy();
+                }
+
                 $image_webp->destroy();
             }
 
