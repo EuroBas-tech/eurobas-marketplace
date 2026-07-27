@@ -97,7 +97,7 @@ class PaidBannerController extends Controller
         }
 
         Cache::forget('main_banners');
-        session(['home_slider_offset' => 0]); // Reset so user sees their new banner immediately
+        session(['home_slider_offset' => 0]); // إعادة تعيين لظهور البنر فوراً
         
         Toastr::success(translate('banner_added_successfully'));
         return redirect()->route('home');
@@ -124,9 +124,9 @@ class PaidBannerController extends Controller
     public function update(Request $request) {
 
         $request->validate([
-            'banner_image' => 'image|max:4096',
+            'banner_image' => 'nullable|image|max:4096',
             'banner_id' => 'required|exists:paid_banners,id',
-            'package_id' => 'exists:subscription_packages,id',
+            'package_id' => 'nullable|exists:subscription_packages,id',
         ]);
 
         if($request->redirect_to_ads && $request->redirect_to_ads == 'on') {
@@ -181,9 +181,7 @@ class PaidBannerController extends Controller
         }
 
         $paidBanner->banner_url = isset($ad) && $ad->slug ? route('ads-show',$ad->slug) : $paidBanner->banner_url;
-        if ($request->filled('category_id')) {
-            $paidBanner->category_id = $request->category_id;
-        }
+        $paidBanner->category_id = $request->category_id;
 
         if ($request->hasFile('banner_image')) {
             $paidBanner->banner_image = ImageManager::upload(
@@ -215,7 +213,7 @@ class PaidBannerController extends Controller
         $paidBanner->save();
 
         Cache::forget('main_banners');
-        session(['home_slider_offset' => 0]); // Reset so user sees their banner immediately
+        session(['home_slider_offset' => 0]); // إعادة تعيين لظهور البنر فوراً
 
         Toastr::success(translate('banner_updated_successfully'));
 
@@ -230,10 +228,10 @@ class PaidBannerController extends Controller
         $banner->delete();
 
         Cache::forget('main_banners');
+        session(['home_slider_offset' => 0]);
 
         Toastr::success(translate('banner_deleted_successfully'));
         return back();
-
 
     }
 
