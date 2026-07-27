@@ -180,12 +180,15 @@ class PaidBannerController extends Controller
             ]);
         }
 
-        // 1. تحديث رابط البنر بشكل صحيح
-        if ($request->redirect_to_ads == 'on' && isset($ad->slug)) {
-            $paidBanner->banner_url = route('ads-show', $ad->slug);
-        } elseif ($request->filled('banner_url')) {
-            $paidBanner->banner_url = $request->banner_url;
-        }
+          // 1. تحديث رابط البنر بشكل صحيح (مع دعم إطفاء الزر)
+         if ($request->redirect_to_ads == 'on' && isset($ad->slug)) {
+         $paidBanner->banner_url = route('ads-show', $ad->slug);
+         } elseif ($request->filled('banner_url')) {
+         $paidBanner->banner_url = $request->banner_url;
+          } else {
+         // إزالة الرابط القديم عند إطفاء الزر
+         $paidBanner->banner_url = null;
+         }
 
         // 2. تحديث القسم فقط إذا أُرسل قسم جديد
         if ($request->filled('category_id')) {
