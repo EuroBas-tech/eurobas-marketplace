@@ -43,7 +43,7 @@ class PaidBannerController extends Controller
     public function store(Request $request) {
         
         $request->validate([
-            'banner_image' => 'required|image',
+            'banner_image' => 'required|image|max:4096',
             'package_id' => 'required|numeric|exists:subscription_packages,id',
         ]);
 
@@ -123,7 +123,7 @@ class PaidBannerController extends Controller
     public function update(Request $request) {
 
         $request->validate([
-            'banner_image' => 'image',
+            'banner_image' => 'image|max:4096',
             'banner_id' => 'required|exists:paid_banners,id',
             'package_id' => 'exists:subscription_packages,id',
         ]);
