@@ -97,7 +97,7 @@ class PaidBannerController extends Controller
         }
 
         Cache::forget('main_banners');
-        session(['home_slider_offset' => 0]); // إعادة تعيين لظهور البنر فوراً
+        session(['home_slider_offset' => 0]); // Reset so user sees their new banner immediately
         
         Toastr::success(translate('banner_added_successfully'));
         return redirect()->route('home');
@@ -122,67 +122,77 @@ class PaidBannerController extends Controller
     }
 
     public function update(Request $request) {
-
         $request->validate([
             'banner_image' => 'nullable|image|max:4096',
             'banner_id' => 'required|exists:paid_banners,id',
             'package_id' => 'nullable|exists:subscription_packages,id',
         ]);
 
-        if($request->redirect_to_ads && $request->redirect_to_ads == 'on') {
-            if(is_numeric($request->ad_id)) {
-                $ad = Ad::where('id', $request->ad_id)->where('user_id', auth('customer')->id())->first();
+        $paidBanner = PaidBanner::with('package')->findOrFail($request->banner_id);
 
-                if(!$ad) {
+        if ($paidBanner->user_id != auth('customer')->id()) {
+            Toastr::error(translate('unauthorized_access'));
+            return back();
+        }
+
+        $ad = null;
+        if ($request->redirect_to_ads && $request->redirect_to_ads == 'on') {
+            if (is_numeric($request->ad_id)) {
+                $ad = Ad::where('id', $request->ad_id)->where('user_id', auth('customer')->id())->first();
+                if (!$ad) {
                     Toastr::error(translate('ad_not_found'));
                     return back();
                 }
             }
         }
-        
-        $paidBanner = PaidBanner::with('package')->findOrFail($request->banner_id);
 
         $package = null;
-
         if ($request->filled('package_id')) {
             $package = SubscriptionPackage::with('type')
-            ->where('id', $request->package_id)
-            ->where('status', 1)
-            ->whereHas('type', fn($query) => $query->where('name', 'promotional_banner'))
-            ->first();
+                ->where('id', $request->package_id)
+                ->where('status', 1)
+                ->whereHas('type', fn($query) => $query->where('name', 'promotional_banner'))
+                ->first();
         }
 
-        if (optional($paidBanner->expiration_date)->lt(now())) {
-            if (empty($package)) {
-                Toastr::error(translate('banner_expired_and_there_is_no_package_selected'));
-                return back();
-            }
+        // إذا كانت الباقة منتهية ولم يحدد باقة جديدة
+        if (optional($paidBanner->expiration_date)->lt(now()) && empty($package)) {
+            Toastr::error(translate('banner_expired_and_there_is_no_package_selected'));
+            return back();
         }
-            
-        if ($paidBanner->expiration_date && $paidBanner->expiration_date < now() && $package && $package->price > 0) {
+
+        // التوجيه للدفع فقط إذا كانت الباقة منتهية واختار باقة مدفوعة جديدة
+        if ($paidBanner->expiration_date < now() && $package && $package->price > 0) {
             $data = $request->all();
             $data['ad_id'] = $ad->id ?? null;
             $data['banner_id'] = $paidBanner->id;
-
             if ($request->hasFile('banner_image')) {
                 $image = $request->file('banner_image');
-
                 session([
                     'banner_image_base64' => base64_encode(file_get_contents($image)),
                     'banner_image_name'   => $image->getClientOriginalName(),
                     'banner_image_mime'   => $image->getMimeType(),
                 ]);
             }
-
             return response()->view('theme-views.sponsor.partials.redirect-payment-post', [
                 'route' => route('payment.method'),
                 'data'  => $data,
             ]);
         }
 
-        $paidBanner->banner_url = isset($ad) && $ad->slug ? route('ads-show',$ad->slug) : $paidBanner->banner_url;
-        $paidBanner->category_id = $request->category_id;
+        // 1. تحديث رابط البنر بشكل صحيح
+        if ($request->redirect_to_ads == 'on' && isset($ad->slug)) {
+            $paidBanner->banner_url = route('ads-show', $ad->slug);
+        } elseif ($request->filled('banner_url')) {
+            $paidBanner->banner_url = $request->banner_url;
+        }
 
+        // 2. تحديث القسم فقط إذا أُرسل قسم جديد
+        if ($request->filled('category_id')) {
+            $paidBanner->category_id = $request->category_id;
+        }
+
+        // 3. تحديث الصورة فقط إذا تم رفع صورة جديدة
         if ($request->hasFile('banner_image')) {
             $paidBanner->banner_image = ImageManager::upload(
                 'paid-banners/',
@@ -192,34 +202,22 @@ class PaidBannerController extends Controller
             );
         }
 
-    
-        if ($package) {
-            
-            if ($paidBanner->expiration_date < now()) {
-                $paidBanner->fill([
-                    'package_id'        => $request->package_id,
-                    'price'             => $package->price,
-                    'duration_in_days'  => $package->duration_in_days,
-                    'expiration_date'   => now()->addHours($package->duration_in_days * 24),
-                ]);
-            } else {
-                
-                $paidBanner->fill([
-                    'category_id' => $request->category_id,
-                ]);
-            }
+        // 4. تحديث الباقة وتمديد الوقت فقط إذا تم تحديد باقة جديدة وكانت الباقة القديمة منتهية
+        if ($package && $paidBanner->expiration_date < now()) {
+            $paidBanner->package_id = $package->id;
+            $paidBanner->price      = $package->price;
+            $paidBanner->duration_in_days = $package->duration_in_days;
+            $paidBanner->expiration_date  = now()->addHours($package->duration_in_days * 24);
         }
 
+        // حفظ التعديلات مع الحفاظ التام على package_id القديمة
         $paidBanner->save();
-
         Cache::forget('main_banners');
-        session(['home_slider_offset' => 0]); // إعادة تعيين لظهور البنر فوراً
-
+        session(['home_slider_offset' => 0]);
         Toastr::success(translate('banner_updated_successfully'));
-
         return redirect()->route('home');
-
     }
+
 
     public function delete($id) {
         
@@ -228,10 +226,10 @@ class PaidBannerController extends Controller
         $banner->delete();
 
         Cache::forget('main_banners');
-        session(['home_slider_offset' => 0]);
 
         Toastr::success(translate('banner_deleted_successfully'));
         return back();
+
 
     }
 
