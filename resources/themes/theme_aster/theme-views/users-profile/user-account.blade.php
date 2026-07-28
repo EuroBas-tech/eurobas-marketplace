@@ -56,7 +56,7 @@
                                                 <div class="form-check form-switch d-flex gap-1 p-0 align-items-center mb-1">
                                                     <input class="form-check-input m-0" {{$customerDetail['show_phone_number'] == 1 ? 'checked' : ''}}
                                                     name="show_phone_number" type="checkbox" role="switch" id="show-phone-number">
-                                                    <label class="m-0 fs-13 label-line-height" for="show-phone-number">{{translate('show_phone_number_on_profile')}} {{app()->getLocale() == 'ae' ? ' ؟' : ' ?'}}</label>
+                                                    <label class="m-0 fs-13 label-line-height" for="show-phone-number">{{translate('show_phone_number_on_profile')}} {{app()->getLocale() == 'ar' ? ' ؟' : ' ?'}}</label>
                                                 </div>
                                                 <div class="input-group">
 
@@ -136,7 +136,7 @@
                                                 <div class="form-check form-switch d-flex gap-1 p-0 align-items-center mb-1">
                                                     <input class="form-check-input m-0" {{$customerDetail['show_email_address'] == 1 ? 'checked' : ''}}
                                                     name="show_email_address" type="checkbox" role="switch" id="show-email-address">
-                                                    <label class="m-0 fs-13 line-height" for="show-email-address">{{translate('show_email_address_on_profile')}} {{app()->getLocale() == 'ae' ? ' ؟' : ' ?'}}</label>
+                                                    <label class="m-0 fs-13 line-height" for="show-email-address">{{translate('show_email_address_on_profile')}} {{app()->getLocale() == 'ar' ? ' ؟' : ' ?'}}</label>
                                                 </div>
                                                 <input type="email" id="email" value="{{$customerDetail['email']}}" name="email" class="form-control input-height" value="">
                                             </div>
@@ -266,7 +266,7 @@
                                             <div class="form-check form-switch d-flex gap-1 p-0 align-items-center mb-3">
                                                 <input class="form-check-input m-0" {{$customerDetail['show_location_data'] == 1 ? 'checked' : ''}}
                                                 name="show_location_data" type="checkbox" role="switch" id="show-location-data">
-                                                <label class="m-0 fs-14 line-height" for="show-location-data">{{translate('show_location_data_on_profile')}} {{app()->getLocale() == 'ae' ? ' ؟' : ' ?'}}</label>
+                                                <label class="m-0 fs-14 line-height" for="show-location-data">{{translate('show_location_data_on_profile')}} {{app()->getLocale() == 'ar' ? ' ؟' : ' ?'}}</label>
                                             </div>
 
                                             <div class="form-group mb-3 ">
