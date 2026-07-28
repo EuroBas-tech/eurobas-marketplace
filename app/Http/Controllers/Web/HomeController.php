@@ -218,26 +218,51 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
         $user = Helpers::get_customer();
 
         $now = now();
+        $showByCountry = session('show_by_country');
 
-        // جلب الفئات مع أحدث 30 إعلان لكل فئة
-        // limit(30) يكفي لإظهار 20 مع إعطاء أولوية للمميزين
-        $categories = Category::homeEnabled()
-        ->with(['ads' => function ($q) {
-            $q->active()
-            ->when(session('show_by_country'),
-                fn ($qq) => $qq->country(session('show_by_country')['name'])
-            )
-            ->with(['brand', 'sponsor', 'wish_list'])
-            ->latest()
-            ->limit(30);
-        }])
-        ->get();
+        // جلب الفئات أولاً
+        $categories = Category::homeEnabled()->get();
 
-        /** ترتيب الإعلانات وأخذ أفضل 20 لكل فئة */
-        $categories->each(function ($category) use ($now) {
+        // جلب 20 إعلان لكل فئة بشكل مستقل
+        // الإعلانات المميزة تُجلب أولاً ثم العادية — يستخدم Composite Index
+        $categories->each(function ($category) use ($now, $showByCountry) {
 
-            $ads = $category->ads->map(function ($ad) use ($now) {
+            // 1. جلب الإعلانات المميزة (sponsor نشط) لهذه الفئة
+            $sponsoredIds = \App\Model\SponsoredAd::where('type', 'appearance_in_first_results')
+                ->where('is_paid', 1)
+                ->where('expiration_date', '>', $now)
+                ->whereHas('ad', fn($q) => $q->where('category_id', $category->id)->where('status', 1))
+                ->pluck('ad_id')
+                ->toArray();
 
+            // 2. جلب الإعلانات المميزة أولاً
+            $sponsoredAds = collect();
+            if (!empty($sponsoredIds)) {
+                $sponsoredAds = \App\Model\Ad::where('status', 1)
+                    ->where('category_id', $category->id)
+                    ->whereIn('id', $sponsoredIds)
+                    ->when($showByCountry, fn($q) => $q->where('country', $showByCountry['name']))
+                    ->with(['brand', 'sponsor', 'wish_list'])
+                    ->latest()
+                    ->get();
+            }
+
+            // 3. جلب الإعلانات العادية لإكمال الـ 20
+            $remaining = 20 - $sponsoredAds->count();
+            $normalAds = collect();
+            if ($remaining > 0) {
+                $normalAds = \App\Model\Ad::where('status', 1)
+                    ->where('category_id', $category->id)
+                    ->whereNotIn('id', $sponsoredIds)
+                    ->when($showByCountry, fn($q) => $q->where('country', $showByCountry['name']))
+                    ->with(['brand', 'sponsor', 'wish_list'])
+                    ->latest()
+                    ->limit($remaining)
+                    ->get();
+            }
+
+            // 4. دمج: المميزة أولاً ثم العادية
+            $ads = $sponsoredAds->concat($normalAds)->map(function ($ad) use ($now) {
                 $ad->has_first_results = $ad->sponsor
                     ->where('type', 'appearance_in_first_results')
                     ->where('is_paid', 1)
@@ -253,10 +278,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                 return $ad;
             });
 
-            $category->setRelation(
-                'ads',
-                $ads->sortByDesc('has_first_results')->take(20)->values()
-            );
+            $category->setRelation('ads', $ads->values());
         });
 
         $brands = Cache::rememberForever('brands', function () {
