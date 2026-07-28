@@ -37,7 +37,7 @@
                     <div class="card h-lg-100 card-custom-shadow">
                         <div class="card-body p-4 pb-0">
                             <div class="">
-                                <h1>{{translate('what_do_you_want_to_sell')}} {{app()->getLocale() == 'ae' ? ' ؟' : ' ?'}}</h1>
+                                <h1>{{translate('what_do_you_want_to_sell')}} {{app()->getLocale() == 'ar' ? ' ؟' : ' ?'}}</h1>
                             </div>
 
                             <div class="my-4">
