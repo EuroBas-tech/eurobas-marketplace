@@ -219,19 +219,21 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
         $now = now();
 
-        /** ✅ تحميل الإعلانات بدون limit */
+        // جلب الفئات مع أحدث 30 إعلان لكل فئة
+        // limit(30) يكفي لإظهار 20 مع إعطاء أولوية للمميزين
         $categories = Category::homeEnabled()
-        ->with(['ads' => function ($q) use ($now) {
+        ->with(['ads' => function ($q) {
             $q->active()
             ->when(session('show_by_country'),
                 fn ($qq) => $qq->country(session('show_by_country')['name'])
             )
             ->with(['brand', 'sponsor', 'wish_list'])
-            ->latest();
+            ->latest()
+            ->limit(30);
         }])
         ->get();
 
-        /** ✅ هنا نتحكم بالعدد والترتيب بدون كسر eager loading */
+        /** ترتيب الإعلانات وأخذ أفضل 20 لكل فئة */
         $categories->each(function ($category) use ($now) {
 
             $ads = $category->ads->map(function ($ad) use ($now) {
@@ -241,7 +243,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
                     ->where('is_paid', 1)
                     ->where('expiration_date', '>', $now)
                     ->isNotEmpty() ? 1 : 0;
-                    
+
                 $ad->has_urgent_sale_sticker = $ad->sponsor
                     ->where('type', 'urgent_sale_sticker')
                     ->where('is_paid', 1)
@@ -253,7 +255,7 @@ $home_categories = Cache::rememberForever('categories_' . $locale, function () u
 
             $category->setRelation(
                 'ads',
-                $ads->sortByDesc('has_first_results')->take( 20)->values()
+                $ads->sortByDesc('has_first_results')->take(20)->values()
             );
         });
 
