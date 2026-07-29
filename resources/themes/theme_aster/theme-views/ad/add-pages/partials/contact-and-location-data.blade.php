@@ -14,7 +14,8 @@
             <div class="form-group form-check form-switch d-flex gap-1 p-0 align-items-center">
                 <input class="form-check-input m-0" checked
                 name="show_email_address" type="checkbox" role="switch" id="show-email-address">
-                <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} ?</label>
+                <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+               </label>
             </div>
         </div>
         <div id="email-address" class="col-sm-12 mb-3">
@@ -27,7 +28,8 @@
             <div class="form-group form-check form-switch d-flex gap-1 p-0 align-items-center">
                 <input class="form-check-input m-0" checked
                 name="show_phone_number" type="checkbox" role="switch" id="show-phone-number">
-                <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} ?</label>
+                <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                 </label> 
             </div>
         </div>
         <div id="phone-number" class="col-sm-12 mb-2">
@@ -36,7 +38,7 @@
                     <input class="form-check-input m-0" name="whatsapp_availability" 
                     {{ old('whatsapp_availability') == 'on' ? 'checked' : '' }} type="checkbox" id="whatsapp_availability">
                     <label class="m-0 fs-13 d-flex align-items-center gap-1" for="whatsapp_availability">
-                        <span>{{translate('whatsApp_available')}} ?</span>
+                        <span>{{translate('whatsApp_available')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}</span> 
                         <img width="28px" src="https://static.vecteezy.com/system/resources/previews/016/716/480/non_2x/whatsapp-icon-free-png.png" alt="">
                     </label>
                 </div>                                                        
