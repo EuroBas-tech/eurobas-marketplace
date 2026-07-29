@@ -35,8 +35,34 @@ use Illuminate\Support\Facades\Validator;
 
 class AdController extends Controller
 {
+    /**
+     * Clean numeric input — removes thousand separators (commas, dots, spaces)
+     * Supports European format (200.000) and US format (200,000)
+     * Returns null if empty, float if has decimals, integer string otherwise
+     */
+    private function cleanNumber($value): ?string
+    {
+        if (is_null($value) || $value === '') return null;
+        // Remove spaces and common thousand separators
+        // Handle European format: 200.000,50 → 200000.50
+        // Handle US format: 200,000.50 → 200000.50
+        $cleaned = trim($value);
+        // Detect European format (dot as thousand separator, comma as decimal)
+        if (preg_match('/^\d{1,3}(\.\d{3})+(,\d+)?$/', $cleaned)) {
+            $cleaned = str_replace('.', '', $cleaned);
+            $cleaned = str_replace(',', '.', $cleaned);
+        } else {
+            // Remove commas used as thousand separators
+            $cleaned = str_replace([',', ' '], '', $cleaned);
+        }
+        if (!is_numeric($cleaned)) return null;
+        // Return as integer if whole number, float string otherwise
+        return fmod((float)$cleaned, 1) == 0
+            ? (string)(int)$cleaned
+            : (string)(float)$cleaned;
+    }
 
-    public function adding_type() {
+
 
         $is_profile_uncompleted = Helpers::prevent_if_profile_incomplete();
 
@@ -268,7 +294,7 @@ class AdController extends Controller
         $ad->engine_size            = $request->engine_size;
         $ad->engine_cylinders       = $request->engine_cylinders;
         $ad->engine_power           = $request->engine_power;
-        $ad->mileage                = $request->mileage;
+        $ad->mileage                = $this->cleanNumber($request->mileage);
         $ad->year                   = $request->year;
         $ad->transmission_type      = $request->transmission_type;
         $ad->currency               = $request->currency;
@@ -278,12 +304,12 @@ class AdController extends Controller
         $request->allow_offers && $request->allow_offers == 'on' ? 1 : 0;
 
         $ad->first_price            = $request->price_type == 'asking_price' &&
-        $request->allow_offers && $request->allow_offers == 'on' ? $request->first_price : null;
+        $request->allow_offers && $request->allow_offers == 'on' ? $this->cleanNumber($request->first_price) : null;
 
-        $ad->price                  = $request->price;
-        $ad->starting_price         = $request->starting_price;
+        $ad->price                  = $this->cleanNumber($request->price);
+        $ad->starting_price         = $this->cleanNumber($request->starting_price);
         $ad->body_type              = $request->body_type;
-        $ad->length                 = $request->length;
+        $ad->length                 = $this->cleanNumber($request->length);
         $ad->show_phone_number      = $request->show_phone_number && $request->show_phone_number == 'on' ? 1 : 0;
         $ad->show_email_address     = $request->show_email_address && $request->show_email_address == 'on' ? 1 : 0;
         $ad->whatsapp_availability  = $request->whatsapp_availability && $request->whatsapp_availability == 'on' ? 1 : 0;
@@ -294,10 +320,10 @@ class AdController extends Controller
         $ad->latitude               = $ad_location_coordinates['latitude'] ?? null;
         $ad->longitude              = $ad_location_coordinates['longitude'] ?? null;
         $ad->postal_code            = $request->postal_code;
-        $ad->width                  = $request->width;
-        $ad->height                 = $request->height;
-        $ad->max_weight             = $request->max_weight;
-        $ad->bag_capacity           = $request->bag_capacity;
+        $ad->width                  = $this->cleanNumber($request->width);
+        $ad->height                 = $this->cleanNumber($request->height);
+        $ad->max_weight             = $this->cleanNumber($request->max_weight);
+        $ad->bag_capacity           = $this->cleanNumber($request->bag_capacity);
         $ad->doors_number           = $request->doors_number;
         $ad->seats_number           = $request->seats_number;
         $ad->co2_emissions          = $request->co2_emissions;
@@ -625,16 +651,16 @@ class AdController extends Controller
         $ad->engine_power           = $request->engine_power;
         $ad->currency               = $request->currency;
         $ad->price_type             = $request->price_type;
-        $ad->mileage                = $request->mileage;
+        $ad->mileage                = $this->cleanNumber($request->mileage);
         $ad->year                   = $request->year;
 
         $ad->allow_offers           = $request->price_type == 'asking_price' && 
         $request->allow_offers && $request->allow_offers == 'on' ? 1 : 0;
 
         $ad->first_price            = $request->price_type == 'asking_price' &&
-        $request->allow_offers && $request->allow_offers == 'on' ? $request->first_price : null;
+        $request->allow_offers && $request->allow_offers == 'on' ? $this->cleanNumber($request->first_price) : null;
 
-        $ad->price                  = $request->price;
+        $ad->price                  = $this->cleanNumber($request->price);
         $ad->show_phone_number      = $request->show_phone_number && $request->show_phone_number == 'on' ? 1 : 0;
         $ad->show_email_address     = $request->show_email_address && $request->show_email_address == 'on' ? 1 : 0;
         $ad->whatsapp_availability  = $request->whatsapp_availability && $request->whatsapp_availability == 'on' ? 1 : 0;
@@ -645,16 +671,16 @@ class AdController extends Controller
         $ad->postal_code            = $request->postal_code;
 
         $ad->transmission_type      = $request->transmission_type;
-        $ad->starting_price         = $request->starting_price;
-        $ad->price                  = $request->price;
+        $ad->starting_price         = $this->cleanNumber($request->starting_price);
+        $ad->price                  = $this->cleanNumber($request->price);
         $ad->body_type              = $request->body_type;
         $ad->doors_number           = $request->doors_number;
         $ad->seats_number           = $request->seats_number;
-        $ad->length                 = $request->length;
-        $ad->width                  = $request->width;
-        $ad->height                 = $request->height;
-        $ad->max_weight             = $request->max_weight;
-        $ad->bag_capacity           = $request->bag_capacity;
+        $ad->length                 = $this->cleanNumber($request->length);
+        $ad->width                  = $this->cleanNumber($request->width);
+        $ad->height                 = $this->cleanNumber($request->height);
+        $ad->max_weight             = $this->cleanNumber($request->max_weight);
+        $ad->bag_capacity           = $this->cleanNumber($request->bag_capacity);
         $ad->co2_emissions          = $request->co2_emissions;
         $ad->energy_consumption     = $request->energy_consumption;
         $ad->gas_emission_tax       = $request->gas_emission_tax;
