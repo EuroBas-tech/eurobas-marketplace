@@ -12,7 +12,8 @@
         </div>
         <div class="col-sm-12 mb-1">
             <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-                <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} ?</label>
+                <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                  </label>
                 <input class="form-check-input" checked
                 name="show_email_address" type="checkbox" role="switch" id="show-email-address">
             </div>
@@ -25,7 +26,8 @@
         </div>
         <div class="col-sm-12 mb-1">
             <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-                <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} ?</label>
+                <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                 </label>
                 <input class="form-check-input" checked
                 name="show_phone_number" type="checkbox" role="switch" id="show-phone-number">
             </div>
@@ -35,7 +37,7 @@
                 <div class="d-flex align-items-center gap-2 mb-2" >
                     <label class="m-0 fs-13 d-flex align-items-center gap-1" for="whatsapp_availability">
                         <img width="28px" src="https://static.vecteezy.com/system/resources/previews/016/716/480/non_2x/whatsapp-icon-free-png.png" alt="">
-                        <span>{{translate('whatsApp_available')}} ?</span>
+                        <span>{{ translate('whatsApp_available') }} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}</span>
                     </label>
                     <input class="form-check-input m-0" name="whatsapp_availability" 
                     {{ $ad['whatsapp_availability'] ? 'checked' : '' }} type="checkbox" id="whatsapp_availability">
