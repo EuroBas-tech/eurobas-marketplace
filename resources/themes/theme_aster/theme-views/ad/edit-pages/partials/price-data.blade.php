@@ -41,7 +41,9 @@
     </div>
     <div id="offers-box" class="col-sm-12 @if($ad->price_type != 'asking_price') d-none @endif mt-2">
         <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-            <label class="m-0" for="show-phone-number">{{translate('allow_offers')}} ?</label>
+           <label class="m-0" for="allow-offers">
+           {{ translate('allow_offers') }} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+           </label>
             <input class="form-check-input" {{ $ad['allow_offers'] == 1 ? 'checked' : '' }}
             name="allow_offers" type="checkbox" role="switch" id="allow-offers">
         </div>
