@@ -41,7 +41,8 @@
     </div>
     <div id="offers-box" class="col-sm-12 d-none mt-2">
         <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-            <label class="m-0" for="allow_offers">{{translate('allow_offers')}} ?</label>
+        <label class="m-0" for="allow_offers">{{translate('allow_offers')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+        </label>
             <input class="form-check-input" checked
             name="allow_offers" type="checkbox" role="switch" id="allow-offers">
         </div>
