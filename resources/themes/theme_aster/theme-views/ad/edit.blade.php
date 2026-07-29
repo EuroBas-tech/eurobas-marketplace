@@ -399,7 +399,8 @@
                                             </div>
                                             <div id="offers-box" class="col-sm-12 @if($ad->price_type != 'asking_price') d-none @endif mt-2">
                                                 <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-                                                    <label class="m-0" for="show-phone-number">{{translate('allow_offers')}} ?</label>
+                                                 <label class="m-0" for="show-phone-number">{{translate('allow_offers')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                                                 </label>
                                                     <input class="form-check-input" {{ $ad['allow_offers'] == 1 ? 'checked' : '' }}
                                                     name="allow_offers" type="checkbox" role="switch" id="allow-offers">
                                                 </div>
@@ -423,7 +424,8 @@
                                                 </div>
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-                                                        <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} ?</label>
+                                              <label class="m-0" for="show-email-address">{{translate('show_email_address_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                                               </label>
                                                         <input class="form-check-input" {{ $ad['show_email_address'] == 1 ? 'checked' : '' }}
                                                         name="show_email_address" type="checkbox" role="switch" id="show-email-address">
                                                     </div>
@@ -436,7 +438,8 @@
                                                 </div>
                                                 <div class="col-sm-12 mb-3">
                                                     <div class="form-group form-check form-switch d-flex gap-5 p-0 align-items-center">
-                                                        <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} ?</label>
+                                                    <label class="m-0" for="show-phone-number">{{translate('show_phone_number_on_ad')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                                                    </label>
                                                         <input class="form-check-input" {{ $ad['show_phone_number'] == 1 ? 'checked' : '' }}
                                                         name="show_phone_number" type="checkbox" role="switch" id="show-phone-number">
                                                     </div>
@@ -445,7 +448,8 @@
                                                     <div class="form-group">
                                                         <div class="d-flex align-items-center gap-2 mb-2" >
                                                             <img width="28px" src="https://static.vecteezy.com/system/resources/previews/016/716/480/non_2x/whatsapp-icon-free-png.png" alt="">
-                                                            <label class="m-0 fs-13" for="whatsapp_availability">{{translate('whatsApp_available')}} ?</label>
+                                                            <label class="m-0 fs-13" for="whatsapp_availability">{{translate('whatsApp_available')}} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}
+                                                              </label>
                                                             <input class="form-check-input m-0" name="whatsapp_availability"
                                                             {{ $ad['whatsapp_availability'] == 1 ? 'checked' : '' }} type="checkbox" id="whatsapp_availability">
                                                         </div>
