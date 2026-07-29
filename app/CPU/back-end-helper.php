@@ -85,16 +85,20 @@ class BackEndHelper
             "EUR" => '€',
             "GBP" => '£'
         ];
-        $symbol = $currency_symbols[$currency];
-        
+        $symbol = $currency_symbols[$currency] ?? '€';
+
+        // Clean amount — remove any thousand separators before formatting
+        $amount = preg_replace('/[^\d.]/', '', str_replace(',', '.', $amount));
+        $amount = is_numeric($amount) ? (float) $amount : 0;
+
         if (fmod($amount, 1) != 0) {
             // Has decimals
-            $string = $symbol . number_format($amount, 2, ',', '.');
+            $string = $symbol . ' ' . number_format($amount, 2, ',', '.');
         } else {
             // Whole number
-            $string = $symbol . number_format($amount, 0, ',', '.');
+            $string = $symbol . ' ' . number_format($amount, 0, ',', '.');
         }
-        
+
         return $string;
     }
 
