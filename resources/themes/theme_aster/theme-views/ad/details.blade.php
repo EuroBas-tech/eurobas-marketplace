@@ -526,7 +526,7 @@
                                                                     </div>
                                                                     <div>
                                                                         <h5>{{ translate('mileage') }}</h5>
-                                                                        <span>{{ $ad->mileage }}</span>
+                                                                        <span>{{ number_format((int)$ad->mileage, 0, ',', '.') }} Km</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1119,7 +1119,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('height') }}</h5>
-                                                                                <span>{{ $ad->height }}</span>
+                                                                                <span>{{ $ad->height ? number_format((float)$ad->height, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1137,7 +1137,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('width') }}</h5>
-                                                                                <span>{{ $ad->width }}</span>
+                                                                                <span>{{ $ad->width ? number_format((float)$ad->width, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1155,7 +1155,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('length') }}</h5>
-                                                                                <span>{{ $ad->length }}</span>
+                                                                                <span>{{ $ad->length ? number_format((float)$ad->length, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1174,7 +1174,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('bag_capacity') }}</h5>
-                                                                                <span>{{ $ad->bag_capacity }}</span>
+                                                                                <span>{{ $ad->bag_capacity ? number_format((float)$ad->bag_capacity, 0, ',', '.') . ' L' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1211,7 +1211,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('max_weight') }}</h5>
-                                                                                <span>{{ $ad->max_weight }}</span>
+                                                                                <span>{{ $ad->max_weight ? number_format((float)$ad->max_weight, 0, ',', '.') . ' kg' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
