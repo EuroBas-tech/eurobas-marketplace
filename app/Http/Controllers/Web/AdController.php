@@ -43,26 +43,20 @@ class AdController extends Controller
     private function cleanNumber($value): ?string
     {
         if (is_null($value) || $value === '') return null;
-        // Remove spaces and common thousand separators
-        // Handle European format: 200.000,50 → 200000.50
-        // Handle US format: 200,000.50 → 200000.50
         $cleaned = trim($value);
-        // Detect European format (dot as thousand separator, comma as decimal)
         if (preg_match('/^\d{1,3}(\.\d{3})+(,\d+)?$/', $cleaned)) {
             $cleaned = str_replace('.', '', $cleaned);
             $cleaned = str_replace(',', '.', $cleaned);
         } else {
-            // Remove commas used as thousand separators
             $cleaned = str_replace([',', ' '], '', $cleaned);
         }
         if (!is_numeric($cleaned)) return null;
-        // Return as integer if whole number, float string otherwise
         return fmod((float)$cleaned, 1) == 0
             ? (string)(int)$cleaned
             : (string)(float)$cleaned;
     }
 
-
+    public function adding_type() {
 
         $is_profile_uncompleted = Helpers::prevent_if_profile_incomplete();
 
