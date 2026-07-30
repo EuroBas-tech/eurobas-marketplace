@@ -156,11 +156,11 @@
             </div>
             <ins class="product__new-price text-primary text-end mt-auto" >
                 @if($ad->price_type == 'fixed_price')
-                    <b class="currency-font" style="font-size: 18px;" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b>
+                <b class="currency-font" style="font-size: 18px;" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b>
                 @elseif($ad->price_type == 'free')
                     <b style="font-size: 18px;" >{{translate('free')}}</b>
                 @elseif($ad->price_type == 'asking_price')
-                    <b class="currency-font" style="font-size: 18px;" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b>
+                   <b class="currency-font" style="font-size: 18px;" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b> 
                 @elseif($ad->price_type == 'auction')
                     <b class="currency-font" style="font-size: 18px;" >{{translate('auction')}}</b>
                 @endif
