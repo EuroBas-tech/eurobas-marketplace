@@ -190,7 +190,7 @@
                                                     <path data-v-35b30767="" fill="currentColor" opacity="1.00" d="M12 14c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1Zm0-6c-.6 0-1 .4-1 1v2c0 .6.4 1 1 1s1-.4 1-1V9c0-.6-.4-1-1-1ZM5.2 2c-.6-.1-1.1.3-1.2.8l-3 18c-.1.5.3 1.1.8 1.2H2c.5 0 .9-.3 1-.8l3-18c.1-.6-.3-1.1-.8-1.2ZM12 3c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1s1-.4 1-1V4c0-.6-.4-1-1-1Zm8-.2c-.1-.5-.6-.9-1.2-.8-.5.1-.9.6-.8 1.2l3 18c.1.5.5.8 1 .8h.2c.5-.1.9-.6.8-1.2l-3-18Z"></path>
                                                 </svg>
                                             </span>
-                                            <span>{{ $ad->mileage }}</span><span>{{ translate('km') }}</span>
+                                            <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
                                         </span>
                                     @endif
                                     @if($ad->body_type)
@@ -550,7 +550,7 @@
                                                     <path data-v-35b30767="" fill="currentColor" opacity="1.00" d="M12 14c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1Zm0-6c-.6 0-1 .4-1 1v2c0 .6.4 1 1 1s1-.4 1-1V9c0-.6-.4-1-1-1ZM5.2 2c-.6-.1-1.1.3-1.2.8l-3 18c-.1.5.3 1.1.8 1.2H2c.5 0 .9-.3 1-.8l3-18c.1-.6-.3-1.1-.8-1.2ZM12 3c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1s1-.4 1-1V4c0-.6-.4-1-1-1Zm8-.2c-.1-.5-.6-.9-1.2-.8-.5.1-.9.6-.8 1.2l3 18c.1.5.5.8 1 .8h.2c.5-.1.9-.6.8-1.2l-3-18Z"></path>
                                                 </svg>
                                             </span>
-                                            <span>{{ $ad->mileage }}</span><span>{{ translate('km') }}</span>
+                                            <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
                                         </span>
                                     @endif
                                     @if($ad->body_type)
