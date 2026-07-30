@@ -361,7 +361,7 @@ class AdController extends Controller
         $ad->shipbuilding_type = $request->shipbuilding_type;
 
         $ad->battery_life           = $request->battery_life;
-        $ad->acceleration_0_100     = $request->acceleration_0_100;
+        $ad->acceleration_0_100     = $this->cleanNumber($request->acceleration_0_100);
         $ad->images = json_encode($ad_images);
 
         $ad->thumbnail = $this->resolve_thumbnail($ad_images);
@@ -683,7 +683,7 @@ class AdController extends Controller
         $ad->fast_battery_charging_time= $request->fast_battery_charging_time;
         $ad->options = json_encode($request->options);
         $ad->battery_life           = $request->battery_life;
-        $ad->acceleration_0_100     = $request->acceleration_0_100;
+        $ad->acceleration_0_100     = $this->cleanNumber($request->acceleration_0_100);
 
         $ad->furniture_type = $request->furniture_type;
         $ad->material = $request->material;
