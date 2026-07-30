@@ -453,11 +453,11 @@
                         @endif
                         <div>
                             @if($ad->price_type == 'fixed_price')
-                                <h5 class="text-primary currency-font filter-card-price-text"  >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
+                            <h5 class="text-primary currency-font filter-card-price-text" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
                             @elseif($ad->price_type == 'free')
                                 <h5 class="text-primary currency-font filter-card-price-text" >{{translate('free')}}</h5>
                             @elseif($ad->price_type == 'asking_price')
-                                <h5 class="text-primary currency-font filter-card-price-text" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
+                             <h5 class="text-primary currency-font filter-card-price-text" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5> 
                             @elseif($ad->price_type == 'auction')
                                 <h5 class="text-primary currency-font filter-card-price-text" >{{translate('auction')}}</h5>
                             @endif
@@ -812,11 +812,11 @@
                         @endif
                         <div>
                             @if($ad->price_type == 'fixed_price')
-                                <h5 class="text-primary currency-font filter-card-price-text"  >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
+                            <h5 class="text-primary currency-font filter-card-price-text" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
                             @elseif($ad->price_type == 'free')
                                 <h5 class="text-primary currency-font filter-card-price-text" >{{translate('free')}}</h5>
                             @elseif($ad->price_type == 'asking_price')
-                                <h5 class="text-primary currency-font filter-card-price-text" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
+                            <h5 class="text-primary currency-font filter-card-price-text" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</h5>
                             @elseif($ad->price_type == 'auction')
                                 <h5 class="text-primary currency-font filter-card-price-text" >{{translate('auction')}}</h5>
                             @endif
