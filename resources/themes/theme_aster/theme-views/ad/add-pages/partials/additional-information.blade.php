@@ -30,7 +30,7 @@
         <div class="col-xl-4 mb-3">
             <div class="form-group">
                 <label for="Acceleration_0_100">{{translate("Acceleration_0_100")}} ({{ translate('Optional') }})</label>
-                <input type="text" id="Acceleration_0_100" class="form-control" value="{{old('acceleration_0_100')}}" name="acceleration_0_100" placeholder="{{translate('Acceleration_0_100')}}">
+                <input type="number" step="0.1" min="0" id="Acceleration_0_100" class="form-control" value="{{old('acceleration_0_100')}}" name="acceleration_0_100" placeholder="{{translate('Acceleration_0_100')}}">
             </div>
         </div>
     </div>
