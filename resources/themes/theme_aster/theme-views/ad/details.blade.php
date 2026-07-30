@@ -444,11 +444,11 @@
                                                 <ins
                                                     class="product__new-price text-primary fs-30 currency-font">
                                                     @if($ad->price_type == 'fixed_price')
-                                                        {{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}
+                                                        <span dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</span>
                                                     @elseif($ad->price_type == 'free')
                                                         <span class="fs-18 fw-medium" >{{ translate('free') }}</span>
                                                     @elseif($ad->price_type == 'asking_price')
-                                                            <span class="fs-30 fw-medium" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</span>
+                                                            <span class="fs-30 fw-medium" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</span>
                                                     @elseif($ad->price_type == 'auction')
                                                         <span class="fs-30 fw-medium" >
                                                             {{translate('auction')}}
@@ -526,7 +526,7 @@
                                                                     </div>
                                                                     <div>
                                                                         <h5>{{ translate('mileage') }}</h5>
-                                                                        <span>{{ number_format((int)$ad->mileage, 0, ',', '.') }} Km</span>
+                                                                        <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} Km</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1119,7 +1119,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('height') }}</h5>
-                                                                                <span>{{ $ad->height ? number_format((float)$ad->height, 2, ',', '.') . ' m' : '' }}</span>
+                                                                                <span dir="ltr">{{ $ad->height ? number_format((float)$ad->height, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1137,7 +1137,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('width') }}</h5>
-                                                                                <span>{{ $ad->width ? number_format((float)$ad->width, 2, ',', '.') . ' m' : '' }}</span>
+                                                                                <span dir="ltr">{{ $ad->width ? number_format((float)$ad->width, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1155,7 +1155,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('length') }}</h5>
-                                                                                <span>{{ $ad->length ? number_format((float)$ad->length, 2, ',', '.') . ' m' : '' }}</span>
+                                                                                <span dir="ltr">{{ $ad->length ? number_format((float)$ad->length, 2, ',', '.') . ' m' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1174,7 +1174,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('bag_capacity') }}</h5>
-                                                                                <span>{{ $ad->bag_capacity ? number_format((float)$ad->bag_capacity, 0, ',', '.') . ' L' : '' }}</span>
+                                                                                <span dir="ltr">{{ $ad->bag_capacity ? number_format((float)$ad->bag_capacity, 0, ',', '.') . ' L' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1211,7 +1211,7 @@
                                                                             </div>
                                                                             <div>
                                                                                 <h5>{{ translate('max_weight') }}</h5>
-                                                                                <span>{{ $ad->max_weight ? number_format((float)$ad->max_weight, 0, ',', '.') . ' kg' : '' }}</span>
+                                                                                <span dir="ltr">{{ $ad->max_weight ? number_format((float)$ad->max_weight, 0, ',', '.') . ' kg' : '' }}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1690,7 +1690,7 @@
                                                 <label class="m-0" for="price">{{translate('add_an_offer')}}</label>
                                                 @if($ad->starting_price)
                                                     <div>
-                                                        <span class="fz-14" >{{translate('starting_form')}} : {{\App\CPU\BackEndHelper::set_price_currency($ad->starting_price, $ad->currency)}}</span>
+                                                        <span class="fz-14" >{{translate('starting_form')}} : <span dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->starting_price, $ad->currency)}}</span></span>
                                                     </div>
                                                 @endif
                                                 <div class="position-relative" >
@@ -1770,7 +1770,7 @@
                                                         @foreach($ad->auctions->sortByDesc('created_at')->take(3) as $auction)
                                                             <div class="d-flex align-items-center justify-content-between pb-2 mb-2" >
                                                                 <span class="fw-medium d-block fs-13" >{{$auction->user?->name}}</span>
-                                                                <span class="fw-bold fs-13" >{{\App\CPU\BackEndHelper::set_price_currency($auction->price, $ad->currency)}}</span>
+                                                                <span class="fw-bold fs-13" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($auction->price, $ad->currency)}}</span>
                                                                 <span class="fw-normal d-block fs-12">{{ date('d M y', strtotime($auction->created_at)) }}</span>
                                                                   @if(optional($auction->user)->id == auth('customer')->id())
                                                                     <form action="{{route('ads-delete-auction')}}" method="POST">
@@ -1803,7 +1803,7 @@
                                                     <label class="m-0" for="price">{{translate('auction')}}</label>
                                                     @if($ad->first_price)
                                                         <div>
-                                                            <span class="fz-14" >{{translate('starting_form')}} : {{\App\CPU\BackEndHelper::set_price_currency($ad->first_price, $ad->currency)}}</span>
+                                                            <span class="fz-14" >{{translate('starting_form')}} : <span dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->first_price, $ad->currency)}}</span></span>
                                                         </div>
                                                     @endif
                                                     <div class="position-relative" >
@@ -1883,7 +1883,7 @@
                                                             @foreach($ad->askingPrice->sortByDesc('created_at')->take(3) as $asking_price)
                                                                 <div class="d-flex align-items-center justify-content-between pb-2 mb-2" >
                                                                     <span class="fw-medium d-block fs-13" >{{$asking_price->user?->name}}</span>
-                                                                    <span class="fw-bold fs-13" >{{\App\CPU\BackEndHelper::set_price_currency($asking_price->price, $ad->currency)}}</span>
+                                                                    <span class="fw-bold fs-13" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($asking_price->price, $ad->currency)}}</span>
                                                                     <span class="fw-normal d-block fs-12">{{ date('d M y', strtotime($asking_price->created_at)) }}</span>
                                                                       @if(optional($asking_price->user)->id == auth('customer')->id())
                                                                         <form action="{{route('ads-delete-asking-price')}}" method="POST">
