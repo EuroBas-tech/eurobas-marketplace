@@ -150,7 +150,7 @@
                 </div>
                 <div>
                     @if($ad->mileage)
-                        <span>{{ $ad->mileage }}{{ translate('km') }}</span>
+                   <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
                     @endif
                 </div>
             </div>
@@ -347,7 +347,7 @@
                 </div>
                 <div>
                     @if($ad->mileage)
-                        <span>{{ $ad->mileage }}{{ translate('km') }}</span>
+                    <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
                     @endif
                 </div>
             </div>
