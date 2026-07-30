@@ -652,7 +652,7 @@
                                                                     </div>
                                                                     <div>
                                                                         <h5>{{ translate('acceleration_0_100') }}</h5>
-                                                                        <span>{{ $ad->acceleration_0_100 }}</span>
+                                                                        <span>{{ rtrim(rtrim($ad->acceleration_0_100, '0'), '.') }}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
