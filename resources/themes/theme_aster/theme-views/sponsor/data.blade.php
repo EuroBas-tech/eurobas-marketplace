@@ -120,7 +120,7 @@
                                                                             <h4 class="h6 m-0 fw-bold text-dark">{{ translate($sponsor->type) }}</h4>
                                                                             
                                                                             <span class="{{ $isActive ? 'badge-status-active' : 'badge-status-expired' }}">
-                                                                                {{ $isActive ? translate('Active') : translate('Expired') }}
+                                                                                {{ $isActive ? translate('active') : translate('expired') }}
                                                                             </span>
                                                                         </div>
 
