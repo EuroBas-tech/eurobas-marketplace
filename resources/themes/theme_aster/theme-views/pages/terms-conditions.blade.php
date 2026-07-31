@@ -6,7 +6,7 @@
 <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
 <meta property="og:title" content="Terms & Conditions — EuroBas.com"/>
 <meta property="og:url" content="{{env('APP_URL')}}">
-<meta property="og:description" content="Read the terms and conditions for using EuroBas.com — Europe's unified vehicles marketplace.">
+<meta property="og:description" content="Read the terms and conditions for using EuroBas.com — Europe's free multi-category classifieds marketplace.">
 <style>
 *{box-sizing:border-box}
 .tc-hero{text-align:center;padding:4.5rem 1rem 3.5rem;background:linear-gradient(135deg,#0d3b8e 0%,#1565c0 50%,#1976d2 100%);color:#fff;position:relative;overflow:hidden}
@@ -14,7 +14,7 @@
 .tc-hero::after{content:'';position:absolute;bottom:-100px;left:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.03)}
 .tc-badge{display:inline-block;background:rgba(255,255,255,.18);color:#fff;font-size:13px;padding:6px 18px;border-radius:25px;margin-bottom:1.5rem;font-weight:500;letter-spacing:.3px}
 .tc-hero h1{font-size:2.6rem;font-weight:700;margin-bottom:1rem;position:relative;letter-spacing:-.5px}
-.tc-hero-p{font-size:1.05rem;max-width:720px;margin:0 auto 2rem;opacity:.92;line-height:1.8;position:relative}
+.tc-hero-p{font-size:1.05rem;max-width:750px;margin:0 auto 2rem;opacity:.92;line-height:1.8;position:relative}
 
 .tc-section{padding:3rem 0}
 .tc-divider{border:none;border-top:1px solid #f0f0f0;margin:0}
@@ -65,10 +65,10 @@
 
     {{-- HERO --}}
     <div class="tc-hero">
-        <div class="tc-badge">⚖️ Legal & Operating Guidelines</div>
+        <div class="tc-badge">🇪🇺 Europe's Unified Free Marketplace — EuroBas.com</div>
         <h1>Terms & Conditions</h1>
         <p class="tc-hero-p">Effective Date: <strong>04-27-2025</strong> | Last Updated: <strong>04/27/2025</strong><br>
-        Welcome to EuroBas.com — Europe’s Unified Vehicle Marketplace. Buy and sell all types of vehicles across Europe with ease.</p>
+        A free, borderless digital marketplace connecting buyers and sellers across Europe — available in 31 languages, with zero fees and zero hidden costs. Buy and sell anything, anywhere in Europe.</p>
     </div>
 
     <div class="container">
@@ -76,17 +76,17 @@
         {{-- INTRODUCTION BANNER --}}
         <div class="tc-section">
             <div class="tc-free">
-                <div class="tc-free-icon">🚗</div>
+                <div class="tc-free-icon">🎁</div>
                 <div>
-                    <div class="tc-free-title">Introduction and Company Rules</div>
+                    <div class="tc-free-title">Always free — register, post, and contact sellers at no cost</div>
                     <div class="tc-free-desc">
-                        Whether you’re listing a used or new car, truck, motorcycle, or commercial vehicle, EuroBas.com connects private sellers and dealers with interested buyers in one centralized, easy-to-use marketplace. Post your ad for free and reach a European-wide audience today.
+                        No subscriptions. No commissions. No hidden fees. EuroBas.com will always remain free to register, free to publish ads, and free to contact sellers. No payment is required to use the core features of the platform.
                     </div>
                 </div>
             </div>
 
             <div class="tc-h2">1. Terms Agreement & Platform Scope</div>
-            <div class="tc-sub">By using our platform, you agree to comply with these Terms and Conditions. Our goal is to provide a safe and reliable environment for buying and selling vehicles, spare parts, and related products across Europe.</div>
+            <div class="tc-sub">By using our platform, you agree to comply with these Terms and Conditions. Our goal is to provide a safe and reliable environment for buying and selling products, goods, and services across Europe.</div>
 
             <div class="tc-card">
                 <div class="tc-card-header">
@@ -94,7 +94,7 @@
                     <h3 class="tc-card-title">Digital Advertising Space</h3>
                 </div>
                 <div class="tc-card-body">
-                    <p><strong>EuroBas.com</strong> is an open digital marketplace for publishing advertisements related to the sale and purchase of used/new vehicles and spare parts within the European Union. The platform provides advertising space to users and is not a party to any transaction.</p>
+                    <p><strong>EuroBas.com</strong> is an open digital marketplace for publishing classified advertisements across all categories within the European Union. The platform provides advertising space to users and is not a party to any transaction.</p>
                 </div>
             </div>
 
@@ -118,7 +118,7 @@
 
             {{-- POSTING ADS POLICY --}}
             <div class="tc-h2">Posting Ads Policy</div>
-            <div class="tc-sub">Guidelines to ensure community safety, prevent fraud, and maintain quality listings.</div>
+            <div class="tc-sub">Guidelines to ensure community safety, prevent fraud, and maintain quality listings across all categories.</div>
 
             <div class="tc-card">
                 <div class="tc-card-header">
@@ -128,7 +128,7 @@
                 <div class="tc-card-body">
                     <p>To ensure the safety of our community and protect you from fraud, please adhere to the following rules before publishing any advertisement:</p>
                     <ul>
-                        <li>The vehicle or item listed must be owned by you or you must be authorized to advertise it.</li>
+                        <li>The listed product, item, or service must be owned by you or you must be authorized to advertise it.</li>
                         <li>Posting false or misleading advertisements is strictly prohibited.</li>
                         <li>It is not allowed to use images taken from the internet or from other ads without explicit permission.</li>
                         <li>Adding external phone numbers or links to other websites for off-platform communication within the description is forbidden.</li>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="tc-card-body">
                     <ul>
-                        <li>All advertisements must be genuine and represent an actual vehicle or product available for sale.</li>
+                        <li>All advertisements must be genuine and represent an actual item, product, or service available for sale or trade.</li>
                         <li>Publishing fake ads or ads intended to collect users’ information is strictly prohibited.</li>
                         <li>Reposting the same advertisement multiple times to gain visibility is not allowed.</li>
                         <li>Personal accounts must not be used for organized commercial activities without prior approval from EuroBas.com.</li>
