@@ -4,9 +4,9 @@
 
 @push('css_or_js')
 <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
-<meta property="og:title" content="{{ translate('About_EuroBas.com_—_Europe\'s_Unified_Marketplace') }}"/>
+<meta property="og:title" content="About EuroBas.com — Europe's Unified Marketplace"/>
 <meta property="og:url" content="{{env('APP_URL')}}">
-<meta property="og:description" content="{{ translate('Europe\'s_unified_marketplace_for_vehicles,_real_estate,_boats,_furniture_and_more._Free_to_use,_available_in_31_languages.') }}">
+<meta property="og:description" content="Europe's unified marketplace for vehicles, real estate, boats, furniture and more. Free to use, available in 31 languages.">
 <style>
 *{box-sizing:border-box}
 .ab-hero{text-align:center;padding:4.5rem 1rem 3.5rem;background:linear-gradient(135deg,#0d3b8e 0%,#1565c0 50%,#1976d2 100%);color:#fff;position:relative;overflow:hidden}
@@ -76,14 +76,14 @@
 
     {{-- HERO --}}
     <div class="ab-hero">
-        <div class="ab-badge">🌍 {{ translate('Europe\'s_Unified_Free_Marketplace') }}</div>
+        <div class="ab-badge">🌍 Europe's Unified Free Marketplace</div>
         <h1>EuroBas.com</h1>
-        <p class="ab-hero-p">{{ translate('A_free,_borderless_digital_marketplace_connecting_buyers_and_sellers_across_Europe_—_available_in_31_languages,_with_zero_fees_and_zero_hidden_costs._Buy_and_sell_anything,_anywhere_in_Europe.') }}</p>
+        <p class="ab-hero-p">A free, borderless digital marketplace connecting buyers and sellers across Europe — available in 31 languages, with zero fees and zero hidden costs. Buy and sell anything, anywhere in Europe.</p>
         <div class="ab-stats">
-            <div><div class="ab-stat-num">31</div><div class="ab-stat-lbl">{{ translate('Languages') }}</div></div>
-            <div><div class="ab-stat-num">100%</div><div class="ab-stat-lbl">{{ translate('Free_to_use') }}</div></div>
-            <div><div class="ab-stat-num">20+</div><div class="ab-stat-lbl">{{ translate('Categories') }}</div></div>
-            <div><div class="ab-stat-num">€0</div><div class="ab-stat-lbl">{{ translate('Hidden_fees') }}</div></div>
+            <div><div class="ab-stat-num">31</div><div class="ab-stat-lbl">Languages</div></div>
+            <div><div class="ab-stat-num">100%</div><div class="ab-stat-lbl">Free to use</div></div>
+            <div><div class="ab-stat-num">20+</div><div class="ab-stat-lbl">Categories</div></div>
+            <div><div class="ab-stat-num">€0</div><div class="ab-stat-lbl">Hidden fees</div></div>
         </div>
     </div>
 
@@ -94,134 +94,134 @@
             <div class="ab-free">
                 <div class="ab-free-icon">✅</div>
                 <div>
-                    <div class="ab-free-title">{{ translate('Always_free_—_register,_post,_and_contact_sellers_at_no_cost') }}</div>
-                    <div class="ab-free-desc">{{ translate('No_subscriptions._No_commissions._No_hidden_fees._EuroBas.com_will_always_remain_free_to_register,_free_to_publish_ads,_and_free_to_contact_sellers._No_payment_is_required_to_use_the_core_features_of_the_platform.') }}</div>
+                    <div class="ab-free-title">Always free — register, post, and contact sellers at no cost</div>
+                    <div class="ab-free-desc">No subscriptions. No commissions. No hidden fees. EuroBas.com will always remain free to register, free to publish ads, and free to contact sellers. No payment is required to use the core features of the platform.</div>
                 </div>
             </div>
 
             {{-- CATEGORIES --}}
-            <div class="ab-h2">{{ translate('Everything_you_can_buy_&_sell_on_EuroBas') }}</div>
-            <div class="ab-sub">{{ translate('From_cars_to_real_estate,_boats_to_electronics_—_one_unified_platform_for_all_categories_across_Europe.') }}</div>
+            <div class="ab-h2">Everything you can buy & sell on EuroBas</div>
+            <div class="ab-sub">From cars to real estate, boats to electronics — one unified platform for all categories across Europe.</div>
             <div class="ab-cats">
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e3f2fd">🚗</div>
-                    <div class="ab-cat-name">{{ translate('Cars') }}</div>
-                    <div class="ab-cat-desc">{{ translate('New_and_used_cars_of_all_makes_and_models_across_Europe.') }}</div>
+                    <div class="ab-cat-name">Cars</div>
+                    <div class="ab-cat-desc">New and used cars of all makes and models across Europe.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e8eaf6">🏎️</div>
-                    <div class="ab-cat-name">{{ translate('Supercars') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Premium_and_exotic_supercars_from_top_European_and_international_brands.') }}</div>
+                    <div class="ab-cat-name">Supercars</div>
+                    <div class="ab-cat-desc">Premium and exotic supercars from top European and international brands.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fce4ec">🏛️</div>
-                    <div class="ab-cat-name">{{ translate('Classic_Cars') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Vintage_and_classic_automobiles_for_collectors_and_enthusiasts.') }}</div>
+                    <div class="ab-cat-name">Classic Cars</div>
+                    <div class="ab-cat-desc">Vintage and classic automobiles for collectors and enthusiasts.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e0f2f1">🚚</div>
-                    <div class="ab-cat-name">{{ translate('Trucks') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Light,_medium_and_heavy-duty_trucks_for_commercial_use.') }}</div>
+                    <div class="ab-cat-name">Trucks</div>
+                    <div class="ab-cat-desc">Light, medium and heavy-duty trucks for commercial use.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fff3e0">🏍️</div>
-                    <div class="ab-cat-name">{{ translate('Motorcycles') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Sport_bikes,_cruisers,_scooters_and_off-road_motorcycles.') }}</div>
+                    <div class="ab-cat-name">Motorcycles</div>
+                    <div class="ab-cat-desc">Sport bikes, cruisers, scooters and off-road motorcycles.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#f3e5f5">🚌</div>
-                    <div class="ab-cat-name">{{ translate('Buses') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Passenger_buses,_minibuses_and_coaches_for_sale_across_Europe.') }}</div>
+                    <div class="ab-cat-name">Buses</div>
+                    <div class="ab-cat-desc">Passenger buses, minibuses and coaches for sale across Europe.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e8f5e9">🚐</div>
-                    <div class="ab-cat-name">{{ translate('Caravans') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Touring_caravans_and_camper_trailers_for_leisure_travel.') }}</div>
+                    <div class="ab-cat-name">Caravans</div>
+                    <div class="ab-cat-desc">Touring caravans and camper trailers for leisure travel.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e0f7fa">🏕️</div>
-                    <div class="ab-cat-name">{{ translate('Motorhomes') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Self-contained_motorhomes_and_camper_vans_for_the_open_road.') }}</div>
+                    <div class="ab-cat-name">Motorhomes</div>
+                    <div class="ab-cat-desc">Self-contained motorhomes and camper vans for the open road.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fff8e1">🚜</div>
-                    <div class="ab-cat-name">{{ translate('Agricultural_Machinery') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Tractors,_harvesters,_irrigation_equipment_and_farm_tools.') }}</div>
+                    <div class="ab-cat-name">Agricultural Machinery</div>
+                    <div class="ab-cat-desc">Tractors, harvesters, irrigation equipment and farm tools.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fbe9e7">🚵</div>
-                    <div class="ab-cat-name">{{ translate('Bicycles') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Road,_mountain,_electric_and_cargo_bicycles_for_all_riders.') }}</div>
+                    <div class="ab-cat-name">Bicycles</div>
+                    <div class="ab-cat-desc">Road, mountain, electric and cargo bicycles for all riders.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#ede7f6">🔧</div>
-                    <div class="ab-cat-name">{{ translate('Spare_Parts') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Vehicle_spare_parts,_accessories,_tires,_rims_and_tools.') }}</div>
+                    <div class="ab-cat-name">Spare Parts</div>
+                    <div class="ab-cat-desc">Vehicle spare parts, accessories, tires, rims and tools.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e8f5e9">🎿</div>
-                    <div class="ab-cat-name">{{ translate('Vehicle_Accessories') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Car_care_products,_navigation,_audio_systems_and_accessories.') }}</div>
+                    <div class="ab-cat-name">Vehicle Accessories</div>
+                    <div class="ab-cat-desc">Car care products, navigation, audio systems and accessories.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e3f2fd">🏠</div>
-                    <div class="ab-cat-name">{{ translate('Real_Estate') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Apartments,_houses,_villas,_land_and_commercial_properties_for_sale_or_rent.') }}</div>
+                    <div class="ab-cat-name">Real Estate</div>
+                    <div class="ab-cat-desc">Apartments, houses, villas, land and commercial properties for sale or rent.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e0f7fa">⚓</div>
-                    <div class="ab-cat-name">{{ translate('Ships_&_Yachts') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Private_and_commercial_boats,_yachts,_marine_equipment_and_accessories.') }}</div>
+                    <div class="ab-cat-name">Ships & Yachts</div>
+                    <div class="ab-cat-desc">Private and commercial boats, yachts, marine equipment and accessories.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fff3e0">🪑</div>
-                    <div class="ab-cat-name">{{ translate('Furniture') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Indoor,_outdoor,_office_furniture,_sofas,_beds_and_dining_sets.') }}</div>
+                    <div class="ab-cat-name">Furniture</div>
+                    <div class="ab-cat-desc">Indoor, outdoor, office furniture, sofas, beds and dining sets.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#fce4ec">🌿</div>
-                    <div class="ab-cat-name">{{ translate('Home_&_Garden') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Garden_tools,_outdoor_furniture,_plants_and_home_decoration.') }}</div>
+                    <div class="ab-cat-name">Home & Garden</div>
+                    <div class="ab-cat-desc">Garden tools, outdoor furniture, plants and home decoration.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#f3e5f5">📺</div>
-                    <div class="ab-cat-name">{{ translate('Electronics') }}</div>
-                    <div class="ab-cat-desc">{{ translate('TVs,_smartphones,_computers,_cameras_and_smart_home_devices.') }}</div>
+                    <div class="ab-cat-name">Electronics</div>
+                    <div class="ab-cat-desc">TVs, smartphones, computers, cameras and smart home devices.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e8f5e9">🍳</div>
-                    <div class="ab-cat-name">{{ translate('Home_Appliances') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Kitchen_appliances,_washing_machines,_refrigerators_and_more.') }}</div>
+                    <div class="ab-cat-name">Home Appliances</div>
+                    <div class="ab-cat-desc">Kitchen appliances, washing machines, refrigerators and more.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e3f2fd">⚙️</div>
-                    <div class="ab-cat-name">{{ translate('Industrial_Machines') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Manufacturing_equipment,_CNC_machines,_forklifts_and_heavy_tools.') }}</div>
+                    <div class="ab-cat-name">Industrial Machines</div>
+                    <div class="ab-cat-desc">Manufacturing equipment, CNC machines, forklifts and heavy tools.</div>
                 </div>
 
                 <div class="ab-cat">
                     <div class="ab-cat-ico" style="background:#e0f2f1">🏗️</div>
-                    <div class="ab-cat-name">{{ translate('Heavy_Equipment') }}</div>
-                    <div class="ab-cat-desc">{{ translate('Construction_machinery,_excavators,_cranes_and_bulldozers.') }}</div>
+                    <div class="ab-cat-name">Heavy Equipment</div>
+                    <div class="ab-cat-desc">Construction machinery, excavators, cranes and bulldozers.</div>
                 </div>
 
             </div>
@@ -231,88 +231,88 @@
 
         {{-- OPTIONAL PAID SERVICES --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('Optional_paid_services') }}</div>
-            <div class="ab-sub">{{ translate('Boost_your_ad\'s_visibility_with_optional_promotional_tools_—_none_are_required_to_use_the_platform_or_publish_ads.') }}</div>
+            <div class="ab-h2">Optional paid services</div>
+            <div class="ab-sub">Boost your ad's visibility with optional promotional tools — none are required to use the platform or publish ads.</div>
             <div class="ab-paid-grid">
                 <div class="ab-paid-card">
                     <div class="ab-paid-ico" style="background:#e3f2fd">📌</div>
                     <div>
-                        <div class="ab-paid-name">{{ translate('Top_ad_placement') }}</div>
-                        <div class="ab-paid-desc">{{ translate('Your_ad_appears_at_the_top_of_the_page_for_maximum_visibility_and_increased_exposure_to_buyers.') }}</div>
+                        <div class="ab-paid-name">Top ad placement</div>
+                        <div class="ab-paid-desc">Your ad appears at the top of the page for maximum visibility and increased exposure to buyers.</div>
                     </div>
                 </div>
                 <div class="ab-paid-card">
                     <div class="ab-paid-ico" style="background:#e8f5e9">🔍</div>
                     <div>
-                        <div class="ab-paid-name">{{ translate('Highlighted_in_search') }}</div>
-                        <div class="ab-paid-desc">{{ translate('Your_ad_is_visually_emphasized_in_search_results,_making_it_easier_for_buyers_to_notice_and_click.') }}</div>
+                        <div class="ab-paid-name">Highlighted in search</div>
+                        <div class="ab-paid-desc">Your ad is visually emphasized in search results, making it easier for buyers to notice and click.</div>
                     </div>
                 </div>
                 <div class="ab-paid-card">
                     <div class="ab-paid-ico" style="background:#fff3e0">🎬</div>
                     <div>
-                        <div class="ab-paid-name">{{ translate('Promotional_video') }}</div>
-                        <div class="ab-paid-desc">{{ translate('Add_a_professional_video_to_present_your_product,_service,_or_business_in_an_engaging_way.') }}</div>
+                        <div class="ab-paid-name">Promotional video</div>
+                        <div class="ab-paid-desc">Add a professional video to present your product, service, or business in an engaging way.</div>
                     </div>
                 </div>
                 <div class="ab-paid-card">
                     <div class="ab-paid-ico" style="background:#fce4ec">🚨</div>
                     <div>
-                        <div class="ab-paid-name">{{ translate('Urgent_sale_sticker') }}</div>
-                        <div class="ab-paid-desc">{{ translate('Apply_an_"Urgent_Sale"_badge_to_highlight_time-sensitive_offers_and_encourage_faster_buyer_action.') }}</div>
+                        <div class="ab-paid-name">Urgent sale sticker</div>
+                        <div class="ab-paid-desc">Apply an "Urgent Sale" badge to highlight time-sensitive offers and encourage faster buyer action.</div>
                     </div>
                 </div>
                 <div class="ab-paid-card">
                     <div class="ab-paid-ico" style="background:#f3e5f5">🖼️</div>
                     <div>
-                        <div class="ab-paid-name">{{ translate('Promotional_banner') }}</div>
-                        <div class="ab-paid-desc">{{ translate('Upload_a_custom_banner_displayed_on_the_homepage_in_accordance_with_platform_advertising_guidelines.') }}</div>
+                        <div class="ab-paid-name">Promotional banner</div>
+                        <div class="ab-paid-desc">Upload a custom banner displayed on the homepage in accordance with platform advertising guidelines.</div>
                     </div>
                 </div>
             </div>
-            <div class="ab-note">⚠️ {{ translate('All_paid_services_are_completely_optional_and_not_required_to_use_the_platform_or_publish_advertisements._Fees_are_non-refundable_as_they_are_considered_fulfilled_upon_payment.') }}</div>
+            <div class="ab-note">⚠️ All paid services are completely optional and not required to use the platform or publish advertisements. Fees are non-refundable as they are considered fulfilled upon payment.</div>
         </div>
 
         <hr class="ab-divider">
 
         {{-- WHAT WE OFFER --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('What_we_offer') }}</div>
-            <div class="ab-sub">{{ translate('Our_platform_is_built_on_five_core_principles_that_guide_everything_we_do.') }}</div>
+            <div class="ab-h2">What we offer</div>
+            <div class="ab-sub">Our platform is built on five core principles that guide everything we do.</div>
             <ul class="ab-offer-list">
                 <li class="ab-offer-li">
                     <div class="ab-offer-ico" style="background:#e8f5e9">🆓</div>
                     <div>
-                        <div class="ab-offer-name">{{ translate('A_free_market_for_everyone') }}</div>
-                        <div class="ab-offer-desc">{{ translate('Anyone_can_create_an_account_and_post_advertisements_for_vehicles,_spare_parts,_real_estate,_and_more_—_completely_free_of_charge._No_subscription,_no_commission,_no_payment_of_any_kind_required.') }}</div>
+                        <div class="ab-offer-name">A free market for everyone</div>
+                        <div class="ab-offer-desc">Anyone can create an account and post advertisements for vehicles, spare parts, real estate, and more — completely free of charge. No subscription, no commission, no payment of any kind required.</div>
                     </div>
                 </li>
                 <li class="ab-offer-li">
                     <div class="ab-offer-ico" style="background:#e3f2fd">🌍</div>
                     <div>
-                        <div class="ab-offer-name">{{ translate('Pan-European_reach') }}</div>
-                        <div class="ab-offer-desc">{{ translate('We_bring_together_buyers_and_sellers_from_all_over_Europe,_enabling_cross-border_trading_opportunities_without_complexity._Your_ad_reaches_a_Europe-wide_audience_instantly_upon_publishing.') }}</div>
+                        <div class="ab-offer-name">Pan-European reach</div>
+                        <div class="ab-offer-desc">We bring together buyers and sellers from all over Europe, enabling cross-border trading opportunities without complexity. Your ad reaches a Europe-wide audience instantly upon publishing.</div>
                     </div>
                 </li>
                 <li class="ab-offer-li">
                     <div class="ab-offer-ico" style="background:#fff8e1">⚡</div>
                     <div>
-                        <div class="ab-offer-name">{{ translate('User-friendly_experience') }}</div>
-                        <div class="ab-offer-desc">{{ translate('Our_platform_is_intuitive_and_fast,_making_posting,_browsing,_and_communicating_with_sellers_straightforward_and_enjoyable._Available_in_31_languages_for_a_seamless_multilingual_experience.') }}</div>
+                        <div class="ab-offer-name">User-friendly experience</div>
+                        <div class="ab-offer-desc">Our platform is intuitive and fast, making posting, browsing, and communicating with sellers straightforward and enjoyable. Available in 31 languages for a seamless multilingual experience.</div>
                     </div>
                 </li>
                 <li class="ab-offer-li">
                     <div class="ab-offer-ico" style="background:#fce4ec">🔒</div>
                     <div>
-                        <div class="ab-offer-name">{{ translate('Security_first') }}</div>
-                        <div class="ab-offer-desc">{{ translate('We_actively_monitor_listings_and_user_activity_to_maintain_a_safe,_trustworthy_environment_where_both_buyers_and_sellers_can_trade_with_full_confidence_and_peace_of_mind.') }}</div>
+                        <div class="ab-offer-name">Security first</div>
+                        <div class="ab-offer-desc">We actively monitor listings and user activity to maintain a safe, trustworthy environment where both buyers and sellers can trade with full confidence and peace of mind.</div>
                     </div>
                 </li>
                 <li class="ab-offer-li">
                     <div class="ab-offer-ico" style="background:#f3e5f5">✅</div>
                     <div>
-                        <div class="ab-offer-name">{{ translate('Full_transparency') }}</div>
-                        <div class="ab-offer-desc">{{ translate('No_hidden_fees,_no_commissions,_no_surprises_—_just_a_clean,_open_marketplace_where_honesty_and_ease_come_first,_always._What_you_see_is_exactly_what_you_get.') }}</div>
+                        <div class="ab-offer-name">Full transparency</div>
+                        <div class="ab-offer-desc">No hidden fees, no commissions, no surprises — just a clean, open marketplace where honesty and ease come first, always. What you see is exactly what you get.</div>
                     </div>
                 </li>
             </ul>
@@ -322,28 +322,28 @@
 
         {{-- HOW TO START --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('How_to_get_started') }}</div>
-            <div class="ab-sub">{{ translate('Four_simple_steps_to_start_buying_and_selling_across_Europe_—_takes_less_than_2_minutes_to_register.') }}</div>
+            <div class="ab-h2">How to get started</div>
+            <div class="ab-sub">Four simple steps to start buying and selling across Europe — takes less than 2 minutes to register.</div>
             <div class="ab-steps">
                 <div class="ab-step">
                     <div class="ab-step-n">1</div>
-                    <div class="ab-step-name">{{ translate('Create_a_free_account') }}</div>
-                    <div class="ab-step-desc">{{ translate('Visit_EuroBas.com_and_click_Register._Choose_between_a_personal_account_or_a_business_account._Enter_your_email_address_and_set_a_password.') }}</div>
+                    <div class="ab-step-name">Create a free account</div>
+                    <div class="ab-step-desc">Visit EuroBas.com and click Register. Choose between a personal account or a business account. Enter your email address and set a password.</div>
                 </div>
                 <div class="ab-step">
                     <div class="ab-step-n">2</div>
-                    <div class="ab-step-name">{{ translate('Complete_your_profile') }}</div>
-                    <div class="ab-step-desc">{{ translate('Add_your_phone_number,_address,_and_preferred_language_to_unlock_ad_publishing_and_the_ability_to_contact_sellers_directly_and_securely.') }}</div>
+                    <div class="ab-step-name">Complete your profile</div>
+                    <div class="ab-step-desc">Add your phone number, address, and preferred language to unlock ad publishing and the ability to contact sellers directly and securely.</div>
                 </div>
                 <div class="ab-step">
                     <div class="ab-step-n">3</div>
-                    <div class="ab-step-name">{{ translate('Publish_your_ad') }}</div>
-                    <div class="ab-step-desc">{{ translate('List_any_item_with_photos,_a_full_description,_price,_and_location_—_completely_free_of_charge._Your_ad_goes_live_instantly_and_reaches_buyers_across_Europe.') }}</div>
+                    <div class="ab-step-name">Publish your ad</div>
+                    <div class="ab-step-desc">List any item with photos, a full description, price, and location — completely free of charge. Your ad goes live instantly and reaches buyers across Europe.</div>
                 </div>
                 <div class="ab-step">
                     <div class="ab-step-n">4</div>
-                    <div class="ab-step-name">{{ translate('Connect_with_buyers') }}</div>
-                    <div class="ab-step-desc">{{ translate('Receive_inquiries_and_communicate_directly_with_interested_buyers_across_Europe._Trade_confidently_in_your_own_language_or_theirs.') }}</div>
+                    <div class="ab-step-name">Connect with buyers</div>
+                    <div class="ab-step-desc">Receive inquiries and communicate directly with interested buyers across Europe. Trade confidently in your own language or theirs.</div>
                 </div>
             </div>
         </div>
@@ -352,23 +352,23 @@
 
         {{-- VISION & COMMITMENT --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('Our_vision_and_commitment') }}</div>
-            <div class="ab-sub">{{ translate('We_are_committed_to_building_a_better,_more_connected_Europe_through_open,_free,_and_transparent_trade.') }}</div>
+            <div class="ab-h2">Our vision and commitment</div>
+            <div class="ab-sub">We are committed to building a better, more connected Europe through open, free, and transparent trade.</div>
             <div class="ab-vision-grid">
                 <div class="ab-vision">
                     <div class="ab-vision-ico">🎯</div>
-                    <div class="ab-vision-name">{{ translate('Our_vision') }}</div>
-                    <div class="ab-vision-desc">{{ translate('To_unify_the_automotive,_real_estate,_and_goods_market_across_Europe_—_creating_a_single_space_where_individuals_and_businesses_can_connect,_trade,_and_grow_without_limits,_borders,_or_fees.') }}</div>
+                    <div class="ab-vision-name">Our vision</div>
+                    <div class="ab-vision-desc">To unify the automotive, real estate, and goods market across Europe — creating a single space where individuals and businesses can connect, trade, and grow without limits, borders, or fees.</div>
                 </div>
                 <div class="ab-vision">
                     <div class="ab-vision-ico">🛡️</div>
-                    <div class="ab-vision-name">{{ translate('GDPR_compliant') }}</div>
-                    <div class="ab-vision-desc">{{ translate('Full_compliance_with_GDPR_regulations_to_protect_your_personal_data_and_ensure_your_privacy_at_all_times._Your_data_is_never_sold_or_shared_without_your_explicit_consent.') }}</div>
+                    <div class="ab-vision-name">GDPR compliant</div>
+                    <div class="ab-vision-desc">Full compliance with GDPR regulations to protect your personal data and ensure your privacy at all times. Your data is never sold or shared without your explicit consent.</div>
                 </div>
                 <div class="ab-vision">
                     <div class="ab-vision-ico">🚀</div>
-                    <div class="ab-vision-name">{{ translate('Continuous_development') }}</div>
-                    <div class="ab-vision-desc">{{ translate('We_continuously_develop_advanced_features_to_meet_the_evolving_needs_of_our_European_community_—_improving_speed,_reliability,_and_user_experience_every_day.') }}</div>
+                    <div class="ab-vision-name">Continuous development</div>
+                    <div class="ab-vision-desc">We continuously develop advanced features to meet the evolving needs of our European community — improving speed, reliability, and user experience every day.</div>
                 </div>
             </div>
         </div>
@@ -377,11 +377,11 @@
 
         {{-- LANGUAGES --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('Available_in_31_languages') }}</div>
-            <div class="ab-sub">{{ translate('Use_EuroBas_in_your_own_language_—_we_support_a_wide_range_of_European_and_international_languages_to_make_the_platform_accessible_to_everyone_across_the_globe.') }}</div>
+            <div class="ab-h2">Available in 31 languages</div>
+            <div class="ab-sub">Use EuroBas in your own language — we support a wide range of European and international languages to make the platform accessible to everyone across the globe.</div>
             <div class="ab-langs">
                 @foreach(['English','German','French','Spanish','Italian','Russian','Turkish','Arabic','Dutch','Greek','Romanian','Polish','Ukrainian','Bulgarian','Portuguese','Danish','Swedish','Norwegian','Finnish','Croatian','Hungarian','Czech','Albanian','Bosnian','Serbian','Lithuanian','Slovenian','Slovak','Chinese','Korean','Japanese'] as $lang)
-                <span class="ab-lang">{{ translate($lang) }}</span>
+                <span class="ab-lang">{{ $lang }}</span>
                 @endforeach
             </div>
         </div>
@@ -390,23 +390,23 @@
 
         {{-- COMPANY INFO --}}
         <div class="ab-section">
-            <div class="ab-h2">{{ translate('Company_information') }}</div>
-            <div class="ab-sub">{{ translate('EuroBas_is_a_registered_company_based_in_the_Netherlands,_committed_to_fair_and_transparent_trade_across_Europe.') }}</div>
+            <div class="ab-h2">Company information</div>
+            <div class="ab-sub">EuroBas is a registered company based in the Netherlands, committed to fair and transparent trade across Europe.</div>
             <div class="ab-co">
                 <div class="ab-co-row">
-                    <div class="ab-co-lbl">🏢 {{ translate('Company_name') }}</div>
+                    <div class="ab-co-lbl">🏢 Company name</div>
                     <div class="ab-co-val">EuroBas</div>
                 </div>
                 <div class="ab-co-row">
-                    <div class="ab-co-lbl">📍 {{ translate('Headquarters') }}</div>
-                    <div class="ab-co-val">{{ translate('Netherlands,_Europe') }}</div>
+                    <div class="ab-co-lbl">📍 Headquarters</div>
+                    <div class="ab-co-val">Netherlands, Europe</div>
                 </div>
                 <div class="ab-co-row">
-                    <div class="ab-co-lbl">🪪 {{ translate('Chamber_of_Commerce_(KvK)') }}</div>
+                    <div class="ab-co-lbl">🪪 Chamber of Commerce (KvK)</div>
                     <div class="ab-co-val">92808832</div>
                 </div>
                 <div class="ab-co-row">
-                    <div class="ab-co-lbl">✉️ {{ translate('Contact_email') }}</div>
+                    <div class="ab-co-lbl">✉️ Contact email</div>
                     <div class="ab-co-val"><a href="mailto:info@eurobas.com" style="color:#1565c0;text-decoration:none;font-weight:700">info@eurobas.com</a></div>
                 </div>
             </div>
@@ -415,9 +415,9 @@
         {{-- CTA --}}
         <div style="padding-bottom:3rem">
             <div class="ab-cta">
-                <h2>{{ translate('Europe\'s_marketplace_without_borders') }}</h2>
-                <p>{{ translate('Join_thousands_of_users_across_Europe_—_list_your_ads_today_and_trade_with_confidence,') }}<br>{{ translate('no_matter_where_you_are._Registration_is_free._Always.') }}</p>
-                <a href="{{ route('ads-add') }}" class="ab-cta-btn">{{ translate('Post_your_first_ad_—_it\'s_completely_free') }}</a>
+                <h2>Europe's marketplace without borders</h2>
+                <p>Join thousands of users across Europe — list your ads today and trade with confidence,<br>no matter where you are. Registration is free. Always.</p>
+                <a href="{{ route('ads-add') }}" class="ab-cta-btn">Post your first ad — it's completely free</a>
             </div>
         </div>
 
