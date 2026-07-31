@@ -6,27 +6,45 @@
 
 <style>
     body {
-        background-color: unset !important;
-    }
-    .price-text {
-        font-size: 35px;
+        background-color: #f8f9fa !important;
     }
 
-    .fixed-description-height {
-        min-height: 3em; /* adjust this based on your font size */
-        line-height: 1.5em;
-        overflow: hidden;
+    .sponsor-card-active {
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0 !important;
+        border-radius: 10px;
     }
 
-    .pricing-card {
-        border: 1px solid #d9d9d9;
-        box-shadow: 0px 0px 2px #858585;
+    .sponsor-card-expired {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 10px;
+        opacity: 0.85;
     }
 
-    .pricing-card.active {
-        border: 1px solid #198754;
-        transform: scale(1.08);
-        transition: .2s;
+    .badge-status-active {
+        background-color: #16a34a;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.80rem;
+    }
+
+    .badge-status-expired {
+        background-color: #6b7280;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.80rem;
+    }
+
+    .info-pill {
+        background-color: rgba(0, 0, 0, 0.03);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.88rem;
     }
 </style>
 
@@ -39,78 +57,118 @@
             <div class="row g-3">
                 <!-- Sidebar-->
                 @include('theme-views.partials._profile-aside')
+                
                 <div class="col px-3 flex-shrink-0">
                     @if($user_ads_sponsor->count() > 0)
-                        <h1 class="mb-4" >{{translate('promotion_history')}}</h1>
-                        <div>
-                            <div class="row g-4">
-                                @foreach($user_ads_sponsor as $ad)
-                                        <div class="col-md-12">
-                                            <div class="card rounded border large-screen-card-border large-screen-aside-shadow">
-                                                <div class="card-body p-3">
-                                                    <div class="d-flex align-items-start gap-3">
-                                                        <div class="avatar border rounded" style="--size: 5rem">
-                                                            <a href="{{route('ads-show', $ad->slug)}}">
-                                                                <img
-                                                                src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
-                                                                onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
-                                                                class="img-fit dark-support rounded aspect-1" alt="">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h2 class="h4 m-0 fw-bold">{{ translate('promotion_history') }}</h2>
+                        </div>
+
+                        <div class="row g-4">
+                            @foreach($user_ads_sponsor as $ad)
+                                @php
+                                    // فلترة الباقات القديمة جداً (أكثر من 90 يوم) وترتيب النشط أولاً ثم الأحدث
+                                    $filteredSponsors = $ad->sponsor
+                                        ->filter(function($s) {
+                                            return \Carbon\Carbon::parse($s->expiration_date)->gte(now()->subDays(90));
+                                        })
+                                        ->sortByDesc(function($s) {
+                                            return [\Carbon\Carbon::parse($s->expiration_date)->isFuture() ? 1 : 0, $s->expiration_date];
+                                        });
+                                @endphp
+
+                                @if($filteredSponsors->count() > 0)
+                                    <div class="col-md-12">
+                                        <div class="card rounded-3 border-0 shadow-sm">
+                                            <div class="card-body p-3 p-md-4">
+                                                <div class="d-flex flex-column flex-md-row align-items-start gap-3">
+                                                    
+                                                    <!-- Ad Thumbnail -->
+                                                    <div class="avatar border rounded-3 flex-shrink-0" style="--size: 5.5rem">
+                                                        <a href="{{ route('ads-show', $ad->slug) }}">
+                                                            <img src="{{ cloudfront('ad/thumbnail/'.$ad->thumbnail) }}"
+                                                                 onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
+                                                                 class="img-fit dark-support rounded-3 aspect-1" alt="{{ $ad->title }}">
+                                                        </a>
+                                                    </div>
+
+                                                    <!-- Ad Details & Sponsors -->
+                                                    <div class="w-100">
+                                                        <h3 class="h5 fw-bold mb-3 text-dark">
+                                                            <a href="{{ route('ads-show', $ad->slug) }}" class="text-decoration-none text-dark">
+                                                                {{ $ad->title }}
                                                             </a>
-                                                        </div>
+                                                        </h3>
 
-                                                        <div>
-                                                            <h4 class="mb-3" >{{$ad->title}}</h4>
-                                                            @foreach($ad->sponsor as $sponsor)
-                                                                <div class="@if(!$loop->last) mb-4 @endif d-flex flex-column align-items-start gap-1" >
+                                                        <div class="d-flex flex-column gap-3">
+                                                            @foreach($filteredSponsors as $sponsor)
+                                                                @php
+                                                                    $isActive = \Carbon\Carbon::parse($sponsor->expiration_date)->isFuture();
+                                                                    $locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale();
+                                                                @endphp
 
-                                                                    <div class="d-flex align-items-start align-items-sm-center flex-column flex-md-row gap-2 fw-medium">
-                                                                        <div class="d-flex align-items-center gap-1 mb-sm-0 mb-2" >
-                                                                            <span>
-                                                                                @if($sponsor->expiration_date > now())
-                                                                                    <i class="bi bi-check2-circle text-success"></i>
-                                                                                @else
-                                                                                    <i class="bi bi-x-circle text-danger"></i>
-                                                                                @endif
-                                                                            </span>
-                                                                            <h5>{{ translate($sponsor->type) }}</h5>
-                                                                        </div>
-                                                                        @php($locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale())
-                                                                        <span>( {{ translate('sponsored_at')}} : {{($sponsor->created_at)}} ) ({{$sponsor->created_at->locale($locale)->diffForHumans()}})</span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <span>
-                                                                            ( {{translate('price')}} : {{ $sponsor->price }}€ )
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <span>
-                                                                            ( {{ translate('duration') }} : {{ $sponsor->duration_in_days }} {{ translate('days') }} )
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <span>
-                                                                            @if($sponsor->expiration_date < now())
-                                                                                ( {{ translate('expired_on') }} : {{ $sponsor->expiration_date }} )
+                                                                <div class="p-3 {{ $isActive ? 'sponsor-card-active' : 'sponsor-card-expired' }}">
+                                                                    
+                                                                    <!-- Header: Type & Status -->
+                                                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                                                                        <div class="d-flex align-items-center gap-2">
+                                                                            @if($isActive)
+                                                                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
                                                                             @else
-                                                                                ( {{ translate('valid_until') }} : {{ $sponsor->expiration_date }} )
+                                                                                <i class="bi bi-clock-history text-secondary fs-5"></i>
                                                                             @endif
-                                                                            @php($locale = SOLVE_LOCALE_CODES[app()->getLocale()] ?? app()->getLocale())
-                                                                            ( {{\Carbon\Carbon::parse($sponsor->expiration_date)->locale($locale)->diffForHumans()}} )
-                                                                        </span>
+                                                                            <h4 class="h6 m-0 fw-bold text-dark">{{ translate($sponsor->type) }}</h4>
+                                                                            
+                                                                            <span class="{{ $isActive ? 'badge-status-active' : 'badge-status-expired' }}">
+                                                                                {{ $isActive ? translate('Active') : translate('Expired') }}
+                                                                            </span>
+                                                                        </div>
+
+                                                                        <div class="text-muted fs-sm">
+                                                                            <i class="bi bi-calendar3 me-1"></i>
+                                                                            {{ translate('sponsored_at') }}: {{ $sponsor->created_at->format('Y-m-d') }} 
+                                                                            <span class="text-lowercase">({{ $sponsor->created_at->locale($locale)->diffForHumans() }})</span>
+                                                                        </div>
                                                                     </div>
+
+                                                                    <!-- Details Info Pills -->
+                                                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                                                        <div class="info-pill text-dark">
+                                                                            <strong>{{ translate('price') }}:</strong> {{ $sponsor->price }}€
+                                                                        </div>
+                                                                        
+                                                                        <div class="info-pill text-dark">
+                                                                            <strong>{{ translate('duration') }}:</strong> {{ $sponsor->duration_in_days }} {{ translate('days') }}
+                                                                        </div>
+
+                                                                        <div class="info-pill text-dark">
+                                                                            @if($isActive)
+                                                                                <strong class="text-success">{{ translate('valid_until') }}:</strong> {{ $sponsor->expiration_date }}
+                                                                            @else
+                                                                                <strong class="text-muted">{{ translate('expired_on') }}:</strong> {{ $sponsor->expiration_date }}
+                                                                            @endif
+                                                                            <span class="ms-1 font-weight-normal">
+                                                                                ({{\Carbon\Carbon::parse($sponsor->expiration_date)->locale($locale)->diffForHumans()}})
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
                                                             @endforeach
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
-                                @endforeach
-                            </div>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     @else
-                        <div class="alert alert-warning">
-                            <h5 class="alert-heading fw-medium">{{ translate('there_is_no_sponsored_ads_to_show') }}</h5>
+                        <div class="alert alert-warning border-0 shadow-sm rounded-3 p-4">
+                            <h5 class="alert-heading fw-bold mb-1">{{ translate('there_is_no_sponsored_ads_to_show') }}</h5>
+                            <p class="m-0 text-muted fs-sm">{{ translate('you_have_not_promoted_any_ads_yet') }}</p>
                         </div>
                     @endif
                 </div>
@@ -119,10 +177,3 @@
     </main>
     <!-- End Main Content -->
 @endsection
-
-@push('script')
-
-
-
-
-@endpush
