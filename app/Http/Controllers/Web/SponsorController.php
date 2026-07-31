@@ -196,15 +196,24 @@ class SponsorController extends Controller
 
     public function data() {
 
-        $user_ads_sponsor = Ad::with('sponsor')
+        $user_ads_sponsor = Ad::with(['sponsor' => function ($query) {
+            // جلب الباقات النشطة حالياً + الباقات المنتهية خلال آخر 90 يوماً فقط مرتبة زمنيًا
+            $query->where('is_paid', 1)
+                  ->where('expiration_date', '>=', now()->subDays(90))
+                  ->orderBy('expiration_date', 'desc');
+        }])
         ->where('user_id', auth('customer')->id())
         ->whereHas('sponsor', function ($query) {
-            $query->where('is_paid', 1);
+            $query->where('is_paid', 1)
+                  ->where('expiration_date', '>=', now()->subDays(90));
         })
-        ->get();
+        ->get()
+        // ترتيب الإعلانات: الإعلانات ذات الباقات النشطة في الأعلى أولاً
+        ->sortByDesc(function ($ad) {
+            return $ad->sponsor->where('expiration_date', '>', now())->count() > 0 ? 1 : 0;
+        });
 
         return view('theme-views.sponsor.data', compact('user_ads_sponsor'));
     }
-    
 
 }
