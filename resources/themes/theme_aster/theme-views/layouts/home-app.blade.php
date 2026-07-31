@@ -354,7 +354,7 @@
 <script>
     function route_alert(route, message) {
         Swal.fire({
-            title: '{{translate("are_you_sure")}}?',
+           title: '{{translate("are_you_sure")}}{{ app()->getLocale() == "ar" ? "؟" : "?" }}',
             text: message,
             type: 'warning',
             showCancelButton: true,
