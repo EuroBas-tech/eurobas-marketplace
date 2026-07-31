@@ -2195,7 +2195,7 @@
 
         function post_route_alert(button, message) {
             Swal.fire({
-                title: '{{translate("are_you_sure_you_want_to_delete_this_auction")}}?',
+                title: '{{translate("are_you_sure_you_want_to_delete_this_auction")}}{{ app()->getLocale() == "ar" ? "؟" : "?" }}',
                 type: 'warning',
                 showCancelButton: true,
                 cancelButtonColor: 'default',
