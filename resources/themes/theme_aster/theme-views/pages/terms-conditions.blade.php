@@ -1,220 +1,209 @@
 @extends('theme-views.layouts.app')
 
-@section('title', translate('Terms_&_Conditions').' | '.$web_config['name']->value.' '.translate('ecommerce'))
+@section('title', translate('Terms_and_Conditions').' | '.$web_config['name']->value)
+
+@push('css_or_js')
+<meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
+<meta property="og:title" content="Terms & Conditions — EuroBas.com"/>
+<meta property="og:url" content="{{env('APP_URL')}}">
+<meta property="og:description" content="Read the terms and conditions for using EuroBas.com — Europe's unified marketplace.">
+<style>
+*{box-sizing:border-box}
+.tc-hero{text-align:center;padding:4.5rem 1rem 3.5rem;background:linear-gradient(135deg,#0d3b8e 0%,#1565c0 50%,#1976d2 100%);color:#fff;position:relative;overflow:hidden}
+.tc-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:350px;height:350px;border-radius:50%;background:rgba(255,255,255,.04)}
+.tc-hero::after{content:'';position:absolute;bottom:-100px;left:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.03)}
+.tc-badge{display:inline-block;background:rgba(255,255,255,.18);color:#fff;font-size:13px;padding:6px 18px;border-radius:25px;margin-bottom:1.5rem;font-weight:500;letter-spacing:.3px}
+.tc-hero h1{font-size:2.6rem;font-weight:700;margin-bottom:1rem;position:relative;letter-spacing:-.5px}
+.tc-hero-p{font-size:1.1rem;max-width:620px;margin:0 auto 2rem;opacity:.92;line-height:1.8;position:relative}
+
+.tc-section{padding:3rem 0}
+.tc-divider{border:none;border-top:1px solid #f0f0f0;margin:0}
+.tc-h2{font-size:1.7rem;font-weight:700;color:#0d1b3e;margin-bottom:.5rem}
+.tc-sub{font-size:1rem;color:#666;margin-bottom:2rem;line-height:1.7;max-width:680px}
+
+.tc-card{background:#fff;border:1px solid #eaecf0;border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;transition:all .25s ease}
+.tc-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.04);border-color:#c5cae9}
+.tc-card-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.tc-card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.tc-card-title{font-size:1.15rem;font-weight:700;color:#0d1b3e;margin:0}
+.tc-card-body{font-size:.9rem;color:#555;line-height:1.75}
+.tc-card-body p{margin-bottom:.75rem}
+.tc-card-body p:last-child{margin-bottom:0}
+.tc-card-body ul{padding-left:1.25rem;margin-top:.5rem;margin-bottom:.75rem}
+.tc-card-body li{margin-bottom:.4rem}
+
+.tc-free{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1.5px solid #a5d6a7;border-radius:18px;padding:1.75rem 2rem;display:flex;align-items:center;gap:1.5rem;margin-bottom:2.5rem}
+.tc-free-icon{width:56px;height:56px;background:#2e7d32;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.6rem}
+.tc-free-title{font-size:1.15rem;font-weight:700;color:#1b5e20;margin-bottom:4px}
+.tc-free-desc{font-size:.9rem;color:#388e3c;line-height:1.6}
+
+.tc-note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:1rem 1.25rem;font-size:.85rem;color:#e65100;margin-top:1rem;line-height:1.6}
+
+.tc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+
+.tc-co{background:#fff;border:1px solid #eaecf0;border-radius:16px;overflow:hidden}
+.tc-co-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid #f5f5f5}
+.tc-co-row:last-child{border-bottom:none}
+.tc-co-lbl{font-size:.88rem;color:#888}
+.tc-co-val{font-size:.9rem;font-weight:700;color:#0d1b3e}
+
+@media(max-width:600px){
+    .tc-hero h1{font-size:1.9rem}
+    .tc-free{flex-direction:column}
+    .tc-card-header{flex-direction:column;align-items:flex-start;gap:.5rem}
+}
+</style>
+@endpush
 
 @section('content')
+<main class="main-content">
 
-<!-- Main Content -->
-<main class="main-content d-flex flex-column gap-3 pb-3">
-    <div class="page-title overlay py-5 __opacity-half background-custom-fit"
-    @if ($page_title_banner)
-        @if (\Illuminate\Support\Facades\Storage::disk()->exists('banner/'.json_decode($page_title_banner['value'])->image))
-        data-bg-img="{{ cloudfront('banner/'.json_decode($page_title_banner['value'])->image) }}"
-        @else
-        data-bg-img="{{theme_asset('assets/img/media/page-title-bg.png')}}"
-        @endif
-    @else
-        data-bg-img="{{theme_asset('assets/img/media/page-title-bg.png')}}"
-    @endif
-    >
-        <div class="container">
-            <h1 class="absolute-white text-center">{{translate('Terms_&_Conditions')}}</h1>
-        </div>
+    {{-- HERO --}}
+    <div class="tc-hero">
+        <div class="tc-badge">⚖️ Legal Information</div>
+        <h1>Terms & Conditions</h1>
+        <p class="tc-hero-p">Please read these terms carefully before using EuroBas.com. By accessing or using our platform, you agree to be bound by these terms.</p>
     </div>
-    
+
     <div class="container">
-        <div class="card my-4 border-0 bg-transparent">
-            <div class="card-body p-0 text-dark page-paragraph">
-                
-                <!-- بداية كود الشروط والأحكام الفاخر -->
-                <style>
-                    .terms-container {
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                        color: #2c3e50;
-                        line-height: 1.7;
-                        max-width: 1000px;
-                        margin: 0 auto;
-                    }
-                    .terms-header {
-                        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-                        color: #ffffff;
-                        padding: 35px 30px;
-                        border-radius: 16px;
-                        margin-bottom: 30px;
-                        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-                    }
-                    .terms-header h2 {
-                        margin: 0 0 10px 0;
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: #ffffff;
-                    }
-                    .terms-header p {
-                        margin: 0;
-                        opacity: 0.85;
-                        font-size: 0.95rem;
-                    }
-                    .terms-card {
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 12px;
-                        padding: 28px;
-                        margin-bottom: 20px;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-                    }
-                    .terms-card h3 {
-                        color: #0f172a;
-                        font-size: 1.25rem;
-                        margin-top: 0;
-                        margin-bottom: 16px;
-                        font-weight: 600;
-                        border-bottom: 2px solid #f1f5f9;
-                        padding-bottom: 10px;
-                    }
-                    .terms-card ul {
-                        padding-left: 20px;
-                        margin-bottom: 0;
-                    }
-                    .terms-card li {
-                        margin-bottom: 10px;
-                        color: #475569;
-                    }
-                    .terms-card li:last-child {
-                        margin-bottom: 0;
-                    }
-                    .warning-box {
-                        background-color: #fff8f6;
-                        border-left: 4px solid #ef4444;
-                        padding: 20px;
-                        border-radius: 8px;
-                        margin-top: 15px;
-                    }
-                    .warning-box h4 {
-                        color: #991b1b;
-                        margin-top: 0;
-                        margin-bottom: 10px;
-                        font-size: 1.05rem;
-                    }
-                    .highlight-badge {
-                        display: inline-block;
-                        background-color: #e0f2fe;
-                        color: #0369a1;
-                        padding: 4px 12px;
-                        border-radius: 20px;
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        margin-top: 10px;
-                    }
-                    .contact-box {
-                        background: #f8fafc;
-                        border: 2px dashed #cbd5e1;
-                        border-radius: 12px;
-                        padding: 25px;
-                        text-align: center;
-                        margin-top: 30px;
-                    }
-                    .contact-box a {
-                        color: #2563eb;
-                        font-weight: 600;
-                        text-decoration: none;
-                    }
-                </style>
 
-                <div class="terms-container">
-                    <div class="terms-header">
-                        <h2>Terms & Conditions</h2>
-                        <p>Welcome to <strong>EuroBas.com</strong> – Europe's Unified Vehicle Marketplace.</p>
-                        <div style="margin-top: 12px; font-size: 0.85rem; opacity: 0.75;">
-                            <strong>Effective Date:</strong> April 27, 2025 &nbsp;|&nbsp; <strong>Last Updated:</strong> April 27, 2025
-                        </div>
-                    </div>
+        {{-- FREE & TRANSPARENT BANNER --}}
+        <div class="tc-section">
+            <div class="tc-free">
+                <div class="tc-free-icon">📜</div>
+                <div>
+                    <div class="tc-free-title">Transparent & Fair Platform Guidelines</div>
+                    <div class="tc-free-desc">EuroBas.com operates as a free, open marketplace designed to connect buyers and sellers across Europe fairly and transparently, adhering strictly to Dutch and European Union legal standards.</div>
+                </div>
+            </div>
 
-                    <div class="terms-card">
-                        <h3>1. Introduction & Overview</h3>
-                        <p>By accessing or using <strong>EuroBas.com</strong>, you agree to strictly comply with and be bound by these Terms and Conditions. Our platform serves as an open digital marketplace designed to connect buyers and private or commercial sellers of used and new vehicles, commercial trucks, motorcycles, and spare parts across the European Union.</p>
-                        <span class="highlight-badge">Advertising Space Provider Only</span>
-                    </div>
+            {{-- TERMS CONTENT --}}
+            <div class="tc-h2">User Agreement</div>
+            <div class="tc-sub">These terms govern your access to and use of EuroBas.com, including any content, functionality, and services offered on or through the platform.</div>
 
-                    <div class="terms-card">
-                        <h3>2. Platform Functionality & Liability Limits</h3>
-                        <ul>
-                            <li><strong>Classifieds Platform Only:</strong> EuroBas.com operates purely as an advertising marketplace. We are not a commercial or financial intermediary between buyers and sellers.</li>
-                            <li><strong>No Payment Processing:</strong> Payments for listed vehicles or items are not processed through the platform. We do not execute, handle, or monitor financial agreements.</li>
-                            <li><strong>Zero Commissions:</strong> EuroBas.com takes no commission fees on completed sales or purchases, directly or indirectly.</li>
-                            <li><strong>Direct User Contact:</strong> Interested clients contact advertisers directly outside the platform. We have no visibility or legal involvement in transactions.</li>
-                            <li><strong>EU DAC7 Exemption:</strong> EuroBas.com is not subject to the EU DAC7 directive, as it does not facilitate, process, or execute monetary payments for sellers.</li>
-                        </ul>
-                    </div>
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#e3f2fd">1️⃣</div>
+                    <h3 class="tc-card-title">Acceptance of Terms</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>By registering an account, publishing an advertisement, or browsing EuroBas.com, you confirm that you have read, understood, and agreed to these Terms & Conditions. If you do not agree with any part of these terms, you must not use our services.</p>
+                </div>
+            </div>
 
-                    <div class="terms-card">
-                        <h3>3. Posting Advertisements Policy</h3>
-                        <p>To ensure a safe environment and combat fraud, all users must adhere strictly to these posting rules:</p>
-                        <ul>
-                            <li><strong>Ownership & Authorization:</strong> You must own the listed vehicle/product or have legal power of attorney to advertise it.</li>
-                            <li><strong>Authentic Media & Data:</strong> Misleading details or unauthorized images taken from other websites are strictly forbidden.</li>
-                            <li><strong>No External Communication Links:</strong> Adding external phone numbers or third-party links within the ad description to bypass platform controls is prohibited.</li>
-                            <li><strong>Duplicate Listings:</strong> Posting the same advertisement multiple times to manipulate search rankings is not allowed.</li>
-                            <li><strong>Commercial Usage:</strong> Personal accounts may not be utilized for organized dealer activities without explicit prior approval.</li>
-                        </ul>
-                        <p style="color: #dc2626; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
-                            * Note: Accounts posting fake or fraudulent ads will be permanently suspended without prior notice.
-                        </p>
-                    </div>
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#e8eaf6">2️⃣</div>
+                    <h3 class="tc-card-title">User Accounts & Registration</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>To access certain features of EuroBas.com, such as posting advertisements or contacting sellers, you must register for an account:</p>
+                    <ul>
+                        <li>You must provide accurate, current, and complete information during registration.</li>
+                        <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+                        <li>You may register as a personal user or a business user.</li>
+                        <li>EuroBas reserves the right to suspend or terminate accounts that contain false or misleading information.</li>
+                    </ul>
+                </div>
+            </div>
 
-                    <div class="terms-card">
-                        <h3>4. Prohibited Content</h3>
-                        <p>It is strictly prohibited to publish advertisements that violate local or EU legal regulations, including but not limited to:</p>
-                        <ul>
-                            <li>Weapons, firearms, and dangerous items.</li>
-                            <li>Controlled substances, drugs, or illegal items.</li>
-                            <li>Counterfeit goods, non-homologated auto parts, or stolen vehicles.</li>
-                        </ul>
-                    </div>
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#fce4ec">3️⃣</div>
+                    <h3 class="tc-card-title">Listing Rules & Content Guidelines</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>When posting an advertisement on EuroBas.com, you agree to comply with the following content rules:</p>
+                    <ul>
+                        <li><strong>Accuracy:</strong> All descriptions, prices, photos, and item details must be truthful and accurate.</li>
+                        <li><strong>Prohibited Items:</strong> Illegal goods, weapons, hazardous materials, counterfeit items, and offensive content are strictly prohibited.</li>
+                        <li><strong>Duplication:</strong> Duplicate listings for the same item are not allowed and may be removed.</li>
+                        <li><strong>Ownership:</strong> You must own or have the legal right to sell any item or service you list.</li>
+                    </ul>
+                </div>
+            </div>
 
-                    <div class="terms-card">
-                        <h3>5. Tax & Customs Compliance</h3>
-                        <p>Users bear sole legal responsibility for identifying and complying with local and EU regulations regarding cross-border vehicle transactions, import/export duties, VAT, and customs fees. EuroBas.com provides no customs clearance or transportation services.</p>
-                    </div>
-
-                    <div class="terms-card">
-                        <h3>6. Optional Paid Services</h3>
-                        <p>EuroBas.com offers optional promotional packages (e.g., featuring ads on the homepage or highlighting search listings). Paid services are considered fully fulfilled immediately upon activation, and payments are non-refundable.</p>
-                    </div>
-
-                    <div class="terms-card">
-                        <h3>7. Important Safety & Payment Disclaimer</h3>
-                        <div class="warning-box">
-                            <h4>⚠️ Safety Advice for Buyers & Sellers</h4>
-                            <ul style="margin: 0; color: #7f1d1d;">
-                                <li><strong>Never send wire transfers or advance deposits</strong> before verifying the identity of the seller and physically inspecting the vehicle.</li>
-                                <li>Whenever possible, meet in safe, public places and ensure proper legal transfer documents are completed.</li>
-                                <li>Avoid non-traceable payment methods.</li>
-                                <li>EuroBas.com accepts no liability for financial loss, fraud, or disputes arising between users.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="terms-card">
-                        <h3>8. Intellectual Property & Governing Law</h3>
-                        <ul>
-                            <li><strong>Intellectual Property:</strong> All trademarks, design codes, logos, and original written content remain the exclusive property of EuroBas.com.</li>
-                            <li><strong>Legal Jurisdiction:</strong> These Terms and Conditions are governed by the laws of <strong>The Netherlands</strong>. Any disputes shall be settled exclusively within competent Dutch courts.</li>
-                            <li><strong>Regulatory Cooperation:</strong> EuroBas.com fully cooperates with legal and tax authorities in full compliance with EU GDPR regulations.</li>
-                        </ul>
-                    </div>
-
-                    <div class="contact-box">
-                        <h4 style="margin-top:0; color: #0f172a;">Questions or Inquiries?</h4>
-                        <p style="margin-bottom: 10px; color: #64748b;">If you need further clarification regarding our Terms & Conditions, please reach out to us:</p>
-                        <a href="mailto:info@eurobas.com">📩 info@eurobas.com</a>
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#e0f2f1">4️⃣</div>
+                    <h3 class="tc-card-title">Free Core Services & Optional Paid Features</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>EuroBas.com provides core marketplace features completely free of charge:</p>
+                    <ul>
+                        <li>Registering, listing items, and contacting sellers are 100% free with no commissions or hidden costs.</li>
+                        <li>Users may optionally purchase promotional tools (e.g., Top Placement, Highlighted Ads, Urgent Badges, Banners) to increase visibility.</li>
+                    </ul>
+                    <div class="tc-note">
+                        ⚠️ <strong>Refund Policy for Paid Services:</strong> Promotional paid services are considered fully executed upon activation. Therefore, all fees paid for optional promotional features are non-refundable once the service is rendered.
                     </div>
                 </div>
-                <!-- نهاية كود الشروط والأحكام -->
+            </div>
 
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#fff3e0">5️⃣</div>
+                    <h3 class="tc-card-title">Limitation of Liability & Transactions</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>EuroBas.com acts solely as an online venue connecting buyers and sellers across Europe. EuroBas is not a party to any transaction between users:</p>
+                    <ul>
+                        <li>We do not guarantee the quality, safety, legality, or existence of items advertised.</li>
+                        <li>We do not handle payments or escrow between buyers and sellers for advertised goods.</li>
+                        <li>Users are solely responsible for verifying the authenticity of buyers or sellers and executing secure payments and delivery independently.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#ede7f6">6️⃣</div>
+                    <h3 class="tc-card-title">Privacy & Data Protection (GDPR)</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>Your privacy is important to us. All personal data collected through EuroBas.com is processed in accordance with the General Data Protection Regulation (GDPR) and applicable Dutch data protection laws. For detailed information, please review our <a href="{{ route('terms') }}" style="color:#1565c0;font-weight:700;text-decoration:none">Privacy Policy</a>.</p>
+                </div>
+            </div>
+
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#fbe9e7">7️⃣</div>
+                    <h3 class="tc-card-title">Applicable Law & Jurisdiction</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>These Terms & Conditions are governed by and construed in accordance with the laws of the Netherlands. Any disputes arising out of or in connection with these terms shall be subject to the exclusive jurisdiction of the competent courts in the Netherlands.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="tc-divider">
+
+        {{-- COMPANY INFORMATION --}}
+        <div class="tc-section">
+            <div class="tc-h2">Legal Entity Information</div>
+            <div class="tc-sub">For official inquiries regarding these Terms & Conditions, please reach out to our legal team using the details below.</div>
+            
+            <div class="tc-co">
+                <div class="tc-co-row">
+                    <div class="tc-co-lbl">🏢 Company name</div>
+                    <div class="tc-co-val">EuroBas</div>
+                </div>
+                <div class="tc-co-row">
+                    <div class="tc-co-lbl">📍 Registered Location</div>
+                    <div class="tc-co-val">Netherlands, Europe</div>
+                </div>
+                <div class="tc-co-row">
+                    <div class="tc-co-lbl">🪪 Chamber of Commerce (KvK)</div>
+                    <div class="tc-co-val">92808832</div>
+                </div>
+                <div class="tc-co-row">
+                    <div class="tc-co-lbl">✉️ Legal Enquiries</div>
+                    <div class="tc-co-val"><a href="mailto:info@eurobas.com" style="color:#1565c0;text-decoration:none;font-weight:700">info@eurobas.com</a></div>
+                </div>
             </div>
         </div>
+
     </div>
 </main>
-<!-- End Main Content -->
-
 @endsection
