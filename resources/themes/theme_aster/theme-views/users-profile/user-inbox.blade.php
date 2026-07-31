@@ -529,7 +529,7 @@
 
         // ── Delete whole conversation (soft, for me only) ──
         function deleteConversation(userId) {
-            eurobasConfirm('{{ translate("delete_entire_conversation") }}?', function () {
+            eurobasConfirm('{{ translate("delete_entire_conversation") }}{{ app()->getLocale() == "ar" ? "؟" : "?" }}', function () {
                 $.ajax({
                     type: 'post',
                     url: "{{ route('delete_conversation') }}",
