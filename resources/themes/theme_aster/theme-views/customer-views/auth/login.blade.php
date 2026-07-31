@@ -73,7 +73,7 @@
                                         <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}/>
                                         {{ translate('remember_me') }}
                                     </label>
-                                    <a href="{{route('customer.auth.recover-password')}}">{{ translate('Forgot_Password') }} ?</a>
+                                   <a href="{{ route('customer.auth.recover-password') }}">{{ translate('Forgot_Password') }} {{ app()->getLocale() == 'ar' ? '؟' : '?' }}</a>
                                 </div>
 
                                 {{-- Google reCAPTCHA v2 (Image Challenges) --}}
