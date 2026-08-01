@@ -541,35 +541,51 @@ class AdController extends Controller
         return $first;
     }
 
-    public function getLocationCoordinates($city) {
+       public function getLocationCoordinates($city) 
+{
+    
+    if (empty($city) || !is_string($city)) {
+        return null;
+    }
 
+    $cleanCity = mb_strtolower(trim($city));
+    $cacheKey = 'city_coords_' . md5($cleanCity);
+
+    if (\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+        return \Illuminate\Support\Facades\Cache::get($cacheKey);
+    }
+
+    try {
         $apiKey = Helpers::get_business_settings('map_api_key_server');
 
-        $address = $city;
-
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'address' => $address,
-            'key' => $apiKey
+        $response = \Illuminate\Support\Facades\Http::timeout(3)->get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'address' => $city,
+            'key'     => $apiKey
         ]);
 
-        if (!$response->successful()) {
-            return null;
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if (($data['status'] ?? '') === 'OK' && !empty($data['results'])) {
+                $location = $data['results'][0]['geometry']['location'];
+
+                $coordinates = [
+                    'latitude'  => $location['lat'],
+                    'longitude' => $location['lng'],
+                ];
+                
+                \Illuminate\Support\Facades\Cache::put($cacheKey, $coordinates, now()->addDays(30));
+
+                return $coordinates;
+            }
         }
-
-        $data = $response->json();
-
-        if ($data['status'] !== 'OK' || empty($data['results'])) {
-            return null;
-        }
-
-        $location = $data['results'][0]['geometry']['location'];
-
-        return [
-            'latitude' => $location['lat'],
-            'longitude' => $location['lng'],
-        ];
-
+    } catch (\Exception $e) {
+    
+        \Illuminate\Support\Facades\Log::warning("Google Maps Geocoding failed for city: {$city}. Error: " . $e->getMessage());
     }
+
+    return null;
+}
 
     public function update(Request $request)
     {
