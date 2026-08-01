@@ -114,7 +114,7 @@
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <a href="javascript:" title="{{translate('Delete')}}"
-                            onclick="route_alert('{{route('ads-delete',[$ad->id])}}','{{translate('want_to_delete_this_ad?')}}')"
+                            onclick="route_alert('{{route('ads-delete',[$ad->id])}}','{{translate('want_to_delete_this_ad')}}')"
                             class="btn btn-outline-danger rounded-circle btn-action oktext-btn">
                             <i class="bi bi-trash3-fill"></i>
                         </a>
