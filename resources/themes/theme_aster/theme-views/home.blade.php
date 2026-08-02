@@ -186,50 +186,32 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                {{-- NEW MOBILE DESIGN: Unified blue header with search + category pills --}}
+                {{-- MOBILE: Filter button only --}}
                 <style>
-                    .mob-search-bar{display:flex;align-items:center;gap:10px;padding:10px 14px 12px;background:#0d3b8e;margin:-1rem -12px 0;position:relative;z-index:10}
-                    .mob-search-wrap{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.25);border-radius:22px;padding:9px 14px;cursor:pointer;text-decoration:none}
-                    .mob-search-wrap span{font-size:14px;color:rgba(255,255,255,0.65)}
-                    .mob-filter-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.18);border:0.5px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-                    .mob-cats-scroll{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;scrollbar-width:none;background:#fff;border-bottom:1px solid #f0f0f0;margin:0 -12px}
-                    .mob-cats-scroll::-webkit-scrollbar{display:none}
-                    .mob-cat-pill{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:1px solid #e0e0e0;background:#fff;white-space:nowrap;cursor:pointer;flex-shrink:0;font-size:12px;color:#333;text-decoration:none;transition:all .2s}
-                    .mob-cat-pill:hover,.mob-cat-pill.active{background:#0d3b8e;color:#fff;border-color:#0d3b8e}
-                    .mob-filter-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999}
+                    .mob-filter-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 14px;background:#fff;border-bottom:1px solid #f0f0f0;margin:0 -12px}
+                    .mob-filter-btn{display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:20px;background:#0d3b8e;border:none;color:#fff;font-size:13px;font-weight:500;cursor:pointer}
+                    .mob-filter-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999}
                     .mob-filter-overlay.open{display:flex;align-items:flex-end}
-                    .mob-filter-sheet{width:100%;background:#fff;border-radius:16px 16px 0 0;padding:18px 16px 32px;max-height:85vh;overflow-y:auto}
-                    .mob-filter-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px}
-                    .mob-filter-ttl{font-size:16px;font-weight:600;color:#1a1a1a;margin-bottom:14px}
-                    .mob-filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-                    .mob-fsel{width:100%;padding:11px 10px;border:1px solid #e0e0e0;border-radius:8px;background:#f8f8f8;font-size:13px;color:#333;box-sizing:border-box}
-                    .mob-filter-apply{width:100%;background:#0d3b8e;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:12px}
+                    .mob-filter-sheet{width:100%;background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 36px;max-height:90vh;overflow-y:auto}
+                    .mob-filter-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 18px}
+                    .mob-filter-ttl{font-size:17px;font-weight:600;color:#1a1a1a;margin-bottom:16px}
+                    .mob-filter-sheet .filter-input{width:100%;padding:13px 14px;border:1.5px solid #e0e0e0;border-radius:10px;background:#f8f8f8;font-size:15px;color:#333;box-sizing:border-box;margin-bottom:10px}
+                    .mob-filter-sheet select.filter-input{appearance:auto}
+                    .mob-filter-sheet .col-sm-6,.mob-filter-sheet .col-xl-4,.mob-filter-sheet .col-md-4,.mob-filter-sheet .col-6{width:100%!important;max-width:100%!important;flex:0 0 100%!important;padding:0!important}
+                    .mob-filter-sheet .row{margin:0!important}
+                    .mob-filter-sheet .form-group{margin-bottom:10px!important}
+                    .mob-filter-sheet .btn{width:100%;padding:14px;font-size:16px;border-radius:10px;margin-top:6px}
+                    .mob-filter-sheet [data-category-type]{display:block!important}
+                    .mob-filter-sheet .select2-container{width:100%!important}
                 </style>
 
-                {{-- Search bar --}}
-                <div class="mob-search-bar">
-                    <a href="{{ route('searched-ads') }}" class="mob-search-wrap">
-                        <i class="bi bi-search" style="font-size:15px;color:rgba(255,255,255,0.65)"></i>
-                        <span>{{ translate('search_for_items') }}...</span>
-                    </a>
-                    <div class="mob-filter-btn" onclick="document.getElementById('mobFilterOverlay').classList.add('open')">
-                        <i class="bi bi-sliders" style="font-size:17px;color:#fff"></i>
-                    </div>
+                <div class="mob-filter-bar">
+                    <button class="mob-filter-btn" onclick="document.getElementById('mobFilterOverlay').classList.add('open')">
+                        <i class="bi bi-sliders" style="font-size:16px"></i>
+                        {{ translate('filter') }}
+                    </button>
                 </div>
 
-                {{-- Category pills --}}
-                <div class="mob-cats-scroll">
-                    <a href="{{ route('home') }}" class="mob-cat-pill active">
-                        <i class="bi bi-grid-fill" style="font-size:12px"></i> {{ translate('All') }}
-                    </a>
-                    @foreach($categories->take(15) as $cat)
-                    <a href="{{ route('show-by-category', $cat->id) }}" class="mob-cat-pill">
-                        {{ $cat->name }}
-                    </a>
-                    @endforeach
-                </div>
-
-                {{-- Filter overlay --}}
                 <div class="mob-filter-overlay" id="mobFilterOverlay" onclick="if(event.target===this)this.classList.remove('open')">
                     <div class="mob-filter-sheet">
                         <div class="mob-filter-handle"></div>
