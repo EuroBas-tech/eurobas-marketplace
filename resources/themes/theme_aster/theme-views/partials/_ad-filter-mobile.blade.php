@@ -76,7 +76,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2" data-category-type="vehicles"
                                                         data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand">
+                                                                <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand-mobile">
                                                                     <option value="all">{{translate('brand')}}</option>
                                                                     @foreach($brands as $brand)
                                                                         <option
@@ -93,7 +93,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2"
                                                             data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
+                                                                <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model-mobile">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
                                                                         <option data-brand-id="{{ $model['brand_id'] }}"
@@ -642,8 +642,8 @@
 
 <script>
     $(document).ready(function () {
-        const $brandSelect = $('#brand');
-        const $modelSelect = $('#model');
+        const $brandSelect = $('#brand-mobile');
+        const $modelSelect = $('#model-mobile');
         const $categoryInput = $('#selectedCategoryId');
 
         // Initialize Select2
@@ -718,7 +718,12 @@
                 }
             });
 
-            $modelSelect.val('all').trigger('change').prop('disabled', false);
+            $modelSelect.val('all').trigger('change');
+            if (selectedBrandId === 'all') {
+                $modelSelect.prop('disabled', true);
+            } else {
+                $modelSelect.prop('disabled', false);
+            }
         }
 
         $('.category-option').on('click', function () {
@@ -729,7 +734,8 @@
 
         $brandSelect.on('change', filterModels);
 
-        // Initial setup (optional)
+        // Initial setup
         filterBrandsAndModels();
+        $modelSelect.prop('disabled', true);
     });
 </script>
