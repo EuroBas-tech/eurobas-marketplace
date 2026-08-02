@@ -186,36 +186,23 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                {{-- MOBILE: Filter button only --}}
-                <style>
-                    .mob-filter-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 14px;background:#fff;border-bottom:1px solid #f0f0f0;margin:0 -12px}
-                    .mob-filter-btn{display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:20px;background:#0d3b8e;border:none;color:#fff;font-size:13px;font-weight:500;cursor:pointer}
-                    .mob-filter-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999}
-                    .mob-filter-overlay.open{display:flex;align-items:flex-end}
-                    .mob-filter-sheet{width:100%;background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 36px;max-height:90vh;overflow-y:auto}
-                    .mob-filter-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 18px}
-                    .mob-filter-ttl{font-size:17px;font-weight:600;color:#1a1a1a;margin-bottom:16px}
-                    .mob-filter-sheet .filter-input{width:100%;padding:13px 14px;border:1.5px solid #e0e0e0;border-radius:10px;background:#f8f8f8;font-size:15px;color:#333;box-sizing:border-box;margin-bottom:10px}
-                    .mob-filter-sheet select.filter-input{appearance:auto}
-                    .mob-filter-sheet .col-sm-6,.mob-filter-sheet .col-xl-4,.mob-filter-sheet .col-md-4,.mob-filter-sheet .col-6{width:100%!important;max-width:100%!important;flex:0 0 100%!important;padding:0!important}
-                    .mob-filter-sheet .row{margin:0!important}
-                    .mob-filter-sheet .form-group{margin-bottom:10px!important}
-                    .mob-filter-sheet .btn{width:100%;padding:14px;font-size:16px;border-radius:10px;margin-top:6px}
-                    .mob-filter-sheet [data-category-type]{display:block!important}
-                    .mob-filter-sheet .select2-container{width:100%!important}
-                </style>
-
-                <div class="mob-filter-bar">
-                    <button class="mob-filter-btn" onclick="document.getElementById('mobFilterOverlay').classList.add('open')">
-                        <i class="bi bi-sliders" style="font-size:16px"></i>
-                        {{ translate('filter') }}
-                    </button>
-                </div>
-
-                <div class="mob-filter-overlay" id="mobFilterOverlay" onclick="if(event.target===this)this.classList.remove('open')">
-                    <div class="mob-filter-sheet">
-                        <div class="mob-filter-handle"></div>
-                        <div class="mob-filter-ttl">{{ translate('filter') }}</div>
+                <div class="mobile-hero-wrapper">
+                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
+                        @if($bannerText)
+                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
+                                    @if($bannerText['title'])
+                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                    @if($bannerText['sub_title'])
+                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="d-flex mx-auto align-items-center justify-content-center
+                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
