@@ -186,90 +186,25 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                {{-- MOBILE HOME: Banner + Filter card overlapping like AutoScout24 --}}
-                <style>
-                    /* Banner */
-                    .mob-home-banner{height:200px;max-height:200px;position:relative;overflow:hidden;border-radius:0}
-                    /* Filter card overlapping banner */
-                    #home-mobile-filter{
-                        background:#fff;
-                        border-radius:16px 16px 0 0;
-                        padding:16px 14px 14px;
-                        margin-top:-24px;
-                        position:relative;
-                        z-index:10;
-                        box-shadow:0 -4px 20px rgba(0,0,0,0.08);
-                    }
-                    /* Full width inputs */
-                    #home-mobile-filter .col-xl-4,
-                    #home-mobile-filter .col-md-4,
-                    #home-mobile-filter .col-sm-6,
-                    #home-mobile-filter .col-6,
-                    #home-mobile-filter .col-auto,
-                    #home-mobile-filter .flex-grow-1 {
-                        width:100%!important;
-                        max-width:100%!important;
-                        flex:0 0 100%!important;
-                        padding:0!important;
-                    }
-                    #home-mobile-filter .filter-input,
-                    #home-mobile-filter select.form-control,
-                    #home-mobile-filter input.form-control {
-                        width:100%!important;
-                        padding:13px 14px!important;
-                        font-size:15px!important;
-                        border-radius:10px!important;
-                        height:auto!important;
-                        min-height:50px!important;
-                        margin-bottom:8px!important;
-                        border:1.5px solid #e8e8e8!important;
-                        background:#f8f9fa!important;
-                    }
-                    #home-mobile-filter .row { margin:0!important; }
-                    #home-mobile-filter .form-group { margin-bottom:0!important; }
-                    /* Hide price, year, advanced filter — only on home mobile */
-                    #home-mobile-filter #price_range_select,
-                    #home-mobile-filter #construction_year_select,
-                    #home-mobile-filter [data-bs-target="#advancedFilterModal"] { display:none!important; }
-                    #home-mobile-filter #price_range_select closest div,
-                    #home-mobile-filter #construction_year_select { display:none!important; }
-                    /* Submit button */
-                    #home-mobile-filter .filter-buttons { flex-direction:column!important; gap:0!important; }
-                    #home-mobile-filter .filter-buttons .btn-primary {
-                        width:100%!important;
-                        padding:14px!important;
-                        font-size:16px!important;
-                        font-weight:600!important;
-                        border-radius:10px!important;
-                        margin-top:8px!important;
-                    }
-                    #home-mobile-filter .select2-container { width:100%!important; }
-                    #home-mobile-filter [data-category-type] { display:block!important; }
-                    /* Hide year col entirely */
-                    #home-mobile-filter [data-for*="cars"] #construction_year_select,
-                    #home-mobile-filter [name="construction_year"] { display:none!important; }
-                    #home-mobile-filter [name="construction_year"] { display:none!important; }
-                </style>
-
-                {{-- Banner (smaller on mobile) --}}
-                <div class="mob-home-banner hero-background-image">
-                    @if($bannerText)
-                        <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px;pointer-events:none;">
-                            <div style="{{ $bannerText['hPos'] }}max-width:60%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.6);">
-                                @if($bannerText['title'])
-                                    <div style="font-size:22px;font-weight:700;line-height:1.2;margin-bottom:0.25em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                @endif
-                                @if($bannerText['sub_title'])
-                                    <div style="font-size:13px;opacity:0.9;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                @endif
+                <div class="mobile-hero-wrapper">
+                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
+                        @if($bannerText)
+                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
+                                    @if($bannerText['title'])
+                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                    @if($bannerText['sub_title'])
+                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-
-                {{-- Filter card overlapping banner --}}
-                <div id="home-mobile-filter">
-                    @include('theme-views.partials._ad-filter-mobile')
+                        @endif
+                    </div>
+                    <div class="d-flex mx-auto align-items-center justify-content-center
+                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
+                        @include('theme-views.partials._ad-filter-mobile')
+                    </div>
                 </div>
             @else
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
