@@ -1,77 +1,60 @@
-<style>
+ <style>
+    /* 1. توحيد تنسيقات الـ Dropdown للقسم الرئيسي */
     #dropdownMenuButton:hover,
     #dropdownMenuButton:focus,
     #dropdownMenuButton:active {
-        background-color: white !important;
+        background-color: #ffffff !important;
         border-color: #ced4da !important;
         color: inherit !important;
         box-shadow: none !important;
     }
 
-    .font-size-16 {
-        font-size: 16px;
+    /* 2. ضبط الأحجام والارتفاعات والانحناءات لجميع الخانات */
+    .banner .form-control,
+    .banner .btn-outline-secondary {
+        height: 48px !important;
+        border-radius: 8px !important;
+        border: 1px solid #ced4da !important;
+        font-size: 15px !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
     }
 
+    /* 3. إخفاء خانة سنة الصنع (Construction Year) في العرض المباشر */
+    #construction_year_select,
+    [data-for*="cars"] select[name="construction_year"] {
+        display: none !important;
+    }
 
-/* Home mobile filter — scoped styles, do NOT affect other filters */
-#home-mobile-filter .col-xl-4,
-#home-mobile-filter .col-md-4,
-#home-mobile-filter .col-sm-6,
-#home-mobile-filter .col-6 {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-    padding: 0 !important;
-}
-#home-mobile-filter .filter-input,
-#home-mobile-filter select.form-control,
-#home-mobile-filter input.form-control {
-    width: 100% !important;
-    padding: 13px 14px !important;
-    font-size: 15px !important;
-    border-radius: 10px !important;
-    height: auto !important;
-    min-height: 50px !important;
-    margin-bottom: 8px !important;
-    border: 1.5px solid #e8ecf0 !important;
-    background: #f0f4ff !important;
-    box-shadow: none !important;
-}
-#home-mobile-filter .row { margin: 0 !important; }
-#home-mobile-filter .form-group { margin-bottom: 0 !important; }
-#home-mobile-filter [name="price_range"] { display: none !important; }
-#home-mobile-filter [name="construction_year"] { display: none !important; }
-#home-mobile-filter [name="price_range"] { display: none !important; }
-#home-mobile-filter [data-bs-target="#advancedFilterModal"] { display: none !important; }
-#home-mobile-filter .col-auto,
-#home-mobile-filter .flex-grow-1 {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-    padding: 0 !important;
-}
-#home-mobile-filter .filter-buttons { flex-direction: column !important; gap: 0 !important; }
-#home-mobile-filter .filter-buttons .btn-primary {
-    width: 100% !important;
-    padding: 14px !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    border-radius: 10px !important;
-    margin-top: 4px !important;
-}
-#home-mobile-filter .filter-buttons .btn-outline-primary { display: none !important; }
-#home-mobile-filter .select2-container { width: 100% !important; }
-#home-mobile-filter [data-category-type] { display: block !important; }
-#home-mobile-filter .select2-selection {
-    min-height: 50px !important;
-    border-radius: 10px !important;
-    border: 1.5px solid #e8ecf0 !important;
-    background: #f0f4ff !important;
-    display: flex !important;
-    align-items: center !important;
-    padding: 8px 14px !important;
-    font-size: 15px !important;
-}
+    /* 4. تعديل الحاويات لضمان محاذاة وتوزيع عريض ومتناسق في الموبايل والتابلت */
+    .banner .col-6 {
+        width: 100% !important; /* لجعل كل عنصر يأخذ السطر كاملاً بشكل أنيق كما في التطبيقات */
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* في الشاشات الأكبر (التابلت واللابتوب) تعود لشبكة متناسقة */
+    @media (min-width: 576px) {
+        .banner .col-6 {
+            width: 50% !important;
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .banner .col-6 {
+            width: 33.333% !important;
+            flex: 0 0 33.333% !important;
+            max-width: 33.333% !important;
+        }
+    }
+
+    .font-size-16 {
+        font-size: 15px !important;
+    }
 </style>
 
 <section class="banner w-100 sweet-shadow">
