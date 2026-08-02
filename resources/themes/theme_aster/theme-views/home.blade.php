@@ -208,7 +208,7 @@
 
                 {{-- Search bar --}}
                 <div class="mob-search-bar">
-                    <a href="{{ route('search') }}" class="mob-search-wrap">
+                    <a href="{{ route('searched-ads') }}" class="mob-search-wrap">
                         <i class="bi bi-search" style="font-size:15px;color:rgba(255,255,255,0.65)"></i>
                         <span>{{ translate('search_for_items') }}...</span>
                     </a>
