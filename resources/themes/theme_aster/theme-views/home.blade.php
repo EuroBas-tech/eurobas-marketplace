@@ -186,23 +186,54 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
-                        @if($bannerText)
-                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
-                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
-                                    @if($bannerText['title'])
-                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                    @if($bannerText['sub_title'])
-                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
+                {{-- NEW MOBILE DESIGN: Unified blue header with search + category pills --}}
+                <style>
+                    .mob-search-bar{display:flex;align-items:center;gap:10px;padding:10px 14px 12px;background:#0d3b8e;margin:-1rem -12px 0;position:relative;z-index:10}
+                    .mob-search-wrap{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.25);border-radius:22px;padding:9px 14px;cursor:pointer;text-decoration:none}
+                    .mob-search-wrap span{font-size:14px;color:rgba(255,255,255,0.65)}
+                    .mob-filter-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.18);border:0.5px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+                    .mob-cats-scroll{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;scrollbar-width:none;background:#fff;border-bottom:1px solid #f0f0f0;margin:0 -12px}
+                    .mob-cats-scroll::-webkit-scrollbar{display:none}
+                    .mob-cat-pill{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:1px solid #e0e0e0;background:#fff;white-space:nowrap;cursor:pointer;flex-shrink:0;font-size:12px;color:#333;text-decoration:none;transition:all .2s}
+                    .mob-cat-pill:hover,.mob-cat-pill.active{background:#0d3b8e;color:#fff;border-color:#0d3b8e}
+                    .mob-filter-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999}
+                    .mob-filter-overlay.open{display:flex;align-items:flex-end}
+                    .mob-filter-sheet{width:100%;background:#fff;border-radius:16px 16px 0 0;padding:18px 16px 32px;max-height:85vh;overflow-y:auto}
+                    .mob-filter-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px}
+                    .mob-filter-ttl{font-size:16px;font-weight:600;color:#1a1a1a;margin-bottom:14px}
+                    .mob-filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+                    .mob-fsel{width:100%;padding:11px 10px;border:1px solid #e0e0e0;border-radius:8px;background:#f8f8f8;font-size:13px;color:#333;box-sizing:border-box}
+                    .mob-filter-apply{width:100%;background:#0d3b8e;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:12px}
+                </style>
+
+                {{-- Search bar --}}
+                <div class="mob-search-bar">
+                    <a href="{{ route('search') }}" class="mob-search-wrap">
+                        <i class="bi bi-search" style="font-size:15px;color:rgba(255,255,255,0.65)"></i>
+                        <span>{{ translate('search_for_items') }}...</span>
+                    </a>
+                    <div class="mob-filter-btn" onclick="document.getElementById('mobFilterOverlay').classList.add('open')">
+                        <i class="bi bi-sliders" style="font-size:17px;color:#fff"></i>
                     </div>
-                    <div class="d-flex mx-auto align-items-center justify-content-center
-                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
+                </div>
+
+                {{-- Category pills --}}
+                <div class="mob-cats-scroll">
+                    <a href="{{ route('home') }}" class="mob-cat-pill active">
+                        <i class="bi bi-grid-fill" style="font-size:12px"></i> {{ translate('All') }}
+                    </a>
+                    @foreach($categories->take(15) as $cat)
+                    <a href="{{ route('show-by-category', $cat->id) }}" class="mob-cat-pill">
+                        {{ $cat->name }}
+                    </a>
+                    @endforeach
+                </div>
+
+                {{-- Filter overlay --}}
+                <div class="mob-filter-overlay" id="mobFilterOverlay" onclick="if(event.target===this)this.classList.remove('open')">
+                    <div class="mob-filter-sheet">
+                        <div class="mob-filter-handle"></div>
+                        <div class="mob-filter-ttl">{{ translate('filter') }}</div>
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
