@@ -93,7 +93,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1 mb-2"
                                                             data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select disabled class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
+                                                                <select class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
                                                                         <option data-brand-id="{{ $model['brand_id'] }}"
