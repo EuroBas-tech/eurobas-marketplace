@@ -186,74 +186,6 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                <style>
-                    .mobile-hero-wrapper .hero-card {
-                        height: 200px;
-                        max-height: 200px;
-                        margin-bottom: -24px !important;
-                        border-radius: 0 !important;
-                    }
-                    .mobile-filter-card {
-                        position: relative;
-                        z-index: 10;
-                        background: #fff;
-                        border-radius: 16px 16px 0 0;
-                        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-                        padding: 16px 12px 12px;
-                        margin: 0 0 16px 0;
-                    }
-                    .mobile-filter-card .filter-input,
-                    .mobile-filter-card select.form-control,
-                    .mobile-filter-card input.form-control {
-                        width: 100% !important;
-                        min-height: 50px !important;
-                        font-size: 15px !important;
-                        border-radius: 10px !important;
-                        padding: 12px 14px !important;
-                        border: 1.5px solid #e8ecf0 !important;
-                        background: #f8f9fa !important;
-                        margin-bottom: 8px;
-                    }
-                    .mobile-filter-card .col-xl-4,
-                    .mobile-filter-card .col-md-4,
-                    .mobile-filter-card .col-sm-6,
-                    .mobile-filter-card .col-6 {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        flex: 0 0 100% !important;
-                        padding: 0 !important;
-                    }
-                    .mobile-filter-card .col-auto,
-                    .mobile-filter-card .flex-grow-1 {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        flex: 0 0 100% !important;
-                        padding: 0 !important;
-                    }
-                    .mobile-filter-card .row { margin: 0 !important; }
-                    .mobile-filter-card .form-group { margin-bottom: 0 !important; }
-                    .mobile-filter-card .filter-buttons { flex-direction: column !important; }
-                    .mobile-filter-card .filter-buttons .btn-primary {
-                        width: 100% !important;
-                        padding: 14px !important;
-                        font-size: 16px !important;
-                        font-weight: 600 !important;
-                        border-radius: 10px !important;
-                        margin-top: 8px !important;
-                    }
-                    .mobile-filter-card .filter-buttons .btn-outline-primary { display: none !important; }
-                    .mobile-filter-card .select2-container { width: 100% !important; }
-                    .mobile-filter-card .select2-selection {
-                        min-height: 50px !important;
-                        border-radius: 10px !important;
-                        border: 1.5px solid #e8ecf0 !important;
-                        background: #f8f9fa !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        padding: 0 14px !important;
-                        font-size: 15px !important;
-                    }
-                </style>
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
@@ -269,7 +201,8 @@
                             </div>
                         @endif
                     </div>
-                    <div class="mobile-filter-card">
+                    <div class="d-flex mx-auto align-items-center justify-content-center
+                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
