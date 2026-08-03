@@ -83,7 +83,7 @@
                                                             ['code' => '+359', 'flag' => '🇧🇬', 'name' => 'Bulgaria'],
                                                             ['code' => '+421', 'flag' => '🇸🇰', 'name' => 'Slovakia'],
                                                             ['code' => '+352', 'flag' => '🇱🇺', 'name' => 'Luxembourg'],
-                                                            ['code' => '+386', 'flag' => '🇸جيلوفينيا', 'name' => 'Slovenia'],
+                                                            ['code' => '+386', 'flag' => '🇸🇮', 'name' => 'Slovenia'],
                                                             ['code' => '+41', 'flag' => '🇨🇭', 'name' => 'Switzerland'],
                                                             ['code' => '+47', 'flag' => '🇳🇴', 'name' => 'Norway'],
                                                             ['code' => '+354', 'flag' => '🇮🇸', 'name' => 'Iceland'],
@@ -101,14 +101,15 @@
                                                             ['code' => '+375', 'flag' => '🇧🇾', 'name' => 'Belarus'],
                                                             ['code' => '+86', 'flag' => '🇨🇳', 'name' => 'China'],
                                                             ['code' => '+7', 'flag' => '🇷🇺', 'name' => 'Russia'],
-                                                            ['code' => '+383', 'flag' => '🇽🇽', 'name' => 'Kosovo'],
+                                                            ['code' => '+383', 'flag' => '🇽🇰', 'name' => 'Kosovo'],
                                                             ['code' => '+377', 'flag' => '🇲🇨', 'name' => 'Monaco'],
-                                                            ['code' => '+357', 'flag' => '🇨 Cyprus', 'name' => 'Cyprus'],
+                                                            ['code' => '+357', 'flag' => '🇨🇾', 'name' => 'Cyprus'],
                                                             ['code' => '+423', 'flag' => '🇱🇮', 'name' => 'Liechtenstein'],
                                                             ['code' => '+356', 'flag' => '🇲🇹', 'name' => 'Malta'],
                                                             ['code' => '+382', 'flag' => '🇲🇪', 'name' => 'Montenegro'],
                                                             ['code' => '+81', 'flag' => '🇯🇵', 'name' => 'Japan'],
                                                             ['code' => '+82', 'flag' => '🇰🇷', 'name' => 'South Korea'],
+                                                            ['code' => '+90', 'flag' => '🇹🇷', 'name' => 'Turkey'],
                                                         ];
                                                     @endphp
 
