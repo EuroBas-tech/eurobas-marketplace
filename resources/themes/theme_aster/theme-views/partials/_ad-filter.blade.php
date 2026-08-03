@@ -183,7 +183,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1" data-category-type="vehicles"
                                                         data-for="cars, trucks, classic-cars, supercars, buses, spare-parts, motorcycles, caravans, heavy-equipment, agricultural-machinery, vehicle-accessories, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand-desktop">
+                                                                <select class="form-control filter-input input-responsive-height font-size-16 brand-select" name="brand_id" id="brand">
                                                                     <option value="all">{{translate('brand')}}</option>
                                                                     @foreach($brands as $brand)
                                                                         <option
@@ -200,7 +200,7 @@
                                                         <div class="col-xl-4 col-md-4 col-sm-6 col-6 px-1 input-responsive-height mt-1"
                                                         data-category-type="vehicles" data-for="cars, trucks, classic-cars, supercars, spare-parts, motorcycles, buses, motorcycle-parts, caravans, heavy-equipment, agricultural-machinery, agricultural-machinery">
                                                             <div class="form-group">
-                                                                <select disabled class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model-desktop">
+                                                                <select disabled class="form-control filter-input input-responsive-height font-size-16 model-select" name="model_id" id="model">
                                                                     <option value="all">{{translate('model')}}</option>
                                                                     @foreach($models as $model)
                                                                         <option data-brand-id="{{ $model['brand_id'] }}"
@@ -752,11 +752,11 @@
 
 <script>
     $(document).ready(function () {
-        const $brandSelect = $('#brand-desktop');
-        const $modelSelect = $('#model-desktop');
+        const $brandSelect = $('#brand');
+        const $modelSelect = $('#model');
         const $categoryInput = $('#selectedCategoryId');
 
-        $('#model-desktop').prop('disabled', true);
+        $('#model').prop('disabled', true);
 
         // Initialize Select2
         $brandSelect.select2({
@@ -849,7 +849,7 @@
                 if (selectedValue === 'all') {
                     $modelSelect.val('all').trigger('change').prop('disabled', true);
                 } else {
-                    $('#model-desktop').prop('disabled', false);
+                    $('#model').prop('disabled', false);
                 }
             }
         });
