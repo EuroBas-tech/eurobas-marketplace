@@ -185,28 +185,28 @@
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
-            @if($isMobile)
-                <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
-                        @if($bannerText)
-                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
-                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
-                                    @if($bannerText['title'])
-                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                    @if($bannerText['sub_title'])
-                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                </div>
-                            </div>
+             @if($isMobile)
+               <div class="autoscout-mobile-wrapper" style="position: relative;">
+                <div class="card rounded-0 overflow-hidden mb-0 hero-card hero-background-image" style="position:relative; width:100%;">
+                @if($bannerText)
+                  <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:15px 20px;pointer-events:none;overflow:hidden;">
+                    <div style="{{ $bannerText['hPos'] }}max-width:70%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
+                        @if($bannerText['title'])
+                            <div style="font-size:clamp(20px,5.5vw,30px);font-weight:700;line-height:1.15;margin-bottom:0.2em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                        @endif
+                        @if($bannerText['sub_title'])
+                            <div style="font-size:clamp(13px,3.5vw,17px);opacity:0.92;line-height:1.3;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
                         @endif
                     </div>
-                    <div class="d-flex mx-auto align-items-center justify-content-center
-                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
-                        @include('theme-views.partials._ad-filter-mobile')
-                    </div>
                 </div>
-            @else
+            @endif
+        </div>
+        <!-- بطاقة الفلتر الممتدة بطلبك -->
+            <div class="autoscout-filter-card">
+            @include('theme-views.partials._ad-filter-mobile')
+        </div>
+    </div>
+@else
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
