@@ -731,5 +731,6 @@
 
         // Initial setup (optional)
         filterBrandsAndModels();
+        $modelSelect.prop('disabled', true);
     });
 </script>
