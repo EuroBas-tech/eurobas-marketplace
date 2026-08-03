@@ -755,6 +755,7 @@
         const $brandSelect = $('#brand');
         const $modelSelect = $('#model');
         const $categoryInput = $('#selectedCategoryId');
+        if ($brandSelect.length === 0) return;
 
         $('#model').prop('disabled', true);
 
