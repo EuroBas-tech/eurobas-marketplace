@@ -1,15 +1,82 @@
-<style>
-    #dropdownMenuButton:hover,
-    #dropdownMenuButton:focus,
-    #dropdownMenuButton:active {
-        background-color: white !important;
-        border-color: #ced4da !important;
-        color: inherit !important;
-        box-shadow: none !important;
+ <style>
+    /* 1. تصميم كرت الفلتر المتداخل مع البنر بارتفاع وتدوير ملحوظ */
+    .autoscout-filter-card {
+        background: #ffffff !important;
+        border-top-left-radius: 26px !important;  /* زوايا دائرية واضحة من الأعلى */
+        border-top-right-radius: 26px !important;
+        margin-top: -35px !important;            /* يرفع البطاقة لتتداخل صراحة فوق البنر */
+        position: relative !important;
+        z-index: 10 !important;
+        padding: 20px 16px 15px 16px !important;
+        box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.1), 0 10px 25px -5px rgba(37, 99, 235, 0.15) !important; /* ظل مع لمسة أزرق */
     }
 
-    .font-size-16 {
-        font-size: 16px;
+    /* 2. ترتيب الخانات عمودياً بعرض كامل */
+    .autoscout-filter-card form .row > div,
+    .autoscout-filter-card .col-6,
+    .autoscout-filter-card .col-12,
+    .autoscout-filter-card .form-group {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 10px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* 3. توحيد مقاس وحجم جميع الخانات التي تفتح وتتغير */
+    .autoscout-filter-card .form-control,
+    .autoscout-filter-card select,
+    .autoscout-filter-card .select2-container--default .select2-selection--single,
+    .autoscout-filter-card #dropdownMenuButton,
+    .autoscout-filter-card .btn-outline-secondary {
+        height: 48px !important;
+        line-height: 46px !important;
+        border-radius: 8px !important;
+        border: 1px solid #d1d5db !important;
+        background-color: #ffffff !important;
+        font-size: 14px !important;
+        color: #1f2937 !important;
+        padding: 0 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        box-shadow: none !important;
+        width: 100% !important;
+    }
+
+    .autoscout-filter-card .select2-container {
+        width: 100% !important;
+    }
+    .autoscout-filter-card .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 46px !important;
+        height: 48px !important;
+        padding-left: 0 !important;
+    }
+    .autoscout-filter-card .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 46px !important;
+    }
+
+    /* 4. إخفاء الخانات الثانوية في الهوم */
+    .autoscout-filter-card input[name*="price"],
+    .autoscout-filter-card input[name*="min_price"],
+    .autoscout-filter-card input[name*="max_price"],
+    .autoscout-filter-card #construction_year_select,
+    .autoscout-filter-card .extra-fields-wrapper {
+        display: none !important;
+    }
+
+    /* 5. زر البحث الأزرق العريض */
+    .autoscout-filter-card button[type="submit"],
+    .autoscout-filter-card .btn-primary {
+        height: 48px !important;
+        border-radius: 8px !important;
+        background-color: #0066cc !important;
+        border: none !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        width: 100% !important;
+        margin-top: 5px !important;
     }
 </style>
 
