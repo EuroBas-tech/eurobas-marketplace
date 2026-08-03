@@ -185,28 +185,95 @@
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
-             @if($isMobile)
-               <div class="autoscout-mobile-wrapper" style="position: relative;">
-                <div class="card rounded-0 overflow-hidden mb-0 hero-card hero-background-image" style="position:relative; width:100%;">
-                @if($bannerText)
-                  <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:15px 20px;pointer-events:none;overflow:hidden;">
-                    <div style="{{ $bannerText['hPos'] }}max-width:70%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
-                        @if($bannerText['title'])
-                            <div style="font-size:clamp(20px,5.5vw,30px);font-weight:700;line-height:1.15;margin-bottom:0.2em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                        @endif
-                        @if($bannerText['sub_title'])
-                            <div style="font-size:clamp(13px,3.5vw,17px);opacity:0.92;line-height:1.3;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+            @if($isMobile)
+                <style>
+                    .mobile-hero-wrapper .hero-card {
+                        height: 200px;
+                        max-height: 200px;
+                        margin-bottom: -24px !important;
+                        border-radius: 0 !important;
+                    }
+                    .mobile-filter-card {
+                        position: relative;
+                        z-index: 10;
+                        background: #fff;
+                        border-radius: 16px 16px 0 0;
+                        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+                        padding: 16px 12px 12px;
+                        margin: 0 0 16px 0;
+                    }
+                    .mobile-filter-card .filter-input,
+                    .mobile-filter-card select.form-control,
+                    .mobile-filter-card input.form-control {
+                        width: 100% !important;
+                        min-height: 50px !important;
+                        font-size: 15px !important;
+                        border-radius: 10px !important;
+                        padding: 12px 14px !important;
+                        border: 1.5px solid #e8ecf0 !important;
+                        background: #f8f9fa !important;
+                        margin-bottom: 8px;
+                    }
+                    .mobile-filter-card .col-xl-4,
+                    .mobile-filter-card .col-md-4,
+                    .mobile-filter-card .col-sm-6,
+                    .mobile-filter-card .col-6 {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        flex: 0 0 100% !important;
+                        padding: 0 !important;
+                    }
+                    .mobile-filter-card .col-auto,
+                    .mobile-filter-card .flex-grow-1 {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        flex: 0 0 100% !important;
+                        padding: 0 !important;
+                    }
+                    .mobile-filter-card .row { margin: 0 !important; }
+                    .mobile-filter-card .form-group { margin-bottom: 0 !important; }
+                    .mobile-filter-card .filter-buttons { flex-direction: column !important; }
+                    .mobile-filter-card .filter-buttons .btn-primary {
+                        width: 100% !important;
+                        padding: 14px !important;
+                        font-size: 16px !important;
+                        font-weight: 600 !important;
+                        border-radius: 10px !important;
+                        margin-top: 8px !important;
+                    }
+                    .mobile-filter-card .filter-buttons .btn-outline-primary { display: none !important; }
+                    .mobile-filter-card .select2-container { width: 100% !important; }
+                    .mobile-filter-card .select2-selection {
+                        min-height: 50px !important;
+                        border-radius: 10px !important;
+                        border: 1.5px solid #e8ecf0 !important;
+                        background: #f8f9fa !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        padding: 0 14px !important;
+                        font-size: 15px !important;
+                    }
+                </style>
+                <div class="mobile-hero-wrapper">
+                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
+                        @if($bannerText)
+                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
+                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
+                                    @if($bannerText['title'])
+                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                    @if($bannerText['sub_title'])
+                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
+                                    @endif
+                                </div>
+                            </div>
                         @endif
                     </div>
+                    <div class="mobile-filter-card">
+                        @include('theme-views.partials._ad-filter-mobile')
+                    </div>
                 </div>
-            @endif
-        </div>
-        <!-- بطاقة الفلتر الممتدة بطلبك -->
-            <div class="autoscout-filter-card">
-            @include('theme-views.partials._ad-filter-mobile')
-        </div>
-    </div>
-@else
+            @else
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
