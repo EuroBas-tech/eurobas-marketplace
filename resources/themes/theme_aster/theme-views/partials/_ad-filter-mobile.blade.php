@@ -1,102 +1,15 @@
-  <style>
-    /* 1. ضبط بطاقة الفلتر الخارجية والانحناء */
-    .autoscout-filter-card {
-        background: #ffffff !important;
-        border-top-left-radius: 22px !important;
-        border-top-right-radius: 22px !important;
-        margin-top: -25px !important;
-        position: relative !important;
-        z-index: 20 !important;
-        padding: 16px 14px 10px 14px !important;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.08) !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-
-    /* 2. إلغاء أي هوامش أو تداخلات في نظام شبكة Bootstrap الداخلي */
-    .autoscout-filter-card form,
-    .autoscout-filter-card .row,
-    .autoscout-filter-card [class*="col-"] {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-        display: block !important;
-    }
-
-    /* 3. تنظيف حاويات العناصر وإلغاء الأطر والتداخلات الحافة للحافة */
-    .autoscout-filter-card .form-group,
-    .autoscout-filter-card .mb-2,
-    .autoscout-filter-card .mb-3,
-    .autoscout-filter-card .input-group,
-    .autoscout-filter-card div[class*="border"] {
-        margin-bottom: 10px !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-        width: 100% !important;
+<style>
+    #dropdownMenuButton:hover,
+    #dropdownMenuButton:focus,
+    #dropdownMenuButton:active {
+        background-color: white !important;
+        border-color: #ced4da !important;
+        color: inherit !important;
         box-shadow: none !important;
     }
 
-    /* 4. توحيد مقاس وحجم الخانات ووضع حد ناعم موحد لكل خانة دون تداخل */
-    .autoscout-filter-card input.form-control,
-    .autoscout-filter-card select.form-control,
-    .autoscout-filter-card select,
-    .autoscout-filter-card .select2-container--default .select2-selection--single,
-    .autoscout-filter-card #dropdownMenuButton,
-    .autoscout-filter-card .btn-outline-secondary {
-        height: 46px !important;
-        line-height: 44px !important;
-        border-radius: 8px !important;
-        border: 1px solid #d1d5db !important;
-        background-color: #ffffff !important;
-        font-size: 14px !important;
-        color: #1f2937 !important;
-        padding: 0 12px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        margin: 0 0 10px 0 !important;
-    }
-
-    .autoscout-filter-card .select2-container {
-        width: 100% !important;
-        margin-bottom: 10px !important;
-    }
-
-    .autoscout-filter-card .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 44px !important;
-        height: 46px !important;
-        padding-left: 0 !important;
-    }
-
-    .autoscout-filter-card .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 44px !important;
-    }
-
-    /* 5. إظهار الخانات المسموحة فقط وإخفاء الباقي لضمان نظافة الواجهة */
-    .autoscout-filter-card input[name*="price"],
-    .autoscout-filter-card input[name*="min_price"],
-    .autoscout-filter-card input[name*="max_price"],
-    .autoscout-filter-card #construction_year_select,
-    .autoscout-filter-card .extra-fields-wrapper {
-        display: none !important;
-    }
-
-    /* 6. زر النتائج/البحث الأزرق العريض */
-    .autoscout-filter-card button[type="submit"],
-    .autoscout-filter-card .btn-primary {
-        height: 46px !important;
-        border-radius: 8px !important;
-        background-color: #0066cc !important;
-        border: none !important;
-        font-size: 15px !important;
-        font-weight: 700 !important;
-        color: #ffffff !important;
-        width: 100% !important;
-        margin-top: 5px !important;
+    .font-size-16 {
+        font-size: 16px;
     }
 </style>
 
