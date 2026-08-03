@@ -53,6 +53,15 @@
     <link rel="stylesheet" href="{{ theme_asset('assets/css/style.css?v='.time()) }}"/>
 
     <link rel="stylesheet" href="{{ theme_asset('assets/css/select2.min.css?v='.time()) }}"/>
+    <style>
+       /* Fix select2 on mobile */
+       .select2-dropdown { z-index: 99999 !important; }
+       .select2-close-mask { z-index: 99998 !important; }
+       .select2-container--default .select2-selection--single {
+        touch-action: manipulation !important;
+        cursor: pointer !important;
+        }
+      </style>
 
     <!-- ======= END MAIN STYLES ======= -->
 
