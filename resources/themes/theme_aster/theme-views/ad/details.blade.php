@@ -753,7 +753,6 @@
         </div>
     @endif
 
-    {{-- أيقونة المساحة فقط هي التي تم تغيير تصميمها إلى مخطط مساحة احترافي باللون الأزرق --}}
     @if($ad->property_size)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
@@ -813,14 +812,13 @@
     @endif
 @endif
 
-{{-- قسم المفروشات --}}
-@if($ad->category->category_type == 'furniture')
-    @if($ad->furniture_type)
-        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-            <div class="card shadow-none">
-                <div class="d-flex align-items-center gap-2">
-                    <div>
-                        <span>
+                            @if($ad->category->category_type == 'furniture')
+                           @if($ad->furniture_type)
+                            <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+                           <div class="card shadow-none">
+                           <div class="d-flex align-items-center gap-2">
+                            <div>
+                            <span>
                             <img width="25px" src="{{ theme_asset('assets/img/svg/furniture-type.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                         </span>
                     </div>
@@ -839,7 +837,11 @@
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            <img width="25px" src="{{ theme_asset('assets/img/svg/material.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
                         </span>
                     </div>
                     <div>
@@ -850,6 +852,7 @@
             </div>
         </div>
     @endif
+
 @endif
 
                                                
