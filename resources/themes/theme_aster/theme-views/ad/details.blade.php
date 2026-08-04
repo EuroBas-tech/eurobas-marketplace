@@ -715,46 +715,33 @@
 
                                                 @endif
 
-                                                @if($ad->category->category_type == 'real estate')
-    
-                                            @if($ad->listing_type)
-                                           <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                          <div class="card shadow-none">
-                                        <div class="d-flex align-items-center gap-2">
-                                       <div>
-                                    <span>
-                            {{-- أيقونة تاغ العرض/الصفقة الاحترافية --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 .586 1.414l9 9a2 2 0 0 0 2.828 0l6-6a2 2 0 0 0 0-2.828l-9-9A2 2 0 0 0 12 2z"></path>
-                                <circle cx="7.5" cy="7.5" r="1.5" fill="#3b82f6"></circle>
-                            </svg>
-                        </span>
-                    </div>
-                    <div>
-                        <h5>{{ translate('listing_type') }}</h5>
-                        <span>{{ translate($ad->listing_type) }}</span>
+                                                
+                                                   @if($ad->category->category_type == 'real estate')
+                                                   @if($ad->listing_type)
+                                                  <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+                                                  <div class="card shadow-none">
+                                                 <div class="d-flex align-items-center gap-2">
+                                              <div>
+                                           <span>
+                                         <img width="25px" src="{{ theme_asset('assets/img/svg/listing.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                                        </span>
+                                       </div>
+                                      <div>
+                                 <h5>{{ translate('listing_type') }}</h5>
+                            <span>{{ translate($ad->listing_type) }}</span>
                     </div>
                 </div>
             </div>
         </div>
     @endif
 
-    {{-- 2. Property Type (نوع العقار) --}}
     @if($ad->property_type)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            {{-- أيقونة مبنى وعقار عصري --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 21h18"></path>
-                                <path d="M5 21V7l8-4v18"></path>
-                                <path d="M19 21V11l-6-3"></path>
-                                <path d="M9 9h1"></path>
-                                <path d="M9 13h1"></path>
-                                <path d="M9 17h1"></path>
-                            </svg>
+                            <img width="25px" src="{{ theme_asset('assets/img/svg/property.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                         </span>
                     </div>
                     <div>
@@ -766,18 +753,17 @@
         </div>
     @endif
 
-    {{-- 3. Property Size (المساحة - مخطط أبعاد هندسي) --}}
+    {{-- أيقونة المساحة فقط هي التي تم تغيير تصميمها إلى مخطط مساحة احترافي باللون الأزرق --}}
     @if($ad->property_size)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            {{-- أيقونة القياس والأبعاد المعمارية --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 3H3v18h18V3z"></path>
-                                <path d="M15 3v6h6"></path>
-                                <path d="M3 15h6v6"></path>
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                <path d="M3 9h18"></path>
+                                <path d="M9 21V9"></path>
                             </svg>
                         </span>
                     </div>
@@ -790,19 +776,13 @@
         </div>
     @endif
 
-    {{-- 4. Floor (الطابق) --}}
     @if($ad->floor)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            {{-- أيقونة طبقات/طوابق المبنى --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                <polyline points="2 17 12 22 22 17"></polyline>
-                                <polyline points="2 12 12 17 22 12"></polyline>
-                            </svg>
+                            <img width="25px" src="{{ theme_asset('assets/img/svg/floor.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                         </span>
                     </div>
                     <div>
@@ -814,20 +794,13 @@
         </div>
     @endif
 
-    {{-- 5. Number of Rooms (عدد الغرف) --}}
     @if($ad->rooms_number)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            {{-- أيقونة غرف المنامة والسكن --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 4v16"></path>
-                                <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
-                                <path d="M2 17h20"></path>
-                                <path d="M6 8v9"></path>
-                            </svg>
+                            <img width="25px" src="{{ theme_asset('assets/img/svg/room.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                         </span>
                     </div>
                     <div>
@@ -839,6 +812,47 @@
         </div>
     @endif
 @endif
+
+{{-- قسم المفروشات --}}
+@if($ad->category->category_type == 'furniture')
+    @if($ad->furniture_type)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <img width="25px" src="{{ theme_asset('assets/img/svg/furniture-type.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('furniture_type') }}</h5>
+                        <span>{{ translate($ad->furniture_type) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($ad->material)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none min-width-max-content">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <img width="25px" src="{{ theme_asset('assets/img/svg/material.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('furniture_material') }}</h5>
+                        <span>{{ translate($ad->material) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endif
+
+                                               
                                                 @if($ad->category->category_type == 'furniture')
 
                                                   @if($ad->furniture_type)
