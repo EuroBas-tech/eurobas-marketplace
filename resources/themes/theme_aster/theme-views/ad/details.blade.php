@@ -856,56 +856,7 @@
 @endif
 
                                                
-                                                @if($ad->category->category_type == 'furniture')
-
-                                                  @if($ad->furniture_type)
-                                                 <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                 <div class="card shadow-none">
-                                              <div class="d-flex align-items-center gap-2">
-                                             <div>
-                                          <span>
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
-                                <path d="M2 11a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5z"></path>
-                                <path d="M4 18v2"></path>
-                                <path d="M20 18v2"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <div>
-                        <h5>{{ translate('furniture_type') }}</h5>
-                        <span>{{ translate($ad->furniture_type) }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    {{-- 2. Furniture Material (نوع الخامة / المادة - خشب، جلد، قماش...) --}}
-    @if($ad->material)
-        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-            <div class="card shadow-none min-width-max-content">
-                <div class="d-flex align-items-center gap-2">
-                    <div>
-                        <span>
-                            {{-- أيقونة طبقات الخامة والنسيج المصممة للمواد والأنسجة --}}
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                                <path d="M2 17l10 5 10-5"></path>
-                                <path d="M2 12l10 5 10-5"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <div>
-                        <h5>{{ translate('furniture_material') }}</h5>
-                        <span>{{ translate($ad->material) }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
-@endif
+                                            
                                                 @if($ad->category->category_type == 'industrial machines')
                                                     @if($ad->machine_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
