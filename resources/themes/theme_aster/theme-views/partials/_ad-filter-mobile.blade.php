@@ -718,7 +718,7 @@
                 }
             });
 
-            $modelSelect.val('all').trigger('change').prop('disabled', false);
+           $modelSelect.val('all').trigger('change').prop('disabled', true);
         }
 
         $('.category-option').on('click', function () {
