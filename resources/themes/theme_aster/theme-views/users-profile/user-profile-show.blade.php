@@ -1057,7 +1057,8 @@
 
                     if (
                         $(this).val() === 'all' || // optional: can skip this since we kept it already
-                        selectedCategoryDataId === 0 ||
+                        !selectedCategoryDataId || selectedCategoryDataId === 0 ||
+                        selectedCategoryId === 'all' || selectedCategoryId === ''
                         brandCategories.includes(selectedCategoryId)
                     ) {
                         if ($(this).val() !== 'all') { // prevent appending "all" again
