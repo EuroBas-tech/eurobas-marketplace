@@ -711,12 +711,6 @@
                                     @endif
                                 </div>
                             @endif
-                                            </span>
-                                            <span dir="ltr">{{ $ad->property_size }} m²</span>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
                             @if($ad->category->category_type == 'shipbuilding marine')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->shipbuilding_type)
