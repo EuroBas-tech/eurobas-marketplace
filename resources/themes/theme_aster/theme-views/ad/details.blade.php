@@ -716,15 +716,17 @@
                                                 @endif
 
                                                 @if($ad->category->category_type == 'real estate')
-                                               @if($ad->listing_type)
-                                             <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                             <div class="card shadow-none">
-                                           <div class="d-flex align-items-center gap-2">
-                                           <div>
-                                         <span>
-                                      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+    
+                                            @if($ad->listing_type)
+                                           <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+                                          <div class="card shadow-none">
+                                        <div class="d-flex align-items-center gap-2">
+                                       <div>
+                                    <span>
+                            {{-- أيقونة تاغ العرض/الصفقة الاحترافية --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 .586 1.414l9 9a2 2 0 0 0 2.828 0l6-6a2 2 0 0 0 0-2.828l-9-9A2 2 0 0 0 12 2z"></path>
+                                <circle cx="7.5" cy="7.5" r="1.5" fill="#3b82f6"></circle>
                             </svg>
                         </span>
                     </div>
@@ -737,15 +739,21 @@
         </div>
     @endif
 
+    {{-- 2. Property Type (نوع العقار) --}}
     @if($ad->property_type)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            {{-- أيقونة مبنى وعقار عصري --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 21h18"></path>
+                                <path d="M5 21V7l8-4v18"></path>
+                                <path d="M19 21V11l-6-3"></path>
+                                <path d="M9 9h1"></path>
+                                <path d="M9 13h1"></path>
+                                <path d="M9 17h1"></path>
                             </svg>
                         </span>
                     </div>
@@ -758,16 +766,18 @@
         </div>
     @endif
 
+    {{-- 3. Property Size (المساحة - مخطط أبعاد هندسي) --}}
     @if($ad->property_size)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            {{-- أيقونة القياس والأبعاد المعمارية --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 3H3v18h18V3z"></path>
-                                <path d="M9 3v18"></path>
-                                <path d="M3 9h18"></path>
+                                <path d="M15 3v6h6"></path>
+                                <path d="M3 15h6v6"></path>
                             </svg>
                         </span>
                     </div>
@@ -780,21 +790,18 @@
         </div>
     @endif
 
+    {{-- 4. Floor (الطابق) --}}
     @if($ad->floor)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-                                <path d="M9 22v-4h6v4"></path>
-                                <path d="M8 6h.01"></path>
-                                <path d="M16 6h.01"></path>
-                                <path d="M8 10h.01"></path>
-                                <path d="M16 10h.01"></path>
-                                <path d="M8 14h.01"></path>
-                                <path d="M16 14h.01"></path>
+                            {{-- أيقونة طبقات/طوابق المبنى --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
                             </svg>
                         </span>
                     </div>
@@ -807,13 +814,15 @@
         </div>
     @endif
 
+    {{-- 5. Number of Rooms (عدد الغرف) --}}
     @if($ad->rooms_number)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
             <div class="card shadow-none">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
-                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            {{-- أيقونة غرف المنامة والسكن --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M2 4v16"></path>
                                 <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
                                 <path d="M2 17h20"></path>
@@ -832,44 +841,54 @@
 @endif
                                                 @if($ad->category->category_type == 'furniture')
 
-                                                    @if($ad->furniture_type)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/furniture-type.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('furniture_type') }}</h5>
-                                                                        <span>{{ translate($ad->furniture_type) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
+                                                  @if($ad->furniture_type)
+                                                 <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+                                                 <div class="card shadow-none">
+                                              <div class="d-flex align-items-center gap-2">
+                                             <div>
+                                          <span>
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
+                                <path d="M2 11a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5z"></path>
+                                <path d="M4 18v2"></path>
+                                <path d="M20 18v2"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('furniture_type') }}</h5>
+                        <span>{{ translate($ad->furniture_type) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
-                                                    @if($ad->material)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/material.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('furniture_material') }}</h5>
-                                                                        <span>{{ translate($ad->material) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
+    {{-- 2. Furniture Material (نوع الخامة / المادة - خشب، جلد، قماش...) --}}
+    @if($ad->material)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none min-width-max-content">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            {{-- أيقونة طبقات الخامة والنسيج المصممة للمواد والأنسجة --}}
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('furniture_material') }}</h5>
+                        <span>{{ translate($ad->material) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
-                                                @endif
-
+@endif
                                                 @if($ad->category->category_type == 'industrial machines')
                                                     @if($ad->machine_type)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
