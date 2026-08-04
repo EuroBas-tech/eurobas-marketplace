@@ -318,7 +318,7 @@
                                             <span>
                                                 <i class="bi bi-arrows-angle-expand"></i>
                                             </span>
-                                            <span>{{ $ad->property_size }}<span class="fs-12" >{{translate('km²')}}</span></span>
+                                            <span dir="ltr">{{ $ad->property_size }} m²</span> 
                                         </span>
                                     @endif
                                 </div>
@@ -678,7 +678,7 @@
                                             <span>
                                                 <i class="bi bi-arrows-angle-expand"></i>
                                             </span>
-                                            <span>{{ $ad->property_size }}<span class="fs-12" >{{translate('km²')}}</span></span>
+                                            <span dir="ltr">{{ $ad->property_size }} m²</span>
                                         </span>
                                     @endif
                                 </div>
