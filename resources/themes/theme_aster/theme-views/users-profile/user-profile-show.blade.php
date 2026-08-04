@@ -255,6 +255,7 @@
                                                             <option value="all">{{translate('all')}}</option>
                                                             @foreach($brands as $brand)
                                                                 <option
+                                                                data-brand-categories="{{ implode(', ', $brand['categories']) }}"
                                                                 value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                                                             @endforeach
                                                         </select>
