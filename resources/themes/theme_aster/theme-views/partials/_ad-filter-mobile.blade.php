@@ -718,8 +718,13 @@
                 }
             });
 
-           $modelSelect.val('all').trigger('change').prop('disabled', true);
-        }
+             $modelSelect.val('all').trigger('change');
+             if ($brandSelect.val() === 'all') {
+            $modelSelect.prop('disabled', true);
+            } else {
+              $modelSelect.prop('disabled', false);
+            }
+       
 
         $('.category-option').on('click', function () {
             const selectedCategoryId = $(this).data('id');
