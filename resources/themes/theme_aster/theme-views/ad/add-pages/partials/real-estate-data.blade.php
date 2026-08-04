@@ -75,8 +75,11 @@
 
     <div class="col-xl-4 mt-2 mt-sm-0">
         <div class="form-group">
-            <label for="property_size">{{translate('property_size')}}</label>
-            <input type="text" class="form-control" value="{{old('property_size')}}" name="property_size" placeholder="{{translate('property_size')}}">
+            <label for="property_size">{{translate('property_size')}} (m²)</label>
+            <div class="input-group">
+                <input type="number" min="0" class="form-control" value="{{old('property_size')}}" name="property_size" placeholder="{{translate('e.g._150')}}">
+                <span class="input-group-text">m²</span>
+            </div>
         </div>
     </div>
 
