@@ -716,93 +716,120 @@
                                                 @endif
 
                                                 @if($ad->category->category_type == 'real estate')
-                                                    @if($ad->listing_type)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/listing.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('listing_type') }}</h5>
-                                                                        <span>{{ translate($ad->listing_type) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @if($ad->property_type)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/property.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('property_type') }}</h5>
-                                                                        <span>{{ translate($ad->property_type) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @if($ad->property_size)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/size.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('property_size') }}</h5>
-                                                                        <span>{{ $ad->property_size }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @if($ad->floor)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/floor.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('floor') }}</h5>
-                                                                        <span>{{ $ad->floor }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @if($ad->rooms_number)
-                                                        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none">
-                                                                <div class="d-flex align-items-center gap-2" >
-                                                                    <div>
-                                                                        <span>
-                                                                            <img width="25px" src="{{ theme_asset('assets/img/svg/room.svg') }}" alt="">
-                                                                        </span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>{{ translate('number_of_rooms') }}</h5>
-                                                                        <span>{{ $ad->rooms_number }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endif
+                                               @if($ad->listing_type)
+                                             <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+                                             <div class="card shadow-none">
+                                           <div class="d-flex align-items-center gap-2">
+                                           <div>
+                                         <span>
+                                      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('listing_type') }}</h5>
+                        <span>{{ translate($ad->listing_type) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
+    @if($ad->property_type)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('property_type') }}</h5>
+                        <span>{{ translate($ad->property_type) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($ad->property_size)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 3H3v18h18V3z"></path>
+                                <path d="M9 3v18"></path>
+                                <path d="M3 9h18"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('property_size') }}</h5>
+                        <span>{{ $ad->property_size }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($ad->floor)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                <path d="M9 22v-4h6v4"></path>
+                                <path d="M8 6h.01"></path>
+                                <path d="M16 6h.01"></path>
+                                <path d="M8 10h.01"></path>
+                                <path d="M16 10h.01"></path>
+                                <path d="M8 14h.01"></path>
+                                <path d="M16 14h.01"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('floor') }}</h5>
+                        <span>{{ $ad->floor }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($ad->rooms_number)
+        <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
+            <div class="card shadow-none">
+                <div class="d-flex align-items-center gap-2">
+                    <div>
+                        <span>
+                            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 4v16"></path>
+                                <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                <path d="M2 17h20"></path>
+                                <path d="M6 8v9"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div>
+                        <h5>{{ translate('number_of_rooms') }}</h5>
+                        <span>{{ $ad->rooms_number }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endif
                                                 @if($ad->category->category_type == 'furniture')
 
                                                     @if($ad->furniture_type)
