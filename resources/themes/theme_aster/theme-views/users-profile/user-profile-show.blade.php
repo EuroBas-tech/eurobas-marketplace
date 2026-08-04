@@ -1048,20 +1048,16 @@
             function filterBrandsAndModels() {
                 const $selectedCategoryOption = $categorySelect.find('option:selected');
                 const selectedCategoryId = $selectedCategoryOption.val();
-                const selectedCategoryDataId = $selectedCategoryOption.data('id');
 
-                $brandSelect.find('option:not([value="all"])').remove(); // ✅ Fix: keep "all", remove the rest
+                $brandSelect.find('option:not([value="all"])').remove();
 
                 allBrandOptions.each(function () {
                     const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
 
-                    if (
-                        $(this).val() === 'all' || // optional: can skip this since we kept it already
-                        !selectedCategoryDataId || selectedCategoryDataId === 0 ||
-                        selectedCategoryId === 'all' || selectedCategoryId === ''
-                        brandCategories.includes(selectedCategoryId)
-                    ) {
-                        if ($(this).val() !== 'all') { // prevent appending "all" again
+                    const showAll = !selectedCategoryId || selectedCategoryId === 'all' || selectedCategoryId === '';
+
+                    if (showAll || brandCategories.includes(String(selectedCategoryId))) {
+                        if ($(this).val() !== 'all') {
                             $brandSelect.append($(this).clone());
                         }
                     }
@@ -1111,6 +1107,7 @@
 
             // Initial trigger
             filterBrandsAndModels();
+            $modelSelect.prop('disabled', true);
 
             // --- COLOR HANDLING ---
             $colorSelect.on('select2:open', function () {
