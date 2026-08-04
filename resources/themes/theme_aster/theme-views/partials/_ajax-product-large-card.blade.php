@@ -222,16 +222,18 @@
                             @if($ad->category->category_type == 'furniture')
                                 <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
                                     @if($ad->furniture_type)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 160C64 89.3 121.3 32 192 32l256 0c70.7 0 128 57.3 128 128l0 33.6c-36.5 7.4-64 39.7-64 78.4l0 48-384 0 0-48c0-38.7-27.5-71-64-78.4L64 160zM544 272c0-20.9 13.4-38.7 32-45.3c5-1.8 10.4-2.7 16-2.7c26.5 0 48 21.5 48 48l0 176c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L96 448c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L0 272c0-26.5 21.5-48 48-48c5.6 0 11 1 16 2.7c18.6 6.6 32 24.4 32 45.3l0 48 0 32 32 0 384 0 32 0 0-32 0-48z"/></svg>
-                                            </span>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <img width="18px" src="{{ theme_asset('assets/img/svg/furniture-type.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->furniture_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->material)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <img width="17px" src="{{ theme_asset('assets/img/svg/material-gray.svg') }}" alt="">
+                                        <span class="d-flex align-items-center gap-1">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                                <path d="M2 17l10 5 10-5"></path>
+                                                <path d="M2 12l10 5 10-5"></path>
+                                            </svg>
                                             <span>{{ translate($ad->material) }}</span>
                                         </span>
                                     @endif
@@ -304,35 +306,39 @@
                                 </div>
                             @endif
                             @if($ad->category->category_type == 'real estate')
-                                <div class="mb-1 d-flex align-items-center flex-wrap gap-3" style="font-size: 15px;" >
+                                <div class="mb-1 d-flex align-items-center flex-wrap gap-3" style="font-size: 15px;">
                                     @if($ad->listing_type)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-list-ul" style="color:#1a73e8"></i>
+                                            <img width="18px" src="{{ theme_asset('assets/img/svg/listing.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->listing_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->property_type)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-buildings" style="color:#1a73e8"></i>
+                                            <img width="18px" src="{{ theme_asset('assets/img/svg/property.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->property_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->property_size)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-arrows-angle-expand" style="color:#1a73e8"></i>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                                <path d="M3 9h18"></path>
+                                                <path d="M9 21V9"></path>
+                                            </svg>
                                             <span dir="ltr">{{ $ad->property_size }} m²</span>
-                                        </span>
-                                    @endif
-                                    @if($ad->rooms_number)
-                                        <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-door-open" style="color:#1a73e8"></i>
-                                            <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
                                         </span>
                                     @endif
                                     @if($ad->floor)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-layers" style="color:#1a73e8"></i>
+                                            <img width="18px" src="{{ theme_asset('assets/img/svg/floor.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate('floor') }} {{ $ad->floor }}</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->rooms_number)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <img width="18px" src="{{ theme_asset('assets/img/svg/room.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                                            <span>{{ translate('number_of_rooms') }}: {{ $ad->rooms_number }}</span>
                                         </span>
                                     @endif
                                 </div>
@@ -596,16 +602,18 @@
                             @if($ad->category->category_type == 'furniture')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->furniture_type)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 160C64 89.3 121.3 32 192 32l256 0c70.7 0 128 57.3 128 128l0 33.6c-36.5 7.4-64 39.7-64 78.4l0 48-384 0 0-48c0-38.7-27.5-71-64-78.4L64 160zM544 272c0-20.9 13.4-38.7 32-45.3c5-1.8 10.4-2.7 16-2.7c26.5 0 48 21.5 48 48l0 176c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L96 448c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32L0 272c0-26.5 21.5-48 48-48c5.6 0 11 1 16 2.7c18.6 6.6 32 24.4 32 45.3l0 48 0 32 32 0 384 0 32 0 0-32 0-48z"/></svg>
-                                            </span>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <img width="16px" src="{{ theme_asset('assets/img/svg/furniture-type.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->furniture_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->material)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <img width="17px" src="{{ theme_asset('assets/img/svg/material-gray.svg') }}" alt="">
+                                        <span class="d-flex align-items-center gap-1">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                                <path d="M2 17l10 5 10-5"></path>
+                                                <path d="M2 12l10 5 10-5"></path>
+                                            </svg>
                                             <span>{{ translate($ad->material) }}</span>
                                         </span>
                                     @endif
@@ -678,35 +686,39 @@
                                 </div>
                             @endif
                             @if($ad->category->category_type == 'real estate')
-                                <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
+                                <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;">
                                     @if($ad->listing_type)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-list-ul" style="color:#1a73e8"></i>
+                                            <img width="16px" src="{{ theme_asset('assets/img/svg/listing.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->listing_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->property_type)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-buildings" style="color:#1a73e8"></i>
+                                            <img width="16px" src="{{ theme_asset('assets/img/svg/property.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate($ad->property_type) }}</span>
                                         </span>
                                     @endif
                                     @if($ad->property_size)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-arrows-angle-expand" style="color:#1a73e8"></i>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                                <path d="M3 9h18"></path>
+                                                <path d="M9 21V9"></path>
+                                            </svg>
                                             <span dir="ltr">{{ $ad->property_size }} m²</span>
-                                        </span>
-                                    @endif
-                                    @if($ad->rooms_number)
-                                        <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-door-open" style="color:#1a73e8"></i>
-                                            <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
                                         </span>
                                     @endif
                                     @if($ad->floor)
                                         <span class="d-flex align-items-center gap-1">
-                                            <i class="bi bi-layers" style="color:#1a73e8"></i>
+                                            <img width="16px" src="{{ theme_asset('assets/img/svg/floor.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
                                             <span>{{ translate('floor') }} {{ $ad->floor }}</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->rooms_number)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <img width="16px" src="{{ theme_asset('assets/img/svg/room.svg') }}" style="filter: invert(44%) sepia(91%) saturate(1455%) hue-rotate(200deg) brightness(99%) contrast(96%);" alt="">
+                                            <span>{{ translate('number_of_rooms') }}: {{ $ad->rooms_number }}</span>
                                         </span>
                                     @endif
                                 </div>
