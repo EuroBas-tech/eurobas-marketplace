@@ -304,21 +304,35 @@
                                 </div>
                             @endif
                             @if($ad->category->category_type == 'real estate')
-                                <div class="mb-1 d-flex align-items-center gap-3" style="font-size: 15px;" >
+                                <div class="mb-1 d-flex align-items-center flex-wrap gap-3" style="font-size: 15px;" >
                                     @if($ad->listing_type)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c.2 35.5-28.5 64.3-64 64.3l-320.4 0c-35.3 0-64-28.7-64-64l0-160.4-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L416 100.7 416 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 121 52.8 46.4c8 7 12 15 11 24zM248 192c-13.3 0-24 10.7-24 24l0 80c0 13.3 10.7 24 24 24l80 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24l-80 0z"/></svg>
-                                            </span>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-list-ul" style="color:#1a73e8"></i>
                                             <span>{{ translate($ad->listing_type) }}</span>
                                         </span>
                                     @endif
+                                    @if($ad->property_type)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-buildings" style="color:#1a73e8"></i>
+                                            <span>{{ translate($ad->property_type) }}</span>
+                                        </span>
+                                    @endif
                                     @if($ad->property_size)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <i class="bi bi-arrows-angle-expand"></i>
-                                            </span>
-                                            <span dir="ltr">{{ $ad->property_size }} m²</span> 
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-arrows-angle-expand" style="color:#1a73e8"></i>
+                                            <span dir="ltr">{{ $ad->property_size }} m²</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->rooms_number)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-door-open" style="color:#1a73e8"></i>
+                                            <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->floor)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-layers" style="color:#1a73e8"></i>
+                                            <span>{{ translate('floor') }} {{ $ad->floor }}</span>
                                         </span>
                                     @endif
                                 </div>
@@ -666,17 +680,37 @@
                             @if($ad->category->category_type == 'real estate')
                                 <div class="mb-1 d-flex align-items-center gap-1 flex-wrap" style="font-size: 12px;" >
                                     @if($ad->listing_type)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <svg width="17" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c.2 35.5-28.5 64.3-64 64.3l-320.4 0c-35.3 0-64-28.7-64-64l0-160.4-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L416 100.7 416 64c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 121 52.8 46.4c8 7 12 15 11 24zM248 192c-13.3 0-24 10.7-24 24l0 80c0 13.3 10.7 24 24 24l80 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24l-80 0z"/></svg>
-                                            </span>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-list-ul" style="color:#1a73e8"></i>
                                             <span>{{ translate($ad->listing_type) }}</span>
                                         </span>
                                     @endif
+                                    @if($ad->property_type)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-buildings" style="color:#1a73e8"></i>
+                                            <span>{{ translate($ad->property_type) }}</span>
+                                        </span>
+                                    @endif
                                     @if($ad->property_size)
-                                        <span class="d-flex align-items-center gap-1" >
-                                            <span>
-                                                <i class="bi bi-arrows-angle-expand"></i>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-arrows-angle-expand" style="color:#1a73e8"></i>
+                                            <span dir="ltr">{{ $ad->property_size }} m²</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->rooms_number)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-door-open" style="color:#1a73e8"></i>
+                                            <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                                        </span>
+                                    @endif
+                                    @if($ad->floor)
+                                        <span class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-layers" style="color:#1a73e8"></i>
+                                            <span>{{ translate('floor') }} {{ $ad->floor }}</span>
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
                                             </span>
                                             <span dir="ltr">{{ $ad->property_size }} m²</span>
                                         </span>
@@ -827,6 +861,3 @@
         </div>
     </div>
 </div>
-
-
-
