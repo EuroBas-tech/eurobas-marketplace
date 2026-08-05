@@ -8,6 +8,12 @@ COPY ./specifications/supervisor/supervisord.conf /etc/supervisor/supervisord.co
 
 COPY ./ /var/www
 
-# Change all SVG icons color from black/gray to primary blue (#3b82f6) during build
+# Change all SVG icons color to primary blue (#3b82f6) during build
 RUN find /var/www/resources/themes/theme_aster/public/assets/img/svg/ -name "*.svg" -type f \
-    -exec sed -i -e 's/#000000/#3b82f6/gI' -e 's/fill="black"/fill="#3b82f6"/gI' -e 's/#808080/#3b82f6/gI' -e 's/#666666/#3b82f6/gI' {} +
+    -exec sed -i -e 's/#000000/#3b82f6/gI' \
+                 -e 's/fill="black"/fill="#3b82f6"/gI' \
+                 -e 's/#808080/#3b82f6/gI' \
+                 -e 's/#666666/#3b82f6/gI' \
+                 -e 's/<path /<path fill="#3b82f6" /gI' \
+                 -e 's/<path\n/<path fill="#3b82f6"\n/gI' \
+                 -e 's/<svg /<svg fill="#3b82f6" /gI' {} +
