@@ -1183,7 +1183,7 @@
                                                                         <div class="d-flex align-items-center gap-2" >
                                                                             <div>
                                                                                 <span>
-                                                                                    <img width="25px" src="{{ theme_asset('assets/img/svg/capacity.png') }}" alt="">
+                                                                                    <img width="25px" src="{{ theme_asset('assets/img/svg/capacity.svg') }}"
                                                                                 </span>
                                                                             </div>
                                                                             <div>
