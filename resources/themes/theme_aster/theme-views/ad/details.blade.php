@@ -465,7 +465,7 @@
                                                             <div class="d-flex align-items-center gap-2" >
                                                                 <div>
                                                                     <span>
-                                                                        <img width="25px" src="{{ theme_asset('assets/img/svg/status.png') }}" alt="">
+                                                                      <img width="25px" src="{{ theme_asset('assets/img/svg/status.svg') }}" alt="">
                                                                     </span>
                                                                 </div>
                                                                 <div>
