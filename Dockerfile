@@ -8,12 +8,23 @@ COPY ./specifications/supervisor/supervisord.conf /etc/supervisor/supervisord.co
 
 COPY ./ /var/www
 
-# Change SVG colors in both Resources and Public paths
+# Comprehensive SVG icon recoloring (Fill, Stroke, CSS Styles, Attributes) to primary blue (#3b82f6)
 RUN find /var/www/resources/themes/theme_aster/public/assets/img/svg/ /var/www/public/resources/themes/theme_aster/public/assets/img/svg/ -name "*.svg" -type f \
     -exec sed -i -e 's/#000000/#3b82f6/gI' \
+                 -e 's/#000\b/#3b82f6/gI' \
                  -e 's/fill="black"/fill="#3b82f6"/gI' \
+                 -e 's/fill:black/fill:#3b82f6/gI' \
+                 -e 's/fill:#000000/fill:#3b82f6/gI' \
+                 -e 's/fill:#000\b/fill:#3b82f6/gI' \
+                 -e 's/stroke="black"/stroke="#3b82f6"/gI' \
+                 -e 's/stroke:black/stroke:#3b82f6/gI' \
+                 -e 's/stroke="black"/stroke="#3b82f6"/gI' \
+                 -e 's/stroke:#000000/stroke:#3b82f6/gI' \
+                 -e 's/stroke:#000/stroke:#3b82f6/gI' \
+                 -e 's/stroke="#000000"/stroke="#3b82f6"/gI' \
+                 -e 's/stroke="#000"/stroke="#3b82f6"/gI' \
                  -e 's/#808080/#3b82f6/gI' \
                  -e 's/#666666/#3b82f6/gI' \
-                 -e 's/<path /<path fill="#3b82f6" /gI' \
-                 -e 's/<path\n/<path fill="#3b82f6"\n/gI' \
-                 -e 's/<svg /<svg fill="#3b82f6" /gI' {} +
+                 -e 's/<path /<path fill="#3b82f6" stroke="#3b82f6" /gI' \
+                 -e 's/<path\n/<path fill="#3b82f6" stroke="#3b82f6"\n/gI' \
+                 -e 's/<svg /<svg fill="#3b82f6" stroke="#3b82f6" /gI' {} +
