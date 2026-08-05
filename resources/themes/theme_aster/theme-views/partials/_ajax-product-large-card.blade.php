@@ -840,7 +840,7 @@
                     --}}
                     <div style="font-size: 11px;" >
                         <span class="d-flex align-items-center gap-1" >
-                            <span>{{ date('d M y', strtotime($ad->created_at)) }} ({{ $ad->created_at->diffForHumans() }})</span>
+                
                             <span>{{ date('d M y', strtotime($ad->created_at)) }} ({{ $ad->created_at->locale($locale)->diffForHumans() }})</span>
                         </span>
                     </div>
