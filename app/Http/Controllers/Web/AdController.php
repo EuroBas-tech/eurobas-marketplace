@@ -1489,7 +1489,7 @@ class AdController extends Controller
             $limit = $request->input('limit', 5);
             $offset = $request->input('offset', 5);
         
-            $ads = $query->offset($offset)->limit($limit)->get();
+            $ads = $query->orderBy('created_at', 'DESC')->offset($offset)->limit($limit)->get();
             
             return response()->json([
                 'html' => $ads->count() > 0 ? view('theme-views.partials._ajax-products-view', compact('ads'))->render() : null,
@@ -1499,8 +1499,7 @@ class AdController extends Controller
         }
 
         $count = $query->count();
-        $ads = $query->limit(5)->get();
-
+        $ads = $query->orderBy('created_at', 'DESC')->limit(5)->get();
         return response()->json([
             'html' => view('theme-views.partials._ajax-products-view', compact('ads'))->render(),
             'show_ad_ids' => $ads->pluck('id')->toArray(),
