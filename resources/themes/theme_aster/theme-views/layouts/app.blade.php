@@ -77,6 +77,10 @@
             font-family: 'Rubik', 'Arial Narrow', Arial, sans-serif;
             font-weight: 400;
         }
+              body {
+             overflow-x: hidden;
+             max-width: 100vw;
+             }
 
         :root {
             --bs-primary: {{ $web_config['primary_color'] }};
