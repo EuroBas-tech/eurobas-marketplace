@@ -56,7 +56,7 @@
         }
 
         .min-width-filter {
-            min-width: 300px;
+             min-width: 0
         }
 
         .small-responsive-icon {
@@ -77,7 +77,7 @@
             }
 
             .min-width-filter {
-                min-width: 330px;
+                min-width: 0
             }
         }
 
