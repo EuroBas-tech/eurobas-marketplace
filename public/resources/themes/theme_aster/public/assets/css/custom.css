@@ -14,38 +14,41 @@
 /* للجوال */
 @media only screen and (max-width: 767px) {
     .prod-imag1 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 150px !important;
+        object-fit: cover;
     }
 
     .prod-imag2 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 200px !important;
+        object-fit: cover;
     }
     
     .prod-imag2-list {
-        inline-size: 106% !important;
-        /* block-size: 105% !important; */
+        inline-size: 100% !important;
         width: 100% !important;
-        /* height: 124px !important; */
+        object-fit: cover;
     }
 
     .prod-imag3 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 140px !important;
+        object-fit: cover;
     }
 
     .prod-imag4 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 170px !important;
+        object-fit: cover;
     }
 
     .fs-12-small-screens {
@@ -77,38 +80,41 @@
     }
 
     .prod-imag1 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 200px !important;
+        object-fit: cover;
     }
 
     .prod-imag2 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         height: 230px !important;
         width: 100% !important;
+        object-fit: cover;
     }
     
     .prod-imag2-list {
-        inline-size: 106% !important;
-        /* block-size: 105% !important;
-        height: 128px !important; */
+        inline-size: 100% !important;
         width: 100% !important;
+        object-fit: cover;
     }
 
     .prod-imag3 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 220px !important;
+        object-fit: cover;
     }
 
     .prod-imag4 {
-        inline-size: 106% !important;
-        block-size: 105% !important;
+        inline-size: 100% !important;
+        block-size: 100% !important;
         width: 100% !important;
         height: 229px !important;
+        object-fit: cover;
     }
 
 }
