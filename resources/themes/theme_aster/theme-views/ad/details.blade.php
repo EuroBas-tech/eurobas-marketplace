@@ -196,6 +196,25 @@
          }
      }
 
+        @media (max-width: 767.98px) {
+         .quickviewSlider2 {
+           width: 100% !important;
+          max-width: 100% !important;
+          overflow: hidden !important;
+        }
+        .quickviewSlider2 .swiper-slide {
+          width: 100% !important;
+          max-width: 100% !important;
+      }
+      .quickviewSlider2 .swiper-wrapper {
+          width: 100% !important;
+       }
+        .pd-img-wrap {
+          overflow: hidden !important;
+          max-width: 100% !important;
+       }
+   }
+
         @media (min-width: 992px) {
             .col-lg-custom-8-5 {
                 flex: 0 0 calc((100% / 12) * 8.5);
