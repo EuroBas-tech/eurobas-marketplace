@@ -370,7 +370,7 @@
                                             </div>
 
                                             <div class="mt-2 user-select-none">
-                                                <div style="width: {{ min($gallery_images_number, 7) * 90 }}px;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
+                                                <div style="width: {{ min($gallery_images_number, 7) * 90 }}px; max-width: 100%;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
                                                     @if($ad->images!=null && json_decode($ad->images)>0)
                                                         <div class="swiper-wrapper auto-item-width d-sm-flex d-none py-1" style="--bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
