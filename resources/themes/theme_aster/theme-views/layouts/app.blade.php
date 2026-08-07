@@ -81,6 +81,13 @@
              overflow-x: hidden;
              max-width: 100vw;
              }
+        
+        @media (max-width: 767.98px) {
+            .row {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+        }
 
         :root {
             --bs-primary: {{ $web_config['primary_color'] }};
