@@ -833,7 +833,7 @@
 
     @if($ad->material)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-            <div class="card shadow-none min-width-max-content">
+            <div class="card shadow-none w-100">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
@@ -878,7 +878,7 @@
 
                                                     @if($ad->manufacturer)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                            <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
@@ -896,7 +896,7 @@
 
                                                     @if($ad->power_capacity)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                            <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
@@ -914,7 +914,7 @@
 
                                                     @if($ad->power_source)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                             <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
