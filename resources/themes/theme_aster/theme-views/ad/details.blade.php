@@ -183,11 +183,18 @@
             }
         }
 
-        @media (max-width: 1300px) {
-            .side-bar-min-width {
-                min-width: 320px !important;
-            }
-        }
+        @media (max-width: 1300px) and (min-width: 992px) {
+          .side-bar-min-width {
+            min-width: 320px !important;
+          }
+    }
+
+        @media (max-width: 991px) {
+          .side-bar-min-width {
+            min-width: 0 !important;
+             width: 100% !important;
+         }
+     }
 
         @media (min-width: 992px) {
             .col-lg-custom-8-5 {
