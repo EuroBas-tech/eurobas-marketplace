@@ -183,11 +183,37 @@
             }
         }
 
-        @media (max-width: 1300px) {
-            .side-bar-min-width {
-                min-width: 320px !important;
-            }
+        @media (max-width: 1300px) and (min-width: 992px) {
+          .side-bar-min-width {
+            min-width: 320px !important;
+          }
+    }
+
+        @media (max-width: 991px) {
+          .side-bar-min-width {
+            min-width: 0 !important;
+             width: 100% !important;
+         }
+     }
+
+        @media (max-width: 767.98px) {
+         .quickviewSlider2 {
+           width: 100% !important;
+          max-width: 100% !important;
+          overflow: hidden !important;
         }
+        .quickviewSlider2 .swiper-slide {
+          width: 100% !important;
+          max-width: 100% !important;
+      }
+      .quickviewSlider2 .swiper-wrapper {
+          width: 100% !important;
+       }
+        .pd-img-wrap {
+          overflow: hidden !important;
+          max-width: 100% !important;
+       }
+   }
 
         @media (min-width: 992px) {
             .col-lg-custom-8-5 {
@@ -232,8 +258,8 @@
     <!-- Main Content -->
     <main class="main-content d-flex flex-column gap-3 pt-3 mb-sm-5">
         <div class="container px-0 px-sm-3">
-          <div class="row gx-0 gy-4">
-                <div class="col-lg-8 col-xl-8 flex-grow-1 px-sm-3 px-0">
+             <div class="row gx-0 gy-4">
+                <div class="col-12 col-lg-8 col-xl-8 px-sm-3 px-0">
                     <div class="card h-100 mb-3 px-sm-0 px-3">
                         <div class="card-body px-sm-3 px-0">
                             <div class="quickview-content">
@@ -370,7 +396,7 @@
                                             </div>
 
                                             <div class="mt-2 user-select-none">
-                                                <div style="width: {{ min($gallery_images_number, 7) * 90 }}px;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
+                                                <div style="width: {{ min($gallery_images_number, 7) * 90 }}px; max-width: 100%;" class="quickviewSliderThumb2 swiper-container border mx-auto position-relative">
                                                     @if($ad->images!=null && json_decode($ad->images)>0)
                                                         <div class="swiper-wrapper auto-item-width d-sm-flex d-none py-1" style="--bs-border-color: #d6d6d6">
                                                             @if($ad_promotional_video)
@@ -833,7 +859,7 @@
 
     @if($ad->material)
         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-            <div class="card shadow-none min-width-max-content">
+            <div class="card shadow-none w-100">
                 <div class="d-flex align-items-center gap-2">
                     <div>
                         <span>
@@ -878,7 +904,7 @@
 
                                                     @if($ad->manufacturer)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                            <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
@@ -896,7 +922,7 @@
 
                                                     @if($ad->power_capacity)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                            <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
@@ -914,7 +940,7 @@
 
                                                     @if($ad->power_source)
                                                         <div class="col-lg-3 col-xl-3 col-md-4 col-6 mb-4">
-                                                            <div class="card shadow-none min-width-max-content">
+                                                             <div class="card shadow-none w-100">
                                                                 <div class="d-flex align-items-center gap-2" >
                                                                     <div>
                                                                         <span>
@@ -2240,9 +2266,12 @@
         }); 
         
         var quickviewSlider2 = new Swiper(".quickviewSlider2", {
-            autoplay: false,
-            loop: true,
-            navigation: {
+         autoplay: false,
+         loop: true,
+         slidesPerView: 1,
+         observer: true,
+         observeParents: true,
+         navigation: {
                 nextEl: ".swiper-quickview-button-next",
                 prevEl: ".swiper-quickview-button-prev",
             },
