@@ -30,8 +30,8 @@
 @section('content')
     <!-- Main Content -->
     <main class="main-content d-flex flex-column gap-3 py-3 mb-4 vh-100">
-       <div class="container-fluid px-2 px-sm-auto">
-        <div class="row justify-content-center gx-0">
+        <div class="container">
+            <div class="row justify-content-center">
                 <!-- Sidebar-->
                 <div class="col-lg-10">
                     <div class="card h-lg-100 card-custom-shadow">
