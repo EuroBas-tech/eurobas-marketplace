@@ -2266,9 +2266,12 @@
         }); 
         
         var quickviewSlider2 = new Swiper(".quickviewSlider2", {
-            autoplay: false,
-            loop: true,
-            navigation: {
+         autoplay: false,
+         loop: true,
+         slidesPerView: 1,
+         observer: true,
+         observeParents: true,
+         navigation: {
                 nextEl: ".swiper-quickview-button-next",
                 prevEl: ".swiper-quickview-button-prev",
             },
