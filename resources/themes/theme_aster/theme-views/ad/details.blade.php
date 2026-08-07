@@ -258,7 +258,7 @@
     <!-- Main Content -->
     <main class="main-content d-flex flex-column gap-3 pt-3 mb-sm-5">
         <div class="container px-0 px-sm-3">
-            <div class="row gy-4">
+             <div class="row gx-0 gy-4">
                 <div class="col-12 col-lg-8 col-xl-8 px-sm-3 px-0">
                     <div class="card h-100 mb-3 px-sm-0 px-3">
                         <div class="card-body px-sm-3 px-0">
