@@ -81,7 +81,19 @@
              overflow-x: hidden;
              max-width: 100vw;
              }
-        
+          @media (max-width: 767.98px) {
+          input[type="text"],
+          input[type="number"],
+          input[type="email"],
+          input[type="tel"],
+          input[type="password"],
+          textarea,
+         select,
+         .form-control,
+          .form-select {
+          font-size: 16px !important;
+        }
+   }
          
         :root {
             --bs-primary: {{ $web_config['primary_color'] }};
