@@ -81,19 +81,21 @@
              overflow-x: hidden;
              max-width: 100vw;
              }
-          @media (max-width: 767.98px) {
-          input[type="text"],
-          input[type="number"],
-          input[type="email"],
-          input[type="tel"],
-          input[type="password"],
-          textarea,
-         select,
+           @media (max-width: 767.98px) {
+           input[type="text"],
+           input[type="number"],
+           input[type="email"],
+           input[type="tel"],
+           input[type="password"],
+           textarea,
+           select,
          .form-control,
-          .form-select {
+         .form-select,
+         .select2-search__field,
+         .select2-container .select2-search--dropdown .select2-search__field {
           font-size: 16px !important;
-        }
-   }
+          }
+     }
          
         :root {
             --bs-primary: {{ $web_config['primary_color'] }};
