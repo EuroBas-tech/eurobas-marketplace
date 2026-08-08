@@ -78,10 +78,6 @@
             font-weight: 400;
         }
 
-        input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
-textarea {
-    font-size: 16px !important;
-}
          @media (max-width: 767.98px) {
     input, textarea,
     input[type="text"],
