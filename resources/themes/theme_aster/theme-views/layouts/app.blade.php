@@ -96,7 +96,13 @@
           font-size: 16px !important;
           }
      }
-         
+         @media (max-width: 767.98px) {
+    .select2-container .select2-search--inline .select2-search__field,
+    .select2-search--dropdown .select2-search__field {
+        font-size: 16px !important;
+        touch-action: manipulation;
+    }
+}
         :root {
             --bs-primary: {{ $web_config['primary_color'] }};
             --bs-primary-rgb: {{ \App\CPU\hex_to_rgb($web_config['primary_color']) }};
