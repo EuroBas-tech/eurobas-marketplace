@@ -15,21 +15,21 @@
 
     <style>
         .hide-element {
-            visibility: hidden;
-            height: 0;
-            overflow: hidden;
+            display: none !important;
         }
 
         .card-custom-shadow {
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
-        /* إصلاح اهتزاز الشاشة وتداخل الخانات على الموبايل فقط */
+        /* إصلاح اهتزاز الشاشة ومربع بحث Select2 وحجم الخانات للموبايل */
         @media (max-width: 991.98px) {
-            /* 1. منع التكبير التلقائي والاهتزاز عند النقر داخل الخانات */
+            /* 1. منع التكبير والاهتزاز عند الكتابة في الخانات العادية ومربع بحث Select2 للبراند والموديل */
             input[type="text"],
             input[type="number"],
-            .form-control {
+            .form-control,
+            .select2-search__field,
+            .select2-container .select2-selection--single {
                 font-size: 16px !important;
             }
 
@@ -57,9 +57,9 @@
                             <div class="my-4">
                                 <form action="{{route('ads-add')}}" method="POST">
                                     @csrf
-                                    <div class="row gy-4">
+                                    <div class="row gx-3 gy-4">
                                         <div class="mb-1 border px-3 py-3 rounded custom-gray-border-color">
-                                            <div class="row g-3">
+                                            <div class="row gx-3 gy-3">
                                                 <!-- عنوان الإعلان -->
                                                 <div class="col-12 mb-2">
                                                     <div class="form-group">
