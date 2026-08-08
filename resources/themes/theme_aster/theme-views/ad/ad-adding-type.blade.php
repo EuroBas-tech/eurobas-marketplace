@@ -15,25 +15,24 @@
 
     <style>
         .hide-element {
-            display: none !important;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
         }
 
         .card-custom-shadow {
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
-        /* إصلاح اهتزاز الشاشة ومربع بحث Select2 وحجم الخانات للموبايل */
+        /* إصلاح اهتزاز الشاشة عند الكتابة في مربع بحث البراند والموديل للموبايل فقط */
         @media (max-width: 991.98px) {
-            /* 1. منع التكبير والاهتزاز عند الكتابة في الخانات العادية ومربع بحث Select2 للبراند والموديل */
             input[type="text"],
             input[type="number"],
             .form-control,
-            .select2-search__field,
-            .select2-container .select2-selection--single {
+            .select2-search__field {
                 font-size: 16px !important;
             }
 
-            /* 2. حماية حاوي الصفحة من الانزلاق الأفقي */
             .main-content, .container {
                 overflow-x: hidden !important;
             }
@@ -57,9 +56,9 @@
                             <div class="my-4">
                                 <form action="{{route('ads-add')}}" method="POST">
                                     @csrf
-                                    <div class="row gx-3 gy-4">
+                                    <div class="row gy-4">
                                         <div class="mb-1 border px-3 py-3 rounded custom-gray-border-color">
-                                            <div class="row gx-3 gy-3">
+                                            <div class="row g-3">
                                                 <!-- عنوان الإعلان -->
                                                 <div class="col-12 mb-2">
                                                     <div class="form-group">
@@ -70,7 +69,7 @@
                                                 </div>
 
                                                 <!-- الفئة -->
-                                                <div class="col-12 col-md-4 mb-2">
+                                                <div class="col-sm-4 mb-2">
                                                     <div class="form-group">
                                                         <label for="category">{{translate('category')}}</label>
                                                         <select class="form-control" name="category_id" id="category" required>
@@ -87,7 +86,7 @@
                                                 </div>
 
                                                 <!-- الماركة -->
-                                                <div id="brand-box" class="col-12 col-md-4 mb-2 hide-element">
+                                                <div id="brand-box" class="col-sm-4 mb-2 hide-element">
                                                     <div class="form-group">
                                                         <label for="brand">{{ translate('brand') }}</label>
                                                         <select class="form-control" name="brand_id" id="brand">
@@ -100,7 +99,7 @@
                                                 </div>
 
                                                 <!-- الموديل -->
-                                                <div id="model-box" class="col-12 col-md-4 mb-2 hide-element">
+                                                <div id="model-box" class="col-sm-4 mb-2 hide-element">
                                                     <div class="form-group">
                                                         <label for="model">{{ translate('model') }}</label>
                                                         <select class="form-control" name="model_id" id="model" disabled>
