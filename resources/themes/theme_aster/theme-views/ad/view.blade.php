@@ -23,6 +23,7 @@
         .select2-container--default .select2-search--dropdown .select2-search__field {
             border: 1px solid gray !important;
             border-radius: 4px !important;
+            font-size: 16px !important;
         }
         .select2-container .select2-selection--single .select2-selection__rendered {
             border: 1px solid #dbdbdb !important;
@@ -43,6 +44,7 @@
         }
         .select2-container--default .select2-search--dropdown .select2-search__field {
             height: 36px !important;
+            font-size: 16px !important;
         }
 
         #status-box .dropdown-menu {
