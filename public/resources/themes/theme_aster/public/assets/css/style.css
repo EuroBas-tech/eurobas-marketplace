@@ -5684,3 +5684,13 @@ input[type="checkbox"]:checked::after {
     width: -webkit-fill-available;
 }
 
+/* إجبار كافة الخانات والـ Textarea والـ Select2 على 16px لمنع Auto-Zoom */
+html body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+html body textarea,
+html body select,
+html body .form-control,
+html body .form-select,
+html body .select2-search__field,
+html body .select2-container--open .select2-search__field {
+    font-size: 16px !important;
+}
