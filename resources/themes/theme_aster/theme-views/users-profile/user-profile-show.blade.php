@@ -27,6 +27,7 @@
 
         .select2-container--default .select2-search--dropdown .select2-search__field {
             height: 36px !important;
+            font-size: 16px !important;
         }
 
         .tab-pane {
