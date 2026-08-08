@@ -77,30 +77,29 @@
             font-family: 'Rubik', 'Arial Narrow', Arial, sans-serif;
             font-weight: 400;
         }
-              body {
-             overflow-x: hidden;
-             max-width: 100vw;
-             }
-           @media (max-width: 767.98px) {
-           input[type="text"],
-           input[type="number"],
-           input[type="email"],
-           input[type="tel"],
-           input[type="password"],
-           textarea,
-           select,
-         .form-control,
-         .form-select,
-         .select2-search__field,
-         .select2-container .select2-search--dropdown .select2-search__field {
-          font-size: 16px !important;
-          }
-     }
-         @media (max-width: 767.98px) {
-    .select2-container .select2-search--inline .select2-search__field,
-    .select2-search--dropdown .select2-search__field {
+            @media (max-width: 767.98px) {
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select,
+    .form-control,
+    .form-select,
+    .select2-search__field,
+    .select2-container--open .select2-search__field,
+    body > .select2-container .select2-search__field {
         font-size: 16px !important;
-        touch-action: manipulation;
+    }
+
+    .select2-container,
+    .select2-dropdown {
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+    }
+
+    html, body {
+        overflow-x: hidden !important;
     }
 }
         :root {
