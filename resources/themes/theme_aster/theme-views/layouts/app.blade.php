@@ -77,12 +77,12 @@
             font-family: 'Rubik', 'Arial Narrow', Arial, sans-serif;
             font-weight: 400;
         }
-            @media (max-width: 767.98px) {
+         @media (max-width: 767.98px) {
+    input, textarea,
     input[type="text"],
     input[type="number"],
     input[type="email"],
     input[type="tel"],
-    textarea,
     select,
     .form-control,
     .form-select,
@@ -91,13 +91,11 @@
     body > .select2-container .select2-search__field {
         font-size: 16px !important;
     }
-
     .select2-container,
     .select2-dropdown {
         max-width: 100vw !important;
         box-sizing: border-box !important;
     }
-
     html, body {
         overflow-x: hidden !important;
     }
