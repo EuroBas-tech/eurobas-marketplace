@@ -3179,7 +3179,7 @@ input[type="checkbox"]:checked::after {
 }
 
 .main-menu > li {
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .main-menu > li a {
