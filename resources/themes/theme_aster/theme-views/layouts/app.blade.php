@@ -307,10 +307,7 @@
 <script src="{{ theme_asset('assets/js/custom.js?v='.time()) }}"></script>
 <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 <script>
-     if (typeof CKEDITOR !== 'undefined') {
-        CKEDITOR.addCss('body { font-size: 16px !important; }');
-       }
-     </script>
+
     // Clean, minimal toolbar for the ad "description" editor:
     // keeps paragraphs, bold/italic/underline and bullet/numbered lists,
     // while removing the cluttered default icons/symbols.
