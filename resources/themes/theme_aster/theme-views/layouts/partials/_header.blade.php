@@ -1507,7 +1507,7 @@
                         </li>
                     @else
                         <li class="login-register d-flex gap-4">
-                            <a href="{{ route('customer.auth.login') }}" class="media gap-2 align-items-center fs-12 bg-transparent border-0 p-0">
+                            <a href="{{ route('customer.auth.login') }}" class="media gap-2 align-items-center custom-fs-16 bg-transparent border-0 p-0">
                                 <span class="avatar header-avatar rounded-circle d-xl-none" style="--size: 1.5rem">
                                     <img loading="lazy" src="{{theme_asset('assets/img/user.png')}}" class="img-fit rounded-circle" alt="" />
                                 </span>
@@ -1518,7 +1518,7 @@
                             </div>
                         </li>
                         <li class="d-none d-xl-block">
-                            <a href="{{route('customer.auth.sign-up-type')}}" class="media gap-2 align-items-center fs-12 bg-transparent border-0 p-0">
+                            <a href="{{route('customer.auth.sign-up-type')}}" class="media gap-2 align-items-center custom-fs-16 bg-transparent border-0 p-0">
                                 <span class="media-body d-none d-xl-block hover-primary fw-bold">{{ translate('register') }}</span>
                             </a>
                         </li>
