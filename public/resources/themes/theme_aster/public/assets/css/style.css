@@ -3187,7 +3187,7 @@ input[type="checkbox"]:checked::after {
 }
 
 .main-menu a {
-    font-size: 0.88rem;
+    font-size: 0.95rem;
 }
 
 .main-menu .has-sub-item {
