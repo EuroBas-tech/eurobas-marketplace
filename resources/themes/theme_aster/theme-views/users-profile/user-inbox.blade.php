@@ -512,7 +512,7 @@
 
         // ── Delete single message (soft, for me only) ──
         function deleteMessage(id, el) {
-            eurobasConfirm('{{ translate("delete_this_message") }}?', function () {
+         eurobasConfirm('{{ translate("delete_this_message") }}{{ app()->getLocale() == "ar" ? "؟" : "?" }}', function () {
                 $.ajax({
                     type: 'post',
                     url: "{{ route('delete_message') }}",
