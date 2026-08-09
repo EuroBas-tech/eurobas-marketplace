@@ -785,7 +785,7 @@
                         </li>
                     @else
                         <li class="login-register d-flex gap-4">
-                            <button class="media gap-2 align-items-center text-uppercase fs-12 bg-transparent border-0 p-0" data-bs-toggle="modal" data-bs-target="#loginModal">
+                           <button class="media gap-2 align-items-center bg-transparent border-0 p-0" data-bs-toggle="modal" data-bs-target="#loginModal">
                                 <span class="avatar header-avatar rounded-circle d-xl-none" style="--size: 1.5rem">
                                     <img loading="lazy" src="{{theme_asset('assets/img/user.png')}}" class="img-fit rounded-circle" alt="" />
                                 </span>
