@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="home_appliances_type">{{ translate('type') }}</label>
             <select class="form-control" name="home_appliance_type" id="home_appliance_type">
-                <option value=""> -- {{ translate('choose_home_appliance_type') }} -- </option>
+                <option value=""> {{ translate('choose_home_appliance_type') }} </option>
                 <option {{ $ad['home_appliance_type'] == 'refrigerator' ? 'selected' : ''}} value="refrigerator">{{ translate('refrigerator') }}</option>
                 <option {{ $ad['home_appliance_type'] == 'washing_machine' ? 'selected' : ''}} value="washing_machine">{{ translate('washing_machine') }}</option>
                 <option {{ $ad['home_appliance_type'] == 'microwave' ? 'selected' : ''}} value="microwave">{{ translate('microwave') }}</option>
