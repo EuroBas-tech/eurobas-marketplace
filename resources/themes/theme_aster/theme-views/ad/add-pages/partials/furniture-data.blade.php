@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="furniture_type">{{translate('furniture_type')}}</label>
             <select class="form-control" name="furniture_type" id="furniture_type">
-                <option value=""> -- {{ translate('choose_a_furniture_type') }} -- </option>
+                <option value="">{{ translate('choose_a_furniture_type') }}</option>
                 @foreach($list_values->where('list_name', 'furniture_types')->sortBy('priority') as $list_value)
                     <option {{ old('furniture_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
@@ -67,7 +67,7 @@
         <div class="form-group mb-2">
             <label for="furniture_material">{{translate('furniture_material')}}</label>
             <select class="form-control" name="material" id="furniture_material">
-                <option value=""> -- {{ translate('choose_a_furniture_material') }} -- </option>
+                <option value=""> {{ translate('choose_a_furniture_material') }}</option>
                 @foreach($list_values->where('list_name', 'furniture_materials')->sortBy('priority') as $list_value)
                     <option {{ old('furniture_material') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
