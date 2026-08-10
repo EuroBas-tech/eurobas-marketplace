@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <label for="bicycle_type">{{translate('bicycle_type')}}</label>
                     <select class="form-control" name="bicycle_type" id="bicycle_type">
-                        <option value=""> -- {{ translate('choose_bicycle_type') }} -- </option>
+                        <option value="">{{ translate('choose_bicycle_type') }}</option>
                         @foreach($list_values->where('list_name', 'bicycle_types')->sortBy('priority') as $list_value)
                             <option {{ old('bicycle_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">{{translate($list_value->value)}}</option>
                         @endforeach
@@ -113,7 +113,7 @@
                 <div class="form-group">
                     <label for="bicycle_size">{{translate('bicycle_size')}}</label>
                     <select class="form-control" name="bicycle_size" id="bicycle_size">
-                        <option value=""> -- {{ translate('choose_bicycle_size') }} -- </option>
+                        <option value="">{{ translate('choose_bicycle_size') }}</option>
                         <option {{ old('bicycle_size') == '12' ? 'selected' : ''}} value="12">12</option>
                         <option {{ old('bicycle_size') == '14' ? 'selected' : ''}} value="14">14</option>
                         <option {{ old('bicycle_size') == '16' ? 'selected' : ''}} value="16">16</option>
@@ -143,7 +143,7 @@
                 <div class="form-group">
                     <label for="body_type">{{translate('body_type')}}</label>
                     <select class="form-control" name="body_type" id="body_type">
-                        <option value=""> -- {{translate('choose_body_type')}} -- </option>
+                        <option value="">{{translate('choose_body_type')}}</option>
                         @foreach($list_values->where('list_name', 'body_types')->sortBy('priority') as $list_value)
                             <option {{ old('body_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">{{translate($list_value->value)}}</option>
                         @endforeach
@@ -169,7 +169,7 @@
                 <div class="form-group">
                     <label for="fuel_type">{{translate('fuel_type')}}</label>
                     <select class="form-control" name="fuel_type" id="fuel_type">
-                        <option value=""> -- {{translate('choose_engine_type')}} -- </option>
+                        <option value="">{{translate('choose_engine_type')}}</option>
                         @foreach($list_values->where('list_name', 'fuel_types')->sortBy('priority') as $list_value)
                             <option {{ old('fuel_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                                 {{translate($list_value->value)}}
@@ -199,7 +199,7 @@
                 <div class="form-group">
                     <label for="engine-size">{{translate('engine_size')}}</label>
                     <select class="form-control" name="engine_size" id="engine-size">
-                        <option value=""> -- {{ translate('choose_engine_size') }} -- </option>
+                        <option value="">{{ translate('choose_engine_size') }}</option>
                         <option {{ old('engine_size') == '0.2' ? 'selected' : '' }} value="0.2">0.2L</option>
                         <option {{ old('engine_size') == '0.3' ? 'selected' : '' }} value="0.3">0.3L</option>
                         <option {{ old('engine_size') == '0.4' ? 'selected' : '' }} value="0.4">0.4L</option>
@@ -293,7 +293,7 @@
                 <div class="form-group">
                     <label for="engine-cylinders">{{translate('cylinders')}}</label>
                     <select class="form-control" name="engine_cylinders" id="engine-cylinders">
-                        <option value=""> -- {{translate('choose_cylinder_number')}} -- </option>
+                        <option value="">{{translate('choose_cylinder_number')}}</option>
                         <option {{ old('engine_cylinders') == '1' ? 'selected' : ''}} value="1">1</option>
                         <option {{ old('engine_cylinders') == '2' ? 'selected' : ''}} value="2">2</option>
                         <option {{ old('engine_cylinders') == '3' ? 'selected' : ''}} value="3">3</option>
