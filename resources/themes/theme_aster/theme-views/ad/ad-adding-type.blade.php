@@ -14,7 +14,6 @@
     <meta property="twitter:description" content="{{ substr(strip_tags(str_replace('&nbsp;', ' ', $web_config['about']->value)),0,160) }}">
 
     <style>
-        /* إخفاء العناصر المخفية بأسلوب يحافظ على تخطيط Flexbox */
         .hide-element {
             display: none !important;
         }
@@ -23,12 +22,24 @@
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
-        /* إصلاح استجابة Select2 مع Bootstrap */
         .select2-container {
             width: 100% !important;
         }
 
-        /* تحسينات مخصصة لوضع التدوير العرضي للجوال (Mobile Landscape) */
+        /* تحسين التجاوب والمساحة المتاحة للموبايل */
+        @media screen and (max-width: 575px) {
+            .card-body-mobile-padding {
+                padding: 1rem 0.75rem !important;
+            }
+
+            /* تقليل الحواشي الداخلية لإعطاء مساحة أكبر للخانات في الموبايل */
+            .inner-form-box {
+                padding: 0.75rem !important;
+                border: 1px solid #e5e5e5;
+            }
+        }
+
+        /* تحسينات وضع التدوير العرضي */
         @media screen and (max-width: 991px) and (orientation: landscape) {
             .main-content {
                 min-height: 100vh !important;
@@ -40,7 +51,6 @@
                 overflow: visible !important;
             }
 
-            /* ضبط القائمة المنسدلة للبحث لئلا تخرج من حدود الشاشة */
             .select2-dropdown {
                 max-height: 200px !important;
                 z-index: 1060 !important;
@@ -57,12 +67,12 @@
 @section('content')
     <!-- Main Content -->
     <main class="main-content d-flex flex-column gap-3 py-3 mb-4 min-vh-100">
-        <div class="container">
+        <div class="container px-2 px-sm-3">
             <div class="row justify-content-center">
                 <!-- Sidebar-->
                 <div class="col-lg-10">
                     <div class="card h-100 card-custom-shadow">
-                        <div class="card-body p-3 p-sm-4">
+                        <div class="card-body card-body-mobile-padding p-3 p-sm-4">
                             <div>
                                 <h1 class="h3 mb-3">{{translate('what_do_you_want_to_sell')}} {{app()->getLocale() == 'ar' ? ' ؟' : ' ?'}}</h1>
                             </div>
@@ -72,12 +82,12 @@
                                     @csrf
                                     <div class="row gy-3">
                                         <div class="col-12">
-                                            <div class="border p-3 rounded custom-gray-border-color">
+                                            <div class="inner-form-box rounded">
                                                 <div class="row g-3">
                                                     <!-- 1. Title -->
                                                     <div class="col-12">
                                                         <div class="form-group mb-0">
-                                                            <label for="title" class="form-label fw-semibold">{{translate('title')}}</label>
+                                                            <label for="title">{{translate('title')}}</label>
                                                             <input type="text" id="title" class="form-control" value="{{ old('title') }}"
                                                                 name="title" placeholder="{{translate('title')}}" required>
                                                         </div>
@@ -86,7 +96,7 @@
                                                     <!-- 2. Category -->
                                                     <div class="col-12 col-sm-6 col-md-4">
                                                         <div class="form-group mb-0">
-                                                            <label for="category" class="form-label fw-semibold">{{translate('category')}}</label>
+                                                            <label for="category">{{translate('category')}}</label>
                                                             <select class="form-control" name="category_id" id="category" required>
                                                                 <option value="">{{ translate('choose_category') }}</option>
                                                                 @foreach($categories as $category)
@@ -103,7 +113,7 @@
                                                     <!-- 3. Brand -->
                                                     <div id="brand-box" class="col-12 col-sm-6 col-md-4 hide-element">
                                                         <div class="form-group mb-0">
-                                                            <label for="brand" class="form-label fw-semibold">{{ translate('brand') }}</label>
+                                                            <label for="brand">{{ translate('brand') }}</label>
                                                             <select class="form-control" name="brand_id" id="brand">
                                                                 <option value="">{{ translate('choose_brand') }}</option>
                                                                 @foreach($brands as $brand)
@@ -116,7 +126,7 @@
                                                     <!-- 4. Model -->
                                                     <div id="model-box" class="col-12 col-sm-6 col-md-4 hide-element">
                                                         <div class="form-group mb-0">
-                                                            <label for="model" class="form-label fw-semibold">{{ translate('model') }}</label>
+                                                            <label for="model">{{ translate('model') }}</label>
                                                             <select class="form-control" name="model_id" id="model" disabled>
                                                                 <option value="">{{ translate('choose_model') }}</option>
                                                                 @foreach($models as $model)
