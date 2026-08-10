@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="material">{{translate('material')}}</label>
             <select class="form-control" name="material" id="material">
-                <option value=""> -- {{ translate('choose_a_home_garden_material') }} -- </option>
+                <option value="">{{ translate('choose_a_home_garden_material') }}</option>
                 @foreach($list_values->where('list_name', 'home_garden_materials')->sortBy('priority') as $list_value)
                     <option {{ old('material') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
