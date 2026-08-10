@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label for="doors_number">{{translate('number_of_doors')}} ({{ translate('Optional') }})</label>
                         <select class="form-control" name="doors_number" id="doors_number">
-                            <option value=""> -- {{translate('choose_number_of_doors')}} -- </option>
+                            <option value=""> {{translate('choose_number_of_doors')}} </option>
                             <option {{ $ad['doors_number'] == '2/3' ? 'selected' : ''}} value="2/3">2/3</option>
                             <option {{ $ad['doors_number'] == '4/5' ? 'selected' : ''}} value="4/5">4/5</option>
                             <option {{ $ad['doors_number'] == '6/7' ? 'selected' : ''}} value="6/7">6/7</option>
@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label for="seats_number">{{translate('number_of_seats')}} ({{ translate('Optional') }})</label>
                         <select class="form-control" name="seats_number" id="seats_number">
-                            <option value=""> -- {{translate('choose_number_of_seats')}} -- </option>
+                            <option value=""> {{translate('choose_number_of_seats')}} </option>
                             <option {{ $ad['seats_number'] == '1' ? 'selected' : ''  }} value="1">1</option>
                             <option {{ $ad['seats_number'] == '2' ? 'selected' : ''  }} value="2">2</option>
                             <option {{ $ad['seats_number'] == '3' ? 'selected' : ''  }} value="3">3</option>
@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label for="beds_number">{{translate('number_of_beds')}} ({{ translate('Optional') }})</label>
                         <select class="form-control" name="beds_number" id="beds_number">
-                            <option value=""> -- {{translate('choose_number_of_beds')}} -- </option>
+                            <option value=""> {{translate('choose_number_of_beds')}} </option>
                             <option {{ $ad['beds_number'] == '1' ? 'selected' : '' }} value="1">1</option>
                             <option {{ $ad['beds_number'] == '2' ? 'selected' : '' }} value="2">2</option>
                             <option {{ $ad['beds_number'] == '3' ? 'selected' : '' }} value="3">3</option>
