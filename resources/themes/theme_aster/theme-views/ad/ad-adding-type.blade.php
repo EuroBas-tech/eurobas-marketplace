@@ -38,19 +38,12 @@
         #brand-box .select2-container .select2-selection,
         #model-box .select2-container .select2-selection {
             width: 100% !important;
-            border: 1.5px solid #3b82f6 !important;
-            border-radius: 8px !important;
         }
         #brand-box {
             margin-bottom: 20px !important;
         }
         #model-box {
             margin-bottom: 20px !important;
-        }
-        #title,
-        #category {
-            border: 1.5px solid #3b82f6 !important;
-            border-radius: 8px !important;
         }
     </style>
 
