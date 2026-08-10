@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label for="beds_number">{{translate('number_of_beds')}} ({{ translate('Optional') }})</label>
                         <select class="form-control" name="beds_number" id="beds_number">
-                            <option value=""> -- {{translate('choose_number_of_beds')}} -- </option>
+                            <option value="">{{translate('choose_number_of_beds')}}</option>
                             <option {{ old('beds_number') == '1' ? 'selected' : ''}} value="1">1</option>
                             <option {{ old('beds_number') == '2' ? 'selected' : ''}} value="2">2</option>
                             <option {{ old('beds_number') == '3' ? 'selected' : ''}} value="3">3</option>
