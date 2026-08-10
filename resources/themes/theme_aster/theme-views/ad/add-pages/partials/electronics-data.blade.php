@@ -30,7 +30,7 @@
         <div class="form-group mb-2">
             <label for="electronic_type">{{ translate('type') }}</label>
             <select class="form-control" name="electronic_type" id="electronic_type">
-                <option value=""> -- {{ translate('choose_electronic_type') }} -- </option>
+                <option value=""> {{ translate('choose_electronic_type') }}</option>
 
                 @foreach($list_values->where('list_name', 'electronic_types')->sortBy('priority') as $list_value)
                     <option {{ old('electronic_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
