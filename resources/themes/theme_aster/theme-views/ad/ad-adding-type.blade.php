@@ -53,7 +53,7 @@
                                                         name="title" placeholder="{{translate('title')}}" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4 mb-2">
+                                                <div class="col-md-4 mb-2">
                                                     <div class="form-group">
                                                         <label for="category">{{translate('category')}}</label>
                                                         <select class="form-control" name="category_id" id="category" required>
@@ -68,7 +68,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div id="brand-box" class="col-sm-4 mb-2 hide-element">
+                                                <div id="brand-box" class="col-md-4 mb-2 hide-element">
                                                     <div class="form-group">
                                                         <label for="brand">{{ translate('brand') }}</label>
                                                         <select class="form-control" name="brand_id" id="brand">
@@ -79,7 +79,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div id="model-box" class="col-sm-4 mb-3 mt-sm-0 mt-3 hide-element">
+                                                <div id="model-box" class="col-md-4 mb-3 mt-sm-0 mt-3 hide-element">
                                                     <div class="form-group">
                                                         <label for="model">{{ translate('model') }}</label>
                                                         <select class="form-control" name="model_id" id="model" disabled>
