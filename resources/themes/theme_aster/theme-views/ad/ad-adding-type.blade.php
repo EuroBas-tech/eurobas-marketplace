@@ -35,9 +35,11 @@
             width: 100% !important;
             margin-bottom: 4px !important;
         }
-        #brand-box .select2-selection,
-        #model-box .select2-selection {
+        #brand-box .select2-container .select2-selection,
+        #model-box .select2-container .select2-selection {
             width: 100% !important;
+            border: 1.5px solid #3b82f6 !important;
+            border-radius: 8px !important;
         }
         #brand-box {
             margin-bottom: 20px !important;
@@ -45,13 +47,8 @@
         #model-box {
             margin-bottom: 20px !important;
         }
-        #brand-box .select2-selection--single,
-        #model-box .select2-selection--single {
-            border: 1.5px solid #3b82f6 !important;
-            border-radius: 8px !important;
-        }
-        #category .form-control,
-        .col-lg-4 select.form-control {
+        #title,
+        #category {
             border: 1.5px solid #3b82f6 !important;
             border-radius: 8px !important;
         }
