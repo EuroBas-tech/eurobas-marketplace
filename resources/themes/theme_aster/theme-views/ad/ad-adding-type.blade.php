@@ -57,7 +57,7 @@
                                                     <div class="form-group">
                                                         <label for="category">{{translate('category')}}</label>
                                                         <select class="form-control" name="category_id" id="category" required>
-                                                            <option value=""> -- {{ translate('choose_category') }} -- </option>
+                                                            <option value="">{{ translate('choose_category') }}</option>
                                                             @foreach($categories as $category)
                                                                 <option
                                                                 data-id="{{ $category['id'] }}"
@@ -72,7 +72,7 @@
                                                     <div class="form-group">
                                                         <label for="brand">{{ translate('brand') }}</label>
                                                         <select class="form-control" name="brand_id" id="brand">
-                                                            <option value=""> -- {{ translate('choose_brand') }} -- </option>
+                                                            <option value="">{{ translate('choose_brand') }}</option>
                                                             @foreach($brands as $brand)
                                                                 <option data-brand-categories="{{ implode(', ', $brand['categories']) }}" {{ $brand['id'] == old('brand_id') ? 'selected' : ''}} value="{{ $brand['id'] }}" >{{ $brand['name'] }}</option>
                                                             @endforeach
@@ -83,7 +83,7 @@
                                                     <div class="form-group">
                                                         <label for="model">{{ translate('model') }}</label>
                                                         <select class="form-control" name="model_id" id="model" disabled>
-                                                            <option value=""> -- {{ translate('choose_model') }} -- </option>
+                                                            <option value="">{{ translate('choose_model') }}</option>
                                                             @foreach($models as $model)
                                                                 <option
                                                                 data-model-categories="{{ implode(', ', $model['categories']) }}"
