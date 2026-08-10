@@ -23,6 +23,22 @@
         .card-custom-shadow {
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
+
+        #brand-box .select2-container,
+        #model-box .select2-container {
+            width: 100% !important;
+            display: block !important;
+        }
+        #brand-box label,
+        #model-box label {
+            display: block !important;
+            width: 100% !important;
+            margin-bottom: 4px !important;
+        }
+        #brand-box .select2-selection,
+        #model-box .select2-selection {
+            width: 100% !important;
+        }
     </style>
 
 @endpush
