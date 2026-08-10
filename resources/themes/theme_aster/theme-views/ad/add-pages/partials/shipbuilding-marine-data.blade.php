@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="type">{{ translate('type') }}</label>
             <select class="form-control" name="shipbuilding_type" id="type">
-                <option value=""> -- {{ translate('choose_type') }} -- </option>
+                <option value="">{{ translate('choose_type') }}</option>
 
                 @foreach($list_values->where('list_name', 'shipbuilding_types')->sortBy('priority') as $list_value)
                     <option {{ old('shipbuilding_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
@@ -96,7 +96,7 @@
         <div class="form-group">
             <label for="fuel_type">{{translate('fuel_type')}}</label>
             <select class="form-control" name="fuel_type" id="fuel_type">
-                <option value=""> -- {{translate('choose_engine_type')}} -- </option>
+                <option value="">{{translate('choose_engine_type')}}</option>
                 @foreach($list_values->where('list_name', 'fuel_types')->sortBy('priority') as $list_value)
                     <option {{ old('fuel_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
@@ -133,7 +133,7 @@
         <div class="form-group">
             <label for="engines_number">{{translate('number_of_engines')}}</label>
             <select class="form-control" name="engines_number" id="engines_number">
-                <option value=""> -- {{translate('choose_engines_number')}} -- </option>
+                <option value="">{{translate('choose_engines_number')}}</option>
                 <option {{ old('engines_number') == '1' ? 'selected' : ''}} value="1">1</option>
                 <option {{ old('engines_number') == '2' ? 'selected' : ''}} value="2">2</option>
                 <option {{ old('engines_number') == '3' ? 'selected' : ''}} value="3">3</option>
@@ -148,7 +148,7 @@
         <div class="form-group">
             <label for="cabins_number">{{translate('number_of_cabins')}}</label>
             <select class="form-control" name="cabins_number" id="cabins_number">
-                <option value=""> -- {{translate('choose_cabins_number')}} -- </option>
+                <option value="">{{translate('choose_cabins_number')}}</option>
                 <option {{ old('cabins_number') == '1'  ?  'selected' : ''}} value="1">1</option>
                 <option {{ old('cabins_number') == '2'  ?  'selected' : ''}} value="2">2</option>
                 <option {{ old('cabins_number') == '3'  ?  'selected' : ''}} value="3">3</option>
