@@ -22,24 +22,36 @@
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
+        /* منع اهتزاز الشاشة وتكبير Safari عبر تحديد حجم الخط بـ 16px */
+        .form-control,
+        .select2-container--default .select2-selection--single,
+        .select2-dropdown,
+        .select2-search__field {
+            font-size: 16px !important;
+        }
+
         .select2-container {
             width: 100% !important;
         }
 
-        /* تحسين التجاوب والمساحة المتاحة للموبايل */
+        /* إغلاق الإطار الداخلي وتقليل الهوامش المزعجة في الموبايل */
         @media screen and (max-width: 575px) {
-            .card-body-mobile-padding {
-                padding: 1rem 0.75rem !important;
+            .mobile-no-border {
+                border: none !important;
+                padding: 0 !important;
             }
 
-            /* تقليل الحواشي الداخلية لإعطاء مساحة أكبر للخانات في الموبايل */
-            .inner-form-box {
-                padding: 0.75rem !important;
-                border: 1px solid #e5e5e5;
+            .card-body-mobile-padding {
+                padding: 1.25rem 1rem !important;
+            }
+
+            .form-group label {
+                margin-bottom: 6px !important;
+                display: inline-block;
             }
         }
 
-        /* تحسينات وضع التدوير العرضي */
+        /* تحسينات التدوير العرضي للموبايل (Landscape) */
         @media screen and (max-width: 991px) and (orientation: landscape) {
             .main-content {
                 min-height: 100vh !important;
@@ -82,7 +94,7 @@
                                     @csrf
                                     <div class="row gy-3">
                                         <div class="col-12">
-                                            <div class="inner-form-box rounded">
+                                            <div class="mobile-no-border border p-3 rounded custom-gray-border-color">
                                                 <div class="row g-3">
                                                     <!-- 1. Title -->
                                                     <div class="col-12">
