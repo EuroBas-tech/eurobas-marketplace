@@ -24,7 +24,7 @@
         <div class="form-group mb-2">
             <label for="machine_type">{{translate('machine_type')}}</label>
             <select class="form-control" name="machine_type" id="machine_type">
-                <option value=""> -- {{ translate('choose_a_machine_type') }} -- </option>
+                <option value=""> {{ translate('choose_a_machine_type') }} </option>
                 @foreach($list_values->where('list_name', 'machine_types')->sortBy('priority') as $list_value)
                     <option {{ $ad['machine_type'] == $list_value['value'] ? 'selected' : ''}} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
@@ -92,7 +92,7 @@
         <div class="form-group">
             <label for="power_source">{{translate('power_source')}}</label>
             <select class="form-control" name="power_source" id="power_source">
-                <option value=""> -- {{ translate('choose_a_power_source') }} -- </option>
+                <option value=""> {{ translate('choose_a_power_source') }} </option>
                 @foreach($list_values->where('list_name', 'power_sources')->sortBy('priority') as $list_value)
                     <option {{ $ad['power_source'] == $list_value['value'] ? 'selected' : ''}} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
