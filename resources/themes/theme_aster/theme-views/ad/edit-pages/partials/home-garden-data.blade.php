@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="material">{{translate('material')}}</label>
             <select class="form-control" name="material" id="material">
-                <option value=""> -- {{ translate('choose_a_home_garden_material') }} -- </option>
+                <option value=""> {{ translate('choose_a_home_garden_material') }} </option>
                 <option {{ $ad['material'] == 'wood' ? 'selected' : ''}} value="wood">{{ translate('wood') }}</option>
                 <option {{ $ad['material'] == 'leather' ? 'selected' : ''}} value="leather">{{ translate('leather') }}</option>
                 <option {{ $ad['material'] == 'fabric' ? 'selected' : ''}} value="fabric">{{ translate('fabric') }}</option>
