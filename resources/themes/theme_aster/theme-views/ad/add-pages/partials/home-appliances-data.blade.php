@@ -24,7 +24,7 @@
             <label for="home_appliances_type">{{ translate('type') }}</label>
             <select class="form-control" name="home_appliance_type" id="home_appliance_type">
 
-                <option value=""> -- {{ translate('choose_home_appliance_type') }} -- </option>
+                <option value="">{{ translate('choose_home_appliance_type') }}</option>
                 @foreach($list_values->where('list_name', 'home_appliance_types')->sortBy('priority') as $list_value)
                     <option {{ old('home_appliance_type') == $list_value['value'] ? 'selected' : '' }} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
