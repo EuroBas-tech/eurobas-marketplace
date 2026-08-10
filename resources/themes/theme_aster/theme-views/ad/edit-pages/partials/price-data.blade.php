@@ -7,7 +7,7 @@
             <div class="form-group mb-2">
                 <label for="currency">{{translate('currency')}}</label>
                 <select class="form-control" name="currency" id="currency">
-                    <option value="" > -- {{ translate('choose_a_currency') }} -- </option>
+                    <option value="" > {{ translate('choose_a_currency') }} </option>
                     <option {{ $ad['currency'] == 'USD' ? 'selected' : ''}} value="USD">USD</option>
                     <option {{ $ad['currency'] == 'EUR' ? 'selected' : ''}} value="EUR">EUR</option>
                     <option {{ $ad['currency'] == 'GBP' ? 'selected' : ''}} value="GBP">GBP</option>
@@ -18,7 +18,7 @@
             <div class="form-group mb-2">
                 <label for="">{{translate('price_type')}}</label>
                 <select class="form-control" name="price_type" id="price_type">
-                    <option value=""> -- {{ translate('choose_a_price_type') }} -- </option>
+                    <option value=""> {{ translate('choose_a_price_type') }} </option>
                     <option {{ $ad['price_type'] == 'fixed_price' ? 'selected' : ''}} value="fixed_price">{{ translate('fixed_price') }}</option>
                     <option {{ $ad['price_type'] == 'asking_price' ? 'selected' : ''}} value="asking_price">{{ translate('asking_price') }}</option>
                     <option {{ $ad['price_type'] == 'auction' ? 'selected' : ''}} value="auction">{{ translate('auction') }}</option>
