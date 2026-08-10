@@ -23,7 +23,7 @@
         <div class="form-group mb-2">
             <label for="listing_type">{{ translate('listing_type') }}</label>
             <select class="form-control" name="listing_type" id="listing_type">
-                <option value=""> -- {{ translate('choose_listing_type') }} -- </option>
+                <option value=""> {{ translate('choose_listing_type') }} </option>
                 @foreach($list_values->where('list_name', 'listing_types')->sortBy('priority') as $list_value)
                     <option {{ $ad['listing_type'] == $list_value['value'] ? 'selected' : ''}} value="{{$list_value->value}}">
                         {{translate($list_value->value)}}
@@ -44,7 +44,7 @@
         <div class="form-group mb-2">
             <label for="property_type">{{ translate('property_type') }}</label>
             <select class="form-control" name="property_type" id="property_type">
-                <option value=""> -- {{ translate('choose_property_type') }} -- </option>
+                <option value=""> {{ translate('choose_property_type') }} </option>
 
                 @foreach($list_values->where('list_name', 'property_types')->sortBy('priority') as $list_value)
                     <option {{ $ad['property_type'] == $list_value['value'] ? 'selected' : ''}} value="{{$list_value->value}}">
@@ -89,7 +89,7 @@
         <div class="form-group">
             <label for="floor">{{ translate('floor') }}</label>
             <select class="form-control" name="floor" id="floor">
-                <option value=""> -- {{ translate('choose_floor') }} -- </option>
+                <option value=""> {{ translate('choose_floor') }} </option>
                 <option {{ $ad['floor'] == 'basement' ? 'selected' : ''}} value="basement">{{ translate('basement') }}</option>
                 <option {{ $ad['floor'] == 'ground' ? 'selected' : ''}} value="ground">{{ translate('ground') }}</option>
                 @for ($i = 1; $i <= 30; $i++)
@@ -103,7 +103,7 @@
         <div class="form-group">
             <label for="rooms_number">{{translate('number_of_rooms')}}</label>
             <select class="form-control" name="rooms_number" id="rooms_number">
-                <option value=""> -- {{translate('choose_number_of_rooms')}} -- </option>
+                <option value=""> {{translate('choose_number_of_rooms')}} </option>
                 <option {{ $ad['rooms_number'] == '1' ? 'selected' : ''}} value="1">1</option>
                 <option {{ $ad['rooms_number'] == '2' ? 'selected' : ''}} value="2">2</option>
                 <option {{ $ad['rooms_number'] == '3' ? 'selected' : ''}} value="3">3</option>
