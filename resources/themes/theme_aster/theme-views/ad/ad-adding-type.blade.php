@@ -22,7 +22,12 @@
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
-        /* تثبيت أبعاد الحاوية ومنع التمدد الأفقي التلقائي في الموبايل والكمبيوتر */
+        /* جعل الحاويات المباشرة مرجعية لفتح القائمة المنسدلة داخلها */
+        #brand-box, #model-box {
+            position: relative !important;
+        }
+
+        /* تثبيت أبعاد الحاوية ومنع التمدد الأفقي التلقائي */
         .select2-container {
             width: 100% !important;
             max-width: 100% !important;
@@ -51,9 +56,9 @@
                 box-sizing: border-box !important;
             }
 
-            /* منع القائمة المنسدلة للبراند والموديل من الخروج أو البروز أفقياً أثناء الفتح */
+            /* قفل أبعاد القائمة المنسدلة عند فتحها داخل الحاوية المباشرة */
             .select2-dropdown {
-                max-width: calc(100vw - 32px) !important;
+                max-width: 100% !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
                 overflow-x: hidden !important;
@@ -225,18 +230,28 @@
             const $brandSelect = $('#brand');
             const $modelSelect = $('#model');
             const $categorySelect = $('#category');
+            const $titleInput = $('#title');
 
-            // Initialize Select2
+            // حل مشكلة زر "التالي": تحديث حالة التحقق للعنوان فور المني والمغادرة
+            $titleInput.on('input change blur', function () {
+                if (this.checkValidity) {
+                    this.checkValidity();
+                }
+            });
+
+            // Initialize Select2 مع ربط المنسدلة بالحاوية المباشرة لمنع اهتزاز الشاشة
             $brandSelect.select2({
                 placeholder: "{{ translate('choose_brand') }}",
                 allowClear: true,
-                width: '100%'
+                width: '100%',
+                dropdownParent: $('#brand-box')
             });
 
             $modelSelect.select2({
                 placeholder: "{{ translate('choose_model') }}",
                 allowClear: true,
-                width: '100%'
+                width: '100%',
+                dropdownParent: $('#model-box')
             });
 
             // Store all brand and model options
