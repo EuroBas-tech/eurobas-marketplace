@@ -51,8 +51,21 @@
                 box-sizing: border-box !important;
             }
 
+            /* منع القائمة المنسدلة للبراند والموديل من الخروج أو البروز أفقياً أثناء الفتح */
             .select2-dropdown {
+                max-width: calc(100vw - 32px) !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
+            }
+
+            .select2-results {
+                overflow-x: hidden !important;
+            }
+
+            .select2-results__options {
                 max-width: 100% !important;
+                overflow-x: hidden !important;
             }
 
             /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش للكرت */
