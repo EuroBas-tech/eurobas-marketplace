@@ -33,21 +33,56 @@
             max-width: 100% !important;
         }
 
-        /* تحسينات الاستقرار والاستجابة للشاشات الصغيرة */
+        /* تحسينات الاستقرار والشكل الجمالي المريح للموبايل */
         @media screen and (max-width: 575px) {
-            /* إلغاء صراع حساب الارتفاع 100vh لمنع اهتزاز الشاشة فور فتح الصفحة */
+            /* إلغاء صراع حساب الارتفاع 100vh لمنع اهتزاز الشاشة */
             .main-content {
                 min-height: auto !important;
                 height: auto !important;
                 overflow-x: hidden !important;
             }
 
-            /* تثبيت خط الحقول والمنسدلات بـ 16px لمنع التكبير التلقائي عند التفاعل */
+            /* تكبير عناوين الخانات (Labels) لتكون واضحة ومريحة للعين */
+            .form-group label {
+                font-size: 16px !important;
+                font-weight: 600 !important;
+                margin-bottom: 8px !important;
+                display: block;
+                color: #333 !important;
+            }
+
+            /* تكبير ارتفاع الخانات العادية والنص الداخلي */
             .form-control,
             input[type="text"],
-            select,
-            .select2-container--default .select2-selection--single,
-            .select2-selection__rendered,
+            select {
+                font-size: 16px !important;
+                height: 48px !important;
+                padding: 0.65rem 1rem !important;
+                border-radius: 8px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* تكبير ارتفاع وخانات Select2 للبراند والموديل وتوسيط النصوص والأسهم */
+            .select2-container--default .select2-selection--single {
+                height: 48px !important;
+                padding: 0.65rem 0.5rem !important;
+                border-radius: 8px !important;
+                border: 1px solid #ced4da !important;
+                box-sizing: border-box !important;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                font-size: 16px !important;
+                line-height: 26px !important;
+                color: #495057 !important;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 46px !important;
+                right: 8px !important;
+            }
+
+            /* تكبير الخط وقفل أبعاد القائمة المنسدلة المفتوحة للبراند والموديل */
             .select2-search input,
             .select2-search__field,
             .select2-dropdown,
@@ -56,7 +91,10 @@
                 box-sizing: border-box !important;
             }
 
-            /* قفل أبعاد القائمة المنسدلة عند فتحها داخل الحاوية المباشرة */
+            .select2-results__option {
+                padding: 10px 12px !important;
+            }
+
             .select2-dropdown {
                 max-width: 100% !important;
                 width: 100% !important;
@@ -64,10 +102,7 @@
                 overflow-x: hidden !important;
             }
 
-            .select2-results {
-                overflow-x: hidden !important;
-            }
-
+            .select2-results,
             .select2-results__options {
                 max-width: 100% !important;
                 overflow-x: hidden !important;
@@ -85,12 +120,7 @@
 
             /* مسافات عمودية متناسقة بين الخانات */
             .mobile-form-spacing {
-                margin-bottom: 1.25rem !important;
-            }
-
-            .form-group label {
-                margin-bottom: 6px !important;
-                display: block;
+                margin-bottom: 1.35rem !important;
             }
 
             .mobile-btn-spacing {
@@ -232,14 +262,14 @@
             const $categorySelect = $('#category');
             const $titleInput = $('#title');
 
-            // حل مشكلة زر "التالي": تحديث حالة التحقق للعنوان فور المني والمغادرة
+            // حل مشكلة زر "التالي": تحديث حالة التحقق للعنوان فور الكتابة أو المغادرة
             $titleInput.on('input change blur', function () {
                 if (this.checkValidity) {
                     this.checkValidity();
                 }
             });
 
-            // Initialize Select2 مع ربط المنسدلة بالحاوية المباشرة لمنع اهتزاز الشاشة
+            // Initialize Select2 مع ربط المنسدلة بالحاوية المباشرة لمنع الاهتزاز
             $brandSelect.select2({
                 placeholder: "{{ translate('choose_brand') }}",
                 allowClear: true,
@@ -265,17 +295,14 @@
             addPersistentOptions();
 
             function addPersistentOptions() {
-                // Add "Other Brand" if it doesn't exist
                 if ($brandSelect.find('option[value="other"]').length === 0) {
                     $brandSelect.append(otherBrandOption);
                 }
-                // Add "Other Model" if it doesn't exist
                 if ($modelSelect.find('option[value="other"]').length === 0) {
                     $modelSelect.append(otherModelOption);
                 }
             }
 
-            // Filter brands based on selected category
             function filterBrands() {
                 const selectedCategoryId = $categorySelect.val();
                 $brandSelect.empty().append('<option value=""> -- {{ translate("choose_brand") }} -- </option>');
@@ -283,9 +310,9 @@
                 allBrandOptions.each(function () {
                     const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
                     if (
-                        $(this).val() === "" ||                 // keep empty option
-                        $(this).val() === "other" ||            // keep "other"
-                        brandCategories.length === 0 ||         // if no restriction
+                        $(this).val() === "" ||
+                        $(this).val() === "other" ||
+                        brandCategories.length === 0 ||
                         brandCategories.includes(selectedCategoryId)
                     ) {
                         $brandSelect.append($(this).clone());
@@ -300,27 +327,22 @@
                 const selectedBrandId = $brandSelect.val();
                 const selectedCategoryId = $categorySelect.val();
 
-                // Clear models but keep the default option
                 $modelSelect.find('option').not('[value=""]').remove();
 
-                // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
                     const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
 
                     if ($(this).val() === "") {
-                        // keep empty option
                         $modelSelect.append($(this).clone());
                     } else if (
                         (selectedBrandId && brandId == selectedBrandId) &&
                         (modelCategories.length === 0 || modelCategories.includes(selectedCategoryId))
                     ) {
-                        // Model matches the selected brand AND (has no category restrictions OR includes selected category)
                         $modelSelect.append($(this).clone());
                     }
                 });
 
-                // Ensure "Other Model" is at the end
                 if ($modelSelect.find('option[value="other"]').length > 1) {
                     $modelSelect.find('option[value="other"]').not(':last').remove();
                 }
@@ -334,12 +356,10 @@
                 const selectedBrandId = $brandSelect.val();
 
                 if (!selectedBrandId || selectedBrandId === '') {
-                    // Hide and disable model when no brand is selected
                     $modelSelect.val(null).trigger('change');
                     $modelSelect.prop('disabled', true);
                     $('#model-box').addClass('hide-element');
                 } else {
-                    // Show, enable model and filter options
                     filterModels();
                     $modelSelect.prop('disabled', false);
                     $('#model-box').removeClass('hide-element');
@@ -352,13 +372,11 @@
             $categorySelect.on('change', function () {
                 var selectedOption = $(this).find('option:selected');
 
-                // Reset brand and model
                 $brandSelect.val(null).trigger('change');
                 $modelSelect.val(null).trigger('change');
                 $modelSelect.prop('disabled', true);
                 $('#model-box').addClass('hide-element');
 
-                // Show brand box based on category type
                 if(selectedOption.attr('data-is-vehicle') == 'vehicles') {
                     $('#brand-box').removeClass('hide-element');
                 } else {
@@ -369,6 +387,18 @@
                 filterModels();
                 addPersistentOptions();
             });
+
+            // إظهار الخانات تلقائياً إذا كانت الفئة مختارة مسبقاً
+            if ($categorySelect.val()) {
+                var selectedOption = $categorySelect.find('option:selected');
+                if (selectedOption.attr('data-is-vehicle') == 'vehicles') {
+                    $('#brand-box').removeClass('hide-element');
+                    if ($brandSelect.val()) {
+                        $('#model-box').removeClass('hide-element');
+                        $modelSelect.prop('disabled', false);
+                    }
+                }
+            }
         });
     </script>
 @endpush
