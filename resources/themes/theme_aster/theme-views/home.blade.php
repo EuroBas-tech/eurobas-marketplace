@@ -188,8 +188,89 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
+                <style>
+                    /* Mobile home filter - AutoScout24 style */
+                    .mobile-hero-wrapper .hero-card {
+                        height: 210px !important;
+                        max-height: 210px !important;
+                        margin-bottom: -28px !important;
+                        border-radius: 0 !important;
+                    }
+                    #home-mobile-filter {
+                        position: relative;
+                        z-index: 10;
+                        background: #fff;
+                        border-radius: 20px 20px 0 0;
+                        padding: 20px 16px 16px;
+                        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+                        margin: 0;
+                    }
+                    /* Full width inputs */
+                    #home-mobile-filter .col-xl-4,
+                    #home-mobile-filter .col-md-4,
+                    #home-mobile-filter .col-sm-6,
+                    #home-mobile-filter .col-6,
+                    #home-mobile-filter .col-auto,
+                    #home-mobile-filter .flex-grow-1 {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        flex: 0 0 100% !important;
+                        padding: 0 !important;
+                    }
+                    #home-mobile-filter .filter-input,
+                    #home-mobile-filter select.form-control,
+                    #home-mobile-filter input.form-control {
+                        width: 100% !important;
+                        min-height: 52px !important;
+                        font-size: 16px !important;
+                        border-radius: 10px !important;
+                        padding: 12px 14px !important;
+                        border: 1.5px solid #e8ecf0 !important;
+                        background: #f8f9fa !important;
+                        margin-bottom: 10px !important;
+                    }
+                    #home-mobile-filter .select2-container { width: 100% !important; }
+                    #home-mobile-filter .select2-selection {
+                        min-height: 52px !important;
+                        border-radius: 10px !important;
+                        border: 1.5px solid #e8ecf0 !important;
+                        background: #f8f9fa !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        padding: 0 14px !important;
+                        font-size: 16px !important;
+                    }
+                    #home-mobile-filter .row { margin: 0 !important; }
+                    #home-mobile-filter .form-group { margin-bottom: 0 !important; }
+                    /* Submit button */
+                    #home-mobile-filter .filter-buttons { flex-direction: column !important; gap: 0 !important; }
+                    #home-mobile-filter .filter-buttons .btn-primary {
+                        width: 100% !important;
+                        padding: 15px !important;
+                        font-size: 17px !important;
+                        font-weight: 600 !important;
+                        border-radius: 12px !important;
+                        margin-top: 6px !important;
+                    }
+                    /* Hide: price, year, mileage, advanced filter button */
+                    #home-mobile-filter [name="price_range"],
+                    #home-mobile-filter [name="construction_year"],
+                    #home-mobile-filter [name="max_mileage"] {
+                        display: none !important;
+                    }
+                    #home-mobile-filter [data-bs-target="#advancedFilterModal"],
+                    #home-mobile-filter .filter-buttons .btn-outline-primary {
+                        display: none !important;
+                    }
+                    /* Hide parent divs of hidden inputs */
+                    #home-mobile-filter [data-category-type*="year"],
+                    #home-mobile-filter [data-category-type*="price"],
+                    #home-mobile-filter [data-category-type*="mileage"] {
+                        display: none !important;
+                    }
+                </style>
                 <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
+                    <div class="card rounded overflow-hidden hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
                             <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
                                 <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
@@ -203,8 +284,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="d-flex mx-auto align-items-center justify-content-center
-                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
+                    <div id="home-mobile-filter">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
