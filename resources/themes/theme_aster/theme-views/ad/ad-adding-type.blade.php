@@ -24,17 +24,26 @@
 
         .select2-container {
             width: 100% !important;
+            max-width: 100% !important;
         }
 
-        /* حل مشكلة الاهتزاز ومنع الزوم تلقائياً في هواتف الموبايل (iPhone / Safari) */
+        /* حل مشكلة الاهتزاز نهائياً بضبط حجم الخط 16px لكافة عناصر الكتابة والبحث في الموبايل */
         @media screen and (max-width: 575px) {
             .form-control,
+            input[type="text"],
+            select,
             .select2-container--default .select2-selection--single,
-            .select2-dropdown,
-            .select2-search__field,
             .select2-selection__rendered,
+            .select2-search input,
+            .select2-search__field,
+            .select2-dropdown,
             .select2-results__option {
                 font-size: 16px !important;
+                box-sizing: border-box !important;
+            }
+
+            .select2-dropdown {
+                max-width: 100% !important;
             }
 
             /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش في الموبايل */
@@ -47,7 +56,7 @@
                 padding: 1.25rem 1rem !important;
             }
 
-            /* ترتيب ومسافات الخانات لمنع تداخل كلمة Model */
+            /* ترتيب ومسافات الخانات المتناسقة */
             .mobile-form-spacing {
                 margin-bottom: 1.25rem !important;
             }
