@@ -35,14 +35,12 @@
 
         /* تحسينات الاستقرار والاستجابة للشاشات الصغيرة */
         @media screen and (max-width: 575px) {
-            /* إلغاء صراع حساب الارتفاع 100vh لمنع اهتزاز الشاشة فور فتح الصفحة */
             .main-content {
                 min-height: auto !important;
                 height: auto !important;
                 overflow-x: hidden !important;
             }
 
-            /* تثبيت خط الحقول والمنسدلات بـ 16px لمنع التكبير التلقائي عند التفاعل */
             .form-control,
             input[type="text"],
             select,
@@ -56,7 +54,6 @@
                 box-sizing: border-box !important;
             }
 
-            /* قفل أبعاد القائمة المنسدلة عند فتحها داخل الحاوية المباشرة */
             .select2-dropdown {
                 max-width: 100% !important;
                 width: 100% !important;
@@ -73,7 +70,6 @@
                 overflow-x: hidden !important;
             }
 
-            /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش للكرت */
             .mobile-no-border {
                 border: none !important;
                 padding: 0 !important;
@@ -83,12 +79,10 @@
                 padding: 1.25rem 1rem !important;
             }
 
-            /* تقريب المسافات العمودية بين الخانات */
             .mobile-form-spacing {
                 margin-bottom: 0.65rem !important;
             }
 
-            /* تكبير خط العناوين وتعديل هامشها */
             .form-group label {
                 font-size: 16px !important;
                 font-weight: 600 !important;
@@ -101,7 +95,6 @@
             }
         }
 
-        /* تحسينات وضع التدوير العرضي للموبايل (Landscape) */
         @media screen and (max-width: 991px) and (orientation: landscape) {
             .main-content {
                 min-height: 100vh !important;
@@ -233,16 +226,8 @@
             const $brandSelect = $('#brand');
             const $modelSelect = $('#model');
             const $categorySelect = $('#category');
-            const $titleInput = $('#title');
 
-            // حل مشكلة زر "التالي": تحديث حالة التحقق للعنوان فور المني والمغادرة
-            $titleInput.on('input change blur', function () {
-                if (this.checkValidity) {
-                    this.checkValidity();
-                }
-            });
-
-            // Initialize Select2 مع ربط المنسدلة بالحاوية المباشرة لمنع اهتزاز الشاشة
+            // Initialize Select2
             $brandSelect.select2({
                 placeholder: "{{ translate('choose_brand') }}",
                 allowClear: true,
@@ -257,120 +242,101 @@
                 dropdownParent: $('#model-box')
             });
 
-            // Store all brand and model options
+            // Store original options
             const allBrandOptions = $('#brand option').clone();
             const allModelOptions = $('#model option').clone();
 
-            // Create the "Other" options once with value="other"
             const otherBrandOption = '<option value="other">{{ translate("other_brand") }}</option>';
             const otherModelOption = '<option value="other">{{ translate("other_model") }}</option>';
 
-            addPersistentOptions();
-
             function addPersistentOptions() {
-                // Add "Other Brand" if it doesn't exist
                 if ($brandSelect.find('option[value="other"]').length === 0) {
                     $brandSelect.append(otherBrandOption);
                 }
-                // Add "Other Model" if it doesn't exist
                 if ($modelSelect.find('option[value="other"]').length === 0) {
                     $modelSelect.append(otherModelOption);
                 }
             }
 
-            // Filter brands based on selected category
+            addPersistentOptions();
+
+            // Filter brands safely without triggering recursive events
             function filterBrands() {
                 const selectedCategoryId = $categorySelect.val();
-                $brandSelect.empty().append('<option value=""> -- {{ translate("choose_brand") }} -- </option>');
+                
+                $brandSelect.empty().append('<option value="">{{ translate("choose_brand") }}</option>');
 
                 allBrandOptions.each(function () {
                     const brandCategories = $(this).data('brand-categories')?.toString().split(',').map(s => s.trim()) || [];
                     if (
-                        $(this).val() === "" ||                 // keep empty option
-                        $(this).val() === "other" ||            // keep "other"
-                        brandCategories.length === 0 ||         // if no restriction
+                        $(this).val() === "" ||
+                        $(this).val() === "other" ||
+                        brandCategories.length === 0 ||
                         brandCategories.includes(selectedCategoryId)
                     ) {
                         $brandSelect.append($(this).clone());
                     }
                 });
 
-                $brandSelect.val(null).trigger('change');
                 addPersistentOptions();
+                $brandSelect.val(null).trigger('change.select2');
             }
 
+            // Filter models safely
             function filterModels() {
                 const selectedBrandId = $brandSelect.val();
                 const selectedCategoryId = $categorySelect.val();
 
-                // Clear models but keep the default option
-                $modelSelect.find('option').not('[value=""]').remove();
+                $modelSelect.empty().append('<option value="">{{ translate("choose_model") }}</option>');
 
-                // Filter and add matching models
                 allModelOptions.each(function () {
                     const brandId = $(this).data('brand-id');
                     const modelCategories = $(this).data('model-categories')?.toString().split(',').map(s => s.trim()) || [];
 
-                    if ($(this).val() === "") {
-                        // keep empty option
-                        $modelSelect.append($(this).clone());
-                    } else if (
+                    if ($(this).val() !== "" &&
                         (selectedBrandId && brandId == selectedBrandId) &&
                         (modelCategories.length === 0 || modelCategories.includes(selectedCategoryId))
                     ) {
-                        // Model matches the selected brand AND (has no category restrictions OR includes selected category)
                         $modelSelect.append($(this).clone());
                     }
                 });
 
-                // Ensure "Other Model" is at the end
-                if ($modelSelect.find('option[value="other"]').length > 1) {
-                    $modelSelect.find('option[value="other"]').not(':last').remove();
-                }
-
-                $modelSelect.val(null).trigger('change');
                 addPersistentOptions();
+                $modelSelect.val(null).trigger('change.select2');
             }
 
             // Brand change event
-            $brandSelect.on('change', function () {
+            $brandSelect.on('change', function (e, isInternal) {
+                if (isInternal) return; // منع التكرار اللانهائي
+
                 const selectedBrandId = $brandSelect.val();
 
-                if (!selectedBrandId || selectedBrandId === '') {
-                    // Hide and disable model when no brand is selected
-                    $modelSelect.val(null).trigger('change');
+                if (!selectedBrandId) {
+                    $modelSelect.val(null).trigger('change.select2');
                     $modelSelect.prop('disabled', true);
                     $('#model-box').addClass('hide-element');
                 } else {
-                    // Show, enable model and filter options
                     filterModels();
                     $modelSelect.prop('disabled', false);
                     $('#model-box').removeClass('hide-element');
                 }
-
-                addPersistentOptions();
             });
 
             // Category change event
             $categorySelect.on('change', function () {
-                var selectedOption = $(this).find('option:selected');
+                const selectedOption = $(this).find('option:selected');
 
-                // Reset brand and model
-                $brandSelect.val(null).trigger('change');
-                $modelSelect.val(null).trigger('change');
+                $modelSelect.val(null).trigger('change.select2');
                 $modelSelect.prop('disabled', true);
                 $('#model-box').addClass('hide-element');
 
-                // Show brand box based on category type
-                if(selectedOption.attr('data-is-vehicle') == 'vehicles') {
+                if (selectedOption.attr('data-is-vehicle') === 'vehicles') {
                     $('#brand-box').removeClass('hide-element');
+                    filterBrands();
                 } else {
                     $('#brand-box').addClass('hide-element');
+                    $brandSelect.val(null).trigger('change.select2');
                 }
-
-                filterBrands();
-                filterModels();
-                addPersistentOptions();
             });
         });
     </script>
