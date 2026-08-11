@@ -22,20 +22,22 @@
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
-        /* منع اهتزاز الشاشة وتكبير Safari عبر تحديد حجم الخط بـ 16px */
-        .form-control,
-        .select2-container--default .select2-selection--single,
-        .select2-dropdown,
-        .select2-search__field {
-            font-size: 16px !important;
-        }
-
         .select2-container {
             width: 100% !important;
         }
 
-        /* إغلاق الإطار الداخلي وتقليل الهوامش المزعجة في الموبايل */
+        /* حل مشكلة الاهتزاز ومنع الزوم تلقائياً في هواتف الموبايل (iPhone / Safari) */
         @media screen and (max-width: 575px) {
+            .form-control,
+            .select2-container--default .select2-selection--single,
+            .select2-dropdown,
+            .select2-search__field,
+            .select2-selection__rendered,
+            .select2-results__option {
+                font-size: 16px !important;
+            }
+
+            /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش في الموبايل */
             .mobile-no-border {
                 border: none !important;
                 padding: 0 !important;
@@ -45,13 +47,22 @@
                 padding: 1.25rem 1rem !important;
             }
 
+            /* ترتيب ومسافات الخانات لمنع تداخل كلمة Model */
+            .mobile-form-spacing {
+                margin-bottom: 1.25rem !important;
+            }
+
             .form-group label {
                 margin-bottom: 6px !important;
-                display: inline-block;
+                display: block;
+            }
+
+            .mobile-btn-spacing {
+                margin-top: 1.5rem !important;
             }
         }
 
-        /* تحسينات التدوير العرضي للموبايل (Landscape) */
+        /* تحسينات وضع التدوير العرضي للموبايل (Landscape) */
         @media screen and (max-width: 991px) and (orientation: landscape) {
             .main-content {
                 min-height: 100vh !important;
@@ -97,7 +108,7 @@
                                             <div class="mobile-no-border border p-3 rounded custom-gray-border-color">
                                                 <div class="row g-3">
                                                     <!-- 1. Title -->
-                                                    <div class="col-12">
+                                                    <div class="col-12 mobile-form-spacing">
                                                         <div class="form-group mb-0">
                                                             <label for="title">{{translate('title')}}</label>
                                                             <input type="text" id="title" class="form-control" value="{{ old('title') }}"
@@ -106,7 +117,7 @@
                                                     </div>
 
                                                     <!-- 2. Category -->
-                                                    <div class="col-12 col-sm-6 col-md-4">
+                                                    <div class="col-12 col-sm-6 col-md-4 mobile-form-spacing">
                                                         <div class="form-group mb-0">
                                                             <label for="category">{{translate('category')}}</label>
                                                             <select class="form-control" name="category_id" id="category" required>
@@ -123,7 +134,7 @@
                                                     </div>
 
                                                     <!-- 3. Brand -->
-                                                    <div id="brand-box" class="col-12 col-sm-6 col-md-4 hide-element">
+                                                    <div id="brand-box" class="col-12 col-sm-6 col-md-4 hide-element mobile-form-spacing">
                                                         <div class="form-group mb-0">
                                                             <label for="brand">{{ translate('brand') }}</label>
                                                             <select class="form-control" name="brand_id" id="brand">
@@ -136,7 +147,7 @@
                                                     </div>
 
                                                     <!-- 4. Model -->
-                                                    <div id="model-box" class="col-12 col-sm-6 col-md-4 hide-element">
+                                                    <div id="model-box" class="col-12 col-sm-6 col-md-4 hide-element mobile-form-spacing">
                                                         <div class="form-group mb-0">
                                                             <label for="model">{{ translate('model') }}</label>
                                                             <select class="form-control" name="model_id" id="model" disabled>
@@ -157,7 +168,7 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <div class="d-flex justify-content-end gap-3 mt-2">
+                                            <div class="d-flex justify-content-end gap-3 mt-2 mobile-btn-spacing">
                                                 <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
                                                     <span>{{translate('next')}}</span>
                                                     <i class="bi {{ app()->getLocale() == 'ae' || app()->getLocale() == 'ar' ? 'bi-arrow-left' : 'bi-arrow-right' }}"></i>
