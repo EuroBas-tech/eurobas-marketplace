@@ -22,13 +22,22 @@
             box-shadow: 1px 1px 4px #00000017, -1px 1px 4px #00000017;
         }
 
+        /* تثبيت أبعاد الحاوية ومنع التمدد الأفقي التلقائي في الموبايل والكمبيوتر */
         .select2-container {
             width: 100% !important;
             max-width: 100% !important;
         }
 
-        /* حل مشكلة الاهتزاز نهائياً بضبط حجم الخط 16px لكافة عناصر الكتابة والبحث في الموبايل */
+        /* تحسينات الاستقرار والاستجابة للشاشات الصغيرة */
         @media screen and (max-width: 575px) {
+            /* إلغاء صراع حساب الارتفاع 100vh لمنع اهتزاز الشاشة فور فتح الصفحة */
+            .main-content {
+                min-height: auto !important;
+                height: auto !important;
+                overflow-x: hidden !important;
+            }
+
+            /* تثبيت خط الحقول والمنسدلات بـ 16px لمنع التكبير التلقائي عند التفاعل */
             .form-control,
             input[type="text"],
             select,
@@ -46,7 +55,7 @@
                 max-width: 100% !important;
             }
 
-            /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش في الموبايل */
+            /* إزالة الإطار الداخلي المزدوج وتعديل الهوامش للكرت */
             .mobile-no-border {
                 border: none !important;
                 padding: 0 !important;
@@ -56,7 +65,7 @@
                 padding: 1.25rem 1rem !important;
             }
 
-            /* ترتيب ومسافات الخانات المتناسقة */
+            /* مسافات عمودية متناسقة بين الخانات */
             .mobile-form-spacing {
                 margin-bottom: 1.25rem !important;
             }
