@@ -189,86 +189,127 @@
 
             @if($isMobile)
                 <style>
-                    /* Mobile home filter - AutoScout24 style */
+                    /* ===== MOBILE HOME FILTER ===== */
                     .mobile-hero-wrapper .hero-card {
-                        height: 210px !important;
-                        max-height: 210px !important;
-                        margin-bottom: -28px !important;
+                        height: 200px !important;
+                        max-height: 200px !important;
+                        margin-bottom: 0 !important;
                         border-radius: 0 !important;
                     }
+
+                    /* Remove old card wrapper */
+                    #home-mobile-filter section.banner,
+                    #home-mobile-filter .card.moble-border-0,
+                    #home-mobile-filter .sweet-shadow {
+                        box-shadow: none !important;
+                        border: none !important;
+                        background: transparent !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+
                     #home-mobile-filter {
                         position: relative;
                         z-index: 10;
                         background: #fff;
                         border-radius: 20px 20px 0 0;
                         padding: 20px 16px 16px;
-                        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-                        margin: 0;
+                        margin-top: -24px;
+                        box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
                     }
-                    /* Full width inputs */
+
+                    /* Full width all inputs */
                     #home-mobile-filter .col-xl-4,
                     #home-mobile-filter .col-md-4,
                     #home-mobile-filter .col-sm-6,
                     #home-mobile-filter .col-6,
+                    #home-mobile-filter .col-xl-10,
+                    #home-mobile-filter .col-md-12,
+                    #home-mobile-filter .col-sm-12,
+                    #home-mobile-filter .col-12,
                     #home-mobile-filter .col-auto,
-                    #home-mobile-filter .flex-grow-1 {
+                    #home-mobile-filter .flex-grow-1,
+                    #home-mobile-filter .col-xl-12 {
                         width: 100% !important;
                         max-width: 100% !important;
                         flex: 0 0 100% !important;
-                        padding: 0 !important;
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
                     }
+
+                    #home-mobile-filter .row {
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                    }
+
                     #home-mobile-filter .filter-input,
                     #home-mobile-filter select.form-control,
-                    #home-mobile-filter input.form-control {
+                    #home-mobile-filter input.form-control,
+                    #home-mobile-filter button.form-control {
                         width: 100% !important;
                         min-height: 52px !important;
                         font-size: 16px !important;
                         border-radius: 10px !important;
                         padding: 12px 14px !important;
-                        border: 1.5px solid #e8ecf0 !important;
-                        background: #f8f9fa !important;
                         margin-bottom: 10px !important;
-                    }
-                    #home-mobile-filter .select2-container { width: 100% !important; }
-                    #home-mobile-filter .select2-selection {
-                        min-height: 52px !important;
-                        border-radius: 10px !important;
-                        border: 1.5px solid #e8ecf0 !important;
+                        border: 1.5px solid #e0e0e0 !important;
                         background: #f8f9fa !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        padding: 0 14px !important;
-                        font-size: 16px !important;
                     }
-                    #home-mobile-filter .row { margin: 0 !important; }
-                    #home-mobile-filter .form-group { margin-bottom: 0 !important; }
+
+                    #home-mobile-filter .select2-container {
+                        width: 100% !important;
+                    }
+
+                    /* Category button full width */
+                    #home-mobile-filter #dropdownMenuButton {
+                        width: 100% !important;
+                        min-height: 52px !important;
+                        font-size: 16px !important;
+                        border-radius: 10px !important;
+                        margin-bottom: 10px !important;
+                        text-align: left !important;
+                    }
+
                     /* Submit button */
-                    #home-mobile-filter .filter-buttons { flex-direction: column !important; gap: 0 !important; }
+                    #home-mobile-filter .filter-buttons {
+                        flex-direction: column !important;
+                    }
                     #home-mobile-filter .filter-buttons .btn-primary {
                         width: 100% !important;
                         padding: 15px !important;
                         font-size: 17px !important;
                         font-weight: 600 !important;
                         border-radius: 12px !important;
-                        margin-top: 6px !important;
+                        margin-top: 4px !important;
                     }
-                    /* Hide: price, year, mileage, advanced filter button */
+
+                    /* Hide: brand, model, price, year, mileage, advanced filter */
+                    #home-mobile-filter .brand-select,
+                    #home-mobile-filter .model-select,
                     #home-mobile-filter [name="price_range"],
                     #home-mobile-filter [name="construction_year"],
-                    #home-mobile-filter [name="max_mileage"] {
-                        display: none !important;
-                    }
+                    #home-mobile-filter [name="max_mileage"],
                     #home-mobile-filter [data-bs-target="#advancedFilterModal"],
                     #home-mobile-filter .filter-buttons .btn-outline-primary {
                         display: none !important;
                     }
-                    /* Hide parent divs of hidden inputs */
-                    #home-mobile-filter [data-category-type*="year"],
-                    #home-mobile-filter [data-category-type*="price"],
-                    #home-mobile-filter [data-category-type*="mileage"] {
+
+                    /* Hide divs containing brand/model/price/year */
+                    #home-mobile-filter .col-xl-4:has(.brand-select),
+                    #home-mobile-filter .col-xl-4:has(.model-select),
+                    #home-mobile-filter .col-xl-4:has([name="price_range"]),
+                    #home-mobile-filter .col-xl-4:has([name="construction_year"]),
+                    #home-mobile-filter .col-xl-4:has([name="max_mileage"]),
+                    #home-mobile-filter .col-md-4:has(.brand-select),
+                    #home-mobile-filter .col-md-4:has(.model-select),
+                    #home-mobile-filter .col-sm-6:has(.brand-select),
+                    #home-mobile-filter .col-sm-6:has(.model-select),
+                    #home-mobile-filter .col-6:has(.brand-select),
+                    #home-mobile-filter .col-6:has(.model-select) {
                         display: none !important;
                     }
                 </style>
+
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
