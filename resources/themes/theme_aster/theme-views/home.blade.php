@@ -30,7 +30,7 @@
             display: none;
         }
         .position-relative {
-            position: relative;
+                position: relative;
         }
         .category-name {
             position: absolute;
@@ -38,10 +38,11 @@
             right: 30px;
             margin: 0px;
             background: rgba(0, 0, 0, 0.5);
-            background: linear-gradient(to bottom right, #00008b, #1e90ff);
+            background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
             color: white;
             width: 205px; 
             height: 55px;
+            /* padding: 0 20px; */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -49,9 +50,9 @@
             font-weight: 700;
             border-radius: 5px;
             text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            overflow: hidden; /* إخفاء الفائض */
+            text-overflow: ellipsis; /* نقاط للحذف */
+            white-space: nowrap; /* منع التفاف النص */
         }
         .home-banner-swiper {
             width: 100%;
@@ -67,6 +68,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+
         }
         .secondary-swiper .swiper-slide {
             border: 1px solid #d4d4d4;
@@ -78,12 +80,14 @@
         }
         .secondary-swiper .swiper-slide img {
             object-fit: fill;
+        }
+        .secondary-swiper .swiper-slide img {
             width: 95px;
             height: 80px;
         }
         .select2-container--default .select2-selection--single .select2-selection__placeholder {
-            color: black !important;
-        }
+                color: black !important;
+            }
         .select2-selection__clear {
             display: none !important;
         }
@@ -115,6 +119,22 @@
         .modal-backdrop {
             display: none !important;
         }
+        /* Add this CSS to fix only the paid banners section */
+        .home-banner-swiper {
+            overflow: hidden !important;
+            max-width: 100vw !important;
+        }
+        .home-banner-swiper .swiper-wrapper {
+            max-width: 100% !important;
+        }
+        .home-banner-swiper .swiper-slide {
+            max-width: 100% !important;
+        }
+        .home-banner-swiper .swiper-slide img {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 170 !important;
+        }
 
         @media (min-width: 576px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -138,6 +158,7 @@
             background-position: 20% 20%;
             height: 200px;
         }
+        /* For RTL screens */
         :dir(rtl) .hero-card {
             background-position: 75% 20%;
         }
@@ -147,42 +168,13 @@
             }
         }
 
+        /* الكود المضاف لإنزال الفلتر وفصله هيكلياً عن البنر بطريقة احترافية ودائمة */
         .filter-overlap-container {
             width: 100% !important;
             margin-top: -35px !important;
             position: relative !important;
             z-index: 999 !important;
             padding: 0 48px !important;
-        }
-
-        /* ======================================================== */
-        /*  تحسينات الموبايل الحصرية (إصلاح قص البنرات وتساوي الخانات)  */
-        /* ======================================================== */
-        @media (max-width: 767px) {
-            /* إصلاح البنرات المدفوعة لكي تظهر كاملة بدون قص الحواف */
-            .home-banner-swiper {
-                height: auto !important;
-                overflow: hidden !important;
-            }
-            .home-banner-swiper .swiper-wrapper {
-                max-width: 100% !important;
-            }
-            .home-banner-swiper .swiper-slide {
-                max-width: 100% !important;
-            }
-            .home-banner-swiper .swiper-slide img {
-                width: 100% !important;
-                height: 140px !important;
-                object-fit: contain !important; /* إظهار الصورة كاملة بدون قص من الجوانب */
-                border-radius: 8px !important;
-            }
-
-            /* توحيد وتحسين حواف الفلتر ليكون متناسق ومستقر */
-            .mobile-filter-wrapper {
-                border-radius: 10px;
-                background: #ffffff;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-            }
         }
     </style>
 
@@ -191,12 +183,11 @@
 @section('content')
 
     <main class="main-content d-flex flex-column gap-3 pt-0 pb-3">
-        <div class="container">
+        <div class="container" >
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                {{-- قسم الموبايل الأصلي مع توحيد الإطار وحل قص البنر --}}
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
@@ -212,13 +203,12 @@
                             </div>
                         @endif
                     </div>
-                    
-                    <div class="d-flex mx-auto align-items-center justify-content-center w-100 p-2 px-2 mb-3 mobile-filter-wrapper">
+                    <div class="d-flex mx-auto align-items-center justify-content-center
+                        w-100 p-2 px-2 mb-3" style="border-radius: 4px; background: #fff;">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
             @else
-                {{-- قسم الكمبيوتر الأصلي كاملاً كما هو دون مساس --}}
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
@@ -241,14 +231,14 @@
             @endif
         </div>
 
-        {{-- البنرات الإعلانية الإضافية --}}
         @if($paid_banners->count() > 0)
-            <div class="container">
+            <div class="container" >
                 <div class="home-banner-swiper">
                     <div class="swiper-wrapper">
                         @foreach($paid_banners as $banner)
                             <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}" alt="banner_image">
+                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
+                                alt="banner_image">
                             </div>
                         @endforeach
                     </div>
@@ -264,6 +254,7 @@
 @push('script')
 
     <script>
+        // Initialize Swiper FIRST
         const swiper = new Swiper('.home-banner-swiper', {
             slidesPerView: 1,
             spaceBetween: 20,
