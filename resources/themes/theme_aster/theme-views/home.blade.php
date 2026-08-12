@@ -327,25 +327,24 @@
                     #home-mobile-filter .pb-1 {
                         padding-bottom: 0 !important;
                     }
-                </style>
+
+                    /* Hide ALL extra fields */
+                    #home-mobile-filter [data-category-type="vehicles"],
+                    #home-mobile-filter [data-category-type="furniture"],
+                    #home-mobile-filter [data-category-type="real estate"],
+                    #home-mobile-filter [data-category-type="home garden"],
+                    #home-mobile-filter [data-category-type="shipbuilding marine"],
+                    #home-mobile-filter [data-category-type="electronics"],
+                    #home-mobile-filter [data-category-type="industrial machines"],
+                    #home-mobile-filter [data-category-type="home appliances"],
+                    #home-mobile-filter .brand-select,
+                    #home-mobile-filter .model-select,
+                    #home-mobile-filter [name="price_range"],
+                    #home-mobile-filter [name="construction_year"],
+                    #home-mobile-filter [name="max_mileage"],
+                    #home-mobile-filter [data-bs-target="#advancedFilterModal"],
                     #home-mobile-filter .filter-buttons .btn-outline-primary {
                         display: none !important;
-                    }
-
-                    /* Fix padding on sides */
-                    #home-mobile-filter section.banner,
-                    #home-mobile-filter .card.moble-border-0 {
-                        padding: 0 4px !important;
-                    }
-
-                    /* Results button same width as inputs */
-                    #home-mobile-filter .filter-buttons .btn-primary {
-                        width: 100% !important;
-                        padding: 15px !important;
-                        font-size: 17px !important;
-                        font-weight: 600 !important;
-                        border-radius: 10px !important;
-                        margin-top: 6px !important;
                     }
                 </style>
 
