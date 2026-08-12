@@ -30,7 +30,7 @@
             display: none;
         }
         .position-relative {
-                position: relative;
+            position: relative;
         }
         .category-name {
             position: absolute;
@@ -38,11 +38,10 @@
             right: 30px;
             margin: 0px;
             background: rgba(0, 0, 0, 0.5);
-            background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
+            background: linear-gradient(to bottom right, #00008b, #1e90ff);
             color: white;
             width: 205px; 
             height: 55px;
-            /* padding: 0 20px; */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -50,9 +49,9 @@
             font-weight: 700;
             border-radius: 5px;
             text-align: center;
-            overflow: hidden; /* إخفاء الفائض */
-            text-overflow: ellipsis; /* نقاط للحذف */
-            white-space: nowrap; /* منع التفاف النص */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .home-banner-swiper {
             width: 100%;
@@ -68,7 +67,6 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-
         }
         .secondary-swiper .swiper-slide {
             border: 1px solid #d4d4d4;
@@ -80,14 +78,12 @@
         }
         .secondary-swiper .swiper-slide img {
             object-fit: fill;
-        }
-        .secondary-swiper .swiper-slide img {
             width: 95px;
             height: 80px;
         }
         .select2-container--default .select2-selection--single .select2-selection__placeholder {
-                color: black !important;
-            }
+            color: black !important;
+        }
         .select2-selection__clear {
             display: none !important;
         }
@@ -119,22 +115,6 @@
         .modal-backdrop {
             display: none !important;
         }
-        /* Add this CSS to fix only the paid banners section */
-        .home-banner-swiper {
-            overflow: hidden !important;
-            max-width: 100vw !important;
-        }
-        .home-banner-swiper .swiper-wrapper {
-            max-width: 100% !important;
-        }
-        .home-banner-swiper .swiper-slide {
-            max-width: 100% !important;
-        }
-        .home-banner-swiper .swiper-slide img {
-            width: 100% !important;
-            max-width: 100% !important;
-            height: 170 !important;
-        }
 
         @media (min-width: 576px) {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -158,7 +138,6 @@
             background-position: 20% 20%;
             height: 200px;
         }
-        /* For RTL screens */
         :dir(rtl) .hero-card {
             background-position: 75% 20%;
         }
@@ -168,13 +147,42 @@
             }
         }
 
-        /* الكود المضاف لإنزال الفلتر وفصله هيكلياً عن البنر بطريقة احترافية ودائمة */
         .filter-overlap-container {
             width: 100% !important;
             margin-top: -35px !important;
             position: relative !important;
             z-index: 999 !important;
             padding: 0 48px !important;
+        }
+
+        /* ======================================================== */
+        /*  تحسينات الموبايل الحصرية (إصلاح قص البنرات وتساوي الخانات)  */
+        /* ======================================================== */
+        @media (max-width: 767px) {
+            /* إصلاح البنرات المدفوعة لكي تظهر كاملة بدون قص الحواف */
+            .home-banner-swiper {
+                height: auto !important;
+                overflow: hidden !important;
+            }
+            .home-banner-swiper .swiper-wrapper {
+                max-width: 100% !important;
+            }
+            .home-banner-swiper .swiper-slide {
+                max-width: 100% !important;
+            }
+            .home-banner-swiper .swiper-slide img {
+                width: 100% !important;
+                height: 140px !important;
+                object-fit: contain !important; /* إظهار الصورة كاملة بدون قص من الجوانب */
+                border-radius: 8px !important;
+            }
+
+            /* توحيد وتحسين حواف الفلتر ليكون متناسق ومستقر */
+            .mobile-filter-wrapper {
+                border-radius: 10px;
+                background: #ffffff;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            }
         }
     </style>
 
@@ -183,205 +191,14 @@
 @section('content')
 
     <main class="main-content d-flex flex-column gap-3 pt-0 pb-3">
-        <div class="container" >
+        <div class="container">
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                <style>
-                    .mobile-hero-wrapper .hero-card {
-                        height: 200px !important;
-                        max-height: 200px !important;
-                        margin-bottom: 0 !important;
-                        border-radius: 0 !important;
-                    }
-                    .mobile-search-bar-wrapper {
-                        position: relative;
-                        z-index: 10;
-                        background: #fff;
-                        border-radius: 20px 20px 0 0;
-                        padding: 16px 12px 12px;
-                        margin-top: -24px;
-                        box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
-                    }
-                    .mobile-search-row {
-                        display: flex;
-                        gap: 8px;
-                        align-items: center;
-                    }
-                    .mobile-search-row .search-bar {
-                        flex: 1;
-                        border: 2px solid #3b82f6 !important;
-                        border-radius: 10px !important;
-                        overflow: hidden;
-                        background: #f8f9fa;
-                        display: flex;
-                        align-items: center;
-                    }
-                    .mobile-search-row .search-bar-input-mobile {
-                        border: none !important;
-                        background: transparent !important;
-                        font-size: 16px !important;
-                        padding: 13px 14px !important;
-                        height: 52px !important;
-                        width: 100% !important;
-                        box-shadow: none !important;
-                    }
-                    .mobile-search-row .search_voice {
-                        background: transparent;
-                        border: none;
-                        padding: 0 12px;
-                        color: #3b82f6;
-                        font-size: 20px;
-                    }
-                    .mobile-filter-btn {
-                        background: #3b82f6;
-                        border: none;
-                        border-radius: 10px;
-                        width: 52px;
-                        height: 52px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: white;
-                        font-size: 20px;
-                        flex-shrink: 0;
-                        cursor: pointer;
-                    }
-                    /* Filter drawer */
-                    .mobile-filter-drawer-overlay {
-                        display: none;
-                        position: fixed;
-                        inset: 0;
-                        background: rgba(0,0,0,0.5);
-                        z-index: 9998;
-                    }
-                    .mobile-filter-drawer-overlay.open {
-                        display: flex;
-                        align-items: flex-end;
-                    }
-                    .mobile-filter-drawer {
-                        width: 100%;
-                        background: #fff;
-                        border-radius: 20px 20px 0 0;
-                        padding: 20px 12px 40px;
-                        max-height: 90vh;
-                        overflow-y: auto;
-                    }
-                    .mobile-filter-drawer-handle {
-                        width: 40px;
-                        height: 4px;
-                        background: #ddd;
-                        border-radius: 2px;
-                        margin: 0 auto 16px;
-                    }
-                    /* Full width inside drawer */
-                    .mobile-filter-drawer .col-xl-4,
-                    .mobile-filter-drawer .col-md-4,
-                    .mobile-filter-drawer .col-sm-6,
-                    .mobile-filter-drawer .col-6,
-                    .mobile-filter-drawer .col-xl-10,
-                    .mobile-filter-drawer .col-md-12,
-                    .mobile-filter-drawer .col-sm-12,
-                    .mobile-filter-drawer .col-12,
-                    .mobile-filter-drawer .col-auto,
-                    .mobile-filter-drawer .flex-grow-1,
-                    .mobile-filter-drawer .col-xl-12 {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        flex: 0 0 100% !important;
-                        padding-left: 4px !important;
-                        padding-right: 4px !important;
-                    }
-                    .mobile-filter-drawer .row {
-                        margin-left: 0 !important;
-                        margin-right: 0 !important;
-                    }
-                    .mobile-filter-drawer .filter-input,
-                    .mobile-filter-drawer select.form-control,
-                    .mobile-filter-drawer input.form-control,
-                    .mobile-filter-drawer button.form-control,
-                    .mobile-filter-drawer #dropdownMenuButton {
-                        width: 100% !important;
-                        min-height: 52px !important;
-                        font-size: 16px !important;
-                        border-radius: 10px !important;
-                        padding: 12px 14px !important;
-                        margin-bottom: 8px !important;
-                        border: 1.5px solid #e0e0e0 !important;
-                        background: #fff !important;
-                    }
-                    .mobile-filter-drawer .select2-container { width: 100% !important; }
-                    .mobile-filter-drawer .filter-buttons { flex-direction: column !important; }
-                    .mobile-filter-drawer .filter-buttons .btn-primary {
-                        width: 100% !important;
-                        padding: 15px !important;
-                        font-size: 17px !important;
-                        font-weight: 600 !important;
-                        border-radius: 10px !important;
-                        margin-top: 4px !important;
-                    }
-                    .mobile-filter-drawer .filter-buttons .btn-outline-primary { display: none !important; }
-                    .mobile-filter-drawer section.banner,
-                    .mobile-filter-drawer .card.moble-border-0,
-                    .mobile-filter-drawer .sweet-shadow {
-                        box-shadow: none !important;
-                        border: none !important;
-                        background: transparent !important;
-                        padding: 0 !important;
-                        margin: 0 !important;
-                    }
-                </style>
-
+                {{-- قسم الموبايل الأصلي مع توحيد الإطار وحل قص البنر --}}
                 <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden hero-card hero-background-image" style="position:relative;">
-                        @if($bannerText)
-                            <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
-                                <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;">
-                                    @if($bannerText['title'])
-                                        <div style="font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1.15;margin-bottom:0.3em;">{!! html_entity_decode(translate($bannerText['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                    @if($bannerText['sub_title'])
-                                        <div style="font-size:clamp(14px,3.8vw,20px);opacity:0.92;line-height:1.4;font-weight:500;">{!! html_entity_decode(translate($bannerText['sub_title']), ENT_QUOTES | ENT_HTML5, 'UTF-8') !!}</div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Search bar --}}
-                    <div class="mobile-search-bar-wrapper">
-                        <div class="mobile-search-row">
-                            <form class="m-0 flex-grow-1" action="">
-                                <div class="search-bar search_dropdown">
-                                    <input type="search" name="name" class="form-control search-bar-input-mobile" autocomplete="off" placeholder="{{ translate('Search_for_items') }}...">
-                                    <input name="page" value="1" hidden="">
-                                    <button type="button" class="search_voice" title="{{translate('search_by_voice')}}">
-                                        <span><i class="bi bi-mic voice-search-icon"></i></span>
-                                        <span class="recording-pulse"></span>
-                                    </button>
-                                </div>
-                                <div style="overflow-y:auto;max-height:462px;scrollbar-width:thin;" class="card large-screen-aside-shadow search-card __inline-13 position-absolute z-99 w-100 bg-white start-0 search-result-box d--none"></div>
-                            </form>
-                            <button class="mobile-filter-btn" onclick="document.getElementById('mobileFilterDrawer').classList.add('open')">
-                                <i class="bi bi-sliders"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Filter Drawer --}}
-                <div class="mobile-filter-drawer-overlay" id="mobileFilterDrawer" onclick="if(event.target===this)this.classList.remove('open')">
-                    <div class="mobile-filter-drawer">
-                        <div class="mobile-filter-drawer-handle"></div>
-                        @include('theme-views.partials._ad-filter-mobile')
-                    </div>
-                </div>
-
-
-
-                <div class="mobile-hero-wrapper">
-                    <div class="card rounded overflow-hidden hero-card hero-background-image" style="position:relative;">
+                    <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
                             <div style="position:absolute;inset:0;display:flex;align-items:{{ $bannerText['vAlign'] }};padding:20px 24px;pointer-events:none;overflow:hidden;">
                                 <div style="{{ $bannerText['hPos'] }}max-width:65%;text-align:{{ $bannerText['tAlign'] }};direction:{{ $bannerText['dir'] }};color:{{ $bannerText['hexColor'] }};text-shadow:0 2px 8px rgba(0,0,0,0.75);word-break:break-word;font-family:'Inter','Segoe UI',system-ui,sans-serif;">
@@ -395,11 +212,13 @@
                             </div>
                         @endif
                     </div>
-                    <div id="home-mobile-filter">
+                    
+                    <div class="d-flex mx-auto align-items-center justify-content-center w-100 p-2 px-2 mb-3 mobile-filter-wrapper">
                         @include('theme-views.partials._ad-filter-mobile')
                     </div>
                 </div>
             @else
+                {{-- قسم الكمبيوتر الأصلي كاملاً كما هو دون مساس --}}
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
@@ -422,14 +241,14 @@
             @endif
         </div>
 
+        {{-- البنرات الإعلانية الإضافية --}}
         @if($paid_banners->count() > 0)
-            <div class="container" >
+            <div class="container">
                 <div class="home-banner-swiper">
                     <div class="swiper-wrapper">
                         @foreach($paid_banners as $banner)
                             <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
-                                alt="banner_image">
+                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}" alt="banner_image">
                             </div>
                         @endforeach
                     </div>
@@ -445,7 +264,6 @@
 @push('script')
 
     <script>
-        // Initialize Swiper FIRST
         const swiper = new Swiper('.home-banner-swiper', {
             slidesPerView: 1,
             spaceBetween: 20,
