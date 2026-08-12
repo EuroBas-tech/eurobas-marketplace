@@ -283,7 +283,15 @@
                         margin-top: 4px !important;
                     }
 
-                    /* Hide: brand, model, price, year, mileage, advanced filter */
+                    /* Hide ALL extra category fields - only show country, category, search button */
+                    #home-mobile-filter [data-category-type="vehicles"],
+                    #home-mobile-filter [data-category-type="furniture"],
+                    #home-mobile-filter [data-category-type="real estate"],
+                    #home-mobile-filter [data-category-type="home garden"],
+                    #home-mobile-filter [data-category-type="shipbuilding marine"],
+                    #home-mobile-filter [data-category-type="electronics"],
+                    #home-mobile-filter [data-category-type="industrial machines"],
+                    #home-mobile-filter [data-category-type="home appliances"],
                     #home-mobile-filter .brand-select,
                     #home-mobile-filter .model-select,
                     #home-mobile-filter [name="price_range"],
@@ -294,19 +302,20 @@
                         display: none !important;
                     }
 
-                    /* Hide divs containing brand/model/price/year */
-                    #home-mobile-filter .col-xl-4:has(.brand-select),
-                    #home-mobile-filter .col-xl-4:has(.model-select),
-                    #home-mobile-filter .col-xl-4:has([name="price_range"]),
-                    #home-mobile-filter .col-xl-4:has([name="construction_year"]),
-                    #home-mobile-filter .col-xl-4:has([name="max_mileage"]),
-                    #home-mobile-filter .col-md-4:has(.brand-select),
-                    #home-mobile-filter .col-md-4:has(.model-select),
-                    #home-mobile-filter .col-sm-6:has(.brand-select),
-                    #home-mobile-filter .col-sm-6:has(.model-select),
-                    #home-mobile-filter .col-6:has(.brand-select),
-                    #home-mobile-filter .col-6:has(.model-select) {
-                        display: none !important;
+                    /* Fix padding on sides */
+                    #home-mobile-filter section.banner,
+                    #home-mobile-filter .card.moble-border-0 {
+                        padding: 0 4px !important;
+                    }
+
+                    /* Results button same width as inputs */
+                    #home-mobile-filter .filter-buttons .btn-primary {
+                        width: 100% !important;
+                        padding: 15px !important;
+                        font-size: 17px !important;
+                        font-weight: 600 !important;
+                        border-radius: 10px !important;
+                        margin-top: 6px !important;
                     }
                 </style>
 
