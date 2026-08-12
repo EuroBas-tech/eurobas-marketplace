@@ -126,6 +126,12 @@
             const $modelSelect = $('#model');
             const $categorySelect = $('#category');
 
+            $('#title').on('input change blur', function () {
+             if (this.checkValidity) {
+             this.checkValidity();
+           }
+          });
+
             // Initialize Select2
             $brandSelect.select2({
                 placeholder: "{{ translate('choose_brand') }}",
