@@ -197,7 +197,7 @@
                         border-radius: 0 !important;
                     }
 
-                    /* Remove old card wrapper */
+                    /* Remove old card wrapper styling */
                     #home-mobile-filter section.banner,
                     #home-mobile-filter .card.moble-border-0,
                     #home-mobile-filter .sweet-shadow {
@@ -213,12 +213,12 @@
                         z-index: 10;
                         background: #fff;
                         border-radius: 20px 20px 0 0;
-                        padding: 20px 16px 16px;
+                        padding: 20px 12px 12px;
                         margin-top: -24px;
                         box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
                     }
 
-                    /* Full width all inputs */
+                    /* Full width all cols */
                     #home-mobile-filter .col-xl-4,
                     #home-mobile-filter .col-md-4,
                     #home-mobile-filter .col-sm-6,
@@ -233,8 +233,8 @@
                         width: 100% !important;
                         max-width: 100% !important;
                         flex: 0 0 100% !important;
-                        padding-left: 0 !important;
-                        padding-right: 0 !important;
+                        padding-left: 4px !important;
+                        padding-right: 4px !important;
                     }
 
                     #home-mobile-filter .row {
@@ -242,6 +242,7 @@
                         margin-right: 0 !important;
                     }
 
+                    /* Inputs styling */
                     #home-mobile-filter .filter-input,
                     #home-mobile-filter select.form-control,
                     #home-mobile-filter input.form-control,
@@ -251,39 +252,54 @@
                         font-size: 16px !important;
                         border-radius: 10px !important;
                         padding: 12px 14px !important;
-                        margin-bottom: 10px !important;
+                        margin-bottom: 8px !important;
                         border: 1.5px solid #e0e0e0 !important;
-                        background: #f8f9fa !important;
+                        background: #fff !important;
                     }
 
                     #home-mobile-filter .select2-container {
                         width: 100% !important;
                     }
 
-                    /* Category button full width */
+                    /* Category button */
                     #home-mobile-filter #dropdownMenuButton {
                         width: 100% !important;
                         min-height: 52px !important;
                         font-size: 16px !important;
                         border-radius: 10px !important;
-                        margin-bottom: 10px !important;
+                        margin-bottom: 8px !important;
                         text-align: left !important;
+                        background: #fff !important;
+                        border: 1.5px solid #e0e0e0 !important;
                     }
 
-                    /* Submit button */
+                    /* Submit button - same width, closer to inputs */
                     #home-mobile-filter .filter-buttons {
                         flex-direction: column !important;
+                        padding: 0 4px !important;
                     }
                     #home-mobile-filter .filter-buttons .btn-primary {
                         width: 100% !important;
                         padding: 15px !important;
                         font-size: 17px !important;
                         font-weight: 600 !important;
-                        border-radius: 12px !important;
+                        border-radius: 10px !important;
                         margin-top: 4px !important;
                     }
 
-                    /* Hide ALL extra category fields - only show country, category, search button */
+                    /* Country first - reorder */
+                    #home-mobile-filter .row.g-2 {
+                        display: flex !important;
+                        flex-direction: column !important;
+                    }
+                    #home-mobile-filter [data-category-type="all"]:has(.country-select) {
+                        order: -2 !important;
+                    }
+                    #home-mobile-filter [data-category-type="all"]:has(#dropdownMenuButton) {
+                        order: -1 !important;
+                    }
+
+                    /* Hide ALL extra fields */
                     #home-mobile-filter [data-category-type="vehicles"],
                     #home-mobile-filter [data-category-type="furniture"],
                     #home-mobile-filter [data-category-type="real estate"],
@@ -298,6 +314,20 @@
                     #home-mobile-filter [name="construction_year"],
                     #home-mobile-filter [name="max_mileage"],
                     #home-mobile-filter [data-bs-target="#advancedFilterModal"],
+                    #home-mobile-filter .filter-buttons .btn-outline-primary {
+                        display: none !important;
+                    }
+
+                    /* Fix padding bottom */
+                    #home-mobile-filter .tab-content,
+                    #home-mobile-filter .tab-pane,
+                    #home-mobile-filter .rounded {
+                        padding-bottom: 0 !important;
+                    }
+                    #home-mobile-filter .pb-1 {
+                        padding-bottom: 0 !important;
+                    }
+                </style>
                     #home-mobile-filter .filter-buttons .btn-outline-primary {
                         display: none !important;
                     }
