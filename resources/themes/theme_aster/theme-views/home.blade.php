@@ -188,6 +188,18 @@
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
+                <style>
+                    /* Mobile only - minimal fixes */
+                    @media (max-width: 767.98px) {
+                        /* Hide advanced filter button */
+                        [data-bs-target="#advancedFilterModal"] { display: none !important; }
+                        /* Lift card over banner */
+                        .mobile-hero-wrapper .hero-card { margin-bottom: -20px !important; }
+                        .mobile-hero-wrapper > div:last-child { position: relative; z-index: 5; border-radius: 16px 16px 0 0; background: #fff; }
+                        /* Results button full width */
+                        .filter-buttons .btn-primary { width: 100% !important; }
+                    }
+                </style>
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden mb-3 hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
