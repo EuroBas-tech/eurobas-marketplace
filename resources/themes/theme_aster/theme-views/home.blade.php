@@ -30,7 +30,7 @@
             display: none;
         }
         .position-relative {
-                position: relative;
+            position: relative;
         }
         .category-name {
             position: absolute;
@@ -38,11 +38,10 @@
             right: 30px;
             margin: 0px;
             background: rgba(0, 0, 0, 0.5);
-            background: linear-gradient(to bottom right, #00008b, #1e90ff); /* تدرج لوني من الأزرق الداكن إلى الأزرق الفاتح */
+            background: linear-gradient(to bottom right, #00008b, #1e90ff);
             color: white;
             width: 205px; 
             height: 55px;
-            /* padding: 0 20px; */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -50,9 +49,9 @@
             font-weight: 700;
             border-radius: 5px;
             text-align: center;
-            overflow: hidden; /* إخفاء الفائض */
-            text-overflow: ellipsis; /* نقاط للحذف */
-            white-space: nowrap; /* منع التفاف النص */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .home-banner-swiper {
             width: 100%;
@@ -68,7 +67,6 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-
         }
         .secondary-swiper .swiper-slide {
             border: 1px solid #d4d4d4;
@@ -80,14 +78,12 @@
         }
         .secondary-swiper .swiper-slide img {
             object-fit: fill;
-        }
-        .secondary-swiper .swiper-slide img {
             width: 95px;
             height: 80px;
         }
         .select2-container--default .select2-selection--single .select2-selection__placeholder {
-                color: black !important;
-            }
+            color: black !important;
+        }
         .select2-selection__clear {
             display: none !important;
         }
@@ -119,7 +115,6 @@
         .modal-backdrop {
             display: none !important;
         }
-        /* Add this CSS to fix only the paid banners section */
         .home-banner-swiper {
             overflow: hidden !important;
             max-width: 100vw !important;
@@ -133,7 +128,7 @@
         .home-banner-swiper .swiper-slide img {
             width: 100% !important;
             max-width: 100% !important;
-            height: 170 !important;
+            height: 170px !important;
         }
 
         @media (min-width: 576px) {
@@ -158,7 +153,6 @@
             background-position: 20% 20%;
             height: 200px;
         }
-        /* For RTL screens */
         :dir(rtl) .hero-card {
             background-position: 75% 20%;
         }
@@ -168,13 +162,63 @@
             }
         }
 
-        /* الكود المضاف لإنزال الفلتر وفصله هيكلياً عن البنر بطريقة احترافية ودائمة */
+        /* تنسيقات الكمبيوتر المسؤولة عن دمج الفلتر */
         .filter-overlap-container {
             width: 100% !important;
             margin-top: -35px !important;
             position: relative !important;
             z-index: 999 !important;
             padding: 0 48px !important;
+        }
+
+        /* ======================================================== */
+        /*  تنسيقات الموبايل الجديدة (شريط عائم + حماية الثبات والبنرات) */
+        /* ======================================================== */
+        @media (max-width: 767px) {
+            html, body {
+                overflow-x: hidden !important; /* منع اهتزاز الصفحة */
+            }
+
+            .mobile-hero-wrapper {
+                position: relative;
+                margin-bottom: 25px;
+            }
+
+            .mobile-hero-wrapper .hero-card {
+                height: 180px;
+                border-radius: 12px !important;
+            }
+
+            /* الشريط العائم الأنيق مع الظل الأزرق الفاتح */
+            .mobile-floating-filter-bar {
+                position: relative;
+                margin-top: -28px;
+                z-index: 10;
+                padding: 0 10px;
+            }
+
+            .mobile-filter-card-inner {
+                background: #ffffff;
+                border-radius: 12px;
+                border: 1px solid rgba(30, 144, 255, 0.25);
+                box-shadow: 0 8px 25px rgba(30, 144, 255, 0.15); /* ظل أزرق متناسق */
+                padding: 6px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* توحيد أبعاد الخانات والمدخلات في الشاشات الفرعية للموبايل */
+            .mobile-filter-grid-modal .form-control,
+            .mobile-filter-grid-modal .select2-container {
+                width: 100% !important;
+                height: 44px !important;
+                border-radius: 8px !important;
+            }
+
+            .mobile-filter-grid-modal .form-group {
+                margin-bottom: 12px;
+            }
         }
     </style>
 
@@ -183,171 +227,12 @@
 @section('content')
 
     <main class="main-content d-flex flex-column gap-3 pt-0 pb-3">
-        <div class="container" >
+        <div class="container">
 
             @php($isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iP(ad|hone)/i', request()->header('User-Agent')))
 
             @if($isMobile)
-                <style>
-                    /* ===== MOBILE HOME FILTER ===== */
-                    .mobile-hero-wrapper .hero-card {
-                        height: 200px !important;
-                        max-height: 200px !important;
-                        margin-bottom: 0 !important;
-                        border-radius: 0 !important;
-                    }
-
-                    /* Remove old card wrapper styling */
-                    #home-mobile-filter section.banner,
-                    #home-mobile-filter .card.moble-border-0,
-                    #home-mobile-filter .sweet-shadow {
-                        box-shadow: none !important;
-                        border: none !important;
-                        background: transparent !important;
-                        padding: 0 !important;
-                        margin: 0 !important;
-                    }
-
-                    #home-mobile-filter {
-                        position: relative;
-                        z-index: 10;
-                        background: #fff;
-                        border-radius: 20px 20px 0 0;
-                        padding: 20px 12px 12px;
-                        margin-top: -24px;
-                        box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
-                    }
-
-                    /* Full width all cols */
-                    #home-mobile-filter .col-xl-4,
-                    #home-mobile-filter .col-md-4,
-                    #home-mobile-filter .col-sm-6,
-                    #home-mobile-filter .col-6,
-                    #home-mobile-filter .col-xl-10,
-                    #home-mobile-filter .col-md-12,
-                    #home-mobile-filter .col-sm-12,
-                    #home-mobile-filter .col-12,
-                    #home-mobile-filter .col-auto,
-                    #home-mobile-filter .flex-grow-1,
-                    #home-mobile-filter .col-xl-12 {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        flex: 0 0 100% !important;
-                        padding-left: 4px !important;
-                        padding-right: 4px !important;
-                    }
-
-                    #home-mobile-filter .row {
-                        margin-left: 0 !important;
-                        margin-right: 0 !important;
-                    }
-
-                    /* Inputs styling */
-                    #home-mobile-filter .filter-input,
-                    #home-mobile-filter select.form-control,
-                    #home-mobile-filter input.form-control,
-                    #home-mobile-filter button.form-control {
-                        width: 100% !important;
-                        min-height: 52px !important;
-                        font-size: 16px !important;
-                        border-radius: 10px !important;
-                        padding: 12px 14px !important;
-                        margin-bottom: 8px !important;
-                        border: 1.5px solid #e0e0e0 !important;
-                        background: #fff !important;
-                    }
-
-                    #home-mobile-filter .select2-container {
-                        width: 100% !important;
-                    }
-
-                    /* Category button */
-                    #home-mobile-filter #dropdownMenuButton {
-                        width: 100% !important;
-                        min-height: 52px !important;
-                        font-size: 16px !important;
-                        border-radius: 10px !important;
-                        margin-bottom: 8px !important;
-                        text-align: left !important;
-                        background: #fff !important;
-                        border: 1.5px solid #e0e0e0 !important;
-                    }
-
-                    /* Submit button - same width, closer to inputs */
-                    #home-mobile-filter .filter-buttons {
-                        flex-direction: column !important;
-                        padding: 0 4px !important;
-                    }
-                    #home-mobile-filter .filter-buttons .btn-primary {
-                        width: 100% !important;
-                        padding: 15px !important;
-                        font-size: 17px !important;
-                        font-weight: 600 !important;
-                        border-radius: 10px !important;
-                        margin-top: 4px !important;
-                    }
-
-                    /* Country first - reorder */
-                    #home-mobile-filter .row.g-2 {
-                        display: flex !important;
-                        flex-direction: column !important;
-                    }
-                    #home-mobile-filter [data-category-type="all"]:has(.country-select) {
-                        order: -2 !important;
-                    }
-                    #home-mobile-filter [data-category-type="all"]:has(#dropdownMenuButton) {
-                        order: -1 !important;
-                    }
-
-                    /* Hide ALL extra fields */
-                    #home-mobile-filter [data-category-type="vehicles"],
-                    #home-mobile-filter [data-category-type="furniture"],
-                    #home-mobile-filter [data-category-type="real estate"],
-                    #home-mobile-filter [data-category-type="home garden"],
-                    #home-mobile-filter [data-category-type="shipbuilding marine"],
-                    #home-mobile-filter [data-category-type="electronics"],
-                    #home-mobile-filter [data-category-type="industrial machines"],
-                    #home-mobile-filter [data-category-type="home appliances"],
-                    #home-mobile-filter .brand-select,
-                    #home-mobile-filter .model-select,
-                    #home-mobile-filter [name="price_range"],
-                    #home-mobile-filter [name="construction_year"],
-                    #home-mobile-filter [name="max_mileage"],
-                    #home-mobile-filter [data-bs-target="#advancedFilterModal"],
-                    #home-mobile-filter .filter-buttons .btn-outline-primary {
-                        display: none !important;
-                    }
-
-                    /* Fix padding bottom */
-                    #home-mobile-filter .tab-content,
-                    #home-mobile-filter .tab-pane,
-                    #home-mobile-filter .rounded {
-                        padding-bottom: 0 !important;
-                    }
-                    #home-mobile-filter .pb-1 {
-                        padding-bottom: 0 !important;
-                    }
-
-                    /* Hide ALL extra fields */
-                    #home-mobile-filter [data-category-type="vehicles"],
-                    #home-mobile-filter [data-category-type="furniture"],
-                    #home-mobile-filter [data-category-type="real estate"],
-                    #home-mobile-filter [data-category-type="home garden"],
-                    #home-mobile-filter [data-category-type="shipbuilding marine"],
-                    #home-mobile-filter [data-category-type="electronics"],
-                    #home-mobile-filter [data-category-type="industrial machines"],
-                    #home-mobile-filter [data-category-type="home appliances"],
-                    #home-mobile-filter .brand-select,
-                    #home-mobile-filter .model-select,
-                    #home-mobile-filter [name="price_range"],
-                    #home-mobile-filter [name="construction_year"],
-                    #home-mobile-filter [name="max_mileage"],
-                    #home-mobile-filter [data-bs-target="#advancedFilterModal"],
-                    #home-mobile-filter .filter-buttons .btn-outline-primary {
-                        display: none !important;
-                    }
-                </style>
-
+                {{-- واجهة الموبايل المطورة والهادئة --}}
                 <div class="mobile-hero-wrapper">
                     <div class="card rounded overflow-hidden hero-card hero-background-image" style="position:relative;">
                         @if($bannerText)
@@ -363,11 +248,16 @@
                             </div>
                         @endif
                     </div>
-                    <div id="home-mobile-filter">
-                        @include('theme-views.partials._ad-filter-mobile')
+
+                    {{-- الشريط العائم المزود بظل أزرق متناسق مع حماية الـ Logic --}}
+                    <div class="mobile-floating-filter-bar">
+                        <div class="mobile-filter-card-inner">
+                            @include('theme-views.partials._ad-filter-mobile')
+                        </div>
                     </div>
                 </div>
             @else
+                {{-- واجهة الكمبيوتر الممتازة (لم تمس) --}}
                 <div style="background-position: 50% 40%; height: 340px; max-height: 340px; position:relative;"
                     class="hero-background-image rounded mb-0">
                     @if($bannerText)
@@ -390,14 +280,14 @@
             @endif
         </div>
 
+        {{-- البنرات الإعلانية المدفوعة ظهرت في مكان مريح ومفصول --}}
         @if($paid_banners->count() > 0)
-            <div class="container" >
+            <div class="container">
                 <div class="home-banner-swiper">
                     <div class="swiper-wrapper">
                         @foreach($paid_banners as $banner)
                             <div class="swiper-slide" onclick="window.location.href='{{$banner->banner_url}}'" role="button">
-                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}"
-                                alt="banner_image">
+                                <img src="{{ cloudfront('paid-banners') }}/{{ $banner->banner_image }}" alt="banner_image">
                             </div>
                         @endforeach
                     </div>
@@ -413,7 +303,7 @@
 @push('script')
 
     <script>
-        // Initialize Swiper FIRST
+        // Swiper Initialization
         const swiper = new Swiper('.home-banner-swiper', {
             slidesPerView: 1,
             spaceBetween: 20,
