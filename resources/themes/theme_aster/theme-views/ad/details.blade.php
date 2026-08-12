@@ -1689,14 +1689,14 @@
                                         @if($ad->show_phone_number == 1)
                                             @if($ad->whatsapp_availability == 1)
                                                 <button style="background: #25D366; font-size: 15px;margin-bottom: 11px;"
-                                                    onclick="get_phone_number_and_whatsapp('{{$ad->contact_phone_number}}', this)"
+                                                   onclick="get_phone_number('{{$ad->phone_code}}{{$ad->contact_phone_number}}', this)"
                                                     class="btn buy-now-btn-hover py-3 px-2 w-100 text-white">
                                                     <i class="bi bi-whatsapp me-1"></i>
                                                     {{translate('WhatApp_number')}}
                                                 </button>
                                             @else
                                                 <button style="background: #25D366; font-size: 15px;margin-bottom: 11px;"
-                                                    onclick="get_phone_number('{{$ad->contact_phone_number}}', this)"
+                                                  onclick="get_phone_number('{{$ad->phone_code}}{{$ad->contact_phone_number}}', this)"
                                                     class="btn buy-now-btn-hover py-3 px-2 w-100 text-white">
                                                     <i class="bi bi-telephone me-1"></i>
                                                     {{translate('phone_number')}}
