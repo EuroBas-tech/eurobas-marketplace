@@ -89,7 +89,7 @@
     <div class="container">
         <div class="auth-card">
             <div class="auth-card-header">
-                <img src="{{ asset('storage/app/public/ecommerce/business_info/' . $web_config['logo']->value) }}" alt="{{ $web_config['name']->value }}" onerror="this.style.display='none'">
+                <img src="{{cloudfront('company')}}/{{\App\Model\BusinessSetting::where(['type' => 'company_mobile_logo'])->pluck('value')[0]}}" alt="{{ $web_config['name']->value }}" style="height:48px;" onerror="this.style.display='none'">
             </div>
             <div class="auth-card-body">
                 <div class="text-center mb-4">
