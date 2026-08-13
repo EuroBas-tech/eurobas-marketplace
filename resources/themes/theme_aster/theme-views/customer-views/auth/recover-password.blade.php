@@ -3,118 +3,151 @@
 @section('title', translate('Forgot_Password').' | '.$web_config['name']->value.''.translate('ecommerce'))
 
 @section('content')
-<!-- Custom Styles for Modern Aesthetic -->
+<!-- Premium Custom Styles -->
 <style>
+    .auth-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
     .auth-card {
         border: none;
-        border-radius: 1.25rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px rgba(13, 50, 181, 0.08);
         background: #ffffff;
         overflow: hidden;
     }
-    .auth-bg-gradient {
-        background: linear-gradient(135deg, #0d32b5 0%, #001f8f 100%);
-        border-radius: 1.25rem 0 0 1.25rem;
+    .auth-visual-side {
+        background: linear-gradient(135deg, #0b2265 0%, #0d32b5 100%);
+        position: relative;
+        overflow: hidden;
     }
-    @media (max-width: 991.98px) {
-        .auth-bg-gradient {
-            border-radius: 1.25rem 1.25rem 0 0;
-        }
+    /* Subtle decorative background pattern */
+    .auth-visual-side::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 10%, transparent 20%);
+        background-size: 30px 30px;
+        transform: rotate(15deg);
     }
-    .brand-logo-img {
-        max-width: 140px;
-        height: auto;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    }
-    .form-control-custom {
-        height: 50px;
-        border-radius: 0.75rem;
-        border: 1px solid #e2e8f0;
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-    }
-    .form-control-custom:focus {
-        border-color: #0d32b5;
-        box-shadow: 0 0 0 4px rgba(13, 50, 181, 0.15);
-    }
-    .btn-custom-primary {
-        background-color: #0d32b5;
-        border-color: #0d32b5;
-        color: #ffffff;
-        height: 48px;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .btn-custom-primary:hover {
-        background-color: #082386;
-        border-color: #082386;
-        color: #ffffff;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(13, 50, 181, 0.25);
-    }
-    .btn-custom-outline {
-        border: 1px solid #cbd5e1;
-        color: #475569;
-        height: 48px;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .btn-custom-outline:hover {
-        background-color: #f8fafc;
-        border-color: #94a3b8;
-        color: #1e293b;
-    }
-    .icon-wrapper {
-        width: 70px;
-        height: 70px;
-        background: rgba(13, 50, 181, 0.08);
-        color: #0d32b5;
+    .brand-glow-circle {
+        width: 110px;
+        height: 110px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .brand-glow-circle img {
+        width: 85px;
+        height: 85px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .brand-domain {
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        color: #ffffff;
+    }
+    .brand-domain span {
+        color: #ffb703; /* Accent yellow/orange matching logo stars */
+    }
+    .form-input-group {
+        position: relative;
+    }
+    .form-input-group .input-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 1.25rem;
+        color: #94a3b8;
+        z-index: 4;
+    }
+    html[dir="rtl"] .form-input-group .input-icon {
+        right: auto;
+        left: 1.25rem;
+    }
+    .form-control-modern {
+        height: 54px;
+        border-radius: 0.85rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+        background-color: #f8fafc;
+        transition: all 0.25s ease-in-out;
+    }
+    .form-control-modern:focus {
+        background-color: #ffffff;
+        border-color: #0d32b5;
+        box-shadow: 0 0 0 4px rgba(13, 50, 181, 0.12);
+    }
+    .btn-action-primary {
+        background: linear-gradient(135deg, #0d32b5 0%, #082386 100%);
+        color: #ffffff;
+        height: 52px;
+        border-radius: 0.85rem;
+        font-weight: 700;
+        font-size: 1rem;
+        border: none;
+        box-shadow: 0 8px 20px rgba(13, 50, 181, 0.25);
+        transition: all 0.3s ease;
+    }
+    .btn-action-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(13, 50, 181, 0.35);
+        color: #ffffff;
+    }
+    .btn-action-outline {
+        border: 1.5 solid #e2e8f0;
+        background-color: #ffffff;
+        color: #475569;
+        height: 52px;
+        border-radius: 0.85rem;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+    .btn-action-outline:hover {
+        background-color: #f1f5f9;
+        color: #0f172a;
+        border-color: #cbd5e1;
     }
 </style>
 
 <!-- Main Content -->
-<main class="main-content d-flex flex-column gap-3 py-4 mb-sm-5">
+<main class="main-content auth-wrapper py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-11">
+            <div class="col-xl-9 col-lg-10">
                 <div class="card auth-card">
-                    <div class="row g-0 align-items-stretch">
+                    <div class="row g-0">
                         
-                        <!-- Left Side: Visual & Branding Section -->
-                        <div class="col-lg-5 auth-bg-gradient text-white d-flex flex-column justify-content-center align-items-center p-5 text-center">
-                            <div class="mb-4">
-                                <img class="brand-logo-img mb-3" src="{{ theme_asset('assets/img/icon star pay.jpg') }}" alt="Logo">
+                        <!-- Left Side: Clean Visual Branding -->
+                        <div class="col-lg-5 auth-visual-side text-white d-flex flex-column justify-content-center align-items-center p-5 text-center position-relative">
+                            <div class="brand-glow-circle mb-4">
+                                <img src="{{ theme_asset('assets/img/icon star pay.jpg') }}" alt="EuroBas" onerror="this.style.display='none'">
                             </div>
-                            <h3 class="text-white fw-bold mb-3">{{ translate('Forget_Password') }}</h3>
-                            <p class="text-white-50 fs-14 mb-0" style="max-width: 280px; line-height: 1.6;">
-                                @if($verification_by == 'email')
-                                    {{ translate('please_enter_your_email_to_send_a_verification_code_for_forget_password') }}
-                                @elseif($verification_by=='phone')
-                                    {{ translate('please_enter_your_phone_to_send_a_verification_code_for_forget_password') }}
-                                @endif
+                            <h2 class="brand-domain mb-2">Euro<span>Bas</span>.com</h2>
+                            <div style="width: 40px; height: 3px; background: #ffb703; border-radius: 2px;" class="mb-3"></div>
+                            <p class="text-white-50 fs-14 mb-0" style="max-width: 240px; line-height: 1.5;">
+                                European Marketplace Platform
                             </p>
                         </div>
 
-                        <!-- Right Side: Form Section -->
-                        <div class="col-lg-7 bg-white p-4 p-sm-5 d-flex flex-column justify-content-center">
+                        <!-- Right Side: Clean Form Section -->
+                        <div class="col-lg-7 bg-white p-4 p-md-5 d-flex flex-column justify-content-center">
                             
-                            <div class="text-center mb-4">
-                                <div class="icon-wrapper mx-auto mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-shield-lock" viewBox="0 0 16 16">
-                                        <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.126a.5.5 0 0 0 .332 0c.112-.04.27-.101.483-.222a10.8 10.8 0 0 0 2.416-2.263c1.527-1.998 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
-                                        <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 1 1 9.5 6.5"/>
-                                    </svg>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-1">{{ translate('Forget_Password') }}</h4>
-                                <p class="text-muted fs-14">
+                            <div class="mb-4">
+                                <h3 class="fw-bold text-dark mb-2">{{ translate('Forget_Password') }}</h3>
+                                <p class="text-muted fs-14 mb-0" style="line-height: 1.6;">
                                     @if($verification_by == 'email')
                                         {{ translate('please_enter_your_email_to_send_a_verification_code_for_forget_password') }}
                                     @elseif($verification_by=='phone')
@@ -125,26 +158,31 @@
 
                             <form action="{{route('customer.auth.forgot-password')}}" class="forget-password-form" method="post">
                                 @csrf
+                                
                                 @if($verification_by=='email')
                                     <div class="form-group mb-4">
-                                        <label for="recover-email" class="form-label text-secondary font-weight-500 mb-2">{{translate('email')}}</label>
-                                        <input class="form-control form-control-custom" type="email" name="identity" id="recover-email" autocomplete="off" required placeholder="example@domain.com">
+                                        <label for="recover-email" class="form-label text-dark fw-semibold mb-2 fs-14">{{translate('email')}}</label>
+                                        <div class="form-input-group">
+                                            <input class="form-control form-control-modern" type="email" name="identity" id="recover-email" autocomplete="off" required placeholder="name@example.com">
+                                        </div>
                                         <div class="invalid-feedback">{{translate('Please_provide_valid_email_address.')}}</div>
                                     </div>
                                 @else
                                     <div class="form-group mb-4">
-                                        <label for="recover-email" class="form-label text-secondary font-weight-500 mb-2">{{translate('phone')}}</label>
-                                        <input class="form-control form-control-custom" type="text" name="identity" id="recover-email" autocomplete="off" required placeholder="+123456789">
+                                        <label for="recover-email" class="form-label text-dark fw-semibold mb-2 fs-14">{{translate('phone')}}</label>
+                                        <div class="form-input-group">
+                                            <input class="form-control form-control-modern" type="text" name="identity" id="recover-email" autocomplete="off" required placeholder="+123456789">
+                                        </div>
                                         <div class="invalid-feedback">{{translate('Please_provide_valid_phone_number.')}}</div>
                                     </div>
                                 @endif
 
-                                <div class="row g-3 mt-2">
-                                    <div class="col-sm-6">
-                                        <button class="btn btn-custom-outline w-100" onclick="location.href='{{ route('home') }}'" type="button">{{ translate('back_again') }}</button>
+                                <div class="row g-3 pt-2">
+                                    <div class="col-sm-6 order-2 order-sm-1">
+                                        <button class="btn btn-action-outline w-100" onclick="location.href='{{ route('home') }}'" type="button">{{ translate('back_again') }}</button>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <button class="btn btn-custom-primary w-100" type="submit">{{ translate('verify') }}</button>
+                                    <div class="col-sm-6 order-1 order-sm-2">
+                                        <button class="btn btn-action-primary w-100" type="submit">{{ translate('verify') }}</button>
                                     </div>
                                 </div>
                             </form>
