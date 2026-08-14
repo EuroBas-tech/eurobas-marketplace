@@ -29,7 +29,7 @@ class ForgotPasswordController extends Controller
 
     public function reset_password()
     {
-        $verification_by=Helpers::get_business_settings('forgot_password_verification');
+        $verification_by = Helpers::get_business_settings('forgot_password_verification');
 
         return view(VIEW_FILE_NAMES['recover_password'], compact('verification_by'));
     }
@@ -44,24 +44,24 @@ class ForgotPasswordController extends Controller
         $verification_by = Helpers::get_business_settings('forgot_password_verification');
         $otp_interval_time = Helpers::get_business_settings('otp_resend_time') ?? 1; //minute
 
-        $password_verification_data = PasswordReset::where(['user_type'=>'customer'])->where('identity', 'like', "%{$request['identity']}%")->latest()->first();
+        $password_verification_data = PasswordReset::where(['user_type' => 'customer'])->where('identity', 'like', "%{$request['identity']}%")->latest()->first();
         if ($verification_by == 'email') {
             $customer = User::Where(['email' => $request['identity']])->first();
             if (isset($customer)) {
-                if(isset($password_verification_data) &&  Carbon::parse($password_verification_data->created_at)->diffInSeconds() < $otp_interval_time){
-                    $time= $otp_interval_time - Carbon::parse($password_verification_data->created_at)->diffInSeconds();
+                if (isset($password_verification_data) && Carbon::parse($password_verification_data->created_at)->diffInSeconds() < $otp_interval_time) {
+                    $time = $otp_interval_time - Carbon::parse($password_verification_data->created_at)->diffInSeconds();
 
-                    Toastr::error(translate('please_try_again_after_') .  CarbonInterval::seconds($time)->cascade()->forHumans());
-                }else{
-                    try{
+                    Toastr::error(translate('please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans());
+                } else {
+                    try {
                         $token = Str::random(120);
                         $reset_data = PasswordReset::where(['identity' => $customer['email']])->latest()->first();
-                        if($reset_data){
+                        if ($reset_data) {
                             $reset_data->token = $token;
                             $reset_data->created_at = now();
                             $reset_data->updated_at = now();
                             $reset_data->save();
-                        }else{
+                        } else {
                             $reset_data = new PasswordReset();
                             $reset_data->identity = $customer['email'];
                             $reset_data->token = $token;
@@ -70,14 +70,16 @@ class ForgotPasswordController extends Controller
                             $reset_data->updated_at = now();
                             $reset_data->save();
                         }
+
+                        // التعديل 1: بناء الرابط مع حماية علامات الاستفهام والتحويلات الخاصة بـ Gmail والآيفون
                         $locale = LaravelLocalization::getCurrentLocale();
-                        $reset_url = LaravelLocalization::getLocalizedURL($locale, '/customer/auth/reset-password?token=' . $token);
-                        Log::debug($reset_url);
+                        $reset_url = url($locale . '/customer/auth/reset-password?token=' . $token);
+
                         Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($reset_url));
 
-                        Toastr::success(translate('Check_your_email').' '.translate('Password_reset_url_sent'));
+                        Toastr::success(translate('Check_your_email') . ' ' . translate('Password_reset_url_sent'));
                     } catch (\Exception $exception) {
-                        Toastr::error(translate('email_is_not_configured').'. '.translate('contact_with_the_administrator'));
+                        Toastr::error(translate('email_is_not_configured') . '. ' . translate('contact_with_the_administrator'));
                     }
                 }
 
@@ -86,20 +88,20 @@ class ForgotPasswordController extends Controller
         } elseif ($verification_by == 'phone') {
             $customer = User::where('phone', 'like', "%{$request['identity']}%")->first();
             if (isset($customer)) {
-                if(isset($password_verification_data) &&  Carbon::parse($password_verification_data->created_at)->diffInSeconds() < $otp_interval_time){
-                    $time= $otp_interval_time - Carbon::parse($password_verification_data->created_at)->diffInSeconds();
+                if (isset($password_verification_data) && Carbon::parse($password_verification_data->created_at)->diffInSeconds() < $otp_interval_time) {
+                    $time = $otp_interval_time - Carbon::parse($password_verification_data->created_at)->diffInSeconds();
 
-                    Toastr::error(translate('please_try_again_after_'). CarbonInterval::seconds($time)->cascade()->forHumans());
+                    Toastr::error(translate('please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans());
                     return back();
-                }else {
+                } else {
                     $token = rand(1000, 9999);
                     $reset_data = PasswordReset::where(['identity' => $customer['phone']])->latest()->first();
-                    if($reset_data){
+                    if ($reset_data) {
                         $reset_data->token = $token;
                         $reset_data->created_at = now();
                         $reset_data->updated_at = now();
                         $reset_data->save();
-                    }else{
+                    } else {
                         $reset_data = new PasswordReset();
                         $reset_data->identity = $customer['phone'];
                         $reset_data->token = $token;
@@ -116,9 +118,9 @@ class ForgotPasswordController extends Controller
                     }
 
                     $response = '';
-                    if($published_status == 1){
+                    if ($published_status == 1) {
                         $response = SmsGateway::send($customer->phone, $token);
-                    }else{
+                    } else {
                         $response = SMS_module::send($customer->phone, $token);
                     }
 
@@ -127,8 +129,8 @@ class ForgotPasswordController extends Controller
                         return back();
                     }
 
-                    Toastr::success(translate('Check_your_phone').translate('Password_reset_OTP_sent'));
-                    return redirect()->route('customer.auth.otp-verification', ['identity'=>$customer->phone]);
+                    Toastr::success(translate('Check_your_phone') . translate('Password_reset_OTP_sent'));
+                    return redirect()->route('customer.auth.otp-verification', ['identity' => $customer->phone]);
                 }
             }
         }
@@ -137,19 +139,20 @@ class ForgotPasswordController extends Controller
         return back();
     }
 
-    public function ajax_resend_otp(Request $request){
-        $customer = User::where('phone', 'like', '%'.$request['identity'].'%')->first();
+    public function ajax_resend_otp(Request $request)
+    {
+        $customer = User::where('phone', 'like', '%' . $request['identity'] . '%')->first();
         if ($customer) {
-            $token_info = PasswordReset::where(['user_type'=>'customer', 'identity'=> $customer->phone])->first();
+            $token_info = PasswordReset::where(['user_type' => 'customer', 'identity' => $customer->phone])->first();
             $otp_interval_time = Helpers::get_business_settings('otp_resend_time') ?? 1; //minute
-            if(isset($token_info) &&  Carbon::parse($token_info->created_at)->diffInSeconds() < $otp_interval_time){
-                $time= $otp_interval_time - Carbon::parse($token_info->created_at)->diffInSeconds();
+            if (isset($token_info) && Carbon::parse($token_info->created_at)->diffInSeconds() < $otp_interval_time) {
+                $time = $otp_interval_time - Carbon::parse($token_info->created_at)->diffInSeconds();
 
                 return response()->json([
-                    'status'=>0,
-                    'message'=> translate('please_try_again_after_'). CarbonInterval::seconds($time)->cascade()->forHumans()
+                    'status' => 0,
+                    'message' => translate('please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans()
                 ]);
-            }else {
+            } else {
                 $token = rand(1000, 9999);
                 $token_info->identity = $customer['phone'];
                 $token_info->token = $token;
@@ -166,37 +169,37 @@ class ForgotPasswordController extends Controller
                 }
 
                 $response = '';
-                if($published_status == 1){
+                if ($published_status == 1) {
                     $response = SmsGateway::send($customer->phone, $token);
-                }else{
+                } else {
                     $response = SMS_module::send($customer->phone, $token);
                 }
 
                 if ($response == "not_found") {
                     return response()->json([
-                        'status'=>0,
-                        'message'=>translate('SMS_configuration_missing')
+                        'status' => 0,
+                        'message' => translate('SMS_configuration_missing')
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'status' => 1,
                         'new_time' => $otp_interval_time,
-                        'message'=>translate('OTP_sent_successfully')
+                        'message' => translate('OTP_sent_successfully')
                     ]);
                 }
             }
-        }else{
+        } else {
             return response()->json([
-                'status'=>0,
-                'message'=>translate('invalid_user')
+                'status' => 0,
+                'message' => translate('invalid_user')
             ]);
         }
     }
 
     public function otp_verification(Request $request)
     {
-        $token_info = PasswordReset::where('identity',$request['identity'])->latest()->first();
-        if(!$token_info){
+        $token_info = PasswordReset::where('identity', $request['identity'])->latest()->first();
+        if (!$token_info) {
             return redirect()->route('customer.auth.recover-password');
         }
 
@@ -229,7 +232,6 @@ class ForgotPasswordController extends Controller
 
             $token = $request['otp'];
             return redirect()->route('customer.auth.reset-password', ['token' => $token]);
-
         } else {
             $password_reset = PasswordReset::where(['user_type' => 'customer'])
                 ->where('identity', 'like', "%{$id}%")
@@ -249,7 +251,6 @@ class ForgotPasswordController extends Controller
                     $password_reset->save();
 
                     Toastr::error(translate('invalid_otp'));
-
                 } elseif ($password_reset->otp_hit_count >= $max_otp_hit && $password_reset->is_temp_blocked == 0) {
                     $password_reset->is_temp_blocked = 1;
                     $password_reset->temp_block_time = now();
@@ -273,12 +274,10 @@ class ForgotPasswordController extends Controller
         }
     }
 
-    // ==========================================
-    //  تعديل فتح رابط إعادة كلمة المرور (GET)
-    // ==========================================
     public function reset_password_index(Request $request)
     {
-        $token = $request->get('token') ?? $request->get('reset_token');
+        // التعديل 2: قراءة التوكين بدقة واستخدامه للتحقق
+        $token = $request->get('token') ?? $request['token'];
 
         $data = DB::table('password_resets')
             ->where('user_type', 'customer')
@@ -290,43 +289,40 @@ class ForgotPasswordController extends Controller
         }
 
         Toastr::error(translate('Invalid_credentials'));
-        // التوجيه الصريح لصفحة نسيت كلمة المرور بدلاً من return back() التي تفشل في آيفون
         return redirect()->route('customer.auth.recover-password');
     }
 
-    // ==========================================
-    //  تعديل حفظ كلمة المرور الجديدة (POST)
-    // ==========================================
     public function reset_password_submit(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'password' => 'required|same:confirm_password',
         ]);
 
-        $token = $request['reset_token'];
         if ($validator->fails()) {
             Toastr::error(translate('password_mismatch'));
+            $token = $request['reset_token'];
             return view(VIEW_FILE_NAMES['reset_password'], compact('token'));
         }
 
-        // 1. البحث في قاعدة البيانات بدلالة الـ Token فقط (بدون الاعتماد على Session التي تفشل في الآيفون)
+        // التعديل 3: البحث عن السجل بالـ Token بدلاً من Session لضمان العمل على الآيفون
         $data = DB::table('password_resets')
             ->where('user_type', 'customer')
             ->where('token', $request['reset_token'])
             ->first();
 
         if (isset($data)) {
-            // 2. تحديث كلمة المرور للمستخدم بالاعتماد على الهوية المخزنة في قاعدة البيانات تلقائياً
-            User::where('email', 'like', "%{$data->identity}%")
-                ->orWhere('phone', 'like', "%{$data->identity}%")
+            User::where('email', $data->identity)
+                ->orWhere('phone', $data->identity)
                 ->update([
                     'password' => bcrypt(str_replace(' ', '', $request['password']))
                 ]);
 
             Toastr::success(translate('Password_reset_successfully'));
-            
-            // 3. حذف الـ Token بعد التغيير بنجاح
-            DB::table('password_resets')->where('user_type', 'customer')->where('token', $request['reset_token'])->delete();
+
+            DB::table('password_resets')
+                ->where('user_type', 'customer')
+                ->where('token', $request['reset_token'])
+                ->delete();
 
             return redirect(LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), '/'));
         }
