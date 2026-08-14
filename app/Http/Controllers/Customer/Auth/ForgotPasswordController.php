@@ -296,11 +296,14 @@ class ForgotPasswordController extends Controller
             return view(VIEW_FILE_NAMES['reset_password'], compact('token'));
         }
 
-        $id = session('forgot_password_identity');
+        $identity = $request->get('identity') ?? session('forgot_password_identity');
         $data = DB::table('password_resets')
             ->where('user_type','customer')
-            ->where('identity', 'like', "%{$id}%")
-            ->where(['token' => $request['reset_token']])->first();
+            ->where('token', $request['reset_token'])
+            ->when($identity, function($q) use ($identity) {
+                $q->where('identity', 'like', "%{$identity}%");
+            })
+            ->first();
 
         if (isset($data)) {
             User::where('email', 'like', "%{$data->identity}%")
