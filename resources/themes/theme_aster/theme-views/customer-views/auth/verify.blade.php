@@ -192,7 +192,7 @@
             <div class="row g-0 shadow-lg" style="border-radius:20px;overflow:hidden;max-width:900px;margin:0 auto;">
                 {{-- Left side --}}
                 <div class="col-lg-5 auth-left">
-                    <div class="brand-name">Eur<span>Bas</span>.com</div>
+                    <div class="brand-name">Euro<span>Bas</span>.com</div>
                     <div class="brand-tagline">Europe's Marketplace</div>
                     <ul class="feature-list">
                         <li><i class="bi bi-shield-check"></i> {{ translate('Secure_and_trusted_platform') }}</li>
