@@ -273,23 +273,30 @@ class ForgotPasswordController extends Controller
         }
     }
 
+    // ==========================================
+    //  تعديل فتح رابط إعادة كلمة المرور (GET)
+    // ==========================================
     public function reset_password_index(Request $request)
     {
+        $token = $request->get('token') ?? $request->get('reset_token');
+
         $data = DB::table('password_resets')
             ->where('user_type', 'customer')
-            ->where('token', $request['token'])
+            ->where('token', $token)
             ->first();
 
-        if (!$data) {
-            Toastr::error(translate('Invalid_credentials'));
-            return redirect()->route('customer.auth.recover-password');
+        if (isset($data)) {
+            return view(VIEW_FILE_NAMES['reset_password'], compact('token'));
         }
 
-        $token = $request['token'];
-        $identity = $data->identity;
-        return view(VIEW_FILE_NAMES['reset_password'], compact('token', 'identity'));
+        Toastr::error(translate('Invalid_credentials'));
+        // التوجيه الصريح لصفحة نسيت كلمة المرور بدلاً من return back() التي تفشل في آيفون
+        return redirect()->route('customer.auth.recover-password');
     }
 
+    // ==========================================
+    //  تعديل حفظ كلمة المرور الجديدة (POST)
+    // ==========================================
     public function reset_password_submit(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -302,26 +309,29 @@ class ForgotPasswordController extends Controller
             return view(VIEW_FILE_NAMES['reset_password'], compact('token'));
         }
 
-        $identity = $request->get('identity') ?? session('forgot_password_identity');
+        // 1. البحث في قاعدة البيانات بدلالة الـ Token فقط (بدون الاعتماد على Session التي تفشل في الآيفون)
         $data = DB::table('password_resets')
-            ->where('user_type','customer')
+            ->where('user_type', 'customer')
             ->where('token', $request['reset_token'])
-            ->when($identity, function($q) use ($identity) {
-                $q->where('identity', 'like', "%{$identity}%");
-            })
             ->first();
 
         if (isset($data)) {
+            // 2. تحديث كلمة المرور للمستخدم بالاعتماد على الهوية المخزنة في قاعدة البيانات تلقائياً
             User::where('email', 'like', "%{$data->identity}%")
                 ->orWhere('phone', 'like', "%{$data->identity}%")
                 ->update([
                     'password' => bcrypt(str_replace(' ', '', $request['password']))
                 ]);
+
             Toastr::success(translate('Password_reset_successfully'));
-            DB::table('password_resets')->where('user_type','customer')->where(['token' => $request['reset_token']])->delete();
+            
+            // 3. حذف الـ Token بعد التغيير بنجاح
+            DB::table('password_resets')->where('user_type', 'customer')->where('token', $request['reset_token'])->delete();
+
             return redirect(LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), '/'));
         }
+
         Toastr::error(translate('Invalid_data'));
-        return back();
+        return redirect()->route('customer.auth.recover-password');
     }
 }
