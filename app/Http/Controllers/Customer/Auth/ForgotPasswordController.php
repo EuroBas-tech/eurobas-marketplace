@@ -275,13 +275,19 @@ class ForgotPasswordController extends Controller
 
     public function reset_password_index(Request $request)
     {
-        $data = DB::table('password_resets')->where('user_type','customer')->where(['token' => $request['token']])->first();
-        if (isset($data)) {
-            $token = $request['token'];
-            return view(VIEW_FILE_NAMES['reset_password'], compact('token'));
+        $data = DB::table('password_resets')
+            ->where('user_type', 'customer')
+            ->where('token', $request['token'])
+            ->first();
+
+        if (!$data) {
+            Toastr::error(translate('Invalid_credentials'));
+            return redirect()->route('customer.auth.recover-password');
         }
-        Toastr::error(translate('Invalid_credentials'));
-        return back();
+
+        $token = $request['token'];
+        $identity = $data->identity;
+        return view(VIEW_FILE_NAMES['reset_password'], compact('token', 'identity'));
     }
 
     public function reset_password_submit(Request $request)
