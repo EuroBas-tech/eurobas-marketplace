@@ -188,7 +188,7 @@
                 <h2>{{ translate('Reset_Password') }}</h2>
                 <p class="subtitle">{{ translate('please_set_up_a_new_password.') }}</p>
 
-                <form action="{{ route('reset-password') }}" class="reset-password-form" method="POST">
+                <form action="{{ request('customer.auth.password-recovery') }}" class="reset-password-form" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label for="password2">{{ translate('password') }}</label>
