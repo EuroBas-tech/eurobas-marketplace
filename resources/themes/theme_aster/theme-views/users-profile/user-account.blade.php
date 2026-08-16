@@ -31,6 +31,24 @@
                                 </a>
                             </div>
 
+                            {{-- Required fields notice --}}
+                            @php
+                                $missingFields = [];
+                                if (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone) $missingFields[] = translate('Phone');
+                                if (!auth('customer')->user()->country) $missingFields[] = translate('country');
+                                if (!auth('customer')->user()->city) $missingFields[] = translate('city');
+                            @endphp
+
+                            @if(count($missingFields) > 0)
+                                <div class="alert d-flex align-items-center gap-2 mt-3 mb-0" style="background:#fff3cd;border:1.5px solid #f5920c;border-radius:10px;padding:12px 16px;">
+                                    <i class="bi bi-exclamation-triangle-fill" style="color:#f5920c;font-size:18px;flex-shrink:0;"></i>
+                                    <span style="color:#856404;font-size:0.93rem;">
+                                        {{ translate('please_complete_your_profile_data_to_enjoy_all_features') }} —
+                                        <strong>{{ implode(', ', $missingFields) }}</strong>
+                                    </span>
+                                </div>
+                            @endif
+
                             <div class="mt-4">
                                 <form  action="{{route('user-update')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                                     @csrf
@@ -52,7 +70,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group" >
-                                                <label for="phone_code">{{translate('Phone')}}</label>
+                                                <label for="phone_code">{{translate('Phone')}} <span class="text-danger">*</span></label>
                                                 <div class="form-check form-switch d-flex gap-1 p-0 align-items-center mb-1">
                                                     <input class="form-check-input m-0" {{$customerDetail['show_phone_number'] == 1 ? 'checked' : ''}}
                                                     name="show_phone_number" type="checkbox" role="switch" id="show-phone-number">
@@ -271,7 +289,7 @@
                                             </div>
 
                                             <div class="form-group mb-3 ">
-                                                <label for="country">{{translate('Country')}}</label>
+                                                <label for="country">{{translate('Country')}} <span class="text-danger">*</span></label>
                                                 <select class="form-control custom-input-height emoji-font" name="country" id="country" >
                                                     @foreach (array_slice(SYSTEM_COUNTRIES, 1) as $country)
                                                         <option {{ $customerDetail['country'] == $country['name'] ? 'selected' : '' }} class="emoji-font" value="{{$country['name']}}">{{$country['emoji']}} {{ $country['name'] }}</option>
@@ -280,7 +298,7 @@
                                             </div>
 
                                             <div class="form-group mb-3">
-                                                <label for="city">{{translate('City')}}</label>
+                                                <label for="city">{{translate('City')}} <span class="text-danger">*</span></label>
                                                 <input class="form-control input-height" value="{{$customerDetail['city']}}" type="text" id="address-city" name="city" required>
                                             </div>
 
