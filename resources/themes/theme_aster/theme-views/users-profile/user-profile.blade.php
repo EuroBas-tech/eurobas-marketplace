@@ -72,7 +72,7 @@
                                         </div>
                                         <div class="d-flex align-items-center gap-2 mb-3">
                                             <h5 class="fw-bold responsive-font-size-14 mb-0">{{translate('Phone')}} : </h5>
-                                            <h5 class="fw-medium responsive-font-size-14 mb-0">{{$customer_detail['phone'] ? $customer_detail['phone_code'] . $customer_detail['phone'] : '/'}}</h5>
+                                            <h5 class="fw-medium responsive-font-size-14 mb-0">{{$customer_detail['phone'] ? '+' . $customer_detail['phone_code'] . $customer_detail['phone'] : '/'}}</h5>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
                                             <h5 class="fw-bold responsive-font-size-14 mb-0">{{translate('Email')}} : </h5>
