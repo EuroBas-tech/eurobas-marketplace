@@ -116,9 +116,10 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a title="{{translate('view')}}"
-                                        class="btn btn-outline-info btn-sm square-btn"
-                                        href="{{route('ads-show',$ad->slug)}}">
+                                         <a title="{{translate('view')}}"
+                                         class="btn btn-outline-info btn-sm square-btn"
+                                         target="_blank"
+                                          href="{{route('ads-show',$ad->slug)}}">
                                             <i class="tio-invisible"></i>
                                         </a>
                                         @if($ad['id'] != '0')
