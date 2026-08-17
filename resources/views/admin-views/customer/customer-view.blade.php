@@ -210,7 +210,7 @@
                                     {{translate('user_information')}}
                                 </div>
                                 <div>
-                                    <a class="btn btn-primary d-flex align-items-center gap-1" _target="_blank" href="{{ route('show-profile', [$customer['id'], $customer['name']]) }}?tap=ads">
+                                    <a class="btn btn-primary d-flex align-items-center gap-1" target="_blank" href="{{ route('show-profile', [$customer['id'], $customer['name']]) }}?tap=ads">
                                         <i class="tio-user"></i>
                                         {{translate('show_profile')}}
                                     </a>
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="media-body d-flex flex-column gap-1">
                                     <span class="title-color hover-c1"><strong>{{$customer['name']}}</strong></span>
-                                    <span class="title-color"><strong>{{$customer['phone_code']}} {{$customer['phone']}}</strong></span>
+                                    <span class="title-color"><strong>+{{$customer['phone_code']}} {{$customer['phone']}}</strong></span>
                                     <span class="title-color">{{$customer['email']}}</span>
                                     @if($customer['country'])
                                         <div class="mb-1" >
