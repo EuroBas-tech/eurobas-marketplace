@@ -655,7 +655,7 @@
                         </div>
                         <div>
                             <small class="text-muted d-block fs-12 mb-1">{{ translate('phone') }}</small>
-                            <span class="mb-0 fw-bold fs-14 text-dark-custom" dir="ltr">{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
+                            <span class="mb-0 fw-bold fs-14 text-dark-custom" dir="ltr">+{{$user_profile->phone_code}}{{$user_profile->phone}}</span>
                         </div>
                     </div>
                 </div>
