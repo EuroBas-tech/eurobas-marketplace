@@ -144,7 +144,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="tel" id="phone_number" class="form-control input-height" value="{{$customerDetail['phone']}}" name="phone_number" placeholder="{{translate('Ex:  01xxxxxxxxx')}}">
+                                                   <input type="tel" id="phone_number" class="form-control input-height" value="{{$customerDetail['phone']}}" name="phone_number" placeholder="{{translate('Ex:  01xxxxxxxxx')}}" {{ !$customerDetail['phone'] ? 'required' : '' }}>
                                                 </div>
                                             </div>
                                         </div>
