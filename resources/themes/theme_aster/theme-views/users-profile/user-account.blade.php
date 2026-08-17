@@ -874,7 +874,12 @@ document.addEventListener('DOMContentLoaded', function() {
         $(document).on("keydown", "input", function(e) {
             if (e.which == 13) e.preventDefault();
         });
-    </script>
+     </script>
 
+     <script>
+        document.querySelector('form').addEventListener('submit', function() {
+       document.activeElement.blur();
+      });
+     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{\App\CPU\Helpers::get_business_settings('map_api_key')}}&callback=initAutocomplete&libraries=places&v=3.49" defer></script>
 @endpush
