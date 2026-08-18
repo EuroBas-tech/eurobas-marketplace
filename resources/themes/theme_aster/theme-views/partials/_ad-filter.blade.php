@@ -622,7 +622,7 @@
                                                             onclick="formUrlChange(this)"
                                                             data-action="{{ route('show-ads-filter') }}"
                                                             data-filter-count="filter-count">
-                                                            <span class="ads-count-number">
+                                                            <span class="ads-count-number d-none">
                                                                 {{ \App\Model\Ad::active()->count() }}
                                                             </span>
                                                             <span>{{ translate('result') }}</span>
