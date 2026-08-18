@@ -1174,6 +1174,14 @@ class AdController extends Controller
 
     }
 
+      public function updateSaleStatus(Request $request, $id) {
+        $ad = Ad::where('user_id', auth('customer')->id())->findOrFail($id);
+        $ad->sale_status = $request->sale_status;
+        $ad->save();
+        Toastr::success(translate('ad_updated_successfully'));
+        return back();
+    }
+
     public function filter(Request $request) {
 
         $filter_data = $request->all() ?? [];
