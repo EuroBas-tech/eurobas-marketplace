@@ -116,9 +116,22 @@
             <img src="{{cloudfront('ad/thumbnail/'.$ad->thumbnail)}}"
             onerror="this.src='{{ theme_asset('assets/img/image-place-holder.png') }}'"
             class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2" alt="">
+            @if($ad->sale_status == 'sold')
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1;border-radius:inherit;display:flex;align-items:center;justify-content:center;">
+                    <span style="background:#dc3545;color:#fff;font-size:18px;font-weight:800;padding:8px 24px;border-radius:8px;letter-spacing:1px;text-transform:uppercase;">
+                        {{ translate('sold') }}
+                    </span>
+                </div>
+            @elseif($ad->sale_status == 'reserved')
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;border-radius:inherit;display:flex;align-items:center;justify-content:center;">
+                    <span style="background:#f5920c;color:#fff;font-size:18px;font-weight:800;padding:8px 24px;border-radius:8px;letter-spacing:1px;text-transform:uppercase;">
+                        {{ translate('reserved') }}
+                    </span>
+                </div>
+            @endif
             @if($ad->has_urgent_sale_sticker == 1)
                 <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
-                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">
+                    style="position: absolute;bottom: 10px;left: 10px;z-index: 2;">
                     {{translate('urgent_sale')}}
                 </span>
             @endif
@@ -313,9 +326,22 @@
                 class="img-fit card-product-image dark-support custom-bottom-border-radius prod-imag2"
                 alt="">
             </div>
+            @if($ad->sale_status == 'sold')
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:1;border-radius:inherit;display:flex;align-items:center;justify-content:center;">
+                    <span style="background:#dc3545;color:#fff;font-size:18px;font-weight:800;padding:8px 24px;border-radius:8px;letter-spacing:1px;text-transform:uppercase;">
+                        {{ translate('sold') }}
+                    </span>
+                </div>
+            @elseif($ad->sale_status == 'reserved')
+                <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;border-radius:inherit;display:flex;align-items:center;justify-content:center;">
+                    <span style="background:#f5920c;color:#fff;font-size:18px;font-weight:800;padding:8px 24px;border-radius:8px;letter-spacing:1px;text-transform:uppercase;">
+                        {{ translate('reserved') }}
+                    </span>
+                </div>
+            @endif
             @if($ad->has_urgent_sale_sticker == 1)
                 <span class="text-white fw-bold px-2 py-1 torn-paper-sticker"
-                    style="position: absolute;bottom: 10px;left: 10px;z-index: 1;">
+                    style="position: absolute;bottom: 10px;left: 10px;z-index: 2;">
                     {{translate('urgent_sale')}}
                 </span>
             @endif
