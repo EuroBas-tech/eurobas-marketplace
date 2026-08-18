@@ -81,6 +81,7 @@ Route::group(
                     Route::get('edit/{id}', 'AdController@edit')->name('ads-edit');
                     Route::post('update', 'AdController@update')->name('ads-update');
                     Route::get('delete/{id}', 'AdController@delete')->name('ads-delete');
+                    Route::post('update-sale-status/{id}', 'AdController@updateSaleStatus')->name('ads-update-sale-status');
                     
                     Route::post('auction/store', 'AdController@store_auction')->name('ads-store-auction');
                     Route::post('auction/delete', 'AdController@delete_auction')->name('ads-delete-auction');
