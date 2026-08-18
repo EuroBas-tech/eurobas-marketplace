@@ -462,6 +462,19 @@
                         </h6>
                     </div>
                     <div class="d-flex align-items-end gap-2" >
+                        @if($ad->sale_status == 'sold')
+                            <div>
+                                <span class="text-white fw-bold p-1" style="background:#dc3545;border-radius:4px;font-size:13px;">
+                                    {{ translate('sold') }}
+                                </span>
+                            </div>
+                        @elseif($ad->sale_status == 'reserved')
+                            <div>
+                                <span class="text-white fw-bold p-1" style="background:#f5920c;border-radius:4px;font-size:13px;">
+                                    {{ translate('reserved') }}
+                                </span>
+                            </div>
+                        @endif
                         @if($ad->sponsor()->where('type', 'urgent_sale_sticker')
                             ->where('expiration_date', '>', now())
                             ->where('is_paid', 1)
