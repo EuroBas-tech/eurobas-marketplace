@@ -55,6 +55,45 @@
                                 id="">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
+
+                            {{-- Sale Status Button --}}
+                            <div class="dropdown">
+                                <button class="btn rounded-circle btn-action
+                                    {{ $ad->sale_status == 'sold' ? 'btn-danger' : ($ad->sale_status == 'reserved' ? 'btn-warning' : 'btn-outline-secondary') }}"
+                                    type="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-tag-fill"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <form action="{{ route('ads-update-sale-status', $ad->id) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sale_status" value="active">
+                                            <button class="dropdown-item {{ $ad->sale_status == 'active' ? 'active' : '' }}" type="submit">
+                                                <i class="bi bi-check-circle me-2 text-success"></i>{{ translate('active') }}
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('ads-update-sale-status', $ad->id) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sale_status" value="reserved">
+                                            <button class="dropdown-item {{ $ad->sale_status == 'reserved' ? 'active' : '' }}" type="submit">
+                                                <i class="bi bi-clock me-2 text-warning"></i>{{ translate('reserved') }}
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('ads-update-sale-status', $ad->id) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sale_status" value="sold">
+                                            <button class="dropdown-item {{ $ad->sale_status == 'sold' ? 'active' : '' }}" type="submit">
+                                                <i class="bi bi-bag-check me-2 text-danger"></i>{{ translate('sold') }}
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <a href="javascript:" title="{{translate('Delete')}}"
                                 onclick="route_alert('{{route('ads-delete',[$ad->id])}}','{{translate('want_to_delete_this_ad')}}')"
                                 class="btn btn-outline-danger rounded-circle btn-action oktext-btn">
