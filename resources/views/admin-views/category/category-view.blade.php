@@ -68,6 +68,7 @@
                                             <option value="shipbuilding and marine">{{translate('shipbuilding_and_marine')}}</option>
                                             <option value="furniture">{{translate('furniture')}}</option>
                                             <option value="home garden">{{translate('home_garden')}}</option>
+                                            <option value="food">{{translate('food')}}</option>
                                         </select>
                                     </div>
                                     <div class="form-group w-100">
