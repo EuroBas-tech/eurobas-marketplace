@@ -1367,3 +1367,7 @@ euromarket
 .font-size-15 {
     font-size: 15px;
 }
+
+.product__top::after {
+    display: none !important;
+}
