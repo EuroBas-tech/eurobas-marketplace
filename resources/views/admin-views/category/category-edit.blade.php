@@ -85,6 +85,7 @@
                                             <option {{ $category['category_type'] == 'shipbuilding marine' ? 'selected' : '' }} value="shipbuilding marine">{{translate('shipbuilding_and_marine')}}</option>
                                             <option {{ $category['category_type'] == 'furniture' ? 'selected' : '' }} value="furniture">{{translate('furniture')}}</option>
                                             <option {{ $category['category_type'] == 'home garden' ? 'selected' : '' }} value="home garden">{{translate('home_garden')}}</option>
+                                            <option {{ $category['category_type'] == 'food' ? 'selected' : '' }} value="food">{{translate('food')}}</option>
                                         </select>
                                     </div>
 
