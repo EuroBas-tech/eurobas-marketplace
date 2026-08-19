@@ -42,6 +42,7 @@
                             <div class="mt-4">
                                 <form action="" method="POST" id="ads-store-form" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" name="category_id" value="{{$data['category_id']}}">
                                     <div class="row gy-4">
 
                                         @include('theme-views.ad.add-pages.partials.identification-information')
