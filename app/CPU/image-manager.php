@@ -51,7 +51,7 @@ class ImageManager
                     }
                     $thumb = Image::make($image);
                     self::applyOrientation($thumb, $image);
-                    $thumb->fit(400, 300,  function ($constraint) {
+                    $thumb->fit(600, 450,  function ($constraint) {
                         $constraint->upsize();
                     });
                     $thumbWebp = $thumb->encode($format, 70);
