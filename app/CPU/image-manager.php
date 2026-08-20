@@ -10,7 +10,6 @@ class ImageManager
 {
     public static function upload(string $dir, string $format, $image, $default_image_name = null)
     {
-         ini_set('memory_limit', '1024M');
         
         if ($image != null) {
             if(in_array($image->getClientOriginalExtension(), ['gif', 'svg'])){
