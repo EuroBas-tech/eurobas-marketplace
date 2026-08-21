@@ -788,25 +788,17 @@ class AdController extends Controller
             ], 403);
         }
 
-        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
-
         $validator = Validator::make($request->all(), [
             'title'                => 'required',
             'description'          => 'required',
             'category_id'          => 'required',
             'price_type'           => 'required',
-            'image'                => 'required|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
-            'images.*'             => 'nullable|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
+            'image'                => 'required',
             'price'                => $request->price_type == 'fixed_price' || $request->price_type == 'asking_price' ? 'required|numeric|min:0|max:10000000000' : '',
             'contact_phone_number' => $request->show_phone_number && $request->show_phone_number == 'on' ? 'required|numeric' : '',
             'currency'             => 'required',
             'country'              => 'required',
             'city'                 => 'required',
-        ], [
-            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
-            'image.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
-            'images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
-            'images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
 
         if ($validator->fails()) {
@@ -882,25 +874,16 @@ class AdController extends Controller
             return response()->json(['success' => false, 'message' => translate('ad_not_found')], 404);
         }
 
-        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
-
         $validator = Validator::make($request->all(), [
             'title'                => 'required',
             'description'          => 'required',
             'category_id'          => 'required',
             'price_type'           => 'required',
-            'image'                => 'nullable|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
-            'images.*'             => 'nullable|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
             'price'                => $request->price_type == 'fixed_price' || $request->price_type == 'asking_price' ? 'required|numeric|min:0|max:10000000000' : '',
             'contact_phone_number' => $request->show_phone_number && $request->show_phone_number == 'on' ? 'required|numeric' : '',
             'currency'             => 'required',
             'country'              => 'required',
             'city'                 => 'required',
-        ], [
-            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
-            'image.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
-            'images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
-            'images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
 
         if ($validator->fails()) {
