@@ -246,6 +246,29 @@
                 return card;
             }
 
+            var maxDim = 4500;
+
+            // Reads a file's pixel dimensions in the browser (no upload needed) so
+            // we can reject oversized images instantly, the same way we already
+            // reject oversized file sizes above.
+            function checkDimensions(fileList) {
+                return Promise.all(fileList.map(function (file) {
+                    return new Promise(function (resolve) {
+                        var url = URL.createObjectURL(file);
+                        var probe = new Image();
+                        probe.onload = function () {
+                            URL.revokeObjectURL(url);
+                            resolve(probe.naturalWidth <= maxDim && probe.naturalHeight <= maxDim);
+                        };
+                        probe.onerror = function () {
+                            URL.revokeObjectURL(url);
+                            resolve(true); // can't read it client-side; let the server validate it
+                        };
+                        probe.src = url;
+                    });
+                }));
+            }
+
             function addFiles(fileList) {
                 var files = Array.prototype.slice.call(fileList || []);
                 if (!files.length) return;
@@ -261,6 +284,17 @@
                         return;
                     }
                 }
+
+                checkDimensions(files).then(function (dimensionsOk) {
+                    if (dimensionsOk.indexOf(false) !== -1) {
+                        if (window.toastr) toastr.error('Image dimensions are too large. Please use an image up to ' + maxDim + 'x' + maxDim + ' pixels');
+                        return;
+                    }
+                    addFilesAfterValidation(files);
+                });
+            }
+
+            function addFilesAfterValidation(files) {
 
                 var remaining = maxImages - cardCount();
                 if (remaining <= 0) {
