@@ -159,6 +159,7 @@
         'cardImage'   => translate('card_image'),
         'setAsCard'   => translate('set_as_card_image'),
         'remove'      => translate('remove'),
+        'dimensionsTooLarge' => translate('Image dimensions are too large. Please use a smaller image'),
     ];
 @endphp
 @push('script')
@@ -287,7 +288,7 @@
 
                 checkDimensions(files).then(function (dimensionsOk) {
                     if (dimensionsOk.indexOf(false) !== -1) {
-                        if (window.toastr) toastr.error('Image dimensions are too large. Please use an image up to ' + maxDim + 'x' + maxDim + ' pixels');
+                    if (window.toastr) toastr.error(T.dimensionsTooLarge);
                         return;
                     }
                     addFilesAfterValidation(files);
