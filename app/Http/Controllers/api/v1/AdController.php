@@ -803,10 +803,10 @@ class AdController extends Controller
             'country'              => 'required',
             'city'                 => 'required',
         ], [
-            'image.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'image.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
-            'images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
+            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'image.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
+            'images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
 
         if ($validator->fails()) {
@@ -897,10 +897,10 @@ class AdController extends Controller
             'country'              => 'required',
             'city'                 => 'required',
         ], [
-            'image.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'image.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
-            'images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
+            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'image.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
+            'images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
 
         if ($validator->fails()) {
