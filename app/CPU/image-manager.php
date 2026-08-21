@@ -49,8 +49,7 @@ class ImageManager
                     if (!Storage::disk()->exists($thumbDir)) {
                         Storage::disk()->makeDirectory($thumbDir);
                     }
-                    $thumb = Image::make($image);
-                    self::applyOrientation($thumb, $image);
+                    $thumb = clone $image_make;
                     $thumb->fit(600, 450,  function ($constraint) {
                         $constraint->upsize();
                     });
