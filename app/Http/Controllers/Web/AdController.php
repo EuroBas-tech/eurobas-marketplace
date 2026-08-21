@@ -218,6 +218,8 @@ class AdController extends Controller
     public function store(Request $request)
     {
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
@@ -228,6 +230,7 @@ class AdController extends Controller
             'currency' => 'required',
             'country' => 'required',
             'city' => 'required',
+            'new_images.*' => 'nullable|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
         ], [
             'title.required' => translate("Ad title is required"),
             'description.required' => translate("Ad description is required"),
@@ -239,6 +242,8 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
+            'new_images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
+            'new_images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
         ]);
         
         if ($validator->fails()) {
@@ -590,6 +595,8 @@ class AdController extends Controller
     public function update(Request $request)
     {
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
@@ -600,6 +607,7 @@ class AdController extends Controller
             'currency' => 'required',
             'country' => 'required',
             'city' => 'required',
+            'new_images.*' => 'nullable|image|max:' . ((int) $ad_images_size * 1024) . '|dimensions:max_width=4500,max_height=4500',
         ], [
             'title.required' => translate("Ad title is required"),
             'description.required' => translate("Ad description is required"),
@@ -610,6 +618,8 @@ class AdController extends Controller
             'country.required' => translate("Country is required"),
             'city.required' => translate("City is required"),
             'price_type.required' => translate("Price Type Status name is required"),
+            'new_images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
+            'new_images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
         ]);
 
         if ($validator->fails()) {
