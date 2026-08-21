@@ -242,8 +242,8 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
-            'new_images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'new_images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
+            'new_images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'new_images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
         
         if ($validator->fails()) {
@@ -618,8 +618,8 @@ class AdController extends Controller
             'country.required' => translate("Country is required"),
             'city.required' => translate("City is required"),
             'price_type.required' => translate("Price Type Status name is required"),
-            'new_images.*.max' => 'Image size must not exceed ' . $ad_images_size . 'MB',
-            'new_images.*.dimensions' => 'Image dimensions are too large. Please use an image up to 4500x4500 pixels',
+            'new_images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'new_images.*.dimensions' => translate('Image dimensions are too large. Please use a smaller image'),
         ]);
 
         if ($validator->fails()) {
