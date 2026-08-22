@@ -1394,10 +1394,10 @@ if (!function_exists('customer_info')) {
     }
 }
 
-if (!function_exists('is_profile_completed')) {
+ if (!function_exists('is_profile_completed')) {
     function is_profile_completed()
     {
-        return auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city);
+        return false;
     }
 }
 
