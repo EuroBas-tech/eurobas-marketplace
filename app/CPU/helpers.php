@@ -381,22 +381,14 @@ class Helpers
         ];
     }
 
-    public static function prevent_if_profile_incomplete() {
-        $user = auth("customer")->check() ? auth("customer")->user() : (auth("api")->check() ? auth("api")->user() : null);
-        if($user && (!$user->phone_code || !$user->phone || !$user->country || !$user->city || !$user->native_language)){
-            return true;
-        }
+     public static function prevent_if_profile_incomplete() {
         return false;
     }
 
     public static function json_prevent_if_profile_incomplete() {
-        $user = auth("customer")->check() ? auth("customer")->user() : (auth("api")->check() ? auth("api")->user() : null);
-        if($user && (!$user->phone_code || !$user->phone || !$user->country || !$user->city || !$user->native_language)){
-            return true;
-        }
         return false;
     }
-
+    
     public static function saveJSONFile($code, $data)
     {
         ksort($data);
