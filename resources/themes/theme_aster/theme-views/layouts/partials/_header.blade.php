@@ -545,15 +545,7 @@
 
 <!-- Header -->
 <header class="header" style="height: 135px;" >
-    @if (auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city))
-        <div class="complete-profile-bar py-2">
-            <div class="d-flex gap-2 align-items-center">
-                <div class="top-offer-text flex-grow-1 d-flex justify-content-center fw-normal ">
-                    {{ translate('please_complete_your_profile_data_to_enjoy_all_features') }} &nbsp; <a class="text-decoration-underline text-primary pointing-hand {{ app()->getLocale() == 'ae' ? 'left-direction' : 'right-direction' }}" href="{{route('user-account')}}"> {{ translate('complete_now') }}</a>
-                </div>
-            </div>
-        </div>
-    @endif
+    
     <div class="header-top bg-primary py-2 d-xl-none">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between" >
