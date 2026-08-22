@@ -544,7 +544,7 @@
     </style>
 
 <!-- Header -->
-<header class="header" style="height: 135px;" >
+ <header class="header">
     
     <div class="header-top bg-primary py-2 d-xl-none">
         <div class="container">
