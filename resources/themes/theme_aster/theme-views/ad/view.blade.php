@@ -98,9 +98,6 @@
             align-self: flex-start;
         }
 
-        .aside-margin-top {
-            margin-top: 40px;
-        }
 
     </style>
 
@@ -116,7 +113,7 @@
     </div>
 
     <div class="d-flex p-4 gap-4" >
-        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0 @if(auth('customer')->check() && (!auth('customer')->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city)) aside-margin-top @endif">
+        <aside class="responsive-aside filter-toggle-aside flex-shrink-0 start-0">
             <div class="card-border aside-shadow rounded p-3 bg-white custom-scroll" >
                 <div class="d-lg-none close-filter" >
                     <button class="filter-aside-close border-0 bg-primary text-white rounded-circle pt-1">
