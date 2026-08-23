@@ -218,6 +218,8 @@ class AdController extends Controller
     public function store(Request $request)
     {
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
@@ -228,6 +230,7 @@ class AdController extends Controller
             'currency' => 'required',
             'country' => 'required',
             'city' => 'required',
+            'new_images.*' => 'nullable|image|max:' . ((int) $ad_images_size * 1024),
         ], [
             'title.required' => translate("Ad title is required"),
             'description.required' => translate("Ad description is required"),
@@ -239,6 +242,7 @@ class AdController extends Controller
             'city.required' => translate("City is required"),
             'price.required' => translate("The price field is required"),
             'price_type.required' => translate("Price Type Status name is required"),
+            'new_images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
         ]);
         
         if ($validator->fails()) {
@@ -477,6 +481,35 @@ class AdController extends Controller
     }
 
     /**
+     * Processes a single ad image immediately when the user selects it on the
+     * add/edit page, instead of waiting until the whole form is submitted.
+     * Returns the final processed filename, which the frontend then submits
+     * as an "existing:<filename>" entry in image_order[] — build_ordered_ad_images()
+     * already handles that case natively, so no change was needed there.
+     */
+    public function uploadImage(Request $request)
+    {
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|max:' . ((int) $ad_images_size * 1024),
+        ], [
+            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
+        }
+
+        $filename = ImageManager::upload('ad/', 'webp', $request->file('image'), 'def.jpg');
+
+        return response()->json([
+            'success' => true,
+            'filename' => $filename,
+        ]);
+    }
+
+    /**
      * Build the ordered list of ad image filenames from the submitted
      * image_order[] manifest and new_images[] uploads.
      *
@@ -590,6 +623,8 @@ class AdController extends Controller
     public function update(Request $request)
     {
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required',
@@ -600,6 +635,7 @@ class AdController extends Controller
             'currency' => 'required',
             'country' => 'required',
             'city' => 'required',
+            'new_images.*' => 'nullable|image|max:' . ((int) $ad_images_size * 1024),
         ], [
             'title.required' => translate("Ad title is required"),
             'description.required' => translate("Ad description is required"),
@@ -610,6 +646,7 @@ class AdController extends Controller
             'country.required' => translate("Country is required"),
             'city.required' => translate("City is required"),
             'price_type.required' => translate("Price Type Status name is required"),
+            'new_images.*.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
         ]);
 
         if ($validator->fails()) {
