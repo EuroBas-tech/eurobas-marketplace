@@ -146,6 +146,18 @@
     @media (hover: none) {
         .ad-image-card__feature { opacity: 1; }
     }
+
+    /* Shown on a card while its image is being pre-processed in the background */
+    .ad-image-card.is-uploading .ad-image-card__img { opacity: .5; }
+    .ad-image-card__spinner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+    }
+    .ad-image-card__spinner .spinner-border { width: 1.6rem; height: 1.6rem; color: #2c6ecb; }
 </style>
 @endpush
 
@@ -165,12 +177,17 @@
 <script>
     (function () {
         var T = {!! json_encode($imgUploaderText) !!};
+        var uploadUrl = "{{ route('ads-upload-image') }}";
+        var csrfToken = "{{ csrf_token() }}";
+        var pendingUploads = 0;
 
         function init() {
             var container = document.getElementById('image-cards-container');
             var dropzone = document.getElementById('image-dropzone');
             var dropInput = document.getElementById('image-dropzone-input');
             if (!container || !dropzone || !dropInput) return;
+
+            var form = container.closest('form');
 
             var allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
             var maxImages = parseInt(container.dataset.max, 10) || 10;
@@ -188,6 +205,64 @@
                 cards.forEach(function (card, i) {
                     card.classList.toggle('is-cover', i === 0);
                 });
+            }
+
+            // Exposes whether any image is still being pre-processed, and lets
+            // the publish button wait for them instead of showing an error.
+            // The button already has its own translated loading state
+            // ("Processing..." + spinner) that we reuse here — see
+            // _global-adding-js-code.blade.php.
+            window.eurobasWaitForImageUploads = function (callback) {
+                if (pendingUploads <= 0) { callback(); return; }
+                var check = setInterval(function () {
+                    if (pendingUploads <= 0) {
+                        clearInterval(check);
+                        callback();
+                    }
+                }, 150);
+            };
+
+            // Sends the file to the server the moment it's chosen, instead of
+            // waiting for form submit. On success the card switches to
+            // referencing the already-processed filename (image_order becomes
+            // "existing:<filename>") and drops its raw file input, so submit
+            // time has nothing left to process for that image. On any failure
+            // (network error, validation, etc.) the card is left completely
+            // untouched — it still carries "new:<key>" and the raw file, which
+            // build_ordered_ad_images() already knows how to process the old
+            // way. Nothing breaks either way.
+            function preUpload(card, orderInput, fileInput, file) {
+                pendingUploads++;
+                card.classList.add('is-uploading');
+                var spinner = document.createElement('div');
+                spinner.className = 'ad-image-card__spinner';
+                spinner.innerHTML = '<div class="spinner-border" role="status"></div>';
+                card.appendChild(spinner);
+
+                var formData = new FormData();
+                formData.append('image', file);
+
+                fetch(uploadUrl, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+                    body: formData
+                })
+                    .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+                    .then(function (data) {
+                        if (data && data.success && data.filename) {
+                            orderInput.value = 'existing:' + data.filename;
+                            if (fileInput && fileInput.parentNode) fileInput.parentNode.removeChild(fileInput);
+                        }
+                        // On failure we simply leave the card as "new:<key>" with
+                        // its raw file input intact — the normal submit-time path
+                        // handles it exactly as it always has.
+                    })
+                    .catch(function () { /* offline/network error — same fallback as above */ })
+                    .finally(function () {
+                        pendingUploads--;
+                        card.classList.remove('is-uploading');
+                        if (spinner.parentNode) spinner.parentNode.removeChild(spinner);
+                    });
             }
 
             function buildCard(key, dataUrl, file) {
@@ -242,6 +317,8 @@
                     fileInput.files = dt.files;
                 } catch (e) { /* DataTransfer unsupported – ignore */ }
                 card.appendChild(fileInput);
+
+                preUpload(card, order, fileInput, file);
 
                 return card;
             }
