@@ -117,12 +117,7 @@
             'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
             'Segoe UI Emoji', 'Segoe UI Symbol';
         }
-
-        @if(auth("customer")->check() && (!auth("customer")->user()->phone_code || !auth('customer')->user()->phone || !auth('customer')->user()->country || !auth('customer')->user()->city))
-            .main-content {
-                margin-top: 40px;
-            }
-        @endif
+                   
 
     </style>
     @php($google_tag_manager_id = \App\CPU\Helpers::get_business_settings('google_tag_manager_id'))
