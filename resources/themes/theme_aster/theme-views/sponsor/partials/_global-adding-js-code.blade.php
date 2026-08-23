@@ -400,7 +400,23 @@
         
         // You need to call it, for example on a button click:
         $('#add-button').on('click', function() {
-            storeAd();
+            // Respond to the click instantly, exactly like today — show the
+            // normal loading state right away (storeAd() re-applies the same
+            // state once it actually runs, which is harmless).
+            $('#add-button').prop('disabled', true);
+            $('#add-button').html(`
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                {{ translate('Processing...') }}
+            `);
+
+            // If any image is still being pre-processed in the background,
+            // storeAd() is simply called once it finishes. If nothing is
+            // pending (the normal case), this is instant.
+            if (window.eurobasWaitForImageUploads) {
+                window.eurobasWaitForImageUploads(storeAd);
+            } else {
+                storeAd();
+            }
         });
     });
 
