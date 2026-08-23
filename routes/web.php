@@ -78,6 +78,7 @@ Route::group(
                     ->name('ads-add');
 
                     Route::post('store', 'AdController@store')->name('ads-store');
+                    Route::post('upload-image', 'AdController@uploadImage')->name('ads-upload-image');
                     Route::get('edit/{id}', 'AdController@edit')->name('ads-edit');
                     Route::post('update', 'AdController@update')->name('ads-update');
                     Route::get('delete/{id}', 'AdController@delete')->name('ads-delete');
