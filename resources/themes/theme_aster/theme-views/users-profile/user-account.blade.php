@@ -368,6 +368,34 @@
     </script>
 
     <script>
+        // Rejects an oversized image the instant it's chosen — same behaviour
+        // as the ad-add page — instead of only failing later on submit.
+        (function () {
+            var maxSize = {{ (float) $ad_images_size }} * 1024 * 1024;
+            var maxSizeLabel = "{{ $ad_images_size }}";
+
+            function rejectIfTooLarge(input) {
+                input.addEventListener('change', function () {
+                    var file = this.files && this.files[0];
+                    if (file && file.size > maxSize) {
+                        if (window.toastr) {
+                            toastr.error(`{{ translate('Maximum file size is') }}` + ' ' + maxSizeLabel + ' ' + `{{ translate('mb') }}`);
+                        }
+                        this.value = '';
+                        var preview = this.parentElement.querySelector('.upload-file__img img');
+                        if (preview) preview.setAttribute('src', this.dataset.old);
+                    }
+                });
+            }
+
+            var avatarInput = document.getElementById('thumbnail-input');
+            var coverInput = document.getElementById('cover-input');
+            if (avatarInput) rejectIfTooLarge(avatarInput);
+            if (coverInput) rejectIfTooLarge(coverInput);
+        })();
+    </script>
+
+    <script>
         function checkPasswordMatch() {
             var password = $("#password").val();
             var confirmPassword = $("#confirm_password").val();
