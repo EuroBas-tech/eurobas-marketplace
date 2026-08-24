@@ -340,6 +340,30 @@
         const packagePrices = @json($packages->pluck('price', 'id'));
     </script>
 
+    <script>
+        // Rejects an oversized banner image the instant it's chosen — same
+        // behaviour as the ad-add and profile pages — so the user finds out
+        // before going anywhere near checkout/payment.
+        (function () {
+            var maxSize = {{ (float) $ad_images_size }} * 1024 * 1024;
+            var maxSizeLabel = "{{ $ad_images_size }}";
+            var input = document.getElementById('cover-input');
+            if (!input) return;
+
+            input.addEventListener('change', function () {
+                var file = this.files && this.files[0];
+                if (file && file.size > maxSize) {
+                    if (window.toastr) {
+                        toastr.error(`{{ translate('Maximum file size is') }}` + ' ' + maxSizeLabel + ' ' + `{{ translate('mb') }}`);
+                    }
+                    this.value = '';
+                    var preview = this.parentElement.querySelector('.upload-file__img img');
+                    if (preview) { preview.setAttribute('src', '#'); preview.setAttribute('hidden', ''); }
+                }
+            });
+        })();
+    </script>
+
     <script> 
         document.addEventListener("DOMContentLoaded", function () { 
             const buttons = document.querySelectorAll('.package-btn');
