@@ -1,6 +1,6 @@
 @extends('theme-views.layouts.app')
 
- @section('title', translate('instructions_for_use').' | '.$web_config['name']->value.' '.translate('ecommerce'))
+@section('title', translate('instructions_for_use').' | '.$web_config['name']->value.' '.translate('ecommerce'))
 
 @push('css_or_js')
 <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
@@ -115,13 +115,13 @@
             <div class="tc-card">
                 <div class="tc-card-header">
                     <div class="tc-card-ico" style="background:#e0f2f1">🛡️</div>
-                    <h3 class="tc-card-title">Step 3: Profile Setup & Privacy Control</h3>
+                    <h3 class="tc-card-title">Step 3: Instant Access & Full Privacy Control</h3>
                 </div>
                 <div class="tc-card-body">
-                    <p>After creating your account, complete your profile details (such as phone number and location) to unlock full marketplace capabilities:</p>
+                    <p>Start posting listings immediately after sign-up. You have total flexibility over how you share your details:</p>
                     <ul>
                         <li><strong>Flexible Privacy Controls:</strong> You have full control over your personal data. You can choose whether to display or hide your phone number and email address publicly on your listings or public profile.</li>
-                        <li><strong>Integrated On-Platform Messaging:</strong> If you prefer to keep your phone number and email private, buyers can easily contact you through EuroBas's secure built-in chat system.</li>
+                        <li><strong>Integrated On-Platform Messaging:</strong> If you prefer to keep your contact details private, buyers can easily contact you through EuroBas's secure built-in chat system.</li>
                     </ul>
                 </div>
             </div>
