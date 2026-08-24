@@ -6,7 +6,7 @@
 <meta property="og:image" content="{{cloudfront('company')}}/{{$web_config['web_logo']->value}}"/>
 <meta property="og:title" content="How It Works — EuroBas.com"/>
 <meta property="og:url" content="{{env('APP_URL')}}">
-<meta property="og:description" content="Learn how EuroBas.com works — Europe's free multi-category classifieds marketplace for individuals and businesses. Unlimited posting, total privacy control, and zero fees.">
+<meta property="og:description" content="Learn how EuroBas.com works — Europe's free multi-category classifieds marketplace for individuals and businesses. Unlimited posting, total privacy control, smart cross-border communication, and optional premium promotional features.">
 <style>
 *{box-sizing:border-box}
 .tc-hero{text-align:center;padding:4.5rem 1rem 3.5rem;background:linear-gradient(135deg,#0d3b8e 0%,#1565c0 50%,#1976d2 100%);color:#fff;position:relative;overflow:hidden}
@@ -89,7 +89,7 @@
                     <p>Any visitor can freely browse and search EuroBas.com without registering or logging in:</p>
                     <ul>
                         <li>Explore thousands of active listings across <strong>20 comprehensive categories</strong> (Vehicles, Real Estate, Electronics, Services, Jobs, and more).</li>
-                        <li>Filter listings by region, country, price range, condition, or specific keywords across <strong>31 supported languages</strong>.</li>
+                        <li>Filter listings by region, country, price range, condition, or specific keywords natively translated across <strong>31 fully supported static languages</strong>.</li>
                     </ul>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                     <p>Every seller on EuroBas.com automatically gets a personalized profile page that acts as their own online storefront:</p>
                     <ul>
                         <li>Customize your profile with a personal avatar, company logo, and a custom wall/cover banner image.</li>
-                        <li>Add business descriptions, company information, and custom contact preferences.</li>
+                        <li>Add business descriptions, company information, and select your preferred native language.</li>
                         <li>Showcase all your current listings in one dedicated space with built-in search and filter tools for your visitors.</li>
                     </ul>
                 </div>
@@ -157,8 +157,48 @@
                 </div>
             </div>
 
+            {{-- NEW SECTION: CROSS-BORDER SMART MESSAGING --}}
+            <div class="tc-h2">2. Smart Cross-Border Communication & Language Support</div>
+            <div class="tc-sub">EuroBas makes European and global trading effortless across borders and languages.</div>
+
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#e1f5fe">🌍</div>
+                    <h3 class="tc-card-title">Automated Language Smart-Routing</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>EuroBas provides seamless communication between buyers and sellers in different countries:</p>
+                    <ul>
+                        <li><strong>Native Language Preferences:</strong> Each user can set their native language in their profile.</li>
+                        <li><strong>Same-Language Conversations:</strong> If both users share the same native language (e.g., two users from Germany), offers and messages are delivered in their native language.</li>
+                        <li><strong>Cross-Border Intelligent Fallback:</strong> If two users speak different native languages (e.g., a buyer from France and a seller from Germany), the platform automatically delivers offers and notifications in English to ensure clear mutual understanding.</li>
+                        <li><strong>31 Native Languages:</strong> The platform natively supports 31 fully localized languages for seamless site navigation and interface interaction.</li>
+                    </ul>
+                </div>
+            </div>
+
+            {{-- NEW SECTION: OPTIONAL PREMIUM PROMOTIONAL FEATURES --}}
+            <div class="tc-h2">3. Optional Premium Promotional Add-ons</div>
+            <div class="tc-sub">Boost your business visibility and maximize your sales potential with our paid promotional add-ons.</div>
+
+            <div class="tc-card">
+                <div class="tc-card-header">
+                    <div class="tc-card-ico" style="background:#fff8e1">⭐</div>
+                    <h3 class="tc-card-title">Maximize Your Exposure & Sales</h3>
+                </div>
+                <div class="tc-card-body">
+                    <p>While posting ads is 100% free, businesses and sellers looking for maximum engagement can unlock optional promotional tools:</p>
+                    <ul>
+                        <li><strong>Homepage Promotional Banners:</strong> Businesses and individual sellers can publish custom promotional banner advertisements that appear directly on the EuroBas homepage.</li>
+                        <li><strong>Promotional Showcase Videos:</strong> Add promotional video showcases to your listings or products to captivate buyers and increase engagement.</li>
+                        <li><strong>Top Homepage Placement:</strong> Boost your listings to appear at the very top of the homepage and search results for maximum exposure.</li>
+                        <li><strong>High-Visibility Badges:</strong> Highlight your listing with distinguished high-visibility badges to stand out from competing items.</li>
+                    </ul>
+                </div>
+            </div>
+
             {{-- SAFETY TIPS --}}
-            <div class="tc-h2">2. Safety Guidelines for Buyers & Sellers</div>
+            <div class="tc-h2">4. Safety Guidelines for Buyers & Sellers</div>
             <div class="tc-sub">Follow these essential security recommendations to ensure safe transactions across the platform.</div>
 
             <div class="tc-card">
