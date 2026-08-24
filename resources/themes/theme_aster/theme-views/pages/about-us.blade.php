@@ -332,8 +332,8 @@
                 </div>
                 <div class="ab-step">
                     <div class="ab-step-n">2</div>
-                    <div class="ab-step-name">Complete your profile</div>
-                    <div class="ab-step-desc">Add your phone number, address, and preferred language to unlock ad publishing and the ability to contact sellers directly and securely.</div>
+                    <div class="ab-step-name">Start instantly</div>
+                    <div class="ab-step-desc">No complicated setups. Once registered, your account is immediately ready to browse listings, post ads, and start trading across Europe.</div>
                 </div>
                 <div class="ab-step">
                     <div class="ab-step-n">3</div>
