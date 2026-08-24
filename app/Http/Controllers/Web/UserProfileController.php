@@ -29,6 +29,7 @@ use Illuminate\Http\Request;
 use App\Model\ProductCompare;
 use App\Model\DeliveryZipCode;
 use App\Model\ShippingAddress;
+use App\Model\BusinessSetting;
 use function App\CPU\translate;
 use function React\Promise\all;
 use App\Model\SellerWalletAction;
@@ -104,11 +105,17 @@ class UserProfileController extends Controller
     public function user_update(Request $request)
     {
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'image' => 'nullable|image|max:' . ((int) $ad_images_size * 1024),
+            'cover_image' => 'nullable|image|max:' . ((int) $ad_images_size * 1024),
         ], [
             'name.required' => 'Name is required',
+            'image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
+            'cover_image.max' => translate('Maximum file size is') . ' ' . $ad_images_size . ' ' . translate('mb'),
         ]);
 
         if ($request->password) {
