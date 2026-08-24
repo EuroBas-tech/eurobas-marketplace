@@ -10,6 +10,7 @@ use App\Model\PaidBanner;
 use Illuminate\Http\Request;
 use App\Model\ShippingAddress;
 use App\Model\SubscriptionPackage;
+use App\Model\BusinessSetting;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Cache;
@@ -37,7 +38,9 @@ class PaidBannerController extends Controller
 
         $categories = Category::get();
 
-        return view("theme-views.paid-banners.create", compact('packages', 'user_ads', 'categories'));
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
+        return view("theme-views.paid-banners.create", compact('packages', 'user_ads', 'categories', 'ad_images_size'));
     }
 
     public function store(Request $request) {
@@ -117,8 +120,10 @@ class PaidBannerController extends Controller
 
         $categories = Category::get();
 
+        $ad_images_size = BusinessSetting::where('type', 'ad_images_size')->value('value') ?? 4;
+
         return view("theme-views.paid-banners.edit",
-        compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads', 'categories'));
+        compact('packages', 'paid_banner', 'package_expiration_date', 'user_ads', 'categories', 'ad_images_size'));
     }
 
     public function update(Request $request) {
