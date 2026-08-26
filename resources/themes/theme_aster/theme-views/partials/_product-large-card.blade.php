@@ -271,7 +271,7 @@
                     @endif
                 </div>
             </div>
-            <ins class="product__new-price text-primary text-end mt-auto" >
+            <ins class="product__new-price text-primary text-end mt-auto" style="white-space:nowrap;">
                 @if($ad->price_type == 'fixed_price')
                 <b class="currency-font" style="font-size: 18px;" dir="ltr">{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b>
                 @elseif($ad->price_type == 'free')
@@ -585,7 +585,7 @@
                     @endif
                 </div>
             </div>
-            <ins class="product__new-price text-primary text-end mt-auto" >
+            <ins class="product__new-price text-primary text-end mt-auto" style="white-space:nowrap;">
                 @if($ad->price_type == 'fixed_price')
                     <b class="currency-font" style="font-size: 18px;" >{{\App\CPU\BackEndHelper::set_price_currency($ad->price, $ad->currency)}}</b>
                 @elseif($ad->price_type == 'free')
