@@ -153,17 +153,121 @@
         </h6>
         <div class="product__price d-flex align-items-end-md align-items-start-sm  flex-column flex-md-row justify-content-between">
             <div class="text-start fs-12-small-screens" >
-                <div class="mb-1" >
-                    @if(isset($ad->brand->name))
-                        <span>{{ $ad->brand->name ?? '/' }} • </span>
-                    @endif
-                    @if($ad->year)
-                        <span>{{ $ad->year }}</span>
-                    @endif
-                </div>
-                <div>
-                    @if($ad->mileage)
-                   <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
+                <div class="mb-1 d-flex align-items-center gap-2 flex-wrap" style="font-size:13px;">
+                    @if(optional($ad->category)->category_type == 'vehicles' && optional($ad->category)->slug != 'bicycles')
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-car-front" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->year)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-calendar-event" style="color:#3b82f6"></i>
+                                <span>{{ $ad->year }}</span>
+                            </span>
+                        @endif
+                        @if($ad->mileage)
+                            <span class="d-flex align-items-center gap-1" dir="ltr">
+                                <i class="bi bi-speedometer2" style="color:#3b82f6"></i>
+                                <span>{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
+                            </span>
+                        @endif
+                        @if($ad->fuel_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-fuel-pump-diesel" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->fuel_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->transmission_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-gear" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->transmission_type) }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'vehicles' && optional($ad->category)->slug == 'bicycles')
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-bicycle" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->bicycle_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-bicycle" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->bicycle_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->bicycle_size)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-arrows-angle-expand" style="color:#3b82f6"></i>
+                                <span>{{ $ad->bicycle_size }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'real estate')
+                        @if($ad->listing_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-house" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->listing_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->property_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-building" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->property_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->property_size)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-arrows-angle-expand" style="color:#3b82f6"></i>
+                                <span>{{ $ad->property_size }} m²</span>
+                            </span>
+                        @endif
+                        @if($ad->rooms_number)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-door-open" style="color:#3b82f6"></i>
+                                <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'furniture')
+                        @if($ad->furniture_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-box" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->furniture_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->material)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-layers" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->material) }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'electronics')
+                        @if($ad->electronic_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-laptop" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->electronic_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->usage_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-tag" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->usage_type) }}</span>
+                            </span>
+                        @endif
+                    @else
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-tag" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->year)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-calendar-event" style="color:#3b82f6"></i>
+                                <span>{{ $ad->year }}</span>
+                            </span>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -363,17 +467,121 @@
         </h6>
         <div class="product__price d-flex align-items-end-md align-items-start-sm  flex-column flex-md-row justify-content-between">
             <div class="text-start fs-12-small-screens" >
-                <div class="mb-1" >
-                    @if(isset($ad->brand->name))
-                        <span>{{ $ad->brand->name ?? '/' }} • </span>
-                    @endif
-                    @if($ad->year)
-                        <span>{{ $ad->year }}</span>
-                    @endif
-                </div>
-                <div>
-                    @if($ad->mileage)
-                    <span dir="ltr">{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
+                <div class="mb-1 d-flex align-items-center gap-2 flex-wrap" style="font-size:13px;">
+                    @if(optional($ad->category)->category_type == 'vehicles' && optional($ad->category)->slug != 'bicycles')
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-car-front" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->year)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-calendar-event" style="color:#3b82f6"></i>
+                                <span>{{ $ad->year }}</span>
+                            </span>
+                        @endif
+                        @if($ad->mileage)
+                            <span class="d-flex align-items-center gap-1" dir="ltr">
+                                <i class="bi bi-speedometer2" style="color:#3b82f6"></i>
+                                <span>{{ number_format((int)$ad->mileage, 0, ',', '.') }} {{ translate('km') }}</span>
+                            </span>
+                        @endif
+                        @if($ad->fuel_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-fuel-pump-diesel" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->fuel_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->transmission_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-gear" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->transmission_type) }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'vehicles' && optional($ad->category)->slug == 'bicycles')
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-bicycle" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->bicycle_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-bicycle" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->bicycle_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->bicycle_size)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-arrows-angle-expand" style="color:#3b82f6"></i>
+                                <span>{{ $ad->bicycle_size }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'real estate')
+                        @if($ad->listing_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-house" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->listing_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->property_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-building" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->property_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->property_size)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-arrows-angle-expand" style="color:#3b82f6"></i>
+                                <span>{{ $ad->property_size }} m²</span>
+                            </span>
+                        @endif
+                        @if($ad->rooms_number)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-door-open" style="color:#3b82f6"></i>
+                                <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'furniture')
+                        @if($ad->furniture_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-box" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->furniture_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->material)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-layers" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->material) }}</span>
+                            </span>
+                        @endif
+                    @elseif(optional($ad->category)->category_type == 'electronics')
+                        @if($ad->electronic_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-laptop" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->electronic_type) }}</span>
+                            </span>
+                        @endif
+                        @if($ad->usage_type)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-tag" style="color:#3b82f6"></i>
+                                <span>{{ translate($ad->usage_type) }}</span>
+                            </span>
+                        @endif
+                    @else
+                        @if(isset($ad->brand->name))
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-tag" style="color:#3b82f6"></i>
+                                <span>{{ $ad->brand->name }}</span>
+                            </span>
+                        @endif
+                        @if($ad->year)
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="bi bi-calendar-event" style="color:#3b82f6"></i>
+                                <span>{{ $ad->year }}</span>
+                            </span>
+                        @endif
                     @endif
                 </div>
             </div>
