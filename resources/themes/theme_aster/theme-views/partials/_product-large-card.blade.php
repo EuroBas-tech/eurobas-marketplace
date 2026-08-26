@@ -226,7 +226,7 @@
                         @if($ad->rooms_number)
                             <span class="d-flex align-items-center gap-1">
                                 <i class="bi bi-door-open" style="color:#3b82f6"></i>
-                                <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                                <span>{{ $ad->rooms_number }} {{ translate('number_of_rooms') }}</span>
                             </span>
                         @endif
                     @elseif(optional($ad->category)->category_type == 'furniture')
@@ -540,7 +540,7 @@
                         @if($ad->rooms_number)
                             <span class="d-flex align-items-center gap-1">
                                 <i class="bi bi-door-open" style="color:#3b82f6"></i>
-                                <span>{{ $ad->rooms_number }} {{ translate('rooms') }}</span>
+                             <span>{{ $ad->rooms_number }} {{ translate('number_of_rooms') }}</span> 
                             </span>
                         @endif
                     @elseif(optional($ad->category)->category_type == 'furniture')
