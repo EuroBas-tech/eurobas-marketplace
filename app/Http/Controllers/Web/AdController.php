@@ -812,29 +812,35 @@ class AdController extends Controller
         abort_if(!$category, 404);
         $category_name = $category->name;
 
-        $ads = $category->ads('sponsor')
-        ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
-        ->get();
-
         $now = Carbon::now();
 
-        $ads->each(function ($ad) use ($now) {
-            $sponsor = collect($ad->sponsor)->firstWhere('type', 'urgent_sale_sticker');
-            $ad->has_urgent_sale_sticker = $sponsor && $sponsor->expiration_date > $now ? 1 : 0;
-
-            $ad->has_first_results = collect($ad->sponsor)
-            ->firstWhere('type', 'appearance_in_first_results')
-            ?->expiration_date > $now ? 1 : 0;
-        });
-
-        // reorder ads so those with has_first_results = 1 come first
-         $ads = $ads->sortByDesc('has_first_results')
-           ->sortByDesc(fn($ad) => [$ad->has_first_results, $ad->created_at])
-           ->values();
+        // Sponsored ads first, then latest
+        $ads = $category->ads('sponsor')
+            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
+            ->get()
+            ->map(function ($ad) use ($now) {
+                $sponsor = collect($ad->sponsor)->firstWhere('type', 'urgent_sale_sticker');
+                $ad->has_urgent_sale_sticker = $sponsor && $sponsor->expiration_date > $now ? 1 : 0;
+                $ad->has_first_results = collect($ad->sponsor)
+                    ->firstWhere('type', 'appearance_in_first_results')
+                    ?->expiration_date > $now ? 1 : 0;
+                return $ad;
+            })
+            ->sortByDesc(fn($ad) => [$ad->has_first_results, $ad->created_at])
+            ->values();
 
         $ads_count = $ads->count();
+        $perPage = 24;
+        $page = request()->get('page', 1);
+        $paginatedAds = new \Illuminate\Pagination\LengthAwarePaginator(
+            $ads->forPage($page, $perPage),
+            $ads_count,
+            $perPage,
+            $page,
+            ['path' => request()->url()]
+        );
 
-        return view('theme-views.ad.show-by-category' , compact('category_name', 'ads', 'ads_count'));
+        return view('theme-views.ad.show-by-category', compact('category_name', 'ads_count') + ['ads' => $paginatedAds]);
 
     }
 
