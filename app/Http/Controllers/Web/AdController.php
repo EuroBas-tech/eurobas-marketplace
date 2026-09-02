@@ -828,7 +828,9 @@ class AdController extends Controller
         });
 
         // reorder ads so those with has_first_results = 1 come first
-        $ads = $ads->sortByDesc('has_first_results')->values();
+         $ads = $ads->sortByDesc('has_first_results')
+           ->sortByDesc(fn($ad) => [$ad->has_first_results, $ad->created_at])
+           ->values();
 
         $ads_count = $ads->count();
 
