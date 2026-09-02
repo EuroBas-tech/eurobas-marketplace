@@ -155,21 +155,25 @@
 @php($lang=app()->getLocale())
 
 @section('content')
-
+    {{-- Category Banner --}}
+    <div style="background:linear-gradient(135deg,#0f407d 0%,#1a6fd4 60%,#3b82f6 100%);padding:32px 0;position:relative;overflow:hidden;">
+        <div style="position:absolute;width:300px;height:300px;background:rgba(255,255,255,0.05);border-radius:50%;top:-100px;right:-80px;"></div>
+        <div style="position:absolute;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%;bottom:-60px;left:-60px;"></div>
+        <div class="container" style="position:relative;z-index:1;">
+            <div class="d-flex align-items-center gap-3">
+                <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="bi bi-tags-fill" style="font-size:22px;color:#fff;"></i>
+                </div>
+                <div>
+                    <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;margin:0 0 4px 0;">{{translate('all_ads_of_category')}}</p>
+                    <h1 style="color:#fff;font-size:1.6rem;font-weight:800;margin:0;line-height:1.2;">{{$category_name}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
     <main class="main-content d-flex flex-column gap-3 py-3">
         <div>
-
-
-            <div class="px-sm-3" >
-                <div class="d-flex align-items-center gap-2 my-4 " >
-                    <h2>{{translate('all_ads_of_category')}} :</h2>
-                    <h6 class="mt-1 fs-14">
-                        <span class="bg-primary py-2 px-2 rounded text-light">
-                            <i class="bi bi-tags-fill"></i>
-                            <span id="dynamic-cat-name" >{{$category_name}}</span>
-                        </span>
-                    </h6>
-                </div>
+            <div class="px-sm-3">
                 <div class="auto-col mobile-items-2 gap-2 gap-sm-3 recommended-product-grid" style="--minWidth: 12rem;">
                     @foreach($ads as $ad)
                         @include('theme-views.partials._product-large-card',['ad'=>$ad])
@@ -183,9 +187,3 @@
 @push('script')
 
 @endpush
-
-
-
-
-
-
