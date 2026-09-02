@@ -201,18 +201,18 @@ $(document).on('click', '#load-more-btn', function() {
     btn.prop('disabled', true).text('...');
 
     $.ajax({
-        url: '/ads/show-by-category/' + cat + '/more?page=' + page,
+         url: '{{ route("show-by-category-more", "__CAT__") }}'.replace('__CAT__', cat) + '?page=' + page,
         method: 'GET',
         success: function(response) {
             $('.recommended-product-grid').append(response.html);
             if (response.hasMore) {
-                btn.data('page', page + 1).prop('disabled', false).text('{{ translate('load_more') }}');
+               btn.data('page', page + 1).prop('disabled', false).text('{{ translate("load_more") }}');
             } else {
                 $('#load-more-wrapper').remove();
             }
         },
         error: function() {
-            btn.prop('disabled', false).text('{{ translate('load_more') }}');
+             btn.prop('disabled', false).text('{{ translate("load_more") }}');
         }
     });
 });
