@@ -180,12 +180,44 @@
                     @endforeach
                 </div>
                 @if($ads->hasMorePages())
-                    <div class="d-flex justify-content-center mt-4 mb-2">
-                        <a href="{{ $ads->nextPageUrl() }}" class="btn btn-primary px-5 py-3" style="border-radius:10px;font-size:16px;font-weight:600;">
+                    <div class="d-flex justify-content-center mt-4 mb-2" id="load-more-wrapper">
+                        <button id="load-more-btn"
+                            data-url="{{ route('show-by-category-more', $ads->currentPage() > 0 ? request()->segment(3) : request()->segment(3)) }}"
+                            data-page="2"
+                            data-cat="{{ request()->segment(3) }}"
+                            class="btn btn-primary px-5 py-3"
+                            style="border-radius:10px;font-size:16px;font-weight:600;">
                             {{ translate('load_more') }}
-                        </a>
+                        </button>
                     </div>
                 @endif
+
+@push('script')
+<script>
+$(document).on('click', '#load-more-btn', function() {
+    var btn = $(this);
+    var page = btn.data('page');
+    var cat = btn.data('cat');
+    btn.prop('disabled', true).text('...');
+
+    $.ajax({
+        url: '/ads/show-by-category/' + cat + '/more?page=' + page,
+        method: 'GET',
+        success: function(response) {
+            $('.recommended-product-grid').append(response.html);
+            if (response.hasMore) {
+                btn.data('page', page + 1).prop('disabled', false).text('{{ translate('load_more') }}');
+            } else {
+                $('#load-more-wrapper').remove();
+            }
+        },
+        error: function() {
+            btn.prop('disabled', false).text('{{ translate('load_more') }}');
+        }
+    });
+});
+</script>
+@endpush
             </div>
         </div>
     </main>
