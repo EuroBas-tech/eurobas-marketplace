@@ -840,8 +840,7 @@ class AdController extends Controller
             ['path' => request()->url()]
         );
 
-        return view('theme-views.ad.show-by-category', compact('category_name', 'ads_count') + ['ads' => $paginatedAds]);
-
+        return view('theme-views.ad.show-by-category', compact('category_name', 'ads_count', 'cat_id') + ['ads' => $paginatedAds]);
     }
 
     public function show_by_category_more($cat_id) {
