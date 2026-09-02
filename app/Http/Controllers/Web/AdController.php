@@ -844,6 +844,39 @@ class AdController extends Controller
 
     }
 
+    public function show_by_category_more($cat_id) {
+        $category = Category::with('ads')->find($cat_id);
+        abort_if(!$category, 404);
+
+        $now = Carbon::now();
+        $perPage = 24;
+        $page = request()->get('page', 1);
+
+        $ads = $category->ads('sponsor')
+            ->when(session('show_by_country'), fn($q, $country) => $q->country($country['name']))
+            ->get()
+            ->map(function ($ad) use ($now) {
+                $sponsor = collect($ad->sponsor)->firstWhere('type', 'urgent_sale_sticker');
+                $ad->has_urgent_sale_sticker = $sponsor && $sponsor->expiration_date > $now ? 1 : 0;
+                $ad->has_first_results = collect($ad->sponsor)
+                    ->firstWhere('type', 'appearance_in_first_results')
+                    ?->expiration_date > $now ? 1 : 0;
+                return $ad;
+            })
+            ->sortByDesc(fn($ad) => [$ad->has_first_results, $ad->created_at])
+            ->values();
+
+        $pageItems = $ads->forPage($page, $perPage);
+        $hasMore = $ads->count() > ($page * $perPage);
+
+        $html = '';
+        foreach ($pageItems as $ad) {
+            $html .= view('theme-views.partials._product-large-card', ['ad' => $ad])->render();
+        }
+
+        return response()->json(['html' => $html, 'hasMore' => $hasMore]);
+    }
+
     public function show($slug){
 
         $ad = Ad::active()
