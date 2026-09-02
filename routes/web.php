@@ -99,6 +99,7 @@ Route::group(
                 Route::post('report-ad', 'AdController@report_ad')->name('report-ad');
 
                 Route::get('show-by-category/{cat_id}', 'AdController@show_by_category')->name('show-by-category');
+                Route::get('show-by-category/{cat_id}/more', 'AdController@show_by_category_more')->name('show-by-category-more');
 
                 // CSRF-free POST routes using controller@method syntax
                 Route::withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
