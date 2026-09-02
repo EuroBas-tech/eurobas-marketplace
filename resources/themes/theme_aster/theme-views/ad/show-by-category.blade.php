@@ -179,6 +179,13 @@
                         @include('theme-views.partials._product-large-card',['ad'=>$ad])
                     @endforeach
                 </div>
+                @if($ads->hasMorePages())
+                    <div class="d-flex justify-content-center mt-4 mb-2">
+                        <a href="{{ $ads->nextPageUrl() }}" class="btn btn-primary px-5 py-3" style="border-radius:10px;font-size:16px;font-weight:600;">
+                            {{ translate('load_more') }}
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </main>
