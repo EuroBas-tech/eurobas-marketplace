@@ -182,9 +182,9 @@
                 @if($ads->hasMorePages())
                     <div class="d-flex justify-content-center mt-4 mb-2" id="load-more-wrapper">
                         <button id="load-more-btn"
-                            data-url="{{ route('show-by-category-more', $ads->currentPage() > 0 ? request()->segment(3) : request()->segment(3)) }}"
+                            data-url="{{ route('show-by-category-more', $cat_id) }}"
                             data-page="2"
-                            data-cat="{{ request()->segment(3) }}"
+                            data-cat="{{ $cat_id }}"
                             class="btn btn-primary px-5 py-3"
                             style="border-radius:10px;font-size:16px;font-weight:600;">
                             {{ translate('load_more') }}
@@ -201,7 +201,7 @@ $(document).on('click', '#load-more-btn', function() {
     btn.prop('disabled', true).text('...');
 
     $.ajax({
-         url: '{{ route("show-by-category-more", "__CAT__") }}'.replace('__CAT__', cat) + '?page=' + page,
+         url: btn.data('url') + '?page=' + page,
         method: 'GET',
         success: function(response) {
             $('.recommended-product-grid').append(response.html);
