@@ -1371,3 +1371,8 @@ euromarket
 .product__top::after {
     display: none !important;
 }
+
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
