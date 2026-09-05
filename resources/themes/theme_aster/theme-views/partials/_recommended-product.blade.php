@@ -1,7 +1,7 @@
 <section class="py-3">
     <div class="container">
         @foreach($categories->where('position', 1) as $category)
-            @if($category->ads && $category->ads->count() > 4)
+            @if($category->ads && $category->ads->count() > 0)
                 <div class="mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3 class="m-0 fw-bold">{{ $category->name }}</h3>
