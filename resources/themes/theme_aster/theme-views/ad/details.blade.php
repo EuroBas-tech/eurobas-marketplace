@@ -1634,8 +1634,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" >
-                    <div class="card h-100">
+                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" style="align-self:flex-start;">
+                     <div class="card">
                         <div class="card-body">
                             <div class="" >
                                 <div class="d-flex align-items-start justify-content-between" >
