@@ -284,7 +284,8 @@ class AdController extends Controller
 
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
-        $ad->description            = $request->description;
+        $description = preg_replace('/(https?:\/\/|www\.)\S+/i', '', strip_tags($request->description, '<p><br><b><strong><ul><li><ol>'));
+        $ad->description = mb_substr($description, 0, 1000, 'UTF-8');
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
@@ -688,7 +689,8 @@ class AdController extends Controller
 
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
-        $ad->description            = $request->description;
+        $description = preg_replace('/(https?:\/\/|www\.)\S+/i', '', strip_tags($request->description, '<p><br><b><strong><ul><li><ol>'));
+        $ad->description = mb_substr($description, 0, 1000, 'UTF-8');
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
