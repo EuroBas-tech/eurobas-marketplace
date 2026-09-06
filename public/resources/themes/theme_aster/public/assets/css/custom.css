@@ -1372,3 +1372,9 @@ euromarket
     display: none !important;
 }
 
+.ad-description {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+    max-width: 100%;
+}
