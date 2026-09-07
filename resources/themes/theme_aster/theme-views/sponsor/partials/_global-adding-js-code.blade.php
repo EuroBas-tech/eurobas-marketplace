@@ -2,9 +2,19 @@
     window.isVideoUploaded = false;
 </script>
 
-<script>
+ <script>
     window.onload = function () {
         CKEDITOR.replace('description', window.adDescriptionEditorConfig || {});
+        
+        CKEDITOR.instances.description.on('change', function() {
+            var text = this.getData().replace(/<[^>]*>/g, '');
+            var remaining = 1000 - text.length;
+            var counter = document.getElementById('desc-counter');
+            if (counter) {
+                counter.textContent = remaining + ' {{ translate("characters_remaining") }}';
+                counter.style.color = remaining < 100 ? '#dc3545' : '#6c757d';
+            }
+        });
     };
 </script>
 
