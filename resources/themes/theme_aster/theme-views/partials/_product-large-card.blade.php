@@ -1,7 +1,7 @@
 <style>
     .flag-rectangle {
-      width: 28px;
-      height: 15px;
+      width: 36px;
+      height: 20px;
       background-size: cover;
       background-position: center;
       border: 1px solidrgb(210, 210, 210);
@@ -295,8 +295,8 @@
 
     <style>
     .flag-rectangle {
-      width: 28px;
-      height: 15px;
+      width: 36px;
+      height: 20px;
       background-size: cover;
       background-position: center;
       border: 1px solidrgb(210, 210, 210);
