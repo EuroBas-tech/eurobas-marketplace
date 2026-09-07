@@ -1634,7 +1634,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" style="align-self:flex-start;">
+               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" style="align-self:flex-start;position:sticky;top:80px;">
                     <div class="card">
                         <div class="card-body">
                             <div class="" >
