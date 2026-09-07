@@ -86,6 +86,7 @@
                             <option class="emoji-font" value="+375" data-flag="🇧🇾" data-code="+375">🇧🇾 +375 Belarus</option>
                             <option class="emoji-font" value="+86" data-flag="🇨🇳" data-code="+86">🇨🇳 +86 China</option>
                             <option class="emoji-font" value="+7" data-flag="🇷🇺" data-code="+7">🇷🇺 +7 Russia</option>
+                            <option class="emoji-font" value="+90" data-flag="🇹🇷" data-code="+90">🇹🇷 +90 Turkey</option>
                             <option class="emoji-font" value="+383" data-flag="🇽🇰" data-code="+383">🇽🇰 +383 Kosovo</option>
                             <option class="emoji-font" value="+377" data-flag="🇲🇨" data-code="+377">🇲🇨 +377 Monaco</option>
                             <option class="emoji-font" value="+357" data-flag="🇨🇾" data-code="+357">🇨🇾 +357 Cyprus</option>
