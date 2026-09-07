@@ -327,6 +327,7 @@ const SYSTEM_COUNTRIES_FLAGS = [
     'Norway' => 'no.png',
     'Iceland' => 'is.png',
     'Lithuania' => 'lt.png',
+    'Turkey' => 'tr.png',
     'Latvia' => 'lv.png',
     'Estonia' => 'ee.png',
     'Croatia' => 'hr.png',
