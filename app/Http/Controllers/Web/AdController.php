@@ -284,8 +284,17 @@ class AdController extends Controller
 
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
-        $description = preg_replace('/(https?:\/\/|www\.)\S+/i', '', strip_tags($request->description, '<p><br><b><strong><ul><li><ol>'));
-        $ad->description = mb_substr($description, 0, 1000, 'UTF-8');
+        $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
+        $cleanDescription = mb_substr($cleanDescription, 0, 1000, 'UTF-8');
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        @$dom->loadHTML(
+       '<meta charset="UTF-8">' . $cleanDescription,
+        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+       );
+
+         $savedHtml = $dom->saveHTML();
+        $ad->description = str_replace('<meta charset="UTF-8">', '', $savedHtml);
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
@@ -689,8 +698,17 @@ class AdController extends Controller
 
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
-        $description = preg_replace('/(https?:\/\/|www\.)\S+/i', '', strip_tags($request->description, '<p><br><b><strong><ul><li><ol>'));
-        $ad->description = mb_substr($description, 0, 1000, 'UTF-8');
+        $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
+        $cleanDescription = mb_substr($cleanDescription, 0, 1000, 'UTF-8');
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        @$dom->loadHTML(
+       '<meta charset="UTF-8">' . $cleanDescription,
+        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+         );
+
+        $savedHtml = $dom->saveHTML();
+        $ad->description = str_replace('<meta charset="UTF-8">', '', $savedHtml);
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
