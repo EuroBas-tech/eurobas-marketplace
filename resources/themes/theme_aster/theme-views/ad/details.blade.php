@@ -260,7 +260,7 @@
         <div class="container px-0 px-sm-3">
              <div class="row gx-0 gy-4">
                 <div class="col-12 col-lg-8 col-xl-8 px-sm-3 px-0">
-                     <div class="card mb-3 px-sm-0 px-3">
+                 <div class="card h-100 mb-3 px-sm-0 px-3">
                         <div class="card-body px-sm-3 px-0">
                             <div class="quickview-content">
                                 <div class="mb-4" >
@@ -1126,13 +1126,13 @@
                                         <!-- End Product Details Content -->
                                     </div>
 
-                                    <div class="mt-4">
-                                  <h3 class="my-4">{{translate('description')}}</h3>
-                                 <div class="fs-18 text-dark" style="word-break: break-word; overflow-wrap: break-word; word-wrap: break-word; clear: both;">
-                                      {!! $ad->description !!}
-                                  </div>
-                                </div>
-
+                                    <div class="mt-4" >
+                                        <h3 class="my-4" >{{translate('description')}}</h3>
+                                        <div class="fs-18 text-dark" >
+                                            {!! $ad->description !!}
+                                        </div>
+                                    </div>
+                                    
                                     <div class="accordion mt-5" id="accordionExample">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingTwo">
