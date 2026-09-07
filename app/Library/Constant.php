@@ -288,6 +288,7 @@ const SYSTEM_COUNTRIES = [
     ["name" => 'Russia', "code" => 'RU', "emoji" => '🇷🇺'],
     ["name" => 'Kosovo', "code" => 'XK', "emoji" => '🇽🇰'],
     ["name" => 'Monaco', "code" => 'MC', "emoji" => '🇲🇨'],
+    ["name" => 'Turkey', "code" => 'TR', "emoji" => '🇹🇷'],
     ["name" => 'Cyprus', "code" => 'CY', "emoji" => '🇨🇾'],
     ["name" => 'Liechtenstein', "code" => 'LI', "emoji" => '🇱🇮'],
     ["name" => 'Malta', "code" => 'MT', "emoji" => '🇲🇹'],
