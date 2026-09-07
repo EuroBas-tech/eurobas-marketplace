@@ -12,6 +12,7 @@
         <div class="form-group">
             <label for="description">{{translate('description')}}</label>
             <textarea name="description" id="description" rows="5" class="form-control">{{ old('description') }}</textarea>
+            <small id="desc-counter" style="color:#6c757d;">1000 {{ translate('characters_remaining') }}</small>
         </div>
     </div>
 </div>
