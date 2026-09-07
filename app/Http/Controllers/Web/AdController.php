@@ -285,16 +285,12 @@ class AdController extends Controller
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
         $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
-        $cleanDescription = mb_substr($cleanDescription, 0, 1000, 'UTF-8');
-
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        @$dom->loadHTML(
-       '<meta charset="UTF-8">' . $cleanDescription,
-        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
-       );
-
-         $savedHtml = $dom->saveHTML();
-        $ad->description = str_replace('<meta charset="UTF-8">', '', $savedHtml);
+        $cleanDescription = strip_tags($cleanDescription, '<p><br><b><strong><ul><li><ol>');
+        $cleanDescription = preg_replace('/<(?![a-z\/])/i', '&lt;', $cleanDescription);
+        $cleanDescription = preg_replace('/(?<![a-z"\'\>])\/>/i', '', $cleanDescription);
+        $cleanDescription = mb_substr(trim($cleanDescription), 0, 1000, 'UTF-8');
+        $ad->description = $this->autoCloseTags($cleanDescription);
+       
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
@@ -698,17 +694,13 @@ class AdController extends Controller
 
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
-        $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
-        $cleanDescription = mb_substr($cleanDescription, 0, 1000, 'UTF-8');
-
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        @$dom->loadHTML(
-       '<meta charset="UTF-8">' . $cleanDescription,
-        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
-         );
-
-        $savedHtml = $dom->saveHTML();
-        $ad->description = str_replace('<meta charset="UTF-8">', '', $savedHtml);
+       
+       $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
+       $cleanDescription = strip_tags($cleanDescription, '<p><br><b><strong><ul><li><ol>');
+       $cleanDescription = preg_replace('/<(?![a-z\/])/i', '&lt;', $cleanDescription);
+       $cleanDescription = preg_replace('/(?<![a-z"\'\>])\/>/i', '', $cleanDescription);
+       $cleanDescription = mb_substr(trim($cleanDescription), 0, 1000, 'UTF-8');
+        $ad->description = $this->autoCloseTags($cleanDescription);
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
@@ -1971,5 +1963,26 @@ class AdController extends Controller
         ]);
         
     }
-
+     private function autoCloseTags($html) {
+    preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
+    $openedtags = $result[1] ?? [];
+    preg_match_all('#</([a-z]+)>#iU', $html, $result);
+    $closedtags = $result[1] ?? [];
+    $len_opened = count($openedtags);
+    
+    if (count($closedtags) >= $len_opened) {
+        return $html;
+    }
+    
+    $openedtags = array_reverse($openedtags);
+    for ($i = 0; $i < $len_opened; $i++) {
+        if (!in_array($openedtags[$i], $closedtags)) {
+            $html .= '</' . $openedtags[$i] . '>';
+        } else {
+            unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+        }
+    }
+    return $html;
+}
+    
 }
