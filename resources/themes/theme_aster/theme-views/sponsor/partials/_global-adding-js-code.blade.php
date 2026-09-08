@@ -8,7 +8,7 @@
         
         CKEDITOR.instances.description.on('change', function() {
             var text = this.getData().replace(/<[^>]*>/g, '');
-            var remaining = 1000 - text.length;
+            var remaining = 2000 - text.length;
             var counter = document.getElementById('desc-counter');
             if (counter) {
                 counter.textContent = remaining + ' {{ translate("characters_remaining") }}';
