@@ -285,13 +285,9 @@ class AdController extends Controller
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
         $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
-        $cleanDescription = preg_replace('/<h[1-6][^>]*>(.*?)<\/h[1-6]>/i', '<p><strong>$1</strong></p>', $cleanDescription);
-        $cleanDescription = strip_tags($cleanDescription, '<p><br><b><strong><ul><li><ol>');
-        $cleanDescription = preg_replace('/style="[^"]*"/i', '', $cleanDescription);
-        $cleanDescription = preg_replace('/<(?![a-z\/])/i', '&lt;', $cleanDescription);
-        $cleanDescription = preg_replace('/(?<![a-z"\'\>])\/>/i', '', $cleanDescription);
-        $cleanDescription = mb_substr(trim($cleanDescription), 0, 1000, 'UTF-8');
-        $ad->description = $this->autoCloseTags($cleanDescription);
+        $cleanDescription = strip_tags($cleanDescription, '<p><br>');
+        $cleanDescription = mb_substr(trim($cleanDescription), 0, 2000, 'UTF-8');
+        $ad->description = $cleanDescription;
        
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
@@ -697,14 +693,10 @@ class AdController extends Controller
         $ad->category_id            = $request->category_id;
         $ad->brand_id               = $request->brand_id;
         $cleanDescription = preg_replace('/(https?:\/\/|www\.)\S+/i', '', $request->description);
-        $cleanDescription = preg_replace('/<h[1-6][^>]*>(.*?)<\/h[1-6]>/i', '<p><strong>$1</strong></p>', $cleanDescription);
-        $cleanDescription = strip_tags($cleanDescription, '<p><br><b><strong><ul><li><ol>');
-        $cleanDescription = preg_replace('/style="[^"]*"/i', '', $cleanDescription);
-        $cleanDescription = preg_replace('/<(?![a-z\/])/i', '&lt;', $cleanDescription);
-        $cleanDescription = preg_replace('/(?<![a-z"\'\>])\/>/i', '', $cleanDescription);
-        $cleanDescription = mb_substr(trim($cleanDescription), 0, 1000, 'UTF-8');
-        $ad->description = $this->autoCloseTags($cleanDescription);
-       
+        $cleanDescription = strip_tags($cleanDescription, '<p><br>');
+        $cleanDescription = mb_substr(trim($cleanDescription), 0, 2000, 'UTF-8');
+        $ad->description = $cleanDescription;
+        
         $ad->model_id               = $request->model_id;
         $ad->color                  = $request->color;
         $ad->ad_status              = $request->status;
