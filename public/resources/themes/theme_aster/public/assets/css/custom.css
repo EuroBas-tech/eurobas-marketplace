@@ -1379,11 +1379,20 @@ euromarket
     max-width: 100%;
 }
 
-.fs-18.text-dark,
-.fs-18.text-dark * {
+ .fs-18.text-dark p,
+.fs-18.text-dark h1,
+.fs-18.text-dark h2,
+.fs-18.text-dark h3,
+.fs-18.text-dark h4,
+.fs-18.text-dark h5,
+.fs-18.text-dark h6 {
     font-size: 18px !important;
-    line-height: 1.6 !important;
+    line-height: 1.7 !important;
     word-break: break-word !important;
-    overflow-wrap: anywhere !important;
-    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+}
+
+.fs-18.text-dark strong,
+.fs-18.text-dark b {
+    font-size: 18px !important;
 }
