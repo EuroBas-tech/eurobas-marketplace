@@ -358,7 +358,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row gy-4 d-flex align-items-stretch justify-content-center">
+                                <div class="row gy-4 d-flex align-items-start justify-content-center">
                                     <div class="col-sm-11 col-12 px-sm-2 px-0">
                                         <!-- Product Details Image Wrap -->
                                         <div class="pd-img-wrap h-100">
