@@ -1378,8 +1378,3 @@ euromarket
     min-width: 0;
     max-width: 100%;
 }
-
-body.toolbar-enabled {
-    overflow: visible !important;
-    overflow-y: auto !important;
-}
