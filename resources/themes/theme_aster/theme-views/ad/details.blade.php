@@ -1126,12 +1126,42 @@
                                         <!-- End Product Details Content -->
                                     </div>
 
-                                    <div class="mt-4" >
-                                        <h3 class="my-4" >{{translate('description')}}</h3>
-                                        <div class="fs-18 text-dark" >
-                                            {!! $ad->description !!}
-                                        </div>
-                                    </div>
+                                    <div class="mt-4">
+                                   <h3 class="my-4">{{ translate('description') }}</h3>
+                                  <div class="fs-18 text-dark">
+                                 <div id="desc-content" style="max-height:160px; overflow:hidden; transition: max-height 0.4s ease-in-out;">
+                               {!! $ad->description !!}
+                             </div>
+                            <div id="desc-toggle" style="margin-top:10px;">
+                            <span id="desc-btn" onclick="toggleDesc()" style="color:#0d6efd; cursor:pointer; font-size:15px; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
+                             ▼ {{ translate('read_more') }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                         <script>
+                    function toggleDesc() {
+                    var content = document.getElementById('desc-content');
+                    var btn = document.getElementById('desc-btn');
+    
+                    if (content.style.maxHeight === '160px' || content.style.maxHeight === '') {
+                   content.style.maxHeight = content.scrollHeight + 'px';
+                    btn.innerHTML = '▲ ' + '{{ translate("read_less") }}';
+                    } else {
+                    content.style.maxHeight = '160px';
+                     btn.innerHTML = '▼ ' + '{{ translate("read_more") }}';
+                      }
+                    }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                var content = document.getElementById('desc-content');
+                var toggle = document.getElementById('desc-toggle');
+               if (content && content.scrollHeight <= 165) {
+               toggle.style.display = 'none';
+              }
+           });
+          </script>
                                     
                                     <div class="accordion mt-5" id="accordionExample">
                                         <div class="accordion-item">
