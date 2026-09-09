@@ -1127,7 +1127,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                   <h3 class="my-4">{{ translate('description') }}</h3>
+                                   <h3 class="my-4" id="desc-header">{{ translate('description') }}</h3>
                                   <div class="fs-18 text-dark">
                                  <div id="desc-content" style="max-height:160px; overflow:hidden; transition: max-height 0.3s ease-in-out;">
                                {!! $ad->description !!}
@@ -1141,22 +1141,22 @@
                           </div>
 
                          <script>
-                     function toggleDesc() {
-                     var content = document.getElementById('desc-content');
+                      function toggleDesc() {
+                    var content = document.getElementById('desc-content');
                     var btn = document.getElementById('desc-btn');
-                    var scrollPos = window.scrollY;
-                    if (content.style.maxHeight === '160px' || content.style.maxHeight === '') {
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                    btn.innerHTML = '▲ ' + '{{ translate("read_less") }}';
-                     } else {
-                     content.style.maxHeight = '160px';
-                    btn.innerHTML = '▼ ' + '{{ translate("read_more") }}';
-                      window.scrollTo({
-                      top: scrollPos,
-                     behavior: 'instant'
-                      });
-                 }
-              }
+                   var descHeader = document.getElementById('desc-header');
+
+                   if (content.style.maxHeight === '160px' || content.style.maxHeight === '') {
+                   content.style.maxHeight = content.scrollHeight + 'px';
+                  btn.innerHTML = '▲ ' + '{{ translate("read_less") }}';
+                  } else {
+                 content.style.maxHeight = '160px';
+                 btn.innerHTML = '▼ ' + '{{ translate("read_more") }}';
+                         if (descHeader) {
+                        descHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                       }
+                }
                              
                 document.addEventListener('DOMContentLoaded', function() {
                 var content = document.getElementById('desc-content');
