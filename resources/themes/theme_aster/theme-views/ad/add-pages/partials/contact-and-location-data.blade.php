@@ -161,6 +161,7 @@
     
     document.addEventListener('DOMContentLoaded', function() {
         const selectElement = document.getElementById('phone_code_select');
+           if (!selectElement) return;
         
         // Store original content for all options on page load
         Array.from(selectElement.options).forEach(option => {
