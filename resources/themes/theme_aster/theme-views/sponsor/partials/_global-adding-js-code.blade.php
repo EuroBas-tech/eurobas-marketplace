@@ -23,6 +23,7 @@
         // Get the checkbox and phone number elements
         const showEmailCheckbox = document.getElementById('show-email-address');
         const showPhoneCheckbox = document.getElementById('show-phone-number');
+           if (!showPhoneCheckbox || !showEmailCheckbox) return;
 
         const allowOffers = document.getElementById('allow-offers');
         const firstPrice = document.getElementById('first-price');
